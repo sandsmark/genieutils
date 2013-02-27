@@ -1,7 +1,7 @@
 /*
     geniedat - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2011  Armin Preiml <email>
+    Copyright (C) 2013  Armin Preiml <email>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -31,8 +31,18 @@ public:
   ThirdSubData();
   virtual ~ThirdSubData();
 
-  static const short UNKNOWN1_LEN = 11;
-  std::vector<int32_t> Unknown1;
+  int32_t Unit;
+  int32_t HostTerrain;
+  static const short UNKNOWN3_LEN = 4;
+  std::vector<char> Unknown3;
+  int32_t ObjectsPerPlayer;
+  int32_t Unknown5;
+  int32_t GroupsPerPlayer;
+  int32_t Unknown7;
+  int32_t OwnAtStart;
+  int32_t SetPlaceForAllPlayers;
+  int32_t MinDistanceToPlayers;
+  int32_t MaxDistanceToPlayers;
 
 private:
   virtual void serializeObject(void);
@@ -44,8 +54,12 @@ public:
   SecondSubData();
   virtual ~SecondSubData();
 
-  static const short UNKNOWN1_LEN = 6;
-  std::vector<int32_t> Unknown1;
+  int32_t Proportion;
+  int32_t Terrain;
+  int32_t NumberOfClumps;
+  int32_t SpacingToOtherTerrains;
+  int32_t PlacementZone;
+  int32_t Unknown6;
 
 private:
   virtual void serializeObject(void);
@@ -57,8 +71,19 @@ public:
   FirstSubData();
   virtual ~FirstSubData();
 
-  static const short UNKNOWN1_LEN = 11;
-  std::vector<int32_t> Unknown1;
+  int32_t Unknown1;
+  int32_t BaseTerrain;
+  int32_t SpacingBetweenPlayers;
+  int32_t Unknown4;
+  static const short UNKNOWN5_LEN = 4;
+  std::vector<char> Unknown5;
+  int32_t Unknown6;
+  int32_t Unknown7;
+  static const short UNKNOWN8_LEN = 4;
+  std::vector<char> Unknown8;
+  int32_t StartAreaRadius;
+  int32_t Unknown10;
+  int32_t Unknown11;
 
 private:
   virtual void serializeObject(void);
@@ -70,8 +95,15 @@ public:
   Unknown2ndBlock();
   virtual ~Unknown2ndBlock();
 
-  static const short UNKNOWN1_LEN = 9;
-  std::vector<int32_t> Unknown1;
+  int32_t BorderSouthWest;
+  int32_t BorderNorthWest;
+  int32_t BorderNorthEast;
+  int32_t BorderSouthEast;
+  int32_t BorderUsage;
+  int32_t WaterShape;
+  int32_t NonBaseTerrain;
+  int32_t BaseZoneCoverage;
+  int32_t Unknown9;
 
   int32_t Pointer1;
   std::vector<FirstSubData> FirstSubDatas;
@@ -97,9 +129,16 @@ public:
   Unknown1stBlock();
   virtual ~Unknown1stBlock();
 
-  int32_t UnknownLevel;
-  static const short UNKNOWN1_LEN = 9;
-  std::vector<int32_t> Unknown1;
+  int32_t ScriptNumber;
+  int32_t BorderSouthWest;
+  int32_t BorderNorthWest;
+  int32_t BorderNorthEast;
+  int32_t BorderSouthEast;
+  int32_t BorderUsage;
+  int32_t WaterShape;
+  int32_t NonBaseTerrain;
+  int32_t BaseZoneCoverage;
+  int32_t Unknown9;
 
   int32_t Pointer1;
   int32_t Pointer2;
