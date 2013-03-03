@@ -1,7 +1,7 @@
 /*
     geniedat - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Armin Preiml <email>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -49,7 +49,7 @@ public:
   int16_t ResearchID;
   char Unknown33;
   
-  static const uint16_t BUILDING_ANNEXES_CNT = 4;
+  static const unsigned short BUILDING_ANNEXES_CNT = 4;
   
   std::vector<unit::BuildingAnnex> Annexes; // 4
   int16_t HeadUnit;
@@ -61,7 +61,7 @@ public:
   int32_t Unknown35;
   int16_t Unknown36;
   
-  static const uint16_t UNKNOWN37_SIZE = 6;
+  static const unsigned short UNKNOWN37_SIZE = 6;
   std::vector<char> Unknown37; // 6
   
 private:  

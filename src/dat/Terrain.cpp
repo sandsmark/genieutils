@@ -1,7 +1,7 @@
 /*
     genie/dat - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Armin Preiml <email>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -82,7 +82,7 @@ short Terrain::getTerrainBorderSize(void)
 }
 
 //------------------------------------------------------------------------------
-void Terrain::serializeObject(void )
+void Terrain::serializeObject(void)
 {
   serialize<int16_t>(Unknown1);
   serialize<int16_t>(Unknown2);

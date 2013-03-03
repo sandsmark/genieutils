@@ -1,7 +1,7 @@
 /*
     genie/dat - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Armin Preiml <email>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -51,7 +51,7 @@ uint16_t Civ::getNameSize(void)
   return 20;
 }
 
-void Civ::serializeObject(void )
+void Civ::serializeObject(void)
 {
   serialize<char>(One); //TODO: enabled flag
   serialize<std::string>(Name, getNameSize());

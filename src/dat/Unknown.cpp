@@ -1,7 +1,7 @@
 /*
     genie/dat - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Armin Preiml <email>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -46,7 +46,7 @@ void Unknown::serializeObject()
 }
 
 //------------------------------------------------------------------------------
-Unknown1stBlock::Unknown1stBlock() : Unknown2(UNKNOWN2_LEN)
+Unknown1stBlock::Unknown1stBlock()
 {
   ScriptNumber = 0;
   BorderSouthWest = 0;
@@ -91,11 +91,11 @@ void Unknown1stBlock::serializeObject(void)
   serialize<int32_t>(Pointer2);
   serialize<uint32_t>(Count3);
   serialize<int32_t>(Pointer3);
-  serialize<int32_t>(Unknown2, UNKNOWN2_LEN);
+  serialize<int32_t, UNKNOWN2_LEN>(Unknown2);
 }
 
 //------------------------------------------------------------------------------
-Unknown2ndBlock::Unknown2ndBlock() : Unknown2(UNKNOWN2_LEN)
+Unknown2ndBlock::Unknown2ndBlock()
 {
   BorderSouthWest = 0;
   BorderNorthWest = 0;
@@ -141,11 +141,11 @@ void Unknown2ndBlock::serializeObject(void)
   serialize<int32_t>(Pointer3);
   serializeSub<ThirdSubData>(ThirdSubDatas, Count3);
 
-  serialize<int32_t>(Unknown2, UNKNOWN2_LEN);
+  serialize<int32_t, UNKNOWN2_LEN>(Unknown2);
 }
 
 //------------------------------------------------------------------------------
-FirstSubData::FirstSubData() : Unknown5(UNKNOWN5_LEN), Unknown8(UNKNOWN8_LEN)
+FirstSubData::FirstSubData()
 {
   Unknown1 = 1;
   BaseTerrain = 0;
@@ -173,10 +173,10 @@ void FirstSubData::serializeObject(void)
   serialize<int32_t>(BaseTerrain);
   serialize<int32_t>(SpacingBetweenPlayers);
   serialize<int32_t>(Unknown4);
-  serialize<char>(Unknown5, UNKNOWN5_LEN);
+  serialize<char, UNKNOWN5_LEN>(Unknown5);
   serialize<int32_t>(Unknown6);
   serialize<int32_t>(Unknown7);
-  serialize<char>(Unknown8, UNKNOWN8_LEN);
+  serialize<char, UNKNOWN8_LEN>(Unknown8);
   serialize<int32_t>(StartAreaRadius);
   serialize<int32_t>(Unknown10);
   serialize<int32_t>(Unknown11);
@@ -210,7 +210,7 @@ void SecondSubData::serializeObject(void)
 }
 
 //------------------------------------------------------------------------------
-ThirdSubData::ThirdSubData() : Unknown3(UNKNOWN3_LEN)
+ThirdSubData::ThirdSubData()
 {
   Unit = -1;
   HostTerrain = -1;
@@ -234,7 +234,7 @@ void ThirdSubData::serializeObject(void)
 {
   serialize<int32_t>(Unit);
   serialize<int32_t>(HostTerrain);
-  serialize<char>(Unknown3, UNKNOWN3_LEN);
+  serialize<char, UNKNOWN3_LEN>(Unknown3);
   serialize<int32_t>(ObjectsPerPlayer);
   serialize<int32_t>(Unknown5);
   serialize<int32_t>(GroupsPerPlayer);

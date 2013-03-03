@@ -1,7 +1,7 @@
 /*
     geniedat - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Armin Preiml <email>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -59,97 +59,101 @@ public:
   /// Standard constructor
   //
   DatFile();
-    
+
   //----------------------------------------------------------------------------
   /// Destructor
   //
   virtual ~DatFile();
-  
+
   //----------------------------------------------------------------------------
   virtual void setGameVersion(GameVersion gv);
-  
+
   //----------------------------------------------------------------------------
   /// Uncompress dat file.
   //
   void extractRaw(const char *inFile, const char *outFile);
-   
+
   //----------------------------------------------------------------------------
   /// Debug information will be printed to stdout if activated.
   ///
   /// @param verbose true to activate
   //
   void setVerboseMode(bool verbose);
-  
+
 public:
   // File data
-  static const short FILE_VERSION_LEN = 8;
- 
+  static const unsigned short FILE_VERSION_LEN = 8;
+
   std::vector<int32_t> TerrainRestrictionPointers1;
   std::vector<int32_t> TerrainRestrictionPointers2;
   std::vector<TerrainRestriction> TerrainRestrictions;
-  
+
   std::vector<PlayerColour> PlayerColours;
-  
+
   std::vector<Sound> Sounds;
-  
+
   std::vector<int32_t> GraphicPointers;
   std::vector<Graphic> Graphics;
-        
-  static const uint16_t TERRAIN_HEADER_SIZE = 69;
-  int16_t *GraphicsRendering;
+
+  static const unsigned short TERRAIN_HEADER_SIZE = 69;
+  std::array<int16_t, TERRAIN_HEADER_SIZE> GraphicsRendering;
+  unsigned short getTerrainsSize(void);
   std::vector<Terrain> Terrains;
-  
+
   std::vector<TerrainBorder> TerrainBorders;
-  
-  int32_t *ZeroSpace;
-  int16_t *Rendering;
-  int32_t *Something;
-  
+
+  unsigned short getZeroSpaceSize(void);
+  std::vector<int32_t> ZeroSpace;
+  unsigned short getRenderingSize(void);
+  std::vector<int16_t> Rendering;
+  unsigned short getSomethingSize(void);
+  std::vector<int32_t> Something;
+
   genie::Unknown Unknown;
 
   std::vector<Techage> Techages;
 
   std::vector<UnitHeader> UnitHeaders;
-  
+
   int8_t *CivSkip;
   std::vector<Civ> Civs;
-        
+
   std::vector<Research> Researchs;
-  
+
   /// Only present in gv >= SWGB
   std::vector<UnitLine> UnitLines;
 
   genie::TechTree TechTree;
-  
+
   std::vector<int32_t> UnknownPreTechTree;
-   
+
   uint16_t NumberOfTerrainsUsed;
   uint16_t NumberOfTerrainsUsed2;
   int16_t Unknown2;
-  
+
    //SWGB Unknowns:
   /// Seems to be the CivCount
   int32_t SUnknown2;
   int32_t SUnknown3;
   int32_t SUnknown4;
   int32_t SUnknown5;
-  
+
   char SUnknown7;
   char SUnknown8;
-  
+
 private:
   // if true print debug messages
   bool verbose_;
-  
+
   std::string file_name_;
   std::fstream *file_;
-  
-  char *file_version_;
-  
+
+  std::array<char, FILE_VERSION_LEN> file_version_;
+
   Compressor compressor_;
-  
+
   uint16_t terrain_restriction_count_;
-  
+
   uint16_t player_color_count_;
   uint16_t sound_count_;
   uint16_t graphic_count_;
@@ -158,17 +162,17 @@ private:
   uint16_t civ_countSW_;
   uint16_t civ_count_;
   uint16_t research_count_;
-  
+
   uint16_t unit_line_count_;
-  
+
   DatFile(const DatFile &other);
   DatFile &operator=(const DatFile &other);
-  
+
   //----------------------------------------------------------------------------
   /// Clears all data.
   //
   virtual void unload(void);
-      
+
   virtual void serializeObject(void);
 };
 

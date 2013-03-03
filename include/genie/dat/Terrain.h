@@ -1,7 +1,7 @@
 /*
     geniedat - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Armin Preiml <email>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -49,22 +49,22 @@ public:
   std::vector<unsigned char> Colors;
   int16_t Unknown5;
   int16_t Unknown6;
-  static const short UNKNOWN7_LEN = 23;
+  static const unsigned short UNKNOWN7_LEN = 23;
   std::vector<char> Unknown7;
   int16_t FrameCount;
-  static const short UNKNOWN8_LEN = 2;
+  static const unsigned short UNKNOWN8_LEN = 2;
   std::vector<int16_t> Unknown8;
-  static const short UNKNOWN9_LEN = 54;
+  static const unsigned short UNKNOWN9_LEN = 54;
   std::vector<int16_t> Unknown9;
   int16_t TerrainReplacementID;
-  static const short TERRAIN_DIMENSIONS_LEN = 2;
+  static const unsigned short TERRAIN_DIMENSIONS_LEN = 2;
   std::pair<int16_t, int16_t> TerrainDimensions;
   short getTerrainBorderSize();
   
   /// These refer to terrain borders, which are actually used only in AoE and RoR.
   std::vector<int16_t> TerrainBorderIDs;
   
-  static const short TERRAIN_UNITS_LEN = 30;
+  static const unsigned short TERRAIN_UNITS_LEN = 30;
   std::vector<int16_t> TerrainUnitID;
   std::vector<int16_t> TerrainUnitDensity;
   
@@ -74,7 +74,7 @@ public:
   
   int16_t NumberOfTerrainUnitsUsed;
   
-  static const short SWGBUNKNOWN1_LEN = 24;
+  static const unsigned short SWGBUNKNOWN1_LEN = 24;
   std::vector<char> SWGBUnknown1;
   
 private:

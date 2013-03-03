@@ -1,7 +1,7 @@
 /*
     genie/dat - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Armin Preiml <email>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -23,7 +23,7 @@
 
 namespace genie
 {
- 
+
 //------------------------------------------------------------------------------
 Unit::Unit(GameVersion gv) : Unknown9(getUnknown9Size())
 {
@@ -78,8 +78,6 @@ Unit::Unit(GameVersion gv) : Unknown9(getUnknown9Size())
   LanguageDLLHelp = 105000;
   LanguageDLLHotKeyText = 155000;
   HotKey = 16000;
-  Unknown4 = 0;
-  Unknown5 = 0;
   Unselectable = 0;
   Unknown6 = 0;
   Unknown7 = 0;
@@ -121,10 +119,10 @@ Unit::~Unit()
 void Unit::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
-  
+
   updateGameVersion(ResourceStorages);
   updateGameVersion(DamageGraphics);
-  
+
   DeadFish.setGameVersion(gv);
   Bird.setGameVersion(gv);
   Projectile.setGameVersion(gv);
@@ -141,31 +139,31 @@ short Unit::getUnknown9Size()
 }
 
 //------------------------------------------------------------------------------
-void Unit::serializeObject(void )
+void Unit::serializeObject(void)
 {
   //Type 10+
   serialize<char>(Type);
-  
+
   serializeSize<uint16_t>(NameLength, Name);
   serialize<int16_t>(ID1);        //TODO: Check
   serialize<uint16_t>(LanguageDLLName);
   serialize<uint16_t>(LanguageDLLCreation);
   serialize<int16_t>(Class);
-  
+
   if (getGameVersion() >= genie::GV_AoK)
     serialize<int16_t>(StandingGraphic);
   else
     serialize<int16_t>(StandingGraphic, true);
-  
+
   serialize<int16_t>(DyingGraphic);
   serialize<char>(DeathMode);
   serialize<int16_t>(HitPoints);
   serialize<float>(LineOfSight);
-  serialize<char>(GarrisonCapacity); 
+  serialize<char>(GarrisonCapacity);
   serialize<float>(SizeRadius);
-  
+
   serialize<float>(HPBarHeight1);
-  
+
   serialize<int16_t>(TrainSound, (getGameVersion() >= genie::GV_AoK) ? false : true);
   serialize<int16_t>(DeadUnitID);
   serialize<char>(PlacementMode);
@@ -173,7 +171,7 @@ void Unit::serializeObject(void )
   serialize<int16_t>(IconID);
   serialize<char>(HideInEditor);
   serialize<int16_t>(Unknown1);
-  
+
   if (getGameVersion() >= genie::GV_AoK)
     serialize<int16_t>(Enabled);
   else
@@ -182,7 +180,7 @@ void Unit::serializeObject(void )
     serialize<char>(enabled);
     Enabled = enabled;
   }
-  
+
   serialize<int16_t>(PlacementBypassTerrain);
   serialize<int16_t>(PlacementTerrain);
   serialize<float>(EditorRadius);
@@ -201,90 +199,88 @@ void Unit::serializeObject(void )
   serialize<int16_t>(Unknown3B);
   serialize<int32_t>(LanguageDLLHelp);
   serialize<int32_t>(LanguageDLLHotKeyText);
-  serialize<int16_t>(HotKey);
-  serialize<char>(Unknown4);
-  serialize<char>(Unknown5);
+  serialize<int32_t>(HotKey);
   serialize<char>(Unselectable);
   serialize<char>(Unknown6);
-  
+
   if (getGameVersion() >= genie::GV_AoK)
   {
     serialize<char>(Unknown7);
     serialize<char>(Unknown8);
   }
-  
+
   serialize<char>(SelectionMask);
-  
+
   if (getGameVersion() >= genie::GV_AoK)
     serialize<char>(SelectionShapeType);
-  
+
   serialize<char>(SelectionShape);
-  
+
   if (getGameVersion() >= genie::GV_TC)
   {
     serialize<char>(Attribute);
     serialize<char>(Civilization);
     serialize<char>(Unknown9, getUnknown9Size());
   }
-  
+
   serialize<char>(SelectionEffect);
   serialize<char>(EditorSelectionColour);
   serialize<float>(SelectionRadius);
   serialize<float>(HPBarHeight2);
-  
+
   serializeSub<ResourceStorage>(ResourceStorages, 3);
-  
+
   serializeSize<unsigned char>(DamageGraphicCount, DamageGraphics.size());
   serializeSub<unit::DamageGraphic>(DamageGraphics, DamageGraphicCount);
-  
+
   serialize<int16_t>(SelectionSound);
   serialize<int16_t>(DyingSound);
   serialize<int16_t>(AttackSound);
-  
+
   serialize<std::string>(Name, NameLength);
-  
+
   if (getGameVersion() >= genie::GV_SWGB)
   {
     //serializeSize<uint16_t>(NameLength2, Name2.size());
     serializeSize<uint16_t>(NameLength2, Name2);
     serialize<std::string>(Name2, NameLength2);
-    
+
     serialize<int16_t>(Unitline);
     serialize<char>(MinTechLevel);
   }
-  
+
   serialize<int16_t>(ID2);
-    
+
   if (getGameVersion() >= genie::GV_AoK)
     serialize<int16_t>(ID3);
-  
+
   if (Type == genie::UT_AoeTrees)
     return;
-   
+
   if (Type >= genie::UT_Flag)
     serialize<float>(Speed);
   else
     return;
-  
+
   if (Type >= genie::UT_Dead_Fish)
     serialize<ISerializable>(DeadFish);
-  
+
   if (Type >= genie::UT_Bird)
     serialize<ISerializable>(Bird);
-  
+
   if (Type >= genie::UT_Projectile)
     serialize<ISerializable>(Projectile);
-  
+
   if (Type == genie::UT_Projectile)
     serialize<ISerializable>(ProjectileOnly);
-  
+
   if (Type >= genie::UT_Creatable)
     serialize<ISerializable>(Creatable);
-  
+
   if (Type >= genie::UT_Building)
     serialize<ISerializable>(Building);
 }
 
-  
+
 }
 

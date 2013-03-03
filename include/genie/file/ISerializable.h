@@ -1,6 +1,6 @@
 /*
     genieutils - <description>
-    Copyright (C) 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Armin Preiml <email>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -23,71 +23,72 @@
 #include <iostream>
 
 #include "genie/Types.h"
+#include <array>
 #include <vector>
 #include <string.h>
 #include <stdint.h>
 
 namespace genie
 {
-  
+
 //------------------------------------------------------------------------------
 /// Generic base class for genie file serialization
 //
 class ISerializable
 {
 
-public:  
+public:
   //----------------------------------------------------------------------------
   ISerializable();
-  
+
   //----------------------------------------------------------------------------
   virtual ~ISerializable();
-  
+
   //----------------------------------------------------------------------------
   /// Set position to start reading the object from stream
   //
   void setInitialReadPosition(std::streampos pos);
-  
+
   //----------------------------------------------------------------------------
   std::streampos getInitialReadPosition(void) const;
-  
+
   //----------------------------------------------------------------------------
   /// Read object from istream.
   ///
   /// @param istr Input stream to read from
   //
   void readObject(std::istream &istr);
-  
+
   //----------------------------------------------------------------------------
   /// Write object to stream.
   ///
   /// @param ostr Output stream to write to
   //
   void writeObject(std::ostream &ostr);
-  
+
   //----------------------------------------------------------------------------
   /// Returns size in bytes.
   //
   virtual size_t objectSize(void);
-  
+
   //----------------------------------------------------------------------------
   /// Serialize this object as a subobject of another one.
   ///
   /// @param root The object to serialize from.
   //
   void serializeSubObject(ISerializable *const root);
-  
+
   //----------------------------------------------------------------------------
-  /// 
+  ///
   //
   virtual void setGameVersion(GameVersion gv);
-  
+
   //----------------------------------------------------------------------------
   GameVersion getGameVersion(void) const;
-  
+
   static void setDefaultGameVersion(GameVersion gv);
   static GameVersion getDefaultGameVersion(void);
-  
+
   /// Updates the game version of all objects in vec
   //
   template <typename T>
@@ -99,21 +100,21 @@ public:
       item->setGameVersion(gv);
     }
   }
-  
+
   //----------------------------------------------------------------------------
   /// Needs access to get and set stream methods for (de)compressing.
   //
   friend class Compressor;
-  
+
 protected:
-  
+
   enum Operation
   {
     OP_READ = 0,
     OP_WRITE = 1,
     OP_CALC_SIZE = 2
   };
-  
+
   /// Updates the gv of all objects with the gv of this object.
   //
   template <typename T>
@@ -121,45 +122,45 @@ protected:
   {
     updateGameVersion<T>(getGameVersion(), vec);
   }
-  
+
   //----------------------------------------------------------------------------
   /// Set operation to process
   ///
   /// @param op operation
   //
   void setOperation(Operation op);
-  
+
   //----------------------------------------------------------------------------
   /// Get current operation
   ///
   /// @return operation
   //
   Operation getOperation(void ) const;
-  
+
   //----------------------------------------------------------------------------
   /// Check if given operation is active.
   ///
   /// @param op operation to check
   //
   bool isOperation(Operation op) const;
-  
+
   //----------------------------------------------------------------------------
   void setIStream(std::istream &istr);
-  
+
   //----------------------------------------------------------------------------
   std::istream * getIStream(void);
-  
+
   //----------------------------------------------------------------------------
   void setOStream(std::ostream &ostr);
-  
+
   //----------------------------------------------------------------------------
   std::ostream * getOStream(void);
-  
+
   //----------------------------------------------------------------------------
   /// @return position of the istreams get pointer.
   //
   std::streampos tellg(void ) const;
-  
+
   //----------------------------------------------------------------------------
   /// Custom strnlen for mingw32.
   ///
@@ -168,13 +169,13 @@ protected:
   /// @return string length
   //
   static size_t strnlen(const char *str, size_t max_size);
-  
+
   //----------------------------------------------------------------------------
   /// Derived classes need to implement this method. It will automatically be
   /// called on reading or writing an Object.
   //
   virtual void serializeObject(void) = 0;
-  
+
   //----------------------------------------------------------------------------
   /// Reads a string from istr. Returns empty string if len parameter is 0.
   /// The string will be cut at the first \0.
@@ -182,7 +183,7 @@ protected:
   /// @param len Number of characters to read.
   //
   std::string readString(size_t len);
-  
+
   //----------------------------------------------------------------------------
   /// Writes a string to ostr.
   ///
@@ -190,7 +191,7 @@ protected:
   /// @param len number of chars to write.
   //
   void writeString(std::string str, size_t len);
-  
+
   //----------------------------------------------------------------------------
   /// Generic read method for basic data types.
   ///
@@ -203,10 +204,10 @@ protected:
 
     if (!istr_->eof())
       istr_->read(reinterpret_cast<char *>(&ret), sizeof(ret));
-    
+
     return ret;
   }
-  
+
   //----------------------------------------------------------------------------
   /// Generic write method for basic data types.
   ///
@@ -215,7 +216,7 @@ protected:
   template <typename T>
   void write(T &data)
   {
-    ostr_->write(reinterpret_cast<char *>(&data), sizeof(T)); 
+    ostr_->write(reinterpret_cast<char *>(&data), sizeof(T));
   }
 
   //----------------------------------------------------------------------------
@@ -223,16 +224,16 @@ protected:
   //
   template <typename T>
   void read(T **array, size_t len)
-  {   
+  {
     if (!istr_->eof())
     {
       if (*array == 0)
         *array = new T[len];
-      
+
       istr_->read(reinterpret_cast<char *>(*array), sizeof(T) * len);
     }
   }
-  
+
   //----------------------------------------------------------------------------
   /// Writes an array to file.
   //
@@ -241,7 +242,7 @@ protected:
   {
     ostr_->write(reinterpret_cast<char *>(data), sizeof(T) * len);
   }
-  
+
   //----------------------------------------------------------------------------
   /// Serializes a string with preceeding size. Template argument is the data
   /// type of the size.
@@ -253,27 +254,27 @@ protected:
   void serializeSizedString(std::string &str, bool cString = true)
   {
     T size;
-    
+
     serializeSize<T>(size, str, cString);
     serialize<std::string>(str, size);
   }
-  
+
   template <typename T>
-  void serializeSizedStrings(std::vector<std::string> &vec, size_t size, 
+  void serializeSizedStrings(std::vector<std::string> &vec, size_t size,
                              bool cString = true)
   {
     if (isOperation(OP_READ))
     {
       vec.resize(size);
     }
-    
+
     for (size_t i=0; i<size; i++)
       serializeSizedString<T>(vec[i], cString);
-    
+
   }
-  
+
   //----------------------------------------------------------------------------
-  /// Serialize method for basic data types. 
+  /// Serialize method for basic data types.
   /// Reads or writes data dependent on set operation.
   //
   template <typename T>
@@ -292,16 +293,16 @@ protected:
         break;
     }
   }
-  
+
   template <typename T>
   void serialize(ISerializable &data)
   {
     data.serializeSubObject(this);
-    
+
     if (isOperation(OP_CALC_SIZE))
       size_ += data.objectSize();
   }
-  
+
   //----------------------------------------------------------------------------
   /// Reads or writes an array of data dependent on Write_ flag.
   //
@@ -321,7 +322,7 @@ protected:
         break;
     }
   }
-  
+
   //----------------------------------------------------------------------------
   /// Spezialization of std::strings.
   //
@@ -344,9 +345,35 @@ protected:
       }
     }
   }
-  
+
   //----------------------------------------------------------------------------
-  /// Reads or writes an array of data to/from a vector dependent on opeartion.
+  /// Reads or writes an array of data to/from an array dependent on operation.
+  //
+  template <typename T, size_t N>
+  void serialize(std::array<T, N> &arr)
+  {
+    switch(getOperation())
+    {
+      case OP_WRITE:
+        for (auto it = arr.begin(); it != arr.end(); it++)
+          write<T>(*it);
+
+        break;
+
+      case OP_READ:
+        for (size_t i=0; i < arr.size(); i++)
+          arr[i] = read<T>();
+
+        break;
+
+      case OP_CALC_SIZE:
+        size_ += arr.size() * sizeof(T);
+        break;
+    }
+  }
+
+  //----------------------------------------------------------------------------
+  /// Reads or writes an array of data to/from a vector dependent on operation.
   //
   template <typename T>
   void serialize(std::vector<T> &vec, size_t size)
@@ -356,21 +383,20 @@ protected:
       case OP_WRITE:
         if (vec.size() != size)
           std::cerr << "Warning!: vector size differs len!" << vec.size() << " " << size <<  std::endl;
-        
-        for (typename std::vector<T>::iterator it = vec.begin(); it != vec.end(); 
-            it ++)
+
+        for (auto it = vec.begin(); it != vec.end(); it++)
           write<T>(*it);
-        
+
         break;
-        
+
       case OP_READ:
         vec.resize(size);
-        
+
         for (size_t i=0; i < size; i++)
           vec[i] = read<T>();
-        
+
         break;
-     
+
       case OP_CALC_SIZE:
         size_ += size * sizeof(T);
         break;
@@ -387,22 +413,21 @@ protected:
     {
       if (vec.size() != size)
         std::cerr << "Warning!: vector size differs size!" << vec.size() << " " << size <<  std::endl;
-      
-      for (typename std::vector<T>::iterator it = vec.begin(); it != vec.end();
-           it ++)
+
+      for (auto it = vec.begin(); it != vec.end(); it++)
       {
         ISerializable *data = dynamic_cast<ISerializable *>(&(*it));
-       
+
         data->serializeSubObject(this);
-        
+
         if (isOperation(OP_CALC_SIZE))
           size_ += data->objectSize();
       }
     }
     else
-    {      
+    {
       vec.resize(size);
-      
+
       for (size_t i=0; i < size; i++)
       {
         ISerializable *cast_obj = dynamic_cast<ISerializable *>(&vec[i]);
@@ -410,7 +435,7 @@ protected:
       }
     }
   }
-  
+
   //----------------------------------------------------------------------------
   /// Serialize a vector size number. If size differs, the number will be
   /// updated.
@@ -420,17 +445,17 @@ protected:
   {
     if (isOperation(OP_WRITE))
       data = size;
-    
+
     serialize<T>(data);
   }
-  
+
   //----------------------------------------------------------------------------
   /// Spezialization of serializeSize for strings.
   ///
   /// @param data size to serialize
   /// @param str string to get size from
   /// @param c_str true if cstring (ending with \0).
-  /// 
+  ///
   template <typename T>
   void serializeSize(T &data, std::string str, bool cString=true)
   {
@@ -438,23 +463,23 @@ protected:
     if (isOperation(OP_WRITE))
     {
       size_t size = str.size();
-      
+
       if (cString && size != 0)
         size++;   //counting \0
-        
+
       data = size;
     }
-    
+
     serialize<T>(data);
   }
-  
+
   //----------------------------------------------------------------------------
   /// Necessary for graphic objects. The pointer array contains entries with
   /// value 0. If a pointer is 0, a empty graphic object will be inserted into
   /// the vector.
   //
   template <typename T>
-  void serializeSubWithPointers(std::vector<T> &vec, size_t size, 
+  void serializeSubWithPointers(std::vector<T> &vec, size_t size,
                                 std::vector<int32_t> &pointers)
   {
     if (isOperation(OP_WRITE) || isOperation(OP_CALC_SIZE))
@@ -464,9 +489,9 @@ protected:
         if (pointers[i] != 0)
         {
           ISerializable *data = dynamic_cast<ISerializable *>(&vec[i]);
-          
+
           data->serializeSubObject(this);
-          
+
           if (isOperation(OP_CALC_SIZE))
             size_ += data->objectSize();
         }
@@ -475,11 +500,11 @@ protected:
     else
     {
       vec.resize(size);
-      
+
       for (size_t i=0; i < size; i++)
-      {        
-        T *obj = &vec[i]; 
-        
+      {
+        T *obj = &vec[i];
+
         if (pointers[i] != 0)
         {
           ISerializable *cast_obj = dynamic_cast<ISerializable *>(obj);
@@ -488,9 +513,9 @@ protected:
       }
     }
   }
-  
+
   //----------------------------------------------------------------------------
-  /// Spezialization of serialize for std::pair. 
+  /// Spezialization of serialize for std::pair.
   ///
   /// @param p pair
   /// @param only_first if true only the first element will be serialized
@@ -502,39 +527,39 @@ protected:
     {
       case OP_WRITE:
         write<T>(p.first);
-      
+
         if (!only_first)
           write<T>(p.second);
         break;
-        
+
       case OP_READ:
         p.first = read<T>();
-      
+
         if (!only_first)
           p.second = read<T>();
         break;
-        
+
       case OP_CALC_SIZE:
         size_ += sizeof(T);
-        
+
         if (!only_first)
           size_ += sizeof(T);
         break;
     }
   }
-  
+
 private:
   std::istream *istr_;
   std::ostream *ostr_;
-  
+
   std::streampos init_read_pos_;
-  
+
   Operation operation_;
-  
+
   GameVersion gameVersion_;
-  
+
   static GameVersion defaultGameVersion;
-  
+
   size_t size_;
 };
 
@@ -553,7 +578,7 @@ void arraycpy(T **dest, const T *src, size_t size)
     memcpy(*dest, src, size * sizeof(T));
   }
 }
-  
+
 }
 
 #endif // GENIE_ISERIALIZABLE_H

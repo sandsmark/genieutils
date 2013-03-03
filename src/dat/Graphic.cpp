@@ -1,7 +1,7 @@
 /*
     genie/dat - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Armin Preiml <email>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -134,7 +134,7 @@ uint16_t Graphic::getCoordinatesSize()
   return 4;
 }
 
-void Graphic::serializeObject(void )
+void Graphic::serializeObject(void)
 { 
   /*
    * Workaround for Name strings, because in RoR, SWGB and TC there are

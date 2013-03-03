@@ -1,7 +1,7 @@
 /*
     geniedat - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Armin Preiml <email>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -47,7 +47,7 @@ public:
   char ButtonID;
   char Unknown26;//not in aoe/ror
   
-  static const short UNKNOWN27_SIZE = 3;
+  static const unsigned short UNKNOWN27_SIZE = 3;
   std::vector<int16_t> Unknown27; //3 //not in aoe/ror
   char Unknown28;//not in aoe/ror
   char MissileGraphicDelay;//not in aoe/ror
@@ -56,7 +56,7 @@ public:
   float AttackMissileDuplicationAmount1;//not in aoe/ror
   char AttackMissileDuplicationAmount2;//not in aoe/ror
   
-  static const short AMDBUNKNOWN_SIZE = 3;
+  static const unsigned short AMDBUNKNOWN_SIZE = 3;
   /// The area from which projectiles spawn. Size and randomness.
   std::vector<float> AttackMissileDuplicationSpawning; //3 //not in aoe/ror
   

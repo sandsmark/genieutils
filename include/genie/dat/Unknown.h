@@ -1,7 +1,7 @@
 /*
     geniedat - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Armin Preiml <email>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -33,8 +33,8 @@ public:
 
   int32_t Unit;
   int32_t HostTerrain;
-  static const short UNKNOWN3_LEN = 4;
-  std::vector<char> Unknown3;
+  static const unsigned short UNKNOWN3_LEN = 4;
+  std::array<char, UNKNOWN3_LEN> Unknown3;
   int32_t ObjectsPerPlayer;
   int32_t Unknown5;
   int32_t GroupsPerPlayer;
@@ -75,12 +75,12 @@ public:
   int32_t BaseTerrain;
   int32_t SpacingBetweenPlayers;
   int32_t Unknown4;
-  static const short UNKNOWN5_LEN = 4;
-  std::vector<char> Unknown5;
+  static const unsigned short UNKNOWN5_LEN = 4;
+  std::array<char, UNKNOWN5_LEN> Unknown5;
   int32_t Unknown6;
   int32_t Unknown7;
-  static const short UNKNOWN8_LEN = 4;
-  std::vector<char> Unknown8;
+  static const unsigned short UNKNOWN8_LEN = 4;
+  std::array<char, UNKNOWN8_LEN> Unknown8;
   int32_t StartAreaRadius;
   int32_t Unknown10;
   int32_t Unknown11;
@@ -112,8 +112,8 @@ public:
   int32_t Pointer3;
   std::vector<ThirdSubData> ThirdSubDatas;
 
-  static const short UNKNOWN2_LEN = 2;
-  std::vector<int32_t> Unknown2;
+  static const unsigned short UNKNOWN2_LEN = 2;
+  std::array<int32_t, UNKNOWN2_LEN> Unknown2;
 
 private:
   uint32_t Count1;
@@ -144,8 +144,8 @@ public:
   int32_t Pointer2;
   int32_t Pointer3;
 
-  static const short UNKNOWN2_LEN = 2;
-  std::vector<int32_t> Unknown2;
+  static const unsigned short UNKNOWN2_LEN = 2;
+  std::array<int32_t, UNKNOWN2_LEN> Unknown2;
 
   uint32_t Count1;
   uint32_t Count2;
