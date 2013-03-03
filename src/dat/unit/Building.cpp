@@ -2,6 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -17,16 +18,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include "genie/dat/unit/Building.h"
 
 namespace genie
 {
-  
+
 namespace unit
 {
 
-Building::Building() : Unknown37(UNKNOWN37_SIZE)
+Building::Building()
 {
   ConstructionGraphicID = -1;
   SnowGraphicID = -1;
@@ -47,6 +47,10 @@ Building::Building() : Unknown37(UNKNOWN37_SIZE)
   GarrisonHealRate = 0;
   Unknown35 = 0;
   Unknown36 = -1;
+  Unknown37 = 0;
+  Unknown38 = 0;
+  Unknown39 = 0;
+  Unknown40 = 0;
 }
 
 Building::~Building()
@@ -56,10 +60,10 @@ Building::~Building()
 void Building::serializeObject(void)
 {
   serialize<int16_t>(ConstructionGraphicID);
-  
+
   if (getGameVersion() >= genie::GV_TC)
     serialize<int16_t>(SnowGraphicID);
-  
+
   serialize<int16_t>(AdjacentMode);
   serialize<char>(Unknown31);
   serialize<char>(Unknown31b);
@@ -67,7 +71,7 @@ void Building::serializeObject(void)
   serialize<int16_t>(TerrainID);
   serialize<int16_t>(Unknown32);
   serialize<int16_t>(ResearchID);
-  
+
   if (getGameVersion() >= genie::GV_AoK)
   {
     serialize<char>(Unknown33);
@@ -76,20 +80,22 @@ void Building::serializeObject(void)
     serialize<int16_t>(TransformUnit);
     serialize<int16_t>(Unknown34);
   }
-  
+
   serialize<int16_t>(ConstructionSound);
-  
+
   if (getGameVersion() >= genie::GV_AoK)
   {
     serialize<char>(GarrisonType);
     serialize<float>(GarrisonHealRate);
     serialize<int32_t>(Unknown35);
     serialize<int16_t>(Unknown36);
-    serialize<char>(Unknown37, UNKNOWN37_SIZE);
+    serialize<char>(Unknown37);
+    serialize<int16_t>(Unknown38);
+    serialize<char>(Unknown39);
+    serialize<int16_t>(Unknown40);
   }
 }
 
 }
 
 }
-

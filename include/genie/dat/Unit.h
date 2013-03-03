@@ -217,8 +217,7 @@ public:
   char Attribute;
   /// Seems to be used only in SWGB/CC
   char Civilization;
-  static short getUnknown9Size();
-  std::vector<char> Unknown9; // 3 //aoe/ror 1, aok 0, tc 3
+  int16_t Unknown9;
 
   /**
    * 1.HP Bar on, selection shadow (permanent darker outline in editor only, disappears in game)

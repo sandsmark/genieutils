@@ -2,6 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -17,7 +18,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef GENIE_CREATABLE_H
 #define GENIE_CREATABLE_H
 
@@ -26,58 +26,54 @@
 
 namespace genie
 {
-  
+
 namespace unit
 {
 
 class Creatable : public ISerializable
 {
-
 public:
   Creatable();
   virtual ~Creatable();
-  
+
   static short getResourceCostsSize();
-  
+
   typedef ResourceUsage<int16_t, int16_t, int16_t> ResourceCost;
-  
+
   std::vector<ResourceCost> ResourceCosts; //3
   int16_t TrainTime;
   int16_t TrainLocationID;
   char ButtonID;
-  char Unknown26;//not in aoe/ror
-  
-  static const unsigned short UNKNOWN27_SIZE = 3;
-  std::vector<int16_t> Unknown27; //3 //not in aoe/ror
-  char Unknown28;//not in aoe/ror
+  int32_t Unknown26;//not in aoe/ror
+  int32_t Unknown27;//not in aoe/ror
   char MissileGraphicDelay;//not in aoe/ror
   char HeroMode;//not in aoe/ror
   std::pair<int16_t, int16_t> GarrisonGraphic; //not in aoe/ror
   float AttackMissileDuplicationAmount1;//not in aoe/ror
   char AttackMissileDuplicationAmount2;//not in aoe/ror
-  
+
   static const unsigned short AMDBUNKNOWN_SIZE = 3;
   /// The area from which projectiles spawn. Size and randomness.
   std::vector<float> AttackMissileDuplicationSpawning; //3 //not in aoe/ror
-  
+
   int32_t AttackMissileDuplicationUnit;//not in aoe/ror
   int32_t AttackMissileDuplicationGraphic;//not in aoe/ror
-  
-  //TODO: 
+
+  //TODO:
   /*
    * 1.Determines adjacent unit graphics
     2.Enter 0 or 1
-    3.If “1”, the building will have the capability to change graphics depending 
+    3.If “1”, the building will have the capability to change graphics depending
     on the buildings adjacent to it. For instance, a single wall will be a
-    wall end piece, but if a wall is placed between two other walls, it will 
+    wall end piece, but if a wall is placed between two other walls, it will
     have a different graphic.
    */
   char Unknown29;//not in aoe/ror
   int16_t DisplayedPierceArmour;
-  
+
 private:
   virtual void serializeObject(void);
-  
+
 };
 
 }

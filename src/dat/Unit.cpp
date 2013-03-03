@@ -18,15 +18,13 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include "genie/dat/Unit.h"
-
 
 namespace genie
 {
 
 //------------------------------------------------------------------------------
-Unit::Unit(GameVersion gv) : Unknown9(getUnknown9Size())
+Unit::Unit(GameVersion gv)
 {
   setGameVersion(gv);
 //    Type 10+
@@ -88,6 +86,7 @@ Unit::Unit(GameVersion gv) : Unknown9(getUnknown9Size())
   SelectionShape = 0;
   Attribute = 0;
   Civilization = 0;
+  Unknown9 = 0;
   SelectionEffect = 1;
   EditorSelectionColour = 52;
   SelectionRadius.first = 0;
@@ -115,7 +114,6 @@ Unit::~Unit()
 {
 }
 
-
 //------------------------------------------------------------------------------
 void Unit::setGameVersion(GameVersion gv)
 {
@@ -130,13 +128,6 @@ void Unit::setGameVersion(GameVersion gv)
   ProjectileOnly.setGameVersion(gv);
   Creatable.setGameVersion(gv);
   Building.setGameVersion(gv);
-}
-
-
-//------------------------------------------------------------------------------
-short Unit::getUnknown9Size()
-{
-  return 2;
 }
 
 //------------------------------------------------------------------------------
@@ -221,7 +212,7 @@ void Unit::serializeObject(void)
   {
     serialize<char>(Attribute);
     serialize<char>(Civilization);
-    serialize<char>(Unknown9, getUnknown9Size());
+    serialize<int16_t>(Unknown9);
   }
 
   serialize<char>(SelectionEffect);
@@ -282,6 +273,4 @@ void Unit::serializeObject(void)
     serialize<ISerializable>(Building);
 }
 
-
 }
-

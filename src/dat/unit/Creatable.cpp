@@ -2,6 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -17,24 +18,22 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include "genie/dat/unit/Creatable.h"
 
 namespace genie
 {
-  
+
 namespace unit
 {
 
 Creatable::Creatable() : ResourceCosts(getResourceCostsSize()),
-                         Unknown27(UNKNOWN27_SIZE),
                          AttackMissileDuplicationSpawning(AMDBUNKNOWN_SIZE)
 {
   TrainTime = 0;
   TrainLocationID = -1;
   ButtonID = 0;
   Unknown26 = 0;
-  Unknown28 = 0;
+  Unknown27 = 0;
   MissileGraphicDelay = 0;
   HeroMode = 0;
   GarrisonGraphic.first = -1;
@@ -63,12 +62,11 @@ void Creatable::serializeObject(void)
   serialize<int16_t>(TrainTime);
   serialize<int16_t>(TrainLocationID);
   serialize<char>(ButtonID);
-  
+
   if (getGameVersion() >= genie::GV_AoK)
   {
-    serialize<char>(Unknown26);
-    serialize<int16_t>(Unknown27, UNKNOWN27_SIZE);
-    serialize<char>(Unknown28);
+    serialize<int32_t>(Unknown26);
+    serialize<int32_t>(Unknown27);
     serialize<char>(MissileGraphicDelay);
     serialize<char>(HeroMode);
     serialize<int16_t>(GarrisonGraphic);
@@ -79,11 +77,10 @@ void Creatable::serializeObject(void)
     serialize<int32_t>(AttackMissileDuplicationGraphic);
     serialize<char>(Unknown29);
   }
-  
+
   serialize<int16_t>(DisplayedPierceArmour);
 }
 
 }
 
 }
-

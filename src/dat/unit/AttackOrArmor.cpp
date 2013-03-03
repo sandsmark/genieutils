@@ -2,6 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -17,7 +18,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include "genie/dat/unit/AttackOrArmor.h"
 
 namespace genie
@@ -25,7 +25,7 @@ namespace genie
 
 namespace unit
 {
-  
+
 AttackOrArmor::AttackOrArmor()
 {
   Class = 0;

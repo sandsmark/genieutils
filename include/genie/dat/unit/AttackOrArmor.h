@@ -2,6 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -17,7 +18,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef GENIE_ATTACKORARMOR_H
 #define GENIE_ATTACKORARMOR_H
 #include "genie/file/ISerializable.h"
@@ -27,19 +27,18 @@ namespace genie
 
 namespace unit
 {
-  
+
 /// Stores information about the class and amount of an armor or attack
 class AttackOrArmor : public ISerializable
 {
-
 public:
   AttackOrArmor();
   virtual ~AttackOrArmor();
-  
+
   int16_t Class;
   int16_t Amount;
-  
-private:  
+
+private:
   virtual void serializeObject(void);
 };
 

@@ -2,6 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -17,7 +18,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef GENIE_PROJECTILEONLY_H
 #define GENIE_PROJECTILEONLY_H
 
@@ -25,36 +25,35 @@
 
 namespace genie
 {
-  
+
 namespace unit
 {
 
 class ProjectileOnly : public ISerializable
 {
-
 public:
   ProjectileOnly();
   virtual ~ProjectileOnly();
-  
+
   char StretchMode;
   char CompensationMode;
   char DropAnimationMode;
-  
+
   /// Affects the graphics so that they pass through the target instead of stopping
   /// 1 allows the projectile to pass through, a value of 0 stops the projectile.
   /// Only affects graphic not pass through damage.
   char PenetrationMode;
-  
+
   char Unknown24;
-  
+
   /// Determines the arc a projectile follows.
   /// Enter a non-negative value.
-  /// The higher the value, the higher the arc will be that the projectile travels. 
-  /// The graphics do not change, so a scorpion bolt will still always point forwards, 
+  /// The higher the value, the higher the arc will be that the projectile travels.
+  /// The graphics do not change, so a scorpion bolt will still always point forwards,
   /// even if it has a very high arc.
   float ProjectileArc;
-  
-private:  
+
+private:
   virtual void serializeObject(void);
 };
 
