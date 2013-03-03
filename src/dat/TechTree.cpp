@@ -2,6 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -38,7 +39,7 @@ TechTree::~TechTree()
 void TechTree::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
-  
+
   updateGameVersion(BuildingConnections);
   updateGameVersion(UnitConnections);
   updateGameVersion(ResearchConnections);
@@ -48,9 +49,9 @@ void TechTree::setGameVersion(GameVersion gv)
 void TechTree::serializeObject(void)
 {
   serializeSize<unsigned char>(age_count_, TechTreeAges.size());
-  
+
   serializeSize<unsigned char>(total_building_count_, BuildingConnections.size());
-  
+
   if (getGameVersion() >= genie::GV_SWGB)
    serializeSize<uint16_t>(total_unit_count_, UnitConnections.size());
   else
@@ -59,13 +60,13 @@ void TechTree::serializeObject(void)
     serializeSize<unsigned char>(tbc, UnitConnections.size());
     total_unit_count_ = tbc;
   }
-  
+
   serializeSize<unsigned char>(total_research_count_, ResearchConnections.size());
-  
+
   serializeSub<TechTreeAge>(TechTreeAges, age_count_);
-  
+
   serialize<int32_t>(Unknown2);
-  
+
   serializeSub<BuildingConnection>(BuildingConnections, total_building_count_);
   serializeSub<UnitConnection>(UnitConnections, total_unit_count_);
   serializeSub<ResearchConnection>(ResearchConnections, total_research_count_);
@@ -87,15 +88,15 @@ TechTreeAge::~TechTreeAge()
 {
 }
 
-void TechTreeAge::setGameVersion(GameVersion gv) 
+void TechTreeAge::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
-  
+
   Zeroes.resize(getZeroesSize());
 }
 
 //------------------------------------------------------------------------------
-uint16_t TechTreeAge::getZeroesSize() 
+unsigned short TechTreeAge::getZeroesSize()
 {
   if (getGameVersion() >= genie::GV_SWGB)
     return 99;
@@ -109,21 +110,21 @@ void TechTreeAge::serializeObject(void)
   serialize<int32_t>(Unknown1);
   serialize<int32_t>(ID);
   serialize<char>(Unknown2);
-  
+
   serializeSize<unsigned char>(building_count_, Buildings.size());
   serialize<int32_t>(Buildings, building_count_);
-  
+
   serializeSize<unsigned char>(unit_count_, Units.size());
   serialize<int32_t>(Units, unit_count_);
-  
+
   serializeSize<unsigned char>(research_count_, Researches.size());
   serialize<int32_t>(Researches, research_count_);
-  
+
   serialize<int32_t>(Unknown3);
   serialize<int32_t>(Unknown4);
-  
+
   serialize<int16_t>(Zeroes, getZeroesSize());
-} 
+}
 
 //------------------------------------------------------------------------------
 BuildingConnection::BuildingConnection(GameVersion gv) : Unknown2a(0),
@@ -150,27 +151,27 @@ BuildingConnection::~BuildingConnection()
 void BuildingConnection::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
-  
+
   Unknown2a.resize(getUnknown2aSize());
   Unknown2b.resize(getUnknown2bSize());
 }
 
 //------------------------------------------------------------------------------
-uint32_t BuildingConnection::getUnknown2aSize()
+unsigned short BuildingConnection::getUnknown2aSize()
 {
   if (getGameVersion() >= genie::GV_SWGB)
     return 18;
   else
-    return 8;  
+    return 8;
 }
 
 //------------------------------------------------------------------------------
-uint32_t BuildingConnection::getUnknown2bSize()
+unsigned short BuildingConnection::getUnknown2bSize()
 {
   if (getGameVersion() >= genie::GV_SWGB)
     return 17;
   else
-    return 7;  
+    return 7;
 }
 
 //------------------------------------------------------------------------------
@@ -178,32 +179,32 @@ void BuildingConnection::serializeObject(void)
 {
   serialize<int32_t>(ID);
   serialize<char>(Unknown1);
-  
+
   serializeSize<unsigned char>(building_count_, Buildings.size());
   serialize<int32_t>(Buildings, building_count_);
-  
+
   serializeSize<unsigned char>(unit_count_, Units.size());
   serialize<int32_t>(Units, unit_count_);
-  
+
   serializeSize<unsigned char>(research_count_, Researches.size());
   serialize<int32_t>(Researches, research_count_);
-  
+
   serialize<int32_t>(RequiredResearches);
   serialize<int32_t>(Age);
   serialize<int32_t>(UnitOrResearch1);
   serialize<int32_t>(UnitOrResearch2);
-  
+
   serialize<int32_t>(Unknown2a, getUnknown2aSize());
-  
+
   serialize<int32_t>(Mode1);
   serialize<int32_t>(Mode2);
-  
+
   serialize<int32_t>(Unknown2b, getUnknown2bSize());
-  
+
   serialize<char>(Unknown3, getUnknown3Size());
-  
+
   serialize<int32_t>(Connections);
-  serialize<int32_t>(EnablingResearch); 
+  serialize<int32_t>(EnablingResearch);
 }
 
 //------------------------------------------------------------------------------
@@ -234,13 +235,13 @@ UnitConnection::~UnitConnection()
 void UnitConnection::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
-  
+
   Unknown2a.resize(getUnknown2aSize());
   Unknown2b.resize(getUnknown2bSize());
 }
 
 //------------------------------------------------------------------------------
-uint32_t UnitConnection::getUnknown2aSize()
+unsigned short UnitConnection::getUnknown2aSize()
 {
   if (getGameVersion() >= genie::GV_SWGB)
     return 18;
@@ -249,7 +250,7 @@ uint32_t UnitConnection::getUnknown2aSize()
 }
 
 //------------------------------------------------------------------------------
-uint32_t UnitConnection::getUnknown2bSize()
+unsigned short UnitConnection::getUnknown2bSize()
 {
   if (getGameVersion() >= genie::GV_SWGB)
     return 17;
@@ -269,22 +270,22 @@ void UnitConnection::serializeObject(void)
   serialize<int32_t>(UnitOrResearch2);
 
   serialize<int32_t>(Unknown2a, getUnknown2aSize());
-  
+
   serialize<int32_t>(Mode1);
   serialize<int32_t>(Mode2);
-  
+
   serialize<int32_t>(Unknown2b, getUnknown2bSize());
-  
+
   serialize<int32_t>(VerticalLine);
-  
+
   serializeSize<unsigned char>(unit_count_, Units.size());
   serialize<int32_t>(Units, unit_count_);
-  
+
   serialize<int32_t>(LocationInAge);
   serialize<int32_t>(RequiredResearch);
   serialize<int32_t>(LineMode);
-  
-  serialize<int32_t>(EnablingResearch);  
+
+  serialize<int32_t>(EnablingResearch);
 }
 
 //------------------------------------------------------------------------------
@@ -311,13 +312,13 @@ ResearchConnection::~ResearchConnection()
 void ResearchConnection::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
-  
+
   Unknown2a.resize(getUnknown2aSize());
   Unknown2b.resize(getUnknown2bSize());
 }
 
 //------------------------------------------------------------------------------
-uint32_t ResearchConnection::getUnknown2aSize()
+unsigned short ResearchConnection::getUnknown2aSize()
 {
   if (getGameVersion() >= genie::GV_SWGB)
     return 19;
@@ -326,7 +327,7 @@ uint32_t ResearchConnection::getUnknown2aSize()
 }
 
 //------------------------------------------------------------------------------
-uint32_t ResearchConnection::getUnknown2bSize()
+unsigned short ResearchConnection::getUnknown2bSize()
 {
   if (getGameVersion() >= genie::GV_SWGB)
     return 18;
@@ -340,26 +341,26 @@ void ResearchConnection::serializeObject(void)
   serialize<int32_t>(ID);
   serialize<char>(Unknown1);
   serialize<int32_t>(UpperBuilding);
-  
+
   serializeSize<unsigned char>(building_count_, Buildings.size());
   serialize<int32_t>(Buildings, building_count_);
-  
+
   serializeSize<unsigned char>(unit_count_, Units.size());
   serialize<int32_t>(Units, unit_count_);
-  
+
   serializeSize<unsigned char>(research_count_, Researches.size());
   serialize<int32_t>(Researches, research_count_);
-  
+
   serialize<int32_t>(RequiredResearches);
   serialize<int32_t>(Age);
   serialize<int32_t>(UpperResearch);
-  
+
   serialize<int32_t>(Unknown2a, getUnknown2aSize());
-  
+
   serialize<int32_t>(LineMode);
-  
+
   serialize<int32_t>(Unknown2b, getUnknown2bSize());
-  
+
   serialize<int32_t>(VerticalLine);
   serialize<int32_t>(LocationInAge);
   serialize<int32_t>(Unknown9);

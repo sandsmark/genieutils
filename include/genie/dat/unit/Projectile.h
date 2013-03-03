@@ -26,7 +26,7 @@
 
 namespace genie
 {
-  
+
 namespace unit
 {
 
@@ -36,7 +36,7 @@ class Projectile : public ISerializable
 public:
   Projectile();
   virtual ~Projectile();
-  
+
   char Unknown20; //2 //aoe/ror 1, aok 1, tc 2
   char Unknown20_1;
   uint16_t AttackCount;
@@ -48,17 +48,17 @@ public:
   float BlastRadius;
   float ReloadTime1;
   int16_t ProjectileUnitID;
-  
+
   /// Percentage value determining the probability of an attack hiting
   int16_t AccuracyPercent;
-  
+
   /// Used in AoE/RoR for towers.
   char TowerMode;
   int16_t Delay;
-  
+
   static short getGraphicDisplacementSize();
   std::vector<float> GraphicDisplacement; //3
-  
+
   char Unknown23;
   float MinRange;
   float GarrisonRecoveryRate;
@@ -67,10 +67,10 @@ public:
   int16_t DisplayedAttack;
   float DisplayedRange;
   float ReloadTime2;
-  
-private: 
+
+private:
   virtual void serializeObject(void);
-  
+
 };
 
 }

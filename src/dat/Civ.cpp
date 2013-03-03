@@ -2,6 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -16,7 +17,6 @@
     You should have received a copy of the GNU Lesser General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 
 #include "genie/dat/Civ.h"
 
@@ -42,11 +42,11 @@ Civ::~Civ()
 void Civ::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
-  
+
   updateGameVersion(Units);
 }
 
-uint16_t Civ::getNameSize(void)
+unsigned short Civ::getNameSize(void)
 {
   return 20;
 }
@@ -57,20 +57,20 @@ void Civ::serializeObject(void)
   serialize<std::string>(Name, getNameSize());
   serializeSize<uint16_t>(ResourceCount, Resources.size());
   serialize<int16_t>(TechTreeID);
-  
+
   if (getGameVersion() >= genie::GV_AoK)
     serialize<int16_t>(TeamBonusID);
-  
+
   if (getGameVersion() >= genie::GV_SWGB)
   {
     serialize<std::string>(Name2, getNameSize());
     serialize<int16_t>(SUnknown1, 4);
   }
-  
+
   serialize<float>(Resources, ResourceCount);
-  
+
   serialize<char>(GraphicSet);
-  
+
   serializeSize<uint16_t>(UnitCount, UnitPointers.size());
   serialize<int32_t>(UnitPointers, UnitCount);
   serializeSubWithPointers<Unit>(Units, UnitCount, UnitPointers);

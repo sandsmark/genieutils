@@ -2,6 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -17,18 +18,16 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include "genie/dat/unit/DeadFish.h"
 
 namespace genie
 {
-  
+
 namespace unit
 {
 
-DeadFish::DeadFish(GameVersion gv) : Unknown16(0)
+DeadFish::DeadFish() : Unknown16B()
 {
-  setGameVersion(gv);
   WalkingGraphic.first = -1;
   WalkingGraphic.second = -1;
   RotationSpeed = 0;
@@ -37,25 +36,11 @@ DeadFish::DeadFish(GameVersion gv) : Unknown16(0)
   TrackingUnitUsed = 0;
   TrackingUnitDensity = 0;
   Unknown12 = 0;
+  Unknown16 = 0;
 }
 
 DeadFish::~DeadFish()
 {
-
-}
-void DeadFish::setGameVersion(GameVersion gv)
-{
-  ISerializable::setGameVersion(gv);
-  
-  Unknown16.resize(getUnknown16Size());
-}
-
-short DeadFish::getUnknown16Size()
-{
-  if (getGameVersion() >= genie::GV_AoK)
-    return 17;
-  else
-    return 1;
 }
 
 void DeadFish::serializeObject(void)
@@ -66,14 +51,15 @@ void DeadFish::serializeObject(void)
   serialize<int16_t>(TrackingUnit);
   serialize<char>(TrackingUnitUsed);
   serialize<float>(TrackingUnitDensity);
-  
+
   if (getGameVersion() >= genie::GV_AoK)
     serialize<float>(Unknown12);
-    
-  serialize<char>(Unknown16, getUnknown16Size());
+
+  serialize<char>(Unknown16);
+  if (getGameVersion() >= genie::GV_AoK)
+    serialize<char, UNKNOWN16B_LEN>(Unknown16B);
 }
 
 }
 
 }
-

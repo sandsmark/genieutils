@@ -2,6 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -16,7 +17,6 @@
     You should have received a copy of the GNU Lesser General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 
 #include "genie/dat/Graphic.h"
 #include <string.h>
@@ -49,9 +49,9 @@ Graphic::Graphic() : Coordinates(getCoordinatesSize()), CstrName(0), CstrName2(0
   Type = 0;
 }
 
-Graphic::Graphic(const Graphic& other) : ISerializable(other), 
-                                         Coordinates(getCoordinatesSize()), 
-                                         CstrName(0), CstrName2(0) 
+Graphic::Graphic(const Graphic& other) : ISerializable(other),
+                                         Coordinates(getCoordinatesSize()),
+                                         CstrName(0), CstrName2(0)
 {
   *this = other;
 }
@@ -64,7 +64,7 @@ Graphic::~Graphic()
 
 Graphic &Graphic::operator=(const Graphic &other)
 {
-  try 
+  try
   {
     arraycpy<char>(&CstrName, other.CstrName, NAME_LEN);
     arraycpy<char>(&CstrName2, other.CstrName2, NAME_LEN2);
@@ -75,10 +75,10 @@ Graphic &Graphic::operator=(const Graphic &other)
     delete [] CstrName2;
     throw;
   }
-  
+
   Name = other.Name;
   Name2 = other.Name2;
-  
+
   SLP = other.SLP;
   Unknown1 = other.Unknown1;
   Unknown2 = other.Unknown2;
@@ -98,22 +98,22 @@ Graphic &Graphic::operator=(const Graphic &other)
   SequenceType = other.SequenceType;
   ID = other.ID;
   Type = other.Type;
-  
+
   Deltas = other.Deltas;
   AttackSounds = other.AttackSounds;
-  
+
   return *this;
 }
 
 void Graphic::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
-  
+
   updateGameVersion(Deltas);
   updateGameVersion(AttackSounds);
 }
 
-short Graphic::getNameSize()
+unsigned short Graphic::getNameSize()
 {
   if (getGameVersion() <= genie::GV_TC)
     return NAME_LEN;
@@ -121,7 +121,7 @@ short Graphic::getNameSize()
     return NAME_LEN_SWGB;
 }
 
-short Graphic::getName2Size()
+unsigned short Graphic::getName2Size()
 {
   if (getGameVersion() <= genie::GV_TC)
     return NAME_LEN2;
@@ -129,13 +129,13 @@ short Graphic::getName2Size()
     return NAME_LEN_SWGB;
 }
 
-uint16_t Graphic::getCoordinatesSize()
+unsigned short Graphic::getCoordinatesSize()
 {
   return 4;
 }
 
 void Graphic::serializeObject(void)
-{ 
+{
   /*
    * Workaround for Name strings, because in RoR, SWGB and TC there are
    * Unknown values after the \0 on some strings. In RoR the size should be
@@ -147,7 +147,7 @@ void Graphic::serializeObject(void)
       serialize<std::string>(Name, getNameSize());
     else
       serialize<char>(&CstrName, getNameSize());
-    
+
     if (CstrName2 == 0 || Name2.compare(CstrName2) != 0)
       serialize<std::string>(Name2, getName2Size());
     else
@@ -157,7 +157,7 @@ void Graphic::serializeObject(void)
   {
     serialize<char>(&CstrName, getNameSize());
     serialize<char>(&CstrName2, getName2Size());
-    
+
     Name = std::string(CstrName);
     Name2 = std::string(CstrName2);
   }
@@ -169,9 +169,9 @@ void Graphic::serializeObject(void)
   serialize<char>(Unknown3);
   serialize<char>(Unknown4);
   serialize<char>(Replay);
-  
+
   serialize<int16_t>(Coordinates, 4);
-  
+
   serializeSize<uint16_t>(DeltaCount, Deltas.size());
   serialize<int16_t>(SoundID);
   serialize<char>(AttackSoundUsed);
@@ -182,7 +182,7 @@ void Graphic::serializeObject(void)
   serialize<float>(ReplayDelay);
   serialize<char>(SequenceType);
   serialize<int16_t>(ID);
-  
+
   if (getGameVersion() >= genie::GV_AoK)
     serialize<int16_t>(Type);
   else
@@ -191,18 +191,18 @@ void Graphic::serializeObject(void)
     serialize<char>(tmp);
     Type = tmp;
   }
-  
+
   serializeSub<GraphicDelta>(Deltas, DeltaCount);
-  
+
   if (AttackSoundUsed != 0)
   {
     if (isOperation(OP_WRITE) && AttackSounds.size() > AngleCount)
       std::cerr << "Warning: There'are more GraphicAttackSounds than angles!"
                 << std::endl;
-                
+
     serializeSub<GraphicAttackSound>(AttackSounds, AngleCount);
   }
-  
+
 }
 
 }

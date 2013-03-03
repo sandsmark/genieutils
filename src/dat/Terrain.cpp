@@ -2,6 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -16,7 +17,6 @@
     You should have received a copy of the GNU Lesser General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 
 #include "genie/dat/Terrain.h"
 
@@ -59,21 +59,21 @@ Terrain::~Terrain()
 void Terrain::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
-  
+
   TerrainBorderIDs.resize(getTerrainBorderSize());
 }
 
 //------------------------------------------------------------------------------
-short Terrain::getNameSize()
+unsigned short Terrain::getNameSize()
 {
   if (getGameVersion() >= genie::GV_SWGB)
     return 17;
-  else 
+  else
     return 13;
 }
 
 //------------------------------------------------------------------------------
-short Terrain::getTerrainBorderSize(void)
+unsigned short Terrain::getTerrainBorderSize(void)
 {
   if (getGameVersion() >= genie::GV_TC)
     return 42;
@@ -86,20 +86,20 @@ void Terrain::serializeObject(void)
 {
   serialize<int16_t>(Unknown1);
   serialize<int16_t>(Unknown2);
-  
+
   serialize<std::string>(Name, getNameSize());
   serialize<std::string>(Name2, getNameSize());
-  
+
   serialize<int32_t>(SLP);
   serialize<int32_t>(Unknown3);
   serialize<int32_t>(SoundID);
-  
+
   if (getGameVersion() >= genie::GV_AoK)
   {
     serialize<int32_t>(BlendPriority);
     serialize<int32_t>(BlendType);
   }
-  
+
   serialize<unsigned char>(Colors, 3);
   serialize<int16_t>(Unknown5);
   serialize<int16_t>(Unknown6);
@@ -110,12 +110,12 @@ void Terrain::serializeObject(void)
   serialize<int16_t>(TerrainReplacementID);
   serialize<int16_t>(TerrainDimensions);
   serialize<int16_t>(TerrainBorderIDs, getTerrainBorderSize());
-  
+
   serialize<int16_t>(TerrainUnitID, TERRAIN_UNITS_LEN);
   serialize<int16_t>(TerrainUnitDensity, TERRAIN_UNITS_LEN);
   serialize<char>(TerrainUnitPriority, TERRAIN_UNITS_LEN);
   serialize<int16_t>(NumberOfTerrainUnitsUsed);
-  
+
   if (getGameVersion() >= genie::GV_SWGB)
     serialize<char>(SWGBUnknown1, SWGBUNKNOWN1_LEN);
 }

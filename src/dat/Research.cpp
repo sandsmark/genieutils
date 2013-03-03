@@ -2,6 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -16,7 +17,6 @@
     You should have received a copy of the GNU Lesser General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 
 #include "genie/dat/Research.h"
 
@@ -57,29 +57,29 @@ Research::~Research()
 void Research::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
-  
+
   RequiredTechs.resize(getRequiredTechsSize(), -1);
-  
+
   updateGameVersion(ResourceCosts);
 }
 
 //------------------------------------------------------------------------------
-uint16_t Research::getRequiredTechsSize()
+unsigned short Research::getRequiredTechsSize()
 {
   if (getGameVersion() >= genie::GV_AoKA)
     return 6;
-  else 
+  else
     return 4;
 }
 
 //------------------------------------------------------------------------------
-uint16_t Research::getResourceCostsSize()
+unsigned short Research::getResourceCostsSize()
 {
   return 3;
 }
 
 //------------------------------------------------------------------------------
-uint16_t Research::getPointersSize()
+unsigned short Research::getPointersSize()
 {
   return 3;
 }
@@ -88,16 +88,16 @@ uint16_t Research::getPointersSize()
 void Research::serializeObject(void)
 {
   serialize<int16_t>(RequiredTechs, getRequiredTechsSize());
-              
+
   serializeSub<ResearchResourceCost>(ResourceCosts, getResourceCostsSize());
   serialize<int16_t>(RequiredTechCount);
-  
+
   if (getGameVersion() >= genie::GV_AoK)
   {
     serialize<int16_t>(Civ);
     serialize<int16_t>(FullTechMode);
   }
-  
+
   serialize<int16_t>(ResearchLocation);
   serialize<uint16_t>(LanguageDLLName);
   serialize<uint16_t>(LanguageDLLDescription);
@@ -107,18 +107,18 @@ void Research::serializeObject(void)
   serialize<int16_t>(IconID);
   serialize<char>(ButtonID);
   serialize<int32_t>(Pointers, getPointersSize()); //TODO: AoE/RoR: [0..1]: LanguagePointer
-  
+
   serializeSize<uint16_t>(NameLength, Name);
   if (NameLength > 0)
     serialize<std::string>(Name, NameLength);
-  
+
   if (getGameVersion() >= genie::GV_SWGB)
   {
-    serializeSize<uint16_t>(NameLength2, Name2); 
+    serializeSize<uint16_t>(NameLength2, Name2);
     if (NameLength2 > 0)
       serialize<std::string>(Name2, NameLength2);
   }
-  
+
 }
 
 }

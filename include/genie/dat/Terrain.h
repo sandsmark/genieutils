@@ -2,6 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -17,7 +18,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef GENIE_TERRAIN_H
 #define GENIE_TERRAIN_H
 #include "genie/file/ISerializable.h"
@@ -27,17 +27,16 @@ namespace genie
 
 class Terrain : public ISerializable
 {
-
 public:
   Terrain(GameVersion gv = GV_None);
   virtual ~Terrain();
   virtual void setGameVersion(GameVersion gv);
-  
+
   int16_t Unknown1;
   int16_t Unknown2; //must be one or the game will crash
-  
-  short getNameSize(void);
-  
+
+  unsigned short getNameSize(void);
+
   std::string Name;
   std::string Name2;
   int32_t SLP;
@@ -45,7 +44,7 @@ public:
   int32_t SoundID;
   int32_t BlendPriority;//not in aoe/ror
   int32_t BlendType; //not in aoe/ror
-  
+
   std::vector<unsigned char> Colors;
   int16_t Unknown5;
   int16_t Unknown6;
@@ -59,24 +58,24 @@ public:
   int16_t TerrainReplacementID;
   static const unsigned short TERRAIN_DIMENSIONS_LEN = 2;
   std::pair<int16_t, int16_t> TerrainDimensions;
-  short getTerrainBorderSize();
-  
+  unsigned short getTerrainBorderSize();
+
   /// These refer to terrain borders, which are actually used only in AoE and RoR.
   std::vector<int16_t> TerrainBorderIDs;
-  
+
   static const unsigned short TERRAIN_UNITS_LEN = 30;
   std::vector<int16_t> TerrainUnitID;
   std::vector<int16_t> TerrainUnitDensity;
-  
+
   /// If two terrain units are to be placed on same spot, this selects which one will prevail others.
   /// 1 = prevails, others don't.
   std::vector<char> TerrainUnitPriority;
-  
+
   int16_t NumberOfTerrainUnitsUsed;
-  
+
   static const unsigned short SWGBUNKNOWN1_LEN = 24;
   std::vector<char> SWGBUnknown1;
-  
+
 private:
   virtual void serializeObject(void);
 };

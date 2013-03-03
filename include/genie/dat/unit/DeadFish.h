@@ -2,6 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -17,7 +18,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef GENIE_DEADFISH_H
 #define GENIE_DEADFISH_H
 
@@ -25,19 +25,17 @@
 
 namespace genie
 {
-  
+
 namespace unit
 {
 
 /// Attributes for Unit of type >= DeadFish.
 class DeadFish : public ISerializable
 {
-
 public:
-  DeadFish(GameVersion gv = GV_None);
+  DeadFish();
   virtual ~DeadFish();
-  virtual void setGameVersion(GameVersion gv);
-  
+
   std::pair<int16_t, int16_t> WalkingGraphic;
   float RotationSpeed;
   char Unknown11;
@@ -45,10 +43,11 @@ public:
   char TrackingUnitUsed;
   float TrackingUnitDensity;
   float Unknown12;//not in aoe/ror
-  
-  short getUnknown16Size();
-  std::vector<char> Unknown16; //17 //4 int16_t, float, 3 int16_t aoe/ror 1 char
-  
+
+  char Unknown16;
+  static const unsigned short UNKNOWN16B_LEN = 16;
+  std::array<char, UNKNOWN16B_LEN> Unknown16B;
+
 private:
   virtual void serializeObject(void);
 };

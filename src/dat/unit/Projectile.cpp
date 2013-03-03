@@ -22,7 +22,7 @@
 
 namespace genie
 {
-  
+
 namespace unit
 {
 
@@ -61,16 +61,16 @@ short Projectile::getGraphicDisplacementSize()
 void Projectile::serializeObject(void)
 {
   serialize<char>(Unknown20);
-  
+
   if (getGameVersion() >= genie::GV_TC)
     serialize<char>(Unknown20_1);
-  
+
   serializeSize<uint16_t>(AttackCount, Attacks.size());
   serializeSub<unit::AttackOrArmor>(Attacks, AttackCount);
-  
+
   serializeSize<uint16_t>(ArmourCount, Armours.size());
   serializeSub<unit::AttackOrArmor>(Armours, ArmourCount);
-  
+
   serialize<int16_t>(Unknown21);
   serialize<float>(MaxRange);
   serialize<float>(BlastRadius);
@@ -82,10 +82,10 @@ void Projectile::serializeObject(void)
   serialize<float>(GraphicDisplacement, getGraphicDisplacementSize());
   serialize<char>(Unknown23); //TODO: AoE/RoR blast level
   serialize<float>(MinRange);
-  
+
   if (getGameVersion() >= genie::GV_AoK)
     serialize<float>(GarrisonRecoveryRate);
-  
+
   serialize<int16_t>(AttackGraphic);
   serialize<int16_t>(DisplayedMeleeArmour);
   serialize<int16_t>(DisplayedAttack);

@@ -1,7 +1,7 @@
 /*
     genie/dat - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2011 - 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -46,7 +46,7 @@ void Unknown::serializeObject()
 }
 
 //------------------------------------------------------------------------------
-Unknown1stBlock::Unknown1stBlock()
+Unknown1stBlock::Unknown1stBlock() : Unknown2()
 {
   ScriptNumber = 0;
   BorderSouthWest = 0;
@@ -95,7 +95,7 @@ void Unknown1stBlock::serializeObject(void)
 }
 
 //------------------------------------------------------------------------------
-Unknown2ndBlock::Unknown2ndBlock()
+Unknown2ndBlock::Unknown2ndBlock() : Unknown2()
 {
   BorderSouthWest = 0;
   BorderNorthWest = 0;
@@ -145,7 +145,7 @@ void Unknown2ndBlock::serializeObject(void)
 }
 
 //------------------------------------------------------------------------------
-FirstSubData::FirstSubData()
+FirstSubData::FirstSubData() : Unknown5(), Unknown8()
 {
   Unknown1 = 1;
   BaseTerrain = 0;
@@ -210,7 +210,7 @@ void SecondSubData::serializeObject(void)
 }
 
 //------------------------------------------------------------------------------
-ThirdSubData::ThirdSubData()
+ThirdSubData::ThirdSubData() : Unknown3()
 {
   Unit = -1;
   HostTerrain = -1;
