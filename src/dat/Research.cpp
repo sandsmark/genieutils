@@ -66,7 +66,7 @@ void Research::setGameVersion(GameVersion gv)
 //------------------------------------------------------------------------------
 uint16_t Research::getRequiredTechsSize()
 {
-  if (getGameVersion() >= genie::GV_AoK)
+  if (getGameVersion() >= genie::GV_AoKA)
     return 6;
   else 
     return 4;

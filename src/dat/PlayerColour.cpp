@@ -43,12 +43,12 @@ PlayerColour::~PlayerColour()
 
 void PlayerColour::serializeObject(void )
 {
-  if (getGameVersion() < genie::GV_AoK)
+  if (getGameVersion() < genie::GV_AoKA)
     serialize<std::string>(Name, NAME_LEN);
   
   serialize<int32_t>(ID);
   
-  if (getGameVersion() < genie::GV_AoK)
+  if (getGameVersion() < genie::GV_AoKA)
   {
     short col_short = Colour;
     serialize<int16_t>(col_short);

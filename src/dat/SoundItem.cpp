@@ -51,7 +51,7 @@ void SoundItem::serializeObject(void )
   serialize<int32_t>(ResourceID);
   serialize<int16_t>(Probability);
   
-  if (getGameVersion() >= genie::GV_AoK)
+  if (getGameVersion() >= genie::GV_AoKA)
   {
     serialize<int16_t>(Civ);
     serialize<int16_t>(Unknown1);

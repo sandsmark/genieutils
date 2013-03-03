@@ -27,6 +27,7 @@ enum GameVersion
   GV_None = 0, //Game version not set
   GV_AoE,
   GV_RoR,
+  GV_AoKA,
   GV_AoK,
   GV_TC,
   GV_SWGB,

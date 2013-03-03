@@ -111,6 +111,7 @@ public:
 
   std::vector<UnitHeader> UnitHeaders;
   
+  int8_t *CivSkip;
   std::vector<Civ> Civs;
         
   std::vector<Research> Researchs;

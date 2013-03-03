@@ -58,7 +58,7 @@ void TerrainRestriction::serializeObject(void)
 {
   serialize<float>(TerrainAccessible, Terrain_Count_);
   
-  if (getGameVersion() >= genie::GV_AoK)
+  if (getGameVersion() >= genie::GV_AoKA)
   {
     serializeSub<TerrainPassGraphic>(TerrainPassGraphics, Terrain_Count_);
   }

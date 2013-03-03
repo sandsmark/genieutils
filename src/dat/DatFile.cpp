@@ -38,7 +38,7 @@ namespace genie
 typedef boost::interprocess::basic_vectorstream< std::vector<char> > v_stream;
 
 //------------------------------------------------------------------------------
-DatFile::DatFile() : GraphicsRendering(0), ZeroSpace(0), Rendering(0), Something(0),
+DatFile::DatFile() : GraphicsRendering(0), ZeroSpace(0), Rendering(0), Something(0), CivSkip(0),
                UnknownPreTechTree(0),
                verbose_(false), file_name_(""), file_(0),
                file_version_(0), compressor_(this)
@@ -135,7 +135,7 @@ void DatFile::serializeObject(void )
 
   serialize<int32_t>(TerrainRestrictionPointers1, terrain_restriction_count_);
 
-  if (getGameVersion() >= genie::GV_AoK)
+  if (getGameVersion() >= genie::GV_AoKA)
     serialize<int32_t>(TerrainRestrictionPointers2, terrain_restriction_count_);
 
   TerrainRestriction::setTerrainCount(NumberOfTerrainsUsed);
@@ -176,6 +176,7 @@ void DatFile::serializeObject(void )
   {
     case genie::GV_AoE:
     case genie::GV_RoR:
+    case genie::GV_AoKA:
     case genie::GV_AoK:  serializeSub<Terrain>(Terrains, 32); break;
     case genie::GV_TC:   serializeSub<Terrain>(Terrains, 42); break;
     case genie::GV_SWGB:
@@ -199,6 +200,7 @@ void DatFile::serializeObject(void )
   {
     case genie::GV_AoE:
     case genie::GV_RoR:  serialize<int32_t>(&ZeroSpace, 1); break;
+    case genie::GV_AoKA: serialize<int32_t>(&ZeroSpace, 5); break;
     case genie::GV_AoK:
     case genie::GV_TC:
     case genie::GV_SWGB:
@@ -211,16 +213,28 @@ void DatFile::serializeObject(void )
   if (verbose_)
     std::cout << "RenderingPlusSomething?? (0x" << std::hex << tellg() << std::dec;
 
-  serialize<int16_t>(&Rendering, 19);
+  //serialize<int16_t>(&Rendering, 19);
+  switch (getGameVersion())
+  {
+    case genie::GV_AoE:
+    case genie::GV_RoR:  serialize<int16_t>(&Rendering, 21); break;
+    case genie::GV_AoKA:
+    case genie::GV_AoK:
+    case genie::GV_TC:   serialize<int16_t>(&Rendering, 29); break;
+    case genie::GV_SWGB:
+    case genie::GV_CC:   serialize<int16_t>(&Rendering, 31); break;
+    default: break;
+  }
 
   switch (getGameVersion()) // Few pointers and small numbers.
   {
     case genie::GV_AoE:
-    case genie::GV_RoR:  serialize<int32_t>(&Something, 6); break;
+    case genie::GV_RoR:  serialize<int32_t>(&Something, 5); break;
+    case genie::GV_AoKA: serialize<int32_t>(&Something, 6); break;
     case genie::GV_AoK:
-    case genie::GV_TC:   serialize<int32_t>(&Something, 162); break;
+    case genie::GV_TC:   serialize<int32_t>(&Something, 157); break;
     case genie::GV_SWGB:
-    case genie::GV_CC:   serialize<int32_t>(&Something, 163); break;
+    case genie::GV_CC:   serialize<int32_t>(&Something, 157); break;
     default: break;
   }
 
@@ -260,6 +274,12 @@ void DatFile::serializeObject(void )
   if (verbose_)
     std::cout << "Civcount: " << civ_count_ << std::endl;
 
+  if (getGameVersion() == genie::GV_AoKA)
+  {
+    serialize<int8_t>(&CivSkip, 2642677);
+    //2.642.679
+  }
+  else
   serializeSub<Civ>(Civs, civ_count_);
 
   if (getGameVersion() >= genie::GV_SWGB)
@@ -278,7 +298,13 @@ void DatFile::serializeObject(void )
   if (getGameVersion() >= genie::GV_SWGB)
     serialize<char>(SUnknown8);
 
-  if (getGameVersion() >= genie::GV_AoK)
+  if(getGameVersion() == genie::GV_AoKA) // Temporarily don't read tech trees
+  {
+    compressor_.endCompression();
+	return;
+  }
+
+  if (getGameVersion() >= genie::GV_AoKA)
   {
     serialize<int32_t>(UnknownPreTechTree, 7);
     serialize<ISerializable>(TechTree);
@@ -320,12 +346,14 @@ void DatFile::unload()
   delete [] ZeroSpace;
   delete [] Rendering;
   delete [] Something;
+  delete [] CivSkip;
 
   file_version_ = 0;
   GraphicsRendering = 0;
   ZeroSpace = 0;
   Rendering = 0;
   Something = 0;
+  CivSkip = 0;
 }
 
 }

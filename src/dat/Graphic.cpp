@@ -123,7 +123,7 @@ short Graphic::getNameSize()
 
 short Graphic::getName2Size()
 {
-  if (getGameVersion() <=genie::GV_TC)
+  if (getGameVersion() <= genie::GV_TC)
     return NAME_LEN2;
   else
     return NAME_LEN_SWGB;

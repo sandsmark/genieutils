@@ -97,17 +97,11 @@ void TechTreeAge::setGameVersion(GameVersion gv)
 //------------------------------------------------------------------------------
 uint16_t TechTreeAge::getZeroesSize() 
 {
-  if (getGameVersion() >= genie::GV_AoK)
-  {
-    if (getGameVersion() >= genie::GV_SWGB)
-      return 99;
-    else
-      return 49;
-  }
+  if (getGameVersion() >= genie::GV_SWGB)
+    return 99;
   else
-    return 0;
+    return 49;
 }
-
 
 //------------------------------------------------------------------------------
 void TechTreeAge::serializeObject(void )
