@@ -39,8 +39,8 @@ namespace genie
 typedef boost::interprocess::basic_vectorstream< std::vector<char> > v_stream;
 
 //------------------------------------------------------------------------------
-DatFile::DatFile() : ZeroSpace(0), Rendering(0), Something(0), CivSkip(0),
-               UnknownPreTechTree(0),
+DatFile::DatFile() : ZeroSpace(0), Rendering(0), Something(0),
+               UnknownPreTechTree(0), TechTreeAoKA(0),
                verbose_(false), file_name_(""), file_(0),
                compressor_(this)
 {
@@ -305,12 +305,6 @@ void DatFile::serializeObject(void)
   if (verbose_)
     std::cout << "Civcount: " << civ_count_ << std::endl;
 
-  if (getGameVersion() == genie::GV_AoKA)
-  {
-    serialize<int8_t>(&CivSkip, 2642677);
-    //2.642.679
-  }
-  else
   serializeSub<Civ>(Civs, civ_count_);
 
   if (getGameVersion() >= genie::GV_SWGB)
@@ -329,16 +323,13 @@ void DatFile::serializeObject(void)
   if (getGameVersion() >= genie::GV_SWGB)
     serialize<char>(SUnknown8);
 
-  if(getGameVersion() == genie::GV_AoKA) // Temporarily don't read tech trees
-  {
-    compressor_.endCompression();
-	return;
-  }
-
   if (getGameVersion() >= genie::GV_AoKA)
   {
     serialize<int32_t>(UnknownPreTechTree, 7);
-    serialize<ISerializable>(TechTree);
+	if (getGameVersion() == genie::GV_AoKA)
+	  serialize<int8_t>(&TechTreeAoKA, 63895);
+	else
+      serialize<ISerializable>(TechTree);
   }
 
   if (verbose_)
@@ -375,9 +366,9 @@ void DatFile::unload()
   Rendering.clear();
   Something.clear();
 
-  delete [] CivSkip;
+  delete [] TechTreeAoKA;
 
-  CivSkip = 0;
+  TechTreeAoKA = 0;
 }
 
 }

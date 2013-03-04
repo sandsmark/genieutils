@@ -116,7 +116,6 @@ public:
 
   std::vector<UnitHeader> UnitHeaders;
 
-  int8_t *CivSkip;
   std::vector<Civ> Civs;
 
   std::vector<Research> Researchs;
@@ -143,6 +142,10 @@ public:
   char SUnknown8;
 
 private:
+  /// Skipping tech trees for AoK alpha
+  // Is it worth to discover the structure of this?
+  int8_t *TechTreeAoKA;
+
   // if true print debug messages
   bool verbose_;
 

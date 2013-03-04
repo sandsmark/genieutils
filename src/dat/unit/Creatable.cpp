@@ -63,13 +63,18 @@ void Creatable::serializeObject(void)
   serialize<int16_t>(TrainLocationID);
   serialize<char>(ButtonID);
 
-  if (getGameVersion() >= genie::GV_AoK)
+  if (getGameVersion() >= genie::GV_AoKA)
   {
     serialize<int32_t>(Unknown26);
     serialize<int32_t>(Unknown27);
     serialize<char>(MissileGraphicDelay);
-    serialize<char>(HeroMode);
-    serialize<int16_t>(GarrisonGraphic);
+
+    if (getGameVersion() >= genie::GV_AoK)
+    {
+      serialize<char>(HeroMode);
+      serialize<int16_t>(GarrisonGraphic);
+    }
+
     serialize<float>(AttackMissileDuplicationAmount1);
     serialize<char>(AttackMissileDuplicationAmount2);
     serialize<float>(AttackMissileDuplicationSpawning, AMDBUNKNOWN_SIZE);

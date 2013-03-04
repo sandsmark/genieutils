@@ -26,7 +26,7 @@ namespace genie
 namespace unit
 {
 
-Building::Building()
+Building::Building() : AlfaThingy()
 {
   ConstructionGraphicID = -1;
   SnowGraphicID = -1;
@@ -38,7 +38,7 @@ Building::Building()
   Unknown32 = -1;
   ResearchID = -1;
   Unknown33 = 0;
-  Annexes.resize(BUILDING_ANNEXES_CNT);
+  Annexes.resize(BUILDING_ANNEXES_LEN);
   HeadUnit = -1;
   TransformUnit = -1;
   Unknown34 = -1;
@@ -46,17 +46,12 @@ Building::Building()
   GarrisonType = 0;
   GarrisonHealRate = 0;
   Unknown35 = 0;
-  Unknown36 = -1;
-  Unknown37 = 0;
-  Unknown38 = 0;
-  Unknown39 = 0;
-  Unknown40 = 0;
 }
 
 Building::~Building()
 {
-
 }
+
 void Building::serializeObject(void)
 {
   serialize<int16_t>(ConstructionGraphicID);
@@ -69,30 +64,26 @@ void Building::serializeObject(void)
   serialize<char>(Unknown31b);
   serialize<int16_t>(StackUnitID);
   serialize<int16_t>(TerrainID);
-  serialize<int16_t>(Unknown32);
+  serialize<int16_t>(Unknown32); // Unit?
   serialize<int16_t>(ResearchID);
 
-  if (getGameVersion() >= genie::GV_AoK)
+  if (getGameVersion() >= genie::GV_AoKA)
   {
     serialize<char>(Unknown33);
-    serializeSub<unit::BuildingAnnex>(Annexes, 4);
+    serializeSub<unit::BuildingAnnex>(Annexes, BUILDING_ANNEXES_LEN);
     serialize<int16_t>(HeadUnit);
     serialize<int16_t>(TransformUnit);
-    serialize<int16_t>(Unknown34);
+    serialize<int16_t>(Unknown34); // Unit?
   }
 
   serialize<int16_t>(ConstructionSound);
 
-  if (getGameVersion() >= genie::GV_AoK)
+  if (getGameVersion() >= genie::GV_AoKA)
   {
     serialize<char>(GarrisonType);
     serialize<float>(GarrisonHealRate);
     serialize<int32_t>(Unknown35);
-    serialize<int16_t>(Unknown36);
-    serialize<char>(Unknown37);
-    serialize<int16_t>(Unknown38);
-    serialize<char>(Unknown39);
-    serialize<int16_t>(Unknown40);
+    serialize<char, ALFATHING_LEN>(AlfaThingy);
   }
 }
 

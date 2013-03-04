@@ -59,12 +59,14 @@ void Civ::serializeObject(void)
   serialize<int16_t>(TechTreeID);
 
   if (getGameVersion() >= genie::GV_AoK)
+  {
     serialize<int16_t>(TeamBonusID);
 
-  if (getGameVersion() >= genie::GV_SWGB)
-  {
-    serialize<std::string>(Name2, getNameSize());
-    serialize<int16_t>(SUnknown1, 4);
+    if (getGameVersion() >= genie::GV_SWGB)
+    {
+      serialize<std::string>(Name2, getNameSize());
+      serialize<int16_t>(SUnknown1, 4);
+    }
   }
 
   serialize<float>(Resources, ResourceCount);

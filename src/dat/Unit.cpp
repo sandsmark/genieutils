@@ -156,7 +156,7 @@ void Unit::serializeObject(void)
 
   serialize<float>(HPBarHeight1);
 
-  serialize<int16_t>(TrainSound, (getGameVersion() >= genie::GV_AoK) ? false : true);
+  serialize<int16_t>(TrainSound, (getGameVersion() >= genie::GV_AoKA) ? false : true);
   serialize<int16_t>(DeadUnitID);
   serialize<char>(PlacementMode);
   serialize<char>(AirMode);
@@ -195,7 +195,7 @@ void Unit::serializeObject(void)
   serialize<char>(Unselectable);
   serialize<char>(Unknown6);
 
-  if (getGameVersion() >= genie::GV_AoK)
+  if (getGameVersion() >= genie::GV_AoKA)
   {
     serialize<char>(Unknown7);
     serialize<char>(Unknown8);
@@ -203,7 +203,7 @@ void Unit::serializeObject(void)
 
   serialize<char>(SelectionMask);
 
-  if (getGameVersion() >= genie::GV_AoK)
+  if (getGameVersion() >= genie::GV_AoKA)
     serialize<char>(SelectionShapeType);
 
   serialize<char>(SelectionShape);
@@ -243,7 +243,7 @@ void Unit::serializeObject(void)
 
   serialize<int16_t>(ID2);
 
-  if (getGameVersion() >= genie::GV_AoK)
+  if (getGameVersion() >= genie::GV_AoKA)
     serialize<int16_t>(ID3);
 
   if (Type == genie::UT_AoeTrees)
