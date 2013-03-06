@@ -35,7 +35,6 @@ class Bird : public ISerializable
 public:
   Bird();
   virtual ~Bird();
-  virtual void setGameVersion(GameVersion gv);
 
   int16_t SheepConversion;//FFFF = No, 0000 = Yes
   float SearchRadius;
@@ -48,10 +47,11 @@ public:
   int16_t StopSound;
   /// Some animals have this.
   char AnimalMode;
-  uint16_t CommandCount;//only in aoe/ror
   std::vector<UnitCommand> Commands;//only in aoe/ror
 
 private:
+  uint16_t CommandCount;//only in aoe/ror
+
   virtual void serializeObject(void);
 };
 

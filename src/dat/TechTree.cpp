@@ -18,7 +18,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include "genie/dat/TechTree.h"
 
 namespace genie
@@ -128,7 +127,7 @@ void TechTreeAge::serializeObject(void)
 
 //------------------------------------------------------------------------------
 BuildingConnection::BuildingConnection(GameVersion gv) : Unknown2a(0),
-Unknown2b(0), Unknown3(getUnknown3Size())
+Unknown2b(0), Unknown3()
 {
   setGameVersion(gv);
   ID = 0;
@@ -201,7 +200,7 @@ void BuildingConnection::serializeObject(void)
 
   serialize<int32_t>(Unknown2b, getUnknown2bSize());
 
-  serialize<char>(Unknown3, getUnknown3Size());
+  serialize<char, UNKNOWN3_SIZE>(Unknown3);
 
   serialize<int32_t>(Connections);
   serialize<int32_t>(EnablingResearch);

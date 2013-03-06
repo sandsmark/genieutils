@@ -2,6 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -17,7 +18,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef GENIE_GRAPHICATTACKSOUND_H
 #define GENIE_GRAPHICATTACKSOUND_H
 #include "genie/file/ISerializable.h"
@@ -27,12 +27,11 @@ namespace genie
 
 class GraphicAttackSound : public ISerializable
 {
-
 public:
   GraphicAttackSound();
   virtual ~GraphicAttackSound();
-  
-  //TODO: Vector
+
+  //TODO: Array
   int16_t SoundDelay;
   int16_t SoundID;
   int16_t SoundDelay2;

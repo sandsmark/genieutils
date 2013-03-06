@@ -2,6 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -17,14 +18,13 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include "genie/dat/UnitCommand.h"
 
 namespace genie
 {
-  
+
 //------------------------------------------------------------------------------
-UnitCommand::UnitCommand() : Graphics(getGraphicsSize(), -1)
+UnitCommand::UnitCommand()
 {
   One = 1;
   ID = -1;
@@ -48,6 +48,7 @@ UnitCommand::UnitCommand() : Graphics(getGraphicsSize(), -1)
   Unknown9 = 5;
   Unknown10 = 0;
   Unknown11 = 0;
+  Graphics.fill(-1);
 }
 
 //------------------------------------------------------------------------------
@@ -56,17 +57,11 @@ UnitCommand::~UnitCommand()
 }
 
 //------------------------------------------------------------------------------
-short UnitCommand::getGraphicsSize(void)
-{
-  return 6;
-}
-
-//------------------------------------------------------------------------------
 void UnitCommand::serializeObject(void)
 {
   serialize<int16_t>(One);
   serialize<int16_t>(ID);
-  serialize<char>(Unknown1); 
+  serialize<char>(Unknown1);
   serialize<int16_t>(Type);
   serialize<int16_t>(ClassID);
   serialize<int16_t>(UnitID);
@@ -86,7 +81,7 @@ void UnitCommand::serializeObject(void)
   serialize<char>(Unknown9);
   serialize<char>(Unknown10);
   serialize<char>(Unknown11);
-  serialize<int16_t>(Graphics, getGraphicsSize());
+  serialize<int16_t, GRAPHICS_SIZE>(Graphics);
 }
 
 }

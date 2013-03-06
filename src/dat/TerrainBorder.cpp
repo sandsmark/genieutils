@@ -2,6 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -17,14 +18,13 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include "genie/dat/TerrainBorder.h"
 
 namespace genie
 {
 
 //------------------------------------------------------------------------------
-TerrainBorder::TerrainBorder() : Colors(3)
+TerrainBorder::TerrainBorder() : Colors()
 {
 }
 
@@ -40,45 +40,29 @@ uint32_t TerrainBorder::getNameSize()
 }
 
 //------------------------------------------------------------------------------
-uint32_t TerrainBorder::getUnknown3Size()
-{
-  return 1410;
-}
-
-
-//------------------------------------------------------------------------------
-void TerrainBorder::setGameVersion(GameVersion gv)
-{
-  ISerializable::setGameVersion(gv);
-  
-  updateGameVersion(Frames);
-}
-
-
-//------------------------------------------------------------------------------
 void TerrainBorder::serializeObject(void)
 {
   serialize<int16_t>(Enabled);
-  
+
   serialize<std::string>(Name, getNameSize());
   serialize<std::string>(Name2, getNameSize());
-  
+
   serialize<int32_t>(RessourceID);
-  
+
   serialize<int32_t>(Unknown3);
   serialize<int32_t>(Unknown4); // -1
-  
-  serialize<unsigned char>(Colors, 3);
-  
+
+  serialize<unsigned char, 3>(Colors);
+
   serialize<char>(Unknown5);
-  
+
   serialize<int32_t>(Unknown6);
   serialize<int32_t>(Unknown7);
-  
-  serializeSub<TBFrameData>(Frames, 230);
-  
+
+  serializeSub<TBFrameData, FRAMES_CNT>(Frames);
+
   serialize<int16_t>(FrameCount);
-  
+
   serialize<int16_t>(Unknown8);
   serialize<int16_t>(Unknown9);
   serialize<int16_t>(Unknown10);
@@ -88,13 +72,11 @@ void TerrainBorder::serializeObject(void)
 //------------------------------------------------------------------------------
 TBFrameData::TBFrameData()
 {
-  
 }
 
 //------------------------------------------------------------------------------
 TBFrameData::~TBFrameData()
 {
-  
 }
 
 //------------------------------------------------------------------------------

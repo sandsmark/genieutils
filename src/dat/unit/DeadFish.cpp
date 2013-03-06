@@ -57,7 +57,7 @@ void DeadFish::serializeObject(void)
 
   serialize<char>(Unknown16);
   if (getGameVersion() >= genie::GV_AoK)
-    serialize<char, UNKNOWN16B_LEN>(Unknown16B);
+    serialize<char, UNKNOWN16B_SIZE>(Unknown16B);
 }
 
 }

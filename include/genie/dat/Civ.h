@@ -46,9 +46,6 @@ public:
   /// MinGameVersion: SWGB
   std::string Name2;
 
-  /// Number of resources defined for this civilization
-  uint16_t ResourceCount;
-
   /// ID of the technology tree for a civ.
   int16_t TechTreeID;
 
@@ -65,9 +62,12 @@ public:
   /// Units defined for this civ.
   std::vector<Unit> Units;
 
-  std::vector<int16_t> SUnknown1; // Unknown in >=SWGB (cnt=4)
+  static const unsigned short SWUNKNOWN_SIZE = 4;
+  std::array<int16_t, SWUNKNOWN_SIZE> SUnknown1; // Unknown in >=SWGB (cnt=4)
 
 private:
+  /// Number of resources defined for this civilization
+  uint16_t ResourceCount;
   uint16_t UnitCount;
 
   virtual void serializeObject(void);

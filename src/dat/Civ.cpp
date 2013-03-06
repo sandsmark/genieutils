@@ -23,7 +23,7 @@
 namespace genie
 {
 
-Civ::Civ(GameVersion gv)
+Civ::Civ(GameVersion gv) : SUnknown1()
 {
   setGameVersion(gv);
   One = 1;
@@ -32,7 +32,6 @@ Civ::Civ(GameVersion gv)
   TechTreeID = -1;
   TeamBonusID = -1;
   GraphicSet = 0;
-  SUnknown1.resize(4);
 }
 
 Civ::~Civ()
@@ -65,7 +64,7 @@ void Civ::serializeObject(void)
     if (getGameVersion() >= genie::GV_SWGB)
     {
       serialize<std::string>(Name2, getNameSize());
-      serialize<int16_t>(SUnknown1, 4);
+      serialize<int16_t, SWUNKNOWN_SIZE>(SUnknown1);
     }
   }
 

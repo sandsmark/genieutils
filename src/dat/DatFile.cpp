@@ -18,7 +18,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include "genie/dat/DatFile.h"
 
 #include <fstream>
@@ -36,7 +35,7 @@
 namespace genie
 {
 
-typedef boost::interprocess::basic_vectorstream< std::vector<char> > v_stream;
+typedef boost::interprocess::basic_vectorstream<std::vector<char>> v_stream;
 
 //------------------------------------------------------------------------------
 DatFile::DatFile() : ZeroSpace(0), Rendering(0), Something(0),
@@ -69,13 +68,10 @@ void DatFile::setGameVersion(GameVersion gv)
   updateGameVersion(Sounds);
   updateGameVersion(Graphics);
   updateGameVersion(Terrains);
-  updateGameVersion(TerrainBorders);
-  updateGameVersion(Techages);
-  updateGameVersion(UnitHeaders);
   updateGameVersion(Civs);
   updateGameVersion(Researchs);
-  updateGameVersion(UnitLines);
   TechTree.setGameVersion(gv);
+
   ZeroSpace.resize(getZeroSpaceSize());
   Rendering.resize(getRenderingSize());
   Something.resize(getSomethingSize());
@@ -172,7 +168,7 @@ void DatFile::serializeObject(void)
 {
   compressor_.beginCompression();
 
-  serialize<char, FILE_VERSION_LEN>(file_version_);
+  serialize<char, FILE_VERSION_SIZE>(file_version_);
 
   if (getGameVersion() >= genie::GV_SWGB)
   {
@@ -272,7 +268,7 @@ void DatFile::serializeObject(void)
   // This data seems to be needed only in AoE and RoR.
   // In later games it is removable.
   // It exists in Star Wars games too, but is not used.
-  serialize<ISerializable>(Unknown);
+  serialize<ISerializable>(RandomMaps);
 
   if (verbose_)
     std::cout << " to 0x" <<std::hex << tellg() << std::dec << ")" << std::endl;
@@ -349,8 +345,8 @@ void DatFile::unload()
   GraphicPointers.clear();
   Graphics.clear();
   Terrains.clear();
-  Unknown.Unknown1stBlocks.clear();
-  Unknown.Unknown2ndBlocks.clear();
+  RandomMaps.MapHeaders.clear();
+  RandomMaps.Maps.clear();
   Techages.clear();
   TechTree.TechTreeAges.clear();
   TechTree.BuildingConnections.clear();
@@ -372,4 +368,3 @@ void DatFile::unload()
 }
 
 }
-

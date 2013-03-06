@@ -119,8 +119,8 @@ public:
   unsigned short getUnknown2bSize();
   std::vector<int32_t> Unknown2b;
 
-  const uint32_t getUnknown3Size() { return 11; }
-  std::vector<char> Unknown3;
+  static const unsigned short UNKNOWN3_SIZE = 11;
+  std::array<char, UNKNOWN3_SIZE> Unknown3;
 
   /// 5 One or more connections, 6 No connections.
   int32_t Connections;
@@ -128,7 +128,6 @@ public:
   int32_t EnablingResearch;
 
 private:
-
   unsigned char building_count_;
   unsigned char unit_count_;
   unsigned char research_count_;

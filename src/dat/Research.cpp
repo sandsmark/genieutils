@@ -24,9 +24,7 @@ namespace genie
 {
 
 //------------------------------------------------------------------------------
-Research::Research(GameVersion gv) : RequiredTechs(0),
-                       ResourceCosts(getResourceCostsSize()),
-                       Pointers(getPointersSize())
+Research::Research(GameVersion gv) : RequiredTechs(0), ResourceCosts()
 {
   setGameVersion(gv);
   RequiredTechCount = 0;
@@ -40,9 +38,9 @@ Research::Research(GameVersion gv) : RequiredTechs(0),
   Type = 0;
   IconID = -1;
   ButtonID = 0;
-  Pointers[0] = 107000;
-  Pointers[1] = 157000;
-  Pointers[2] = -1;
+  LanguageDLLHelp = 107000;
+  LanguageDLLName2 = 157000;
+  Unknown1 = -1;
   NameLength = 0;
   Name = "";
   NameLength2 = 0;
@@ -59,8 +57,6 @@ void Research::setGameVersion(GameVersion gv)
   ISerializable::setGameVersion(gv);
 
   RequiredTechs.resize(getRequiredTechsSize(), -1);
-
-  updateGameVersion(ResourceCosts);
 }
 
 //------------------------------------------------------------------------------
@@ -73,23 +69,11 @@ unsigned short Research::getRequiredTechsSize()
 }
 
 //------------------------------------------------------------------------------
-unsigned short Research::getResourceCostsSize()
-{
-  return 3;
-}
-
-//------------------------------------------------------------------------------
-unsigned short Research::getPointersSize()
-{
-  return 3;
-}
-
-//------------------------------------------------------------------------------
 void Research::serializeObject(void)
 {
   serialize<int16_t>(RequiredTechs, getRequiredTechsSize());
 
-  serializeSub<ResearchResourceCost>(ResourceCosts, getResourceCostsSize());
+  serializeSub<ResearchResourceCost, RESOURCECOSTS_SIZE>(ResourceCosts);
   serialize<int16_t>(RequiredTechCount);
 
   if (getGameVersion() >= genie::GV_AoK)
@@ -106,7 +90,9 @@ void Research::serializeObject(void)
   serialize<int16_t>(Type);
   serialize<int16_t>(IconID);
   serialize<char>(ButtonID);
-  serialize<int32_t>(Pointers, getPointersSize()); //TODO: AoE/RoR: [0..1]: LanguagePointer
+  serialize<int32_t>(LanguageDLLHelp);
+  serialize<int32_t>(LanguageDLLName2);
+  serialize<int32_t>(Unknown1);
 
   serializeSize<uint16_t>(NameLength, Name);
   if (NameLength > 0)

@@ -24,7 +24,7 @@ namespace genie
 {
 
 //------------------------------------------------------------------------------
-Unit::Unit(GameVersion gv)
+Unit::Unit(GameVersion gv) : ResourceStorages()
 {
   setGameVersion(gv);
 //    Type 10+
@@ -92,7 +92,6 @@ Unit::Unit(GameVersion gv)
   SelectionRadius.first = 0;
   SelectionRadius.second = 0;
   HPBarHeight2 = 0;
-  ResourceStorages.resize(RESOURCE_STORAGE_CNT);
   SelectionSound = -1;
   DyingSound = -1;
   AttackSound = -1;
@@ -119,13 +118,9 @@ void Unit::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
 
-  updateGameVersion(ResourceStorages);
-  updateGameVersion(DamageGraphics);
-
   DeadFish.setGameVersion(gv);
   Bird.setGameVersion(gv);
   Projectile.setGameVersion(gv);
-  ProjectileOnly.setGameVersion(gv);
   Creatable.setGameVersion(gv);
   Building.setGameVersion(gv);
 }
@@ -220,7 +215,7 @@ void Unit::serializeObject(void)
   serialize<float>(SelectionRadius);
   serialize<float>(HPBarHeight2);
 
-  serializeSub<ResourceStorage>(ResourceStorages, 3);
+  serializeSub<ResourceStorage, RESOURCE_STORAGE_CNT>(ResourceStorages);
 
   serializeSize<unsigned char>(DamageGraphicCount, DamageGraphics.size());
   serializeSub<unit::DamageGraphic>(DamageGraphics, DamageGraphicCount);

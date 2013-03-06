@@ -1,35 +1,31 @@
+# Available settings:
+#
+# GUTILS_TOOLS:BOOL     if true to enable compilation of gutils tools
+# GUTILS_TEST:BOOL      if true some debug/test classes will be compiled
+#
+
 cmake_minimum_required(VERSION 2.8)
-
-# project options
-
-option(GU_TOOLS "build dev tools" OFF)
-option(GU_TEST "build test environment" OFF)
 
 set(Genieutils_LIBRARY genieutils)
 
 project(genieutils)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake/)
-
-# boost options:
-
-set(Boost_USE_STATIC_LIBS        ON)
-set(Boost_USE_MULTITHREADED      ON)
-set(Boost_USE_STATIC_RUNTIME    OFF)
+set(CMAKE_CXX_FLAGS "-std=gnu++0x")
 
 # dependencies:
 
 find_package(ZLIB REQUIRED)
 find_package(Boost 1.42 COMPONENTS iostreams REQUIRED)
 
-if (GU_TOOLS)
+if (GUTILS_TOOLS)
   find_package(Boost 1.42 COMPONENTS program_options REQUIRED)
-endif(GU_TOOLS)
+endif(GUTILS_TOOLS)
 
-if (GU_TEST)
+if (GUTILS_TEST)
   find_package(Boost 1.42 COMPONENTS unit_test_framework program_options REQUIRED)
-#  find_package(SFML COMPONENTS SYSTEM WINDOW GRAPHICS REQUIRED)
-endif (GU_TEST)
+  find_package(SFML COMPONENTS SYSTEM WINDOW GRAPHICS REQUIRED)
+endif (GUTILS_TEST)
 
 find_package(Iconv)
 
@@ -41,6 +37,13 @@ else (${ICONV_FOUND})
   set(GU_LANG_SUPPORT false)
 endif (${ICONV_FOUND})
 
+
+# boost options:
+
+set(Boost_USE_STATIC_LIBS        ON)
+set(Boost_USE_MULTITHREADED      ON)
+set(Boost_USE_STATIC_RUNTIME     ON)
+
 # include directories:
 
 set(GU_INCLUDE_DIRS include/ extern/ ${Boost_INCLUDE_DIRS})
@@ -49,9 +52,13 @@ if (${ICONV_FOUND})
   set(GU_INCLUDE_DIRS ${GU_INCLUDE_DIRS} ${ICONV_INCLUDE_DIR})
 endif (${ICONV_FOUND})
 
+if (${GUTILS_TEST})
+  set(GU_INCLUDE_DIRS ${GU_INCLUDE_DIRS} ${SFML_INCLUDE_DIR})
+endif (${GUTILS_TEST})
+
 include_directories(${GU_INCLUDE_DIRS})
 
-add_definitions(-Wall -Wsign-compare -DBOOST_IOSTREAMS_NO_LIB)
+add_definitions(-Wall -Wsign-compare)
 
 #------------------------------------------------------------------------------#
 # Source files: 
@@ -60,7 +67,19 @@ set(FILE_SRC
     src/file/ISerializable.cpp
     src/file/IFile.cpp
     src/file/Compressor.cpp
+	zlib.cpp
     )
+
+if (${GU_LANG_SUPPORT})
+  set(PCRIO_SRC extern/pcrio/pcrio.cpp)
+  set_source_files_properties(extern/pcrio/pcrio.cpp PROPERTIES LANGUAGE CXX)
+
+  set(LANG_SRC ${PCRIO_SRC}
+      src/lang/LangFile.cpp
+     )
+else (${GU_LANG_SUPPORT})
+  set(LANG_SRC)
+endif (${GU_LANG_SUPPORT})
     
 
 set(DAT_SRC
@@ -87,6 +106,7 @@ set(DAT_SRC
     src/dat/UnitCommand.cpp
     src/dat/UnitHeader.cpp
     src/dat/UnitLine.cpp
+    src/dat/RandomMap.cpp
 
     src/dat/unit/AttackOrArmor.cpp
     src/dat/unit/DamageGraphic.cpp
@@ -119,27 +139,10 @@ set(UTIL_SRC
     src/util/Logger.cpp
     )
 
-# extern
-
-if (${GU_LANG_SUPPORT})
-  set(PCRIO_SRC extern/pcrio/pcrio.c)
-  set_source_files_properties(extern/pcrio/pcrio.c PROPERTIES LANGUAGE CXX )
-
-  set(LANG_SRC ${PCRIO_SRC}
-      src/lang/LangFile.cpp
-     )
-else (${GU_LANG_SUPPORT})
-  set(LANG_SRC)
-endif (${GU_LANG_SUPPORT})
-
-set(ZLIB_SRC 
-    extern/zlib/zlib.cpp
-    )
-
 # Tool sources:
 
-set(DAT_TEST_SRC
-    tests/DatTest.cpp
+set(TEST_SRC
+    src/tools/test/test.cpp
     src/tools/bincompare/bincomp.cpp
    )
 
@@ -154,48 +157,36 @@ set(BINCOMP_SRC src/tools/bincompare/bincomp.cpp
 # Executeable:
 #------------------------------------------------------------------------------#
 
-add_library(${Genieutils_LIBRARY} ${FILE_SRC} ${LANG_SRC} ${DAT_SRC} 
-                                  ${RESOURCE_SRC} ${UTIL_SRC} ${SCRIPT_SRC}
-                                  ${ZLIB_SRC})
+add_library(${Genieutils_LIBRARY} STATIC ${FILE_SRC} ${LANG_SRC} ${DAT_SRC} 
+                                  ${RESOURCE_SRC} ${UTIL_SRC} ${SCRIPT_SRC} )
 target_link_libraries(${Genieutils_LIBRARY} ${ZLIB_LIBRARIES} ${Boost_LIBRARIES} ${ICONV_LIBRARIES})
+
+#add_executable(main main.cpp)
+#target_link_libraries(main ${Genieutils_LIBRARY})
 
 #------------------------------------------------------------------------------#
 # Dev tools:
 #------------------------------------------------------------------------------#
 
-if (GU_TOOLS)
+ # test doesn't build :(
+ # add_executable(test ${TEST_SRC})
+ # target_link_libraries(test ${Genieutils_LIBRARY} ${Boost_LIBRARIES} ) #${ZLIB_LIBRARIES} ${Boost_LIBRARIES} ${Genieutils_LIBRARY})
+
+if (GUTILS_TOOLS)
   add_executable(datextract ${EXTRACT_SRC})
   target_link_libraries(datextract ${ZLIB_LIBRARIES} ${Boost_LIBRARIES} ${Genieutils_LIBRARY})
 
   add_executable(bincomp ${BINCOMP_SRC})
-endif (GU_TOOLS)
+endif (GUTILS_TOOLS)
 
 #------------------------------------------------------------------------------#
 # Debug/Test:
 #------------------------------------------------------------------------------#
-if (GU_TEST)
+if (GUTILS_TEST)
   add_executable(main main.cpp)
   target_link_libraries(main ${Genieutils_LIBRARY}
-#                       ${SFML_WINDOW_LIBRARY}
-#                       ${SFML_SYSTEM_LIBRARY}
-#                       ${SFML_GRAPHICS_LIBRARY}
+                      ${SFML_WINDOW_LIBRARY}
+                      ${SFML_SYSTEM_LIBRARY}
+                      ${SFML_GRAPHICS_LIBRARY}
   )
-
-  enable_testing()
-
-  set(test_DIR ${CMAKE_BINARY_DIR}/tests)
-
-  file(MAKE_DIRECTORY ${test_DIR})
-
-# add_definitions(-DBOOST_TEST_DYN_LINK)
-  add_executable(tests/dat_test ${DAT_TEST_SRC})
-  target_link_libraries(tests/dat_test ${Boost_LIBRARIES} ${Genieutils_LIBRARY})
-  
-  #lang test 
-  add_executable(tests/lang_test tests/LangTest.cpp)
-  target_link_libraries(tests/lang_test ${Boost_LIBRARIES} ${Genieutils_LIBRARY})
-  
-  add_test(lang_text ${test_DIR}/lang_test)
-  add_test(dat_test ${test_DIR}/dat_test)
-endif(GU_TEST)
-
+endif(GUTILS_TEST)

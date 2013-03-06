@@ -26,7 +26,7 @@ namespace genie
 namespace unit
 {
 
-Projectile::Projectile() : GraphicDisplacement(getGraphicDisplacementSize())
+Projectile::Projectile() : GraphicDisplacement()
 {
   Unknown20 = 0;
   Unknown20_1 = 0;
@@ -50,12 +50,6 @@ Projectile::Projectile() : GraphicDisplacement(getGraphicDisplacementSize())
 
 Projectile::~Projectile()
 {
-
-}
-
-short Projectile::getGraphicDisplacementSize()
-{
-  return 3;
 }
 
 void Projectile::serializeObject(void)
@@ -79,7 +73,7 @@ void Projectile::serializeObject(void)
   serialize<int16_t>(AccuracyPercent);
   serialize<char>(TowerMode);
   serialize<int16_t>(Delay); //TODO: missle graphic delay
-  serialize<float>(GraphicDisplacement, getGraphicDisplacementSize());
+  serialize<float, GRAPHICDISPLACEMENT_SIZE>(GraphicDisplacement);
   serialize<char>(Unknown23); //TODO: AoE/RoR blast level
   serialize<float>(MinRange);
 

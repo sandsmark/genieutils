@@ -17,7 +17,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef GENIE_UNKNOWN_H
 #define GENIE_UNKNOWN_H
 #include "genie/file/ISerializable.h"
@@ -25,16 +24,16 @@
 namespace genie
 {
 
-class ThirdSubData : public ISerializable
+class MapUnit : public ISerializable
 {
 public:
-  ThirdSubData();
-  virtual ~ThirdSubData();
+  MapUnit();
+  virtual ~MapUnit();
 
   int32_t Unit;
   int32_t HostTerrain;
-  static const unsigned short UNKNOWN3_LEN = 4;
-  std::array<char, UNKNOWN3_LEN> Unknown3;
+  static const unsigned short UNKNOWN3_SIZE = 4;
+  std::array<char, UNKNOWN3_SIZE> Unknown3;
   int32_t ObjectsPerPlayer;
   int32_t Unknown5;
   int32_t GroupsPerPlayer;
@@ -48,11 +47,11 @@ private:
   virtual void serializeObject(void);
 };
 
-class SecondSubData : public ISerializable
+class MapTerrain : public ISerializable
 {
 public:
-  SecondSubData();
-  virtual ~SecondSubData();
+  MapTerrain();
+  virtual ~MapTerrain();
 
   int32_t Proportion;
   int32_t Terrain;
@@ -65,22 +64,22 @@ private:
   virtual void serializeObject(void);
 };
 
-class FirstSubData : public ISerializable
+class BaseZone : public ISerializable
 {
 public:
-  FirstSubData();
-  virtual ~FirstSubData();
+  BaseZone();
+  virtual ~BaseZone();
 
   int32_t Unknown1;
   int32_t BaseTerrain;
   int32_t SpacingBetweenPlayers;
   int32_t Unknown4;
-  static const unsigned short UNKNOWN5_LEN = 4;
-  std::array<char, UNKNOWN5_LEN> Unknown5;
+  static const unsigned short UNKNOWN5_SIZE = 4;
+  std::array<char, UNKNOWN5_SIZE> Unknown5;
   int32_t Unknown6;
   int32_t Unknown7;
-  static const unsigned short UNKNOWN8_LEN = 4;
-  std::array<char, UNKNOWN8_LEN> Unknown8;
+  static const unsigned short UNKNOWN8_SIZE = 4;
+  std::array<char, UNKNOWN8_SIZE> Unknown8;
   int32_t StartAreaRadius;
   int32_t Unknown10;
   int32_t Unknown11;
@@ -89,11 +88,11 @@ private:
   virtual void serializeObject(void);
 };
 
-class Unknown2ndBlock : public ISerializable
+class Map : public ISerializable
 {
 public:
-  Unknown2ndBlock();
-  virtual ~Unknown2ndBlock();
+  Map();
+  virtual ~Map();
 
   int32_t BorderSouthWest;
   int32_t BorderNorthWest;
@@ -105,29 +104,29 @@ public:
   int32_t BaseZoneCoverage;
   int32_t Unknown9;
 
-  int32_t Pointer1;
-  std::vector<FirstSubData> FirstSubDatas;
-  int32_t Pointer2;
-  std::vector<SecondSubData> SecondSubDatas;
-  int32_t Pointer3;
-  std::vector<ThirdSubData> ThirdSubDatas;
+  int32_t BaseZonePointer;
+  std::vector<BaseZone> BaseZones;
+  int32_t MapTerrainPointer;
+  std::vector<MapTerrain> MapTerrains;
+  int32_t MapUnitPointer;
+  std::vector<MapUnit> MapUnits;
 
-  static const unsigned short UNKNOWN2_LEN = 2;
-  std::array<int32_t, UNKNOWN2_LEN> Unknown2;
+  static const unsigned short UNKNOWN2_SIZE = 2;
+  std::array<int32_t, UNKNOWN2_SIZE> Unknown2;
 
 private:
-  uint32_t Count1;
-  uint32_t Count2;
-  uint32_t Count3;
+  uint32_t BaseZoneCount;
+  uint32_t MapTerrainCount;
+  uint32_t MapUnitCount;
 
   virtual void serializeObject(void);
 };
 
-class Unknown1stBlock : public ISerializable
+class MapHeader : public ISerializable
 {
 public:
-  Unknown1stBlock();
-  virtual ~Unknown1stBlock();
+  MapHeader();
+  virtual ~MapHeader();
 
   int32_t ScriptNumber;
   int32_t BorderSouthWest;
@@ -140,34 +139,34 @@ public:
   int32_t BaseZoneCoverage;
   int32_t Unknown9;
 
-  int32_t Pointer1;
-  int32_t Pointer2;
-  int32_t Pointer3;
+  int32_t BaseZonePointer;
+  int32_t MapTerrainPointer;
+  int32_t MapUnitPointer;
 
-  static const unsigned short UNKNOWN2_LEN = 2;
-  std::array<int32_t, UNKNOWN2_LEN> Unknown2;
+  static const unsigned short UNKNOWN2_SIZE = 2;
+  std::array<int32_t, UNKNOWN2_SIZE> Unknown2;
 
-  uint32_t Count1;
-  uint32_t Count2;
-  uint32_t Count3;
+  uint32_t BaseZoneCount;
+  uint32_t MapTerrainCount;
+  uint32_t MapUnitCount;
 
 private:
   virtual void serializeObject(void);
 };
 
-class Unknown : public ISerializable
+class RandomMaps : public ISerializable
 {
 public:
-  Unknown();
-  virtual ~Unknown();
+  RandomMaps();
+  virtual ~RandomMaps();
 
-  int32_t Pointer;
+  int32_t RandomMapPointer;
 
-  std::vector<Unknown1stBlock> Unknown1stBlocks;
-  std::vector<Unknown2ndBlock> Unknown2ndBlocks;
+  std::vector<MapHeader> MapHeaders;
+  std::vector<Map> Maps;
 
 private:
-  uint32_t total_unknown_count_;
+  uint32_t total_randommaps_count;
 
   virtual void serializeObject(void);
 };

@@ -2,6 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -17,7 +18,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef GENIE_TERRAINPASSGRAPHIC_H
 #define GENIE_TERRAINPASSGRAPHIC_H
 #include "genie/file/ISerializable.h"
@@ -27,17 +27,16 @@ namespace genie
 
 class TerrainPassGraphic : public ISerializable
 {
-
 public:
   TerrainPassGraphic();
   virtual ~TerrainPassGraphic();
-  
+
   /// Indicates if you can build on it: 0 = no, -1 = yes
-  int32_t Buildable;               
+  int32_t Buildable;
   std::pair<int32_t, int32_t> GraphicIDs;
   int32_t ReplicationAmount;
-  
-private:  
+
+private:
   virtual void serializeObject(void);
 };
 

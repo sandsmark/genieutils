@@ -18,7 +18,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef GENIE_UNIT_H
 #define GENIE_UNIT_H
 #include "genie/file/ISerializable.h"
@@ -68,7 +67,6 @@ enum UnitType
   /// Trees in aoe and ror are of this type
   UT_AoeTrees = 90
 };
-
 
 //------------------------------------------------------------------------------
 /// Stores properties of genie units.
@@ -144,9 +142,9 @@ public:
 
   /// TODO
   int16_t Enabled;
-  std::pair <int16_t, int16_t> PlacementBypassTerrain;
-  std::pair <int16_t, int16_t> PlacementTerrain;
-  std::pair <float, float> EditorRadius;
+  std::pair<int16_t, int16_t> PlacementBypassTerrain;
+  std::pair<int16_t, int16_t> PlacementTerrain;
+  std::pair<float, float> EditorRadius;
   char BuildingMode;
   char VisibleInFog;
 
@@ -228,17 +226,16 @@ public:
    */
   char SelectionEffect;
   char EditorSelectionColour;
-  std::pair <float, float> SelectionRadius;
+  std::pair<float, float> SelectionRadius;
   float HPBarHeight2;
 
   static const unsigned short RESOURCE_STORAGE_CNT = 3;
 
   typedef ResourceUsage<int16_t, float, char> ResourceStorage;
 
-  /// Resource cost of a unit TODO (3 different types of resource costs??)
-  std::vector<ResourceStorage> ResourceStorages; //3
+  /// Resource cost of a unit
+  std::array<ResourceStorage, RESOURCE_STORAGE_CNT> ResourceStorages;
 
-  unsigned char DamageGraphicCount;
   std::vector<unit::DamageGraphic> DamageGraphics;
 
   /// Sound that is played when this unit is selected
@@ -275,6 +272,8 @@ public:
   unit::Building Building;
 
 private:
+  unsigned char DamageGraphicCount;
+
   virtual void serializeObject(void);
 };
 

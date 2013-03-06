@@ -40,7 +40,8 @@ public:
 
   typedef ResourceUsage<int16_t, int16_t, int16_t> ResourceCost;
 
-  std::vector<ResourceCost> ResourceCosts; //3
+  static const unsigned short RESOURCECOSTS_SIZE = 3;
+  std::array<ResourceCost, RESOURCECOSTS_SIZE> ResourceCosts;
   int16_t TrainTime;
   int16_t TrainLocationID;
   char ButtonID;
@@ -54,7 +55,7 @@ public:
 
   static const unsigned short AMDBUNKNOWN_SIZE = 3;
   /// The area from which projectiles spawn. Size and randomness.
-  std::vector<float> AttackMissileDuplicationSpawning; //3 //not in aoe/ror
+  std::array<float, AMDBUNKNOWN_SIZE> AttackMissileDuplicationSpawning;
 
   int32_t AttackMissileDuplicationUnit;//not in aoe/ror
   int32_t AttackMissileDuplicationGraphic;//not in aoe/ror

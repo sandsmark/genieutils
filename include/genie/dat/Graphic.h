@@ -72,9 +72,9 @@ public:
   char Unknown4;
   char Replay;
 
-  static unsigned short getCoordinatesSize();
+  static const unsigned short COORDINATES_SIZE = 4;
   /// TODO: What kind of coordinates?
-  std::vector<int16_t> Coordinates;
+  std::array<int16_t, COORDINATES_SIZE> Coordinates;
 
   int16_t SoundID;
   char AttackSoundUsed;
@@ -105,10 +105,9 @@ public:
 private:
   uint16_t DeltaCount;
 
-  static const unsigned short NAME_LEN_SWGB = 25;
-
-  static const unsigned short NAME_LEN = 21;
-  static const unsigned short NAME_LEN2 = 13;
+  static const unsigned short NAME_SIZE = 21;
+  static const unsigned short NAME_SIZE2 = 13;
+  static const unsigned short NAME_SIZE_SWGB = 25;
 
   char *CstrName; //char [21]
   char *CstrName2; //char [13]

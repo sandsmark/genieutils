@@ -18,7 +18,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef GENIE_DATFILE_H
 #define GENIE_DATFILE_H
 
@@ -41,7 +40,7 @@
 #include "TerrainBorder.h"
 #include "UnitLine.h"
 #include "TechTree.h"
-#include "Unknown.h"
+#include "RandomMap.h"
 
 namespace boost {
 namespace iostreams {
@@ -54,7 +53,6 @@ namespace genie
 
 class DatFile : public IFile
 {
-
 public:
   //----------------------------------------------------------------------------
   /// Standard constructor
@@ -81,9 +79,9 @@ public:
   //
   void setVerboseMode(bool verbose);
 
-public:
   // File data
-  static const unsigned short FILE_VERSION_LEN = 8;
+  static const unsigned short FILE_VERSION_SIZE = 8;
+  std::array<char, FILE_VERSION_SIZE> file_version_;
 
   std::vector<int32_t> TerrainRestrictionPointers1;
   std::vector<int32_t> TerrainRestrictionPointers2;
@@ -110,7 +108,7 @@ public:
   unsigned short getSomethingSize(void);
   std::vector<int32_t> Something;
 
-  genie::Unknown Unknown;
+  genie::RandomMaps RandomMaps;
 
   std::vector<Techage> Techages;
 
@@ -151,8 +149,6 @@ private:
 
   std::string file_name_;
   std::fstream *file_;
-
-  std::array<char, FILE_VERSION_LEN> file_version_;
 
   Compressor compressor_;
 

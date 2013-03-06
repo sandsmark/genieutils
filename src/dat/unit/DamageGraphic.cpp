@@ -36,7 +36,6 @@ DamageGraphic::DamageGraphic()
 
 DamageGraphic::~DamageGraphic()
 {
-
 }
 
 void DamageGraphic::serializeObject(void)

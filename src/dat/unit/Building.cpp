@@ -26,7 +26,7 @@ namespace genie
 namespace unit
 {
 
-Building::Building() : AlfaThingy()
+Building::Building() : Annexes(), AlfaThingy()
 {
   ConstructionGraphicID = -1;
   SnowGraphicID = -1;
@@ -38,7 +38,7 @@ Building::Building() : AlfaThingy()
   Unknown32 = -1;
   ResearchID = -1;
   Unknown33 = 0;
-  Annexes.resize(BUILDING_ANNEXES_LEN);
+  //Annexes.resize(BUILDING_ANNEXES_SIZE);
   HeadUnit = -1;
   TransformUnit = -1;
   Unknown34 = -1;
@@ -70,7 +70,7 @@ void Building::serializeObject(void)
   if (getGameVersion() >= genie::GV_AoKA)
   {
     serialize<char>(Unknown33);
-    serializeSub<unit::BuildingAnnex>(Annexes, BUILDING_ANNEXES_LEN);
+    serializeSub<unit::BuildingAnnex, BUILDING_ANNEXES_SIZE>(Annexes);
     serialize<int16_t>(HeadUnit);
     serialize<int16_t>(TransformUnit);
     serialize<int16_t>(Unknown34); // Unit?
@@ -83,7 +83,7 @@ void Building::serializeObject(void)
     serialize<char>(GarrisonType);
     serialize<float>(GarrisonHealRate);
     serialize<int32_t>(Unknown35);
-    serialize<char, ALFATHING_LEN>(AlfaThingy);
+    serialize<char, ALFATHING_SIZE>(AlfaThingy);
   }
 }
 

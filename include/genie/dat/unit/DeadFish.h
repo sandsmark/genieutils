@@ -45,8 +45,8 @@ public:
   float Unknown12;//not in aoe/ror
 
   char Unknown16;
-  static const unsigned short UNKNOWN16B_LEN = 16;
-  std::array<char, UNKNOWN16B_LEN> Unknown16B;
+  static const unsigned short UNKNOWN16B_SIZE = 16;
+  std::array<char, UNKNOWN16B_SIZE> Unknown16B;
 
 private:
   virtual void serializeObject(void);

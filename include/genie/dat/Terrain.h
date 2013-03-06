@@ -45,36 +45,36 @@ public:
   int32_t BlendPriority;//not in aoe/ror
   int32_t BlendType; //not in aoe/ror
 
-  std::vector<unsigned char> Colors;
+  std::array<unsigned char, 3> Colors;
   int16_t Unknown5;
   int16_t Unknown6;
-  static const unsigned short UNKNOWN7_LEN = 23;
-  std::vector<char> Unknown7;
+  static const unsigned short UNKNOWN7_SIZE = 23;
+  std::array<char, UNKNOWN7_SIZE> Unknown7;
   int16_t FrameCount;
-  static const unsigned short UNKNOWN8_LEN = 2;
-  std::vector<int16_t> Unknown8;
-  static const unsigned short UNKNOWN9_LEN = 54;
-  std::vector<int16_t> Unknown9;
+  static const unsigned short UNKNOWN8_SIZE = 2;
+  std::array<int16_t, UNKNOWN8_SIZE> Unknown8;
+  static const unsigned short UNKNOWN9_SIZE = 54;
+  std::array<int16_t, UNKNOWN9_SIZE> Unknown9;
   int16_t TerrainReplacementID;
-  static const unsigned short TERRAIN_DIMENSIONS_LEN = 2;
+  static const unsigned short TERRAIN_DIMENSIONS_SIZE = 2;
   std::pair<int16_t, int16_t> TerrainDimensions;
   unsigned short getTerrainBorderSize();
 
   /// These refer to terrain borders, which are actually used only in AoE and RoR.
   std::vector<int16_t> TerrainBorderIDs;
 
-  static const unsigned short TERRAIN_UNITS_LEN = 30;
-  std::vector<int16_t> TerrainUnitID;
-  std::vector<int16_t> TerrainUnitDensity;
+  static const unsigned short TERRAIN_UNITS_SIZE = 30;
+  std::array<int16_t, TERRAIN_UNITS_SIZE> TerrainUnitID;
+  std::array<int16_t, TERRAIN_UNITS_SIZE> TerrainUnitDensity;
 
   /// If two terrain units are to be placed on same spot, this selects which one will prevail others.
   /// 1 = prevails, others don't.
-  std::vector<char> TerrainUnitPriority;
+  std::array<char, TERRAIN_UNITS_SIZE> TerrainUnitPriority;
 
   int16_t NumberOfTerrainUnitsUsed;
 
-  static const unsigned short SWGBUNKNOWN1_LEN = 24;
-  std::vector<char> SWGBUnknown1;
+  static const unsigned short SWGBUNKNOWN1_SIZE = 24;
+  std::array<char, SWGBUNKNOWN1_SIZE> SWGBUnknown1;
 
 private:
   virtual void serializeObject(void);

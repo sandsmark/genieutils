@@ -2,6 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -17,7 +18,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef GENIE_UNITCOMMAND_H
 #define GENIE_UNITCOMMAND_H
 #include "genie/file/ISerializable.h"
@@ -27,11 +27,10 @@ namespace genie
 
 class UnitCommand : public ISerializable
 {
-
 public:
   UnitCommand();
   virtual ~UnitCommand();
-  
+
   int16_t One;
   int16_t ID;
   char Unknown1;
@@ -54,10 +53,10 @@ public:
   char Unknown9;
   char Unknown10;
   char Unknown11;
-  
-  static short getGraphicsSize(void);
-  std::vector<int16_t> Graphics;
-  
+
+  static const unsigned short GRAPHICS_SIZE = 6;
+  std::array<int16_t, GRAPHICS_SIZE> Graphics;
+
 private:
   virtual void serializeObject(void);
 };

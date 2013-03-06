@@ -24,14 +24,9 @@ namespace genie
 {
 
 //------------------------------------------------------------------------------
-Terrain::Terrain(GameVersion gv) : Colors(3),
-                     Unknown7(UNKNOWN7_LEN), Unknown8(UNKNOWN8_LEN),
-                     Unknown9(UNKNOWN9_LEN),
-                     TerrainBorderIDs(0),
-                     TerrainUnitID(TERRAIN_UNITS_LEN),
-                     TerrainUnitDensity(TERRAIN_UNITS_LEN),
-                     TerrainUnitPriority(TERRAIN_UNITS_LEN),
-                     SWGBUnknown1(SWGBUNKNOWN1_LEN)
+Terrain::Terrain(GameVersion gv) : Colors(), Unknown7(), Unknown8(), Unknown9(),
+  TerrainBorderIDs(0), TerrainUnitID(), TerrainUnitDensity(),
+  TerrainUnitPriority(), SWGBUnknown1()
 {
   setGameVersion(gv);
   Unknown1 = 0;
@@ -100,24 +95,24 @@ void Terrain::serializeObject(void)
     serialize<int32_t>(BlendType);
   }
 
-  serialize<unsigned char>(Colors, 3);
+  serialize<unsigned char, 3>(Colors);
   serialize<int16_t>(Unknown5);
   serialize<int16_t>(Unknown6);
-  serialize<char>(Unknown7, UNKNOWN7_LEN);
+  serialize<char, UNKNOWN7_SIZE>(Unknown7);
   serialize<int16_t>(FrameCount);
-  serialize<int16_t>(Unknown8, UNKNOWN8_LEN);
-  serialize<int16_t>(Unknown9, UNKNOWN9_LEN);
+  serialize<int16_t, UNKNOWN8_SIZE>(Unknown8);
+  serialize<int16_t, UNKNOWN9_SIZE>(Unknown9);
   serialize<int16_t>(TerrainReplacementID);
   serialize<int16_t>(TerrainDimensions);
   serialize<int16_t>(TerrainBorderIDs, getTerrainBorderSize());
 
-  serialize<int16_t>(TerrainUnitID, TERRAIN_UNITS_LEN);
-  serialize<int16_t>(TerrainUnitDensity, TERRAIN_UNITS_LEN);
-  serialize<char>(TerrainUnitPriority, TERRAIN_UNITS_LEN);
+  serialize<int16_t, TERRAIN_UNITS_SIZE>(TerrainUnitID);
+  serialize<int16_t, TERRAIN_UNITS_SIZE>(TerrainUnitDensity);
+  serialize<char, TERRAIN_UNITS_SIZE>(TerrainUnitPriority);
   serialize<int16_t>(NumberOfTerrainUnitsUsed);
 
   if (getGameVersion() >= genie::GV_SWGB)
-    serialize<char>(SWGBUnknown1, SWGBUNKNOWN1_LEN);
+    serialize<char, SWGBUNKNOWN1_SIZE>(SWGBUnknown1);
 }
 
 }

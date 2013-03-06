@@ -38,9 +38,7 @@ public:
 
   char Unknown20; //2 //aoe/ror 1, aok 1, tc 2
   char Unknown20_1;
-  uint16_t AttackCount;
   std::vector<unit::AttackOrArmor> Attacks;
-  uint16_t ArmourCount;
   std::vector<unit::AttackOrArmor> Armours;
   int16_t Unknown21;
   float MaxRange;
@@ -55,8 +53,8 @@ public:
   char TowerMode;
   int16_t Delay;
 
-  static short getGraphicDisplacementSize();
-  std::vector<float> GraphicDisplacement; //3
+  static const unsigned short GRAPHICDISPLACEMENT_SIZE = 3;
+  std::array<float, GRAPHICDISPLACEMENT_SIZE> GraphicDisplacement;
 
   char Unknown23;
   float MinRange;
@@ -68,8 +66,10 @@ public:
   float ReloadTime2;
 
 private:
-  virtual void serializeObject(void);
+  uint16_t AttackCount;
+  uint16_t ArmourCount;
 
+  virtual void serializeObject(void);
 };
 
 }

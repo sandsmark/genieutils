@@ -17,36 +17,35 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-#include "genie/dat/Unknown.h"
+#include "genie/dat/RandomMap.h"
 
 namespace genie
 {
 
 //------------------------------------------------------------------------------
-Unknown::Unknown()
+RandomMaps::RandomMaps()
 {
-  Pointer = 0;
+  RandomMapPointer = 0;
 }
 
 //------------------------------------------------------------------------------
-Unknown::~Unknown()
+RandomMaps::~RandomMaps()
 {
 }
 
 //------------------------------------------------------------------------------
-void Unknown::serializeObject()
+void RandomMaps::serializeObject()
 {
-  serializeSize<uint32_t>(total_unknown_count_, Unknown2ndBlocks.size());
+  serializeSize<uint32_t>(total_randommaps_count, Maps.size());
 
-  serialize<int32_t>(Pointer);
+  serialize<int32_t>(RandomMapPointer);
 
-  serializeSub<Unknown1stBlock>(Unknown1stBlocks, total_unknown_count_);
-  serializeSub<Unknown2ndBlock>(Unknown2ndBlocks, total_unknown_count_);
+  serializeSub<MapHeader>(MapHeaders, total_randommaps_count);
+  serializeSub<Map>(Maps, total_randommaps_count);
 }
 
 //------------------------------------------------------------------------------
-Unknown1stBlock::Unknown1stBlock() : Unknown2()
+MapHeader::MapHeader() : Unknown2()
 {
   ScriptNumber = 0;
   BorderSouthWest = 0;
@@ -58,22 +57,22 @@ Unknown1stBlock::Unknown1stBlock() : Unknown2()
   NonBaseTerrain = 1;
   BaseZoneCoverage = 80;
   Unknown9 = 0;
-  Pointer1 = 0;
-  Pointer2 = 0;
-  Pointer3 = 0;
+  BaseZonePointer = 0;
+  MapTerrainPointer = 0;
+  MapUnitPointer = 0;
   // Remove these after you have made them automatic.
-  Count1 = 0;
-  Count2 = 0;
-  Count3 = 0;
+  BaseZoneCount = 0;
+  MapTerrainCount = 0;
+  MapUnitCount = 0;
 }
 
 //------------------------------------------------------------------------------
-Unknown1stBlock::~Unknown1stBlock()
+MapHeader::~MapHeader()
 {
 }
 
 //------------------------------------------------------------------------------
-void Unknown1stBlock::serializeObject(void)
+void MapHeader::serializeObject(void)
 {
   serialize<int32_t>(ScriptNumber);
   serialize<int32_t>(BorderSouthWest);
@@ -85,17 +84,17 @@ void Unknown1stBlock::serializeObject(void)
   serialize<int32_t>(NonBaseTerrain);
   serialize<int32_t>(BaseZoneCoverage);
   serialize<int32_t>(Unknown9);
-  serialize<uint32_t>(Count1);
-  serialize<int32_t>(Pointer1);
-  serialize<uint32_t>(Count2);
-  serialize<int32_t>(Pointer2);
-  serialize<uint32_t>(Count3);
-  serialize<int32_t>(Pointer3);
-  serialize<int32_t, UNKNOWN2_LEN>(Unknown2);
+  serialize<uint32_t>(BaseZoneCount);
+  serialize<int32_t>(BaseZonePointer);
+  serialize<uint32_t>(MapTerrainCount);
+  serialize<int32_t>(MapTerrainPointer);
+  serialize<uint32_t>(MapUnitCount);
+  serialize<int32_t>(MapUnitPointer);
+  serialize<int32_t, UNKNOWN2_SIZE>(Unknown2);
 }
 
 //------------------------------------------------------------------------------
-Unknown2ndBlock::Unknown2ndBlock() : Unknown2()
+Map::Map() : Unknown2()
 {
   BorderSouthWest = 0;
   BorderNorthWest = 0;
@@ -106,18 +105,18 @@ Unknown2ndBlock::Unknown2ndBlock() : Unknown2()
   NonBaseTerrain = 1;
   BaseZoneCoverage = 80;
   Unknown9 = 0;
-  Pointer1 = 0;
-  Pointer2 = 0;
-  Pointer3 = 0;
+  BaseZonePointer = 0;
+  MapTerrainPointer = 0;
+  MapUnitPointer = 0;
 }
 
 //------------------------------------------------------------------------------
-Unknown2ndBlock::~Unknown2ndBlock()
+Map::~Map()
 {
 }
 
 //------------------------------------------------------------------------------
-void Unknown2ndBlock::serializeObject(void)
+void Map::serializeObject(void)
 {
   serialize<int32_t>(BorderSouthWest);
   serialize<int32_t>(BorderNorthWest);
@@ -129,23 +128,23 @@ void Unknown2ndBlock::serializeObject(void)
   serialize<int32_t>(BaseZoneCoverage);
   serialize<int32_t>(Unknown9);
 
-  serializeSize<uint32_t>(Count1, FirstSubDatas.size());
-  serialize<int32_t>(Pointer1);
-  serializeSub<FirstSubData>(FirstSubDatas, Count1);
+  serializeSize<uint32_t>(BaseZoneCount, BaseZones.size());
+  serialize<int32_t>(BaseZonePointer);
+  serializeSub<BaseZone>(BaseZones, BaseZoneCount);
 
-  serializeSize<uint32_t>(Count2, SecondSubDatas.size());
-  serialize<int32_t>(Pointer2);
-  serializeSub<SecondSubData>(SecondSubDatas, Count2);
+  serializeSize<uint32_t>(MapTerrainCount, MapTerrains.size());
+  serialize<int32_t>(MapTerrainPointer);
+  serializeSub<MapTerrain>(MapTerrains, MapTerrainCount);
 
-  serializeSize<uint32_t>(Count3, ThirdSubDatas.size());
-  serialize<int32_t>(Pointer3);
-  serializeSub<ThirdSubData>(ThirdSubDatas, Count3);
+  serializeSize<uint32_t>(MapUnitCount, MapUnits.size());
+  serialize<int32_t>(MapUnitPointer);
+  serializeSub<MapUnit>(MapUnits, MapUnitCount);
 
-  serialize<int32_t, UNKNOWN2_LEN>(Unknown2);
+  serialize<int32_t, UNKNOWN2_SIZE>(Unknown2);
 }
 
 //------------------------------------------------------------------------------
-FirstSubData::FirstSubData() : Unknown5(), Unknown8()
+BaseZone::BaseZone() : Unknown5(), Unknown8()
 {
   Unknown1 = 1;
   BaseTerrain = 0;
@@ -162,28 +161,28 @@ FirstSubData::FirstSubData() : Unknown5(), Unknown8()
 }
 
 //------------------------------------------------------------------------------
-FirstSubData::~FirstSubData()
+BaseZone::~BaseZone()
 {
 }
 
 //------------------------------------------------------------------------------
-void FirstSubData::serializeObject(void)
+void BaseZone::serializeObject(void)
 {
   serialize<int32_t>(Unknown1);
   serialize<int32_t>(BaseTerrain);
   serialize<int32_t>(SpacingBetweenPlayers);
   serialize<int32_t>(Unknown4);
-  serialize<char, UNKNOWN5_LEN>(Unknown5);
+  serialize<char, UNKNOWN5_SIZE>(Unknown5);
   serialize<int32_t>(Unknown6);
   serialize<int32_t>(Unknown7);
-  serialize<char, UNKNOWN8_LEN>(Unknown8);
+  serialize<char, UNKNOWN8_SIZE>(Unknown8);
   serialize<int32_t>(StartAreaRadius);
   serialize<int32_t>(Unknown10);
   serialize<int32_t>(Unknown11);
 }
 
 //------------------------------------------------------------------------------
-SecondSubData::SecondSubData()
+MapTerrain::MapTerrain()
 {
   Proportion = 0;
   Terrain = -1;
@@ -194,12 +193,12 @@ SecondSubData::SecondSubData()
 }
 
 //------------------------------------------------------------------------------
-SecondSubData::~SecondSubData()
+MapTerrain::~MapTerrain()
 {
 }
 
 //------------------------------------------------------------------------------
-void SecondSubData::serializeObject(void)
+void MapTerrain::serializeObject(void)
 {
   serialize<int32_t>(Proportion);
   serialize<int32_t>(Terrain);
@@ -210,7 +209,7 @@ void SecondSubData::serializeObject(void)
 }
 
 //------------------------------------------------------------------------------
-ThirdSubData::ThirdSubData() : Unknown3()
+MapUnit::MapUnit() : Unknown3()
 {
   Unit = -1;
   HostTerrain = -1;
@@ -225,16 +224,16 @@ ThirdSubData::ThirdSubData() : Unknown3()
 }
 
 //------------------------------------------------------------------------------
-ThirdSubData::~ThirdSubData()
+MapUnit::~MapUnit()
 {
 }
 
 //------------------------------------------------------------------------------
-void ThirdSubData::serializeObject(void)
+void MapUnit::serializeObject(void)
 {
   serialize<int32_t>(Unit);
   serialize<int32_t>(HostTerrain);
-  serialize<char, UNKNOWN3_LEN>(Unknown3);
+  serialize<char, UNKNOWN3_SIZE>(Unknown3);
   serialize<int32_t>(ObjectsPerPlayer);
   serialize<int32_t>(Unknown5);
   serialize<int32_t>(GroupsPerPlayer);

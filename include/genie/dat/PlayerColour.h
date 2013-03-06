@@ -2,6 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -17,7 +18,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef GENIE_PLAYERCOLOUR_H
 #define GENIE_PLAYERCOLOUR_H
 #include "genie/file/ISerializable.h"
@@ -27,16 +27,15 @@ namespace genie
 
 class PlayerColour : public ISerializable
 {
-
 public:
   PlayerColour();
   virtual ~PlayerColour();
-  
-  static const unsigned short NAME_LEN = 30;
+
+  static const unsigned short NAME_SIZE = 30;
   //char *Name; // AoE/RoR only char [30]
   std::string Name;
   int32_t ID;
-  
+
   int32_t Palette; // not in aoe/ror
   int32_t Colour; // short in aoe/ror
   int32_t Unknown1; // not in aoe/ror
@@ -45,7 +44,7 @@ public:
   int32_t Unknown3; // not in aoe/ror
   int32_t Unknown4; // not in aoe/ror
   int32_t Unknown5; // not in aoe/ror
-    
+
 private:
   virtual void serializeObject(void);
 };

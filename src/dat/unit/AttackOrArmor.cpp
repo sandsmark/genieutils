@@ -34,7 +34,6 @@ AttackOrArmor::AttackOrArmor()
 
 AttackOrArmor::~AttackOrArmor()
 {
-
 }
 
 void AttackOrArmor::serializeObject(void)

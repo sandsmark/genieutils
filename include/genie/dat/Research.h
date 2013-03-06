@@ -41,13 +41,11 @@ public:
   /// The size of the array is 4 in aoe/ror and 6 at games >= aok
   std::vector<int16_t> RequiredTechs;
 
-  /// Size of ResourceCosts vector (3)
-  static unsigned short getResourceCostsSize(void);
-
   typedef ResourceUsage<int16_t, int16_t, char> ResearchResourceCost;
 
   /// Resource cost in a list of max 3
-  std::vector<ResearchResourceCost> ResourceCosts; //3
+  static const unsigned short RESOURCECOSTS_SIZE = 3;
+  std::array<ResearchResourceCost, RESOURCECOSTS_SIZE> ResourceCosts;
 
   /// Holds the number of how much of the required technologies you need.
   int16_t RequiredTechCount;
@@ -84,15 +82,12 @@ public:
   /// ID of the button
   char ButtonID;
 
-  /// Size of Pointers vector (3)
-  static unsigned short getPointersSize();
-
-  /// TODO
-  /// These numbers point to something (unknown). The first number
-  /// is 100,000 plus the Language FIle ID for the name/description. The
-  /// second number is 149,000 plus the Language File ID for the
-  /// description/help. The third number has been -1 in every technology so far.
-  std::vector<int32_t> Pointers;
+  /// The first number is 100 000 plus the Language FIle ID for the name/description.
+  int32_t LanguageDLLHelp;
+  /// The second number is 150 000 plus the Language File ID for TheSecondName.
+  int32_t LanguageDLLName2;
+  /// The third number has been -1 in every technology so far.
+  int32_t Unknown1;
 
   /// Internal name
   std::string Name;

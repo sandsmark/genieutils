@@ -2,6 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -16,7 +17,6 @@
     You should have received a copy of the GNU Lesser General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 
 #include "genie/dat/GraphicDelta.h"
 
@@ -37,7 +37,6 @@ GraphicDelta::GraphicDelta()
 
 GraphicDelta::~GraphicDelta()
 {
-
 }
 
 void GraphicDelta::serializeObject(void)

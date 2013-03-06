@@ -48,8 +48,8 @@ public:
   int16_t ResearchID;
   char Unknown33;
 
-  static const unsigned short BUILDING_ANNEXES_LEN = 4;
-  std::vector<unit::BuildingAnnex> Annexes;
+  static const unsigned short BUILDING_ANNEXES_SIZE = 4;
+  std::array<unit::BuildingAnnex, BUILDING_ANNEXES_SIZE> Annexes;
   int16_t HeadUnit;
   int16_t TransformUnit;
   int16_t Unknown34;
@@ -60,8 +60,8 @@ public:
 
   /// Related to annexes in any way?
   /// Widespread usage in the AoK alpha 09.07.0222
-  static const unsigned short ALFATHING_LEN = 8;
-  std::array<char, ALFATHING_LEN> AlfaThingy;
+  static const unsigned short ALFATHING_SIZE = 8;
+  std::array<char, ALFATHING_SIZE> AlfaThingy;
 
 private:
   virtual void serializeObject(void);

@@ -26,7 +26,7 @@
 namespace genie
 {
 
-Graphic::Graphic() : Coordinates(getCoordinatesSize()), CstrName(0), CstrName2(0)
+Graphic::Graphic() : Coordinates(), CstrName(0), CstrName2(0)
 {
   Name = "";
   Name2 = "";
@@ -50,8 +50,7 @@ Graphic::Graphic() : Coordinates(getCoordinatesSize()), CstrName(0), CstrName2(0
 }
 
 Graphic::Graphic(const Graphic& other) : ISerializable(other),
-                                         Coordinates(getCoordinatesSize()),
-                                         CstrName(0), CstrName2(0)
+    Coordinates(), CstrName(0), CstrName2(0)
 {
   *this = other;
 }
@@ -66,8 +65,8 @@ Graphic &Graphic::operator=(const Graphic &other)
 {
   try
   {
-    arraycpy<char>(&CstrName, other.CstrName, NAME_LEN);
-    arraycpy<char>(&CstrName2, other.CstrName2, NAME_LEN2);
+    arraycpy<char>(&CstrName, other.CstrName, NAME_SIZE);
+    arraycpy<char>(&CstrName2, other.CstrName2, NAME_SIZE2);
   }
   catch (std::bad_alloc &e)
   {
@@ -116,22 +115,17 @@ void Graphic::setGameVersion(GameVersion gv)
 unsigned short Graphic::getNameSize()
 {
   if (getGameVersion() <= genie::GV_TC)
-    return NAME_LEN;
+    return NAME_SIZE;
   else
-    return NAME_LEN_SWGB;
+    return NAME_SIZE_SWGB;
 }
 
 unsigned short Graphic::getName2Size()
 {
   if (getGameVersion() <= genie::GV_TC)
-    return NAME_LEN2;
+    return NAME_SIZE2;
   else
-    return NAME_LEN_SWGB;
-}
-
-unsigned short Graphic::getCoordinatesSize()
-{
-  return 4;
+    return NAME_SIZE_SWGB;
 }
 
 void Graphic::serializeObject(void)
@@ -170,7 +164,7 @@ void Graphic::serializeObject(void)
   serialize<char>(Unknown4);
   serialize<char>(Replay);
 
-  serialize<int16_t>(Coordinates, 4);
+  serialize<int16_t, COORDINATES_SIZE>(Coordinates);
 
   serializeSize<uint16_t>(DeltaCount, Deltas.size());
   serialize<int16_t>(SoundID);

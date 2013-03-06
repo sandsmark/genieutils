@@ -2,6 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -17,7 +18,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef GENIE_TECHAGEEFFECT_H
 #define GENIE_TECHAGEEFFECT_H
 #include "genie/file/ISerializable.h"
@@ -30,18 +30,17 @@ namespace genie
 /// for more details
 class TechageEffect : public ISerializable
 {
-
 public:
   TechageEffect();
   virtual ~TechageEffect();
-    
+
   //  DO NOT ALTER THESE! Unless you test that the game won't crash.
   char Type;
   int16_t A;
   int16_t B;
   int16_t C;
   float D;
-    
+
 private:
   virtual void serializeObject(void);
 };

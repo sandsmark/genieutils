@@ -1,6 +1,7 @@
 /*
     genieutils - <description>
     Copyright (C) 2011 - 2013  Armin Preiml <email>
+    Copyright (C) 2013  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -15,7 +16,6 @@
     You should have received a copy of the GNU Lesser General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 
 #ifndef GENIE_ISERIALIZABLE_H
 #define GENIE_ISERIALIZABLE_H
@@ -135,7 +135,7 @@ protected:
   ///
   /// @return operation
   //
-  Operation getOperation(void ) const;
+  Operation getOperation(void) const;
 
   //----------------------------------------------------------------------------
   /// Check if given operation is active.
@@ -159,7 +159,7 @@ protected:
   //----------------------------------------------------------------------------
   /// @return position of the istreams get pointer.
   //
-  std::streampos tellg(void ) const;
+  std::streampos tellg(void) const;
 
   //----------------------------------------------------------------------------
   /// Custom strnlen for mingw32.
@@ -400,6 +400,34 @@ protected:
       case OP_CALC_SIZE:
         size_ += size * sizeof(T);
         break;
+    }
+  }
+
+  //----------------------------------------------------------------------------
+  /// Serializes a collection of objects that inherit from ISerializable.
+  //
+  template <typename T, size_t N>
+  void serializeSub(std::array<T, N> &arr)
+  {
+    if (isOperation(OP_WRITE) || isOperation(OP_CALC_SIZE))
+    {
+      for (auto it = arr.begin(); it != arr.end(); it++)
+      {
+        ISerializable *data = dynamic_cast<ISerializable *>(&(*it));
+
+        data->serializeSubObject(this);
+
+        if (isOperation(OP_CALC_SIZE))
+          size_ += data->objectSize();
+      }
+    }
+    else
+    {
+      for (size_t i=0; i < arr.size(); i++)
+      {
+        ISerializable *cast_obj = dynamic_cast<ISerializable *>(&arr[i]);
+        cast_obj->serializeSubObject(this);
+      }
     }
   }
 

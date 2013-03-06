@@ -2,6 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
+    Copyright (C) 2011 - 2013  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -17,7 +18,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef GENIE_GRAPHICDELTA_H
 #define GENIE_GRAPHICDELTA_H
 #include "genie/file/ISerializable.h"
@@ -27,11 +27,10 @@ namespace genie
 
 class GraphicDelta : public ISerializable
 {
-
 public:
   GraphicDelta();
   virtual ~GraphicDelta();
-  
+
   int16_t GraphicID;
   int16_t Unknown1;
   int16_t Unknown2;
@@ -40,7 +39,7 @@ public:
   int16_t DirectionY; //In Pixels?
   int16_t Unknown4;
   int16_t Unknown5;
-  
+
 private:
   virtual void serializeObject(void);
 };
