@@ -24,23 +24,24 @@ namespace genie
 {
 
 //------------------------------------------------------------------------------
-Terrain::Terrain(GameVersion gv) : Colors(), Unknown7(), Unknown8(), Unknown9(),
+Terrain::Terrain(GameVersion gv) : Colors(), Unknown5(), Unknown7(), ElevationGraphics(),
   TerrainBorderIDs(0), TerrainUnitID(), TerrainUnitDensity(),
   TerrainUnitPriority(), SWGBUnknown1()
 {
   setGameVersion(gv);
   Unknown1 = 0;
-  Unknown2 = 1;
+  Enabled = 1;
   Name = "";
   Name2 = "";
   SLP = -1;
-  Unknown3 = -1;
+  Unknown3 = 0;
   SoundID = -1;
   BlendPriority = -1;
   BlendType = -1;
-  Unknown5 = 0;
   Unknown6 = 0;
   FrameCount = 0;
+  AngleCount = 0;
+  TerrainID = 0;
   TerrainReplacementID = 0;
   NumberOfTerrainUnitsUsed = 0;
   TerrainDimensions.first = TerrainDimensions.second = -1;
@@ -80,13 +81,13 @@ unsigned short Terrain::getTerrainBorderSize(void)
 void Terrain::serializeObject(void)
 {
   serialize<int16_t>(Unknown1);
-  serialize<int16_t>(Unknown2);
+  serialize<int16_t>(Enabled);
 
   serialize<std::string>(Name, getNameSize());
   serialize<std::string>(Name2, getNameSize());
 
   serialize<int32_t>(SLP);
-  serialize<int32_t>(Unknown3);
+  serialize<float>(Unknown3);
   serialize<int32_t>(SoundID);
 
   if (getGameVersion() >= genie::GV_AoK)
@@ -96,12 +97,13 @@ void Terrain::serializeObject(void)
   }
 
   serialize<unsigned char, 3>(Colors);
-  serialize<int16_t>(Unknown5);
-  serialize<int16_t>(Unknown6);
+  serialize<char, 5>(Unknown5);
+  serialize<float>(Unknown6);
   serialize<char, UNKNOWN7_SIZE>(Unknown7);
   serialize<int16_t>(FrameCount);
-  serialize<int16_t, UNKNOWN8_SIZE>(Unknown8);
-  serialize<int16_t, UNKNOWN9_SIZE>(Unknown9);
+  serialize<int16_t>(AngleCount);
+  serialize<int16_t>(TerrainID);
+  serialize<int16_t, ELEVATION_GRAPHICS_SIZE>(ElevationGraphics);
   serialize<int16_t>(TerrainReplacementID);
   serialize<int16_t>(TerrainDimensions);
   serialize<int16_t>(TerrainBorderIDs, getTerrainBorderSize());

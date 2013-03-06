@@ -47,9 +47,10 @@ public:
   TerrainBorder();
   virtual ~TerrainBorder();
 
-  static uint32_t getNameSize();
-
+  int16_t Unknown1;
   int16_t Enabled;
+
+  static uint32_t getNameSize();
 
   /// Internal long name
   std::string Name;
@@ -58,25 +59,20 @@ public:
   std::string Name2;
 
   /// ID of the SLP Resource in BORDER.DRS
-  int32_t RessourceID;
-
-  int32_t Unknown3; // 0
-  int32_t Unknown4; // -1
+  int32_t SLP;
+  float Unknown3; // 0
+  int32_t SoundID; // -1
 
   std::array<unsigned char, 3> Colors;
-
-  char Unknown5;
-  int32_t Unknown6; // 6 and 7 both zero, part of frame data?
-  int32_t Unknown7;
+  std::array<char, 5> Unknown5;
+  float Unknown6;
 
   static const unsigned short FRAMES_CNT = 230;
   std::array<TBFrameData, FRAMES_CNT> Frames;
 
   int16_t FrameCount; //?
-
-  int16_t Unknown8; // always 0
-  int16_t Unknown9;
-  int16_t Unknown10;
+  int16_t AngleCount; // always 0
+  int16_t TerrainID;
 
 private:
   virtual void serializeObject(void);

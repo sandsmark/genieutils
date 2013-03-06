@@ -47,7 +47,6 @@ DatFile::DatFile() : ZeroSpace(0), Rendering(0), Something(0),
   SUnknown3 = -1;
   SUnknown4 = -1;
   SUnknown5 = -1;
-  Unknown2 = 0;
   SUnknown7 = -1;
   SUnknown8 = -1;
 }
@@ -121,12 +120,12 @@ unsigned short DatFile::getZeroSpaceSize(void)
   switch (getGameVersion())
   {
     case genie::GV_AoE:
-    case genie::GV_RoR:  return 1;
-    case genie::GV_AoKA: return 5;
+    case genie::GV_RoR:  return 3;
+    case genie::GV_AoKA: return 11;
     case genie::GV_AoK:
     case genie::GV_TC:
     case genie::GV_SWGB:
-    case genie::GV_CC:   return 7;
+    case genie::GV_CC:   return 15;
     default: return 0;
   }
 }
@@ -241,19 +240,14 @@ void DatFile::serializeObject(void)
   serializeSub<Terrain>(Terrains, getTerrainsSize());
 
   if (verbose_)
-    std::cout << "Unknown2 (empty) (0x" << std::hex << tellg() << std::dec;
-
-  serialize<int16_t>(Unknown2);
-
-  if (verbose_)
     std::cout << " to 0x" << std::hex << tellg() << std::dec << ")" << std::endl;
 
 
-  // TerrainBorders seem to be unused (are empty) in GV > RoR
+  // TerrainBorders seem to be unused (are empty) in GV > AoK Alpha
   serializeSub<TerrainBorder>(TerrainBorders, 16); //TODO: fixed size?
 
   // Empty space.
-  serialize<int32_t>(ZeroSpace, getZeroSpaceSize());
+  serialize<int16_t>(ZeroSpace, getZeroSpaceSize());
 
   serialize<uint16_t>(NumberOfTerrainsUsed2);
 

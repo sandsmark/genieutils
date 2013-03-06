@@ -33,28 +33,28 @@ public:
   virtual void setGameVersion(GameVersion gv);
 
   int16_t Unknown1;
-  int16_t Unknown2; //must be one or the game will crash
+  int16_t Enabled; //must be one or the game will crash
 
   unsigned short getNameSize(void);
 
   std::string Name;
   std::string Name2;
   int32_t SLP;
-  int32_t Unknown3;
+  float Unknown3;
   int32_t SoundID;
   int32_t BlendPriority;//not in aoe/ror
   int32_t BlendType; //not in aoe/ror
 
   std::array<unsigned char, 3> Colors;
-  int16_t Unknown5;
-  int16_t Unknown6;
-  static const unsigned short UNKNOWN7_SIZE = 23;
+  std::array<char, 5> Unknown5;
+  float Unknown6;
+  static const unsigned short UNKNOWN7_SIZE = 18;
   std::array<char, UNKNOWN7_SIZE> Unknown7;
   int16_t FrameCount;
-  static const unsigned short UNKNOWN8_SIZE = 2;
-  std::array<int16_t, UNKNOWN8_SIZE> Unknown8;
-  static const unsigned short UNKNOWN9_SIZE = 54;
-  std::array<int16_t, UNKNOWN9_SIZE> Unknown9;
+  int16_t AngleCount;
+  int16_t TerrainID;
+  static const unsigned short ELEVATION_GRAPHICS_SIZE = 54;
+  std::array<int16_t, ELEVATION_GRAPHICS_SIZE> ElevationGraphics;
   int16_t TerrainReplacementID;
   static const unsigned short TERRAIN_DIMENSIONS_SIZE = 2;
   std::pair<int16_t, int16_t> TerrainDimensions;

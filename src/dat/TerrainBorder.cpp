@@ -24,7 +24,7 @@ namespace genie
 {
 
 //------------------------------------------------------------------------------
-TerrainBorder::TerrainBorder() : Colors()
+TerrainBorder::TerrainBorder()
 {
 }
 
@@ -42,32 +42,26 @@ uint32_t TerrainBorder::getNameSize()
 //------------------------------------------------------------------------------
 void TerrainBorder::serializeObject(void)
 {
+  serialize<int16_t>(Unknown1);
   serialize<int16_t>(Enabled);
 
   serialize<std::string>(Name, getNameSize());
   serialize<std::string>(Name2, getNameSize());
 
-  serialize<int32_t>(RessourceID);
-
-  serialize<int32_t>(Unknown3);
-  serialize<int32_t>(Unknown4); // -1
+  serialize<int32_t>(SLP);
+  serialize<float>(Unknown3);
+  serialize<int32_t>(SoundID); // -1
 
   serialize<unsigned char, 3>(Colors);
-
-  serialize<char>(Unknown5);
-
-  serialize<int32_t>(Unknown6);
-  serialize<int32_t>(Unknown7);
+  serialize<char, 5>(Unknown5);
+  serialize<float>(Unknown6);
 
   serializeSub<TBFrameData, FRAMES_CNT>(Frames);
 
   serialize<int16_t>(FrameCount);
-
-  serialize<int16_t>(Unknown8);
-  serialize<int16_t>(Unknown9);
-  serialize<int16_t>(Unknown10);
+  serialize<int16_t>(AngleCount);
+  serialize<int16_t>(TerrainID);
 }
-
 
 //------------------------------------------------------------------------------
 TBFrameData::TBFrameData()

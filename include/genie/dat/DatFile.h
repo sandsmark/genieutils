@@ -102,7 +102,7 @@ public:
   std::vector<TerrainBorder> TerrainBorders;
 
   unsigned short getZeroSpaceSize(void);
-  std::vector<int32_t> ZeroSpace;
+  std::vector<int16_t> ZeroSpace;
   unsigned short getRenderingSize(void);
   std::vector<int16_t> Rendering;
   unsigned short getSomethingSize(void);
@@ -127,7 +127,6 @@ public:
 
   uint16_t NumberOfTerrainsUsed;
   uint16_t NumberOfTerrainsUsed2;
-  int16_t Unknown2;
 
    //SWGB Unknowns:
   /// Seems to be the CivCount
