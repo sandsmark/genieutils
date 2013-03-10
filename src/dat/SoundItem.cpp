@@ -36,6 +36,12 @@ SoundItem::~SoundItem()
 {
 }
 
+//------------------------------------------------------------------------------
+void SoundItem::setGameVersion(GameVersion gv)
+{
+  ISerializable::setGameVersion(gv);
+}
+
 unsigned short SoundItem::getFileNameSize()
 {
   if (getGameVersion() <= genie::GV_TC)

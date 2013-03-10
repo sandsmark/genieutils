@@ -30,7 +30,7 @@ namespace genie
 class Research : public ISerializable
 {
 public:
-  Research(GameVersion gv = GV_None);
+  Research();
   virtual ~Research();
   virtual void setGameVersion(GameVersion gv);
 

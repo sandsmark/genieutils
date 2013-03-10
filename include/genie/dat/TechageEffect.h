@@ -33,6 +33,7 @@ class TechageEffect : public ISerializable
 public:
   TechageEffect();
   virtual ~TechageEffect();
+  virtual void setGameVersion(GameVersion gv);
 
   //  DO NOT ALTER THESE! Unless you test that the game won't crash.
   char Type;

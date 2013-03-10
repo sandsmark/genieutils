@@ -30,6 +30,7 @@ class GraphicAttackSound : public ISerializable
 public:
   GraphicAttackSound();
   virtual ~GraphicAttackSound();
+  virtual void setGameVersion(GameVersion gv);
 
   //TODO: Array
   int16_t SoundDelay;

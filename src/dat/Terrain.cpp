@@ -24,11 +24,10 @@ namespace genie
 {
 
 //------------------------------------------------------------------------------
-Terrain::Terrain(GameVersion gv) : Colors(), Unknown5(), Unknown7(), ElevationGraphics(),
-  TerrainBorderIDs(0), TerrainUnitID(), TerrainUnitDensity(),
+Terrain::Terrain() : Colors(), Unknown5(), Unknown7(), ElevationGraphics(),
+  TerrainUnitID(), TerrainUnitDensity(),
   TerrainUnitPriority(), SWGBUnknown1()
 {
-  setGameVersion(gv);
   Unknown1 = 0;
   Enabled = 1;
   Name = "";

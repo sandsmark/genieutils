@@ -41,6 +41,12 @@ TerrainPassGraphic::~TerrainPassGraphic()
 }
 
 //------------------------------------------------------------------------------
+void TerrainPassGraphic::setGameVersion(GameVersion gv)
+{
+  ISerializable::setGameVersion(gv);
+}
+
+//------------------------------------------------------------------------------
 void TerrainPassGraphic::serializeObject()
 {
   serialize<int32_t>(Buildable);

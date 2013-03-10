@@ -30,6 +30,7 @@ class TerrainPassGraphic : public ISerializable
 public:
   TerrainPassGraphic();
   virtual ~TerrainPassGraphic();
+  virtual void setGameVersion(GameVersion gv);
 
   /// Indicates if you can build on it: 0 = no, -1 = yes
   int32_t Buildable;

@@ -34,6 +34,12 @@ TerrainBorder::~TerrainBorder()
 }
 
 //------------------------------------------------------------------------------
+void TerrainBorder::setGameVersion(GameVersion gv)
+{
+  ISerializable::setGameVersion(gv);
+}
+
+//------------------------------------------------------------------------------
 uint32_t TerrainBorder::getNameSize()
 {
   return 13;
@@ -71,6 +77,12 @@ TBFrameData::TBFrameData()
 //------------------------------------------------------------------------------
 TBFrameData::~TBFrameData()
 {
+}
+
+//------------------------------------------------------------------------------
+void TBFrameData::setGameVersion(GameVersion gv)
+{
+  ISerializable::setGameVersion(gv);
 }
 
 //------------------------------------------------------------------------------

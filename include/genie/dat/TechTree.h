@@ -61,7 +61,7 @@ private:
 class TechTreeAge : public ISerializable
 {
 public:
-  TechTreeAge(GameVersion gv = GV_None);
+  TechTreeAge();
   virtual ~TechTreeAge();
   virtual void setGameVersion(GameVersion gv);
 
@@ -90,7 +90,7 @@ private:
 class BuildingConnection : public ISerializable
 {
 public:
-  BuildingConnection(GameVersion gv = GV_None);
+  BuildingConnection();
   virtual ~BuildingConnection();
   virtual void setGameVersion(GameVersion gv);
 
@@ -138,7 +138,7 @@ private:
 class UnitConnection : public ISerializable
 {
 public:
-  UnitConnection(GameVersion gv = GV_None);
+  UnitConnection();
   virtual ~UnitConnection();
   virtual void setGameVersion(GameVersion gv);
 
@@ -164,7 +164,6 @@ public:
 
   int32_t VerticalLine;
 
-  //char *connected unit count*
   std::vector<int32_t> Units;
 
   /// 1 First, 2 Second.
@@ -186,7 +185,7 @@ private:
 class ResearchConnection : public ISerializable
 {
 public:
-  ResearchConnection(GameVersion gv = GV_None);
+  ResearchConnection();
   virtual ~ResearchConnection();
   virtual void setGameVersion(GameVersion gv);
 

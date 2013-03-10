@@ -32,6 +32,7 @@ class UnitLine : public ISerializable
 public:
   UnitLine();
   virtual ~UnitLine();
+  virtual void setGameVersion(GameVersion gv);
 
   int16_t ID;
 

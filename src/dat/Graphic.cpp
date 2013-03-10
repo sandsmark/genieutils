@@ -61,6 +61,15 @@ Graphic::~Graphic()
   delete [] CstrName2;
 }
 
+//------------------------------------------------------------------------------
+void Graphic::setGameVersion(GameVersion gv)
+{
+  ISerializable::setGameVersion(gv);
+
+  updateGameVersion(Deltas);
+  updateGameVersion(AttackSounds);
+}
+
 Graphic &Graphic::operator=(const Graphic &other)
 {
   try
@@ -102,14 +111,6 @@ Graphic &Graphic::operator=(const Graphic &other)
   AttackSounds = other.AttackSounds;
 
   return *this;
-}
-
-void Graphic::setGameVersion(GameVersion gv)
-{
-  ISerializable::setGameVersion(gv);
-
-  updateGameVersion(Deltas);
-  updateGameVersion(AttackSounds);
 }
 
 unsigned short Graphic::getNameSize()

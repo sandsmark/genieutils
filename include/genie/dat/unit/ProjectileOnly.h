@@ -34,6 +34,7 @@ class ProjectileOnly : public ISerializable
 public:
   ProjectileOnly();
   virtual ~ProjectileOnly();
+  virtual void setGameVersion(GameVersion gv);
 
   char StretchMode;
   char CompensationMode;

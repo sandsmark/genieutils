@@ -52,6 +52,15 @@ Projectile::~Projectile()
 {
 }
 
+//------------------------------------------------------------------------------
+void Projectile::setGameVersion(GameVersion gv)
+{
+  ISerializable::setGameVersion(gv);
+
+  updateGameVersion(Attacks);
+  updateGameVersion(Armours);
+}
+
 void Projectile::serializeObject(void)
 {
   serialize<char>(Unknown20);

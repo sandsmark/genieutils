@@ -37,6 +37,12 @@ BuildingAnnex::~BuildingAnnex()
 {
 }
 
+//------------------------------------------------------------------------------
+void BuildingAnnex::setGameVersion(GameVersion gv)
+{
+  ISerializable::setGameVersion(gv);
+}
+
 void BuildingAnnex::serializeObject(void)
 {
   serialize<int16_t>(UnitID);

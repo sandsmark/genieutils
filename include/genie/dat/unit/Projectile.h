@@ -35,6 +35,7 @@ class Projectile : public ISerializable
 public:
   Projectile();
   virtual ~Projectile();
+  virtual void setGameVersion(GameVersion gv);
 
   char Unknown20; //2 //aoe/ror 1, aok 1, tc 2
   char Unknown20_1;

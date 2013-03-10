@@ -35,6 +35,7 @@ class Building : public ISerializable
 public:
   Building();
   virtual ~Building();
+  virtual void setGameVersion(GameVersion gv);
 
   int16_t ConstructionGraphicID;
   int16_t SnowGraphicID; //not in aok/aoe/ror

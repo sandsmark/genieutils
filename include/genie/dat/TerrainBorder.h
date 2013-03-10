@@ -30,6 +30,7 @@ class TBFrameData : public ISerializable
 public:
   TBFrameData();
   virtual ~TBFrameData();
+  virtual void setGameVersion(GameVersion gv);
 
   int16_t FrameID;
   int16_t Flag1;
@@ -46,6 +47,7 @@ class TerrainBorder : public ISerializable
 public:
   TerrainBorder();
   virtual ~TerrainBorder();
+  virtual void setGameVersion(GameVersion gv);
 
   int16_t Unknown1;
   int16_t Enabled;

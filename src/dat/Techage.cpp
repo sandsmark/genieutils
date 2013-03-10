@@ -34,6 +34,14 @@ Techage::~Techage()
 {
 }
 
+//------------------------------------------------------------------------------
+void Techage::setGameVersion(GameVersion gv)
+{
+  ISerializable::setGameVersion(gv);
+
+  updateGameVersion(Effects);
+}
+
 short Techage::getNameSize(void)
 {
   return 31;

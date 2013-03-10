@@ -41,6 +41,12 @@ PlayerColour::~PlayerColour()
 {
 }
 
+//------------------------------------------------------------------------------
+void PlayerColour::setGameVersion(GameVersion gv)
+{
+  ISerializable::setGameVersion(gv);
+}
+
 void PlayerColour::serializeObject(void)
 {
   if (getGameVersion() < genie::GV_AoKA)

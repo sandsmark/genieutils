@@ -30,6 +30,7 @@ class SoundItem : public ISerializable
 public:
   SoundItem();
   virtual ~SoundItem();
+  virtual void setGameVersion(GameVersion gv);
 
   unsigned short getFileNameSize();
 

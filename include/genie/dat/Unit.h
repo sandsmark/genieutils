@@ -74,7 +74,7 @@ enum UnitType
 class Unit : public ISerializable
 {
 public:
-  Unit(GameVersion gv = GV_None);
+  Unit();
   virtual ~Unit();
   virtual void setGameVersion(GameVersion gv);
 
@@ -191,8 +191,8 @@ public:
   char MinimapMode;
 
   int16_t CommandAttribute;// Page for Build button: 2 = Page 1, 10 = Page 2, ?11 = Page 3?
-  int16_t Unknown3;
-  int16_t Unknown3B;
+  static const unsigned short UNKNOWN3_SIZE = 4;
+  std::array<char, UNKNOWN3_SIZE> Unknown3;
   int32_t LanguageDLLHelp;
   int32_t LanguageDLLHotKeyText;
   int32_t HotKey;

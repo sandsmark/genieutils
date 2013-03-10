@@ -38,8 +38,7 @@ namespace genie
 typedef boost::interprocess::basic_vectorstream<std::vector<char>> v_stream;
 
 //------------------------------------------------------------------------------
-DatFile::DatFile() : ZeroSpace(0), Rendering(0), Something(0),
-               UnknownPreTechTree(0), TechTreeAoKA(0),
+DatFile::DatFile() : TechTreeAoKA(0),
                verbose_(false), file_name_(""), file_(0),
                compressor_(this)
 {
@@ -67,15 +66,19 @@ void DatFile::setGameVersion(GameVersion gv)
   updateGameVersion(Sounds);
   updateGameVersion(Graphics);
   updateGameVersion(Terrains);
+  updateGameVersion(TerrainBorders);
+  updateGameVersion(Techages);
+  updateGameVersion(UnitLines);
+  updateGameVersion(UnitHeaders);
   updateGameVersion(Civs);
   updateGameVersion(Researchs);
+  RandomMaps.setGameVersion(gv);
   TechTree.setGameVersion(gv);
 
   ZeroSpace.resize(getZeroSpaceSize());
   Rendering.resize(getRenderingSize());
   Something.resize(getSomethingSize());
 }
-
 
 //------------------------------------------------------------------------------
 void DatFile::extractRaw(const char *inFile, const char *outFile)

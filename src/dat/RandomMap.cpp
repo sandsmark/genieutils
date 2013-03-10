@@ -34,6 +34,15 @@ RandomMaps::~RandomMaps()
 }
 
 //------------------------------------------------------------------------------
+void RandomMaps::setGameVersion(GameVersion gv)
+{
+  ISerializable::setGameVersion(gv);
+
+  updateGameVersion(MapHeaders);
+  updateGameVersion(Maps);
+}
+
+//------------------------------------------------------------------------------
 void RandomMaps::serializeObject()
 {
   serializeSize<uint32_t>(total_randommaps_count, Maps.size());
@@ -69,6 +78,12 @@ MapHeader::MapHeader() : Unknown2()
 //------------------------------------------------------------------------------
 MapHeader::~MapHeader()
 {
+}
+
+//------------------------------------------------------------------------------
+void MapHeader::setGameVersion(GameVersion gv)
+{
+  ISerializable::setGameVersion(gv);
 }
 
 //------------------------------------------------------------------------------
@@ -113,6 +128,16 @@ Map::Map() : Unknown2()
 //------------------------------------------------------------------------------
 Map::~Map()
 {
+}
+
+//------------------------------------------------------------------------------
+void Map::setGameVersion(GameVersion gv)
+{
+  ISerializable::setGameVersion(gv);
+
+  updateGameVersion(BaseZones);
+  updateGameVersion(MapTerrains);
+  updateGameVersion(MapUnits);
 }
 
 //------------------------------------------------------------------------------
@@ -166,6 +191,12 @@ BaseZone::~BaseZone()
 }
 
 //------------------------------------------------------------------------------
+void BaseZone::setGameVersion(GameVersion gv)
+{
+  ISerializable::setGameVersion(gv);
+}
+
+//------------------------------------------------------------------------------
 void BaseZone::serializeObject(void)
 {
   serialize<int32_t>(Unknown1);
@@ -198,6 +229,12 @@ MapTerrain::~MapTerrain()
 }
 
 //------------------------------------------------------------------------------
+void MapTerrain::setGameVersion(GameVersion gv)
+{
+  ISerializable::setGameVersion(gv);
+}
+
+//------------------------------------------------------------------------------
 void MapTerrain::serializeObject(void)
 {
   serialize<int32_t>(Proportion);
@@ -226,6 +263,12 @@ MapUnit::MapUnit() : Unknown3()
 //------------------------------------------------------------------------------
 MapUnit::~MapUnit()
 {
+}
+
+//------------------------------------------------------------------------------
+void MapUnit::setGameVersion(GameVersion gv)
+{
+  ISerializable::setGameVersion(gv);
 }
 
 //------------------------------------------------------------------------------

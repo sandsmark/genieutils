@@ -24,9 +24,8 @@ namespace genie
 {
 
 //------------------------------------------------------------------------------
-Unit::Unit(GameVersion gv) : ResourceStorages()
+Unit::Unit() : Unknown3(), ResourceStorages()
 {
-  setGameVersion(gv);
 //    Type 10+
 
   Type = UT_EyeCandy;
@@ -72,8 +71,6 @@ Unit::Unit(GameVersion gv) : ResourceStorages()
   InteractionMode = 0;
   MinimapMode = 0;
   CommandAttribute = 0;
-  Unknown3 = 0;
-  Unknown3B = 0;
   LanguageDLLHelp = 105000;
   LanguageDLLHotKeyText = 155000;
   HotKey = 16000;
@@ -118,9 +115,11 @@ void Unit::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
 
+  updateGameVersion(DamageGraphics);
   DeadFish.setGameVersion(gv);
   Bird.setGameVersion(gv);
   Projectile.setGameVersion(gv);
+  ProjectileOnly.setGameVersion(gv);
   Creatable.setGameVersion(gv);
   Building.setGameVersion(gv);
 }
@@ -182,8 +181,7 @@ void Unit::serializeObject(void)
   serialize<char>(InteractionMode);
   serialize<char>(MinimapMode);
   serialize<int16_t>(CommandAttribute);
-  serialize<int16_t>(Unknown3);
-  serialize<int16_t>(Unknown3B);
+  serialize<char, UNKNOWN3_SIZE>(Unknown3);
   serialize<int32_t>(LanguageDLLHelp);
   serialize<int32_t>(LanguageDLLHotKeyText);
   serialize<int32_t>(HotKey);

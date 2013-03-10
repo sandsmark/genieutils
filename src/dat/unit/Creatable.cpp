@@ -47,7 +47,12 @@ Creatable::Creatable() : ResourceCosts(), AttackMissileDuplicationSpawning()
 
 Creatable::~Creatable()
 {
+}
 
+//------------------------------------------------------------------------------
+void Creatable::setGameVersion(GameVersion gv)
+{
+  ISerializable::setGameVersion(gv);
 }
 
 short Creatable::getResourceCostsSize()

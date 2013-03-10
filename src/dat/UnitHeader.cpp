@@ -35,6 +35,14 @@ UnitHeader::~UnitHeader()
 }
 
 //------------------------------------------------------------------------------
+void UnitHeader::setGameVersion(GameVersion gv)
+{
+  ISerializable::setGameVersion(gv);
+
+  updateGameVersion(Commands);
+}
+
+//------------------------------------------------------------------------------
 void UnitHeader::serializeObject(void)
 {
   serialize<char>(Exists);

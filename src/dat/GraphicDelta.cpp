@@ -39,6 +39,12 @@ GraphicDelta::~GraphicDelta()
 {
 }
 
+//------------------------------------------------------------------------------
+void GraphicDelta::setGameVersion(GameVersion gv)
+{
+  ISerializable::setGameVersion(gv);
+}
+
 void GraphicDelta::serializeObject(void)
 {
   serialize<int16_t>(GraphicID);

@@ -43,6 +43,12 @@ DeadFish::~DeadFish()
 {
 }
 
+//------------------------------------------------------------------------------
+void DeadFish::setGameVersion(GameVersion gv)
+{
+  ISerializable::setGameVersion(gv);
+}
+
 void DeadFish::serializeObject(void)
 {
   serialize<int16_t>(WalkingGraphic);

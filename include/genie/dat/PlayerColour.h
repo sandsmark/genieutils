@@ -30,10 +30,10 @@ class PlayerColour : public ISerializable
 public:
   PlayerColour();
   virtual ~PlayerColour();
+  virtual void setGameVersion(GameVersion gv);
 
   static const unsigned short NAME_SIZE = 30;
-  //char *Name; // AoE/RoR only char [30]
-  std::string Name;
+  std::string Name; // AoE/RoR only char [30]
   int32_t ID;
 
   int32_t Palette; // not in aoe/ror

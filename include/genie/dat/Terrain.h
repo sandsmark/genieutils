@@ -28,7 +28,7 @@ namespace genie
 class Terrain : public ISerializable
 {
 public:
-  Terrain(GameVersion gv = GV_None);
+  Terrain();
   virtual ~Terrain();
   virtual void setGameVersion(GameVersion gv);
 

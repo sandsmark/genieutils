@@ -39,6 +39,12 @@ TechageEffect::~TechageEffect()
 }
 
 //------------------------------------------------------------------------------
+void TechageEffect::setGameVersion(GameVersion gv)
+{
+  ISerializable::setGameVersion(gv);
+}
+
+//------------------------------------------------------------------------------
 void TechageEffect::serializeObject(void)
 {
   serialize<char>(Type);

@@ -24,9 +24,8 @@ namespace genie
 {
 
 //------------------------------------------------------------------------------
-Research::Research(GameVersion gv) : RequiredTechs(0), ResourceCosts()
+Research::Research() : ResourceCosts()
 {
-  setGameVersion(gv);
   RequiredTechCount = 0;
   Civ = -1;
   FullTechMode = 0;

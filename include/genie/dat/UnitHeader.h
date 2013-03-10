@@ -31,6 +31,7 @@ class UnitHeader : public ISerializable
 public:
   UnitHeader();
   virtual ~UnitHeader();
+  virtual void setGameVersion(GameVersion gv);
 
   char Exists;
   std::vector<UnitCommand> Commands;

@@ -38,7 +38,6 @@ Building::Building() : Annexes(), AlfaThingy()
   Unknown32 = -1;
   ResearchID = -1;
   Unknown33 = 0;
-  //Annexes.resize(BUILDING_ANNEXES_SIZE);
   HeadUnit = -1;
   TransformUnit = -1;
   Unknown34 = -1;
@@ -50,6 +49,12 @@ Building::Building() : Annexes(), AlfaThingy()
 
 Building::~Building()
 {
+}
+
+//------------------------------------------------------------------------------
+void Building::setGameVersion(GameVersion gv)
+{
+  ISerializable::setGameVersion(gv);
 }
 
 void Building::serializeObject(void)

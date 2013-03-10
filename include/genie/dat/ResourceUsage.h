@@ -43,6 +43,11 @@ public:
 
   virtual ~ResourceUsage() {}
 
+  virtual void setGameVersion(GameVersion gv)
+  {
+    ISerializable::setGameVersion(gv);
+  }
+
   /// Resource ID TODO add resource ids
   T Type;
 
@@ -59,7 +64,6 @@ private:
     serialize<A>(Amount);
     serialize<E>(Enabled);
   }
-
 };
 
 }

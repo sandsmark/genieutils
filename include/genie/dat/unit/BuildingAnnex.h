@@ -34,6 +34,7 @@ class BuildingAnnex : public ISerializable
 public:
   BuildingAnnex();
   virtual ~BuildingAnnex();
+  virtual void setGameVersion(GameVersion gv);
 
   int16_t UnitID;
   std::pair <float, float> Misplacement;

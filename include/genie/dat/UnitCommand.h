@@ -30,6 +30,7 @@ class UnitCommand : public ISerializable
 public:
   UnitCommand();
   virtual ~UnitCommand();
+  virtual void setGameVersion(GameVersion gv);
 
   int16_t One;
   int16_t ID;

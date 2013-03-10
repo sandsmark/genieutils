@@ -30,7 +30,7 @@ namespace genie
 class Civ : public ISerializable
 {
 public:
-  Civ(GameVersion gv = GV_None);
+  Civ();
   virtual ~Civ();
   virtual void setGameVersion(GameVersion gv);
 

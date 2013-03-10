@@ -39,6 +39,7 @@ void TechTree::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
 
+  updateGameVersion(TechTreeAges);
   updateGameVersion(BuildingConnections);
   updateGameVersion(UnitConnections);
   updateGameVersion(ResearchConnections);
@@ -72,9 +73,8 @@ void TechTree::serializeObject(void)
 }
 
 //------------------------------------------------------------------------------
-TechTreeAge::TechTreeAge(GameVersion gv) : Zeroes(0)
+TechTreeAge::TechTreeAge()
 {
-  setGameVersion(gv);
   Unknown1 = 0;
   ID = 0;
   Unknown2 = 2;
@@ -126,10 +126,8 @@ void TechTreeAge::serializeObject(void)
 }
 
 //------------------------------------------------------------------------------
-BuildingConnection::BuildingConnection(GameVersion gv) : Unknown2a(0),
-Unknown2b(0), Unknown3()
+BuildingConnection::BuildingConnection() : Unknown3()
 {
-  setGameVersion(gv);
   ID = 0;
   Unknown1 = 2;
   RequiredResearches = 0;
@@ -207,9 +205,8 @@ void BuildingConnection::serializeObject(void)
 }
 
 //------------------------------------------------------------------------------
-UnitConnection::UnitConnection(GameVersion gv) : Unknown2a(0), Unknown2b(0)
+UnitConnection::UnitConnection()
 {
-  setGameVersion(gv);
   ID = 0;
   Unknown1 = 2;
   UpperBuilding = -1;
@@ -288,9 +285,8 @@ void UnitConnection::serializeObject(void)
 }
 
 //------------------------------------------------------------------------------
-ResearchConnection::ResearchConnection(GameVersion gv) : Unknown2a(0), Unknown2b(0)
+ResearchConnection::ResearchConnection()
 {
-  setGameVersion(gv);
   ID = 0;
   Unknown1 = 2;
   UpperBuilding = -1;

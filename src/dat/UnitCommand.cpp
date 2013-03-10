@@ -57,6 +57,12 @@ UnitCommand::~UnitCommand()
 }
 
 //------------------------------------------------------------------------------
+void UnitCommand::setGameVersion(GameVersion gv)
+{
+  ISerializable::setGameVersion(gv);
+}
+
+//------------------------------------------------------------------------------
 void UnitCommand::serializeObject(void)
 {
   serialize<int16_t>(One);

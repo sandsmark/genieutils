@@ -35,6 +35,7 @@ class Creatable : public ISerializable
 public:
   Creatable();
   virtual ~Creatable();
+  virtual void setGameVersion(GameVersion gv);
 
   static short getResourceCostsSize();
 

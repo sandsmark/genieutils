@@ -33,6 +33,7 @@ class Techage : public ISerializable
 public:
   Techage();
   virtual ~Techage();
+  virtual void setGameVersion(GameVersion gv);
 
   static short getNameSize(void);
 

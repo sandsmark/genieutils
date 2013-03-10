@@ -35,6 +35,7 @@ class DeadFish : public ISerializable
 public:
   DeadFish();
   virtual ~DeadFish();
+  virtual void setGameVersion(GameVersion gv);
 
   std::pair<int16_t, int16_t> WalkingGraphic;
   float RotationSpeed;

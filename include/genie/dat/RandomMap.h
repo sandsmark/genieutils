@@ -29,6 +29,7 @@ class MapUnit : public ISerializable
 public:
   MapUnit();
   virtual ~MapUnit();
+  virtual void setGameVersion(GameVersion gv);
 
   int32_t Unit;
   int32_t HostTerrain;
@@ -52,6 +53,7 @@ class MapTerrain : public ISerializable
 public:
   MapTerrain();
   virtual ~MapTerrain();
+  virtual void setGameVersion(GameVersion gv);
 
   int32_t Proportion;
   int32_t Terrain;
@@ -69,6 +71,7 @@ class BaseZone : public ISerializable
 public:
   BaseZone();
   virtual ~BaseZone();
+  virtual void setGameVersion(GameVersion gv);
 
   int32_t Unknown1;
   int32_t BaseTerrain;
@@ -93,6 +96,7 @@ class Map : public ISerializable
 public:
   Map();
   virtual ~Map();
+  virtual void setGameVersion(GameVersion gv);
 
   int32_t BorderSouthWest;
   int32_t BorderNorthWest;
@@ -127,6 +131,7 @@ class MapHeader : public ISerializable
 public:
   MapHeader();
   virtual ~MapHeader();
+  virtual void setGameVersion(GameVersion gv);
 
   int32_t ScriptNumber;
   int32_t BorderSouthWest;
@@ -159,6 +164,7 @@ class RandomMaps : public ISerializable
 public:
   RandomMaps();
   virtual ~RandomMaps();
+  virtual void setGameVersion(GameVersion gv);
 
   int32_t RandomMapPointer;
 

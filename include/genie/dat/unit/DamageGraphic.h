@@ -33,6 +33,7 @@ class DamageGraphic : public ISerializable
 public:
   DamageGraphic();
   virtual ~DamageGraphic();
+  virtual void setGameVersion(GameVersion gv);
 
   int16_t GraphicID;
   char DamagePercent;

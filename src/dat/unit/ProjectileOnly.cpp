@@ -38,8 +38,14 @@ ProjectileOnly::ProjectileOnly()
 
 ProjectileOnly::~ProjectileOnly()
 {
-
 }
+
+//------------------------------------------------------------------------------
+void ProjectileOnly::setGameVersion(GameVersion gv)
+{
+  ISerializable::setGameVersion(gv);
+}
+
 void ProjectileOnly::serializeObject(void)
 {
   serialize<char>(StretchMode);

@@ -43,6 +43,14 @@ Bird::~Bird()
 {
 }
 
+//------------------------------------------------------------------------------
+void Bird::setGameVersion(GameVersion gv)
+{
+  ISerializable::setGameVersion(gv);
+
+  updateGameVersion(Commands);
+}
+
 void Bird::serializeObject(void)
 {
   serialize<int16_t>(SheepConversion);

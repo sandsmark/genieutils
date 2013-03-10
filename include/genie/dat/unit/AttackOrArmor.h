@@ -34,6 +34,7 @@ class AttackOrArmor : public ISerializable
 public:
   AttackOrArmor();
   virtual ~AttackOrArmor();
+  virtual void setGameVersion(GameVersion gv);
 
   int16_t Class;
   int16_t Amount;

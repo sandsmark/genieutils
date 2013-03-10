@@ -30,6 +30,7 @@ class GraphicDelta : public ISerializable
 public:
   GraphicDelta();
   virtual ~GraphicDelta();
+  virtual void setGameVersion(GameVersion gv);
 
   int16_t GraphicID;
   int16_t Unknown1;
