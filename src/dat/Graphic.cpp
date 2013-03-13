@@ -34,19 +34,18 @@ Graphic::Graphic() : Coordinates(), CstrName(0), CstrName2(0)
   Unknown1 = 0;
   Unknown2 = 0;
   Layer = 0;
-  Unknown3 = 0;
-  Unknown4 = 0;
+  PlayerColor = -1;
   Replay = 0;
   SoundID = -1;
   AttackSoundUsed = 0;
   FrameCount = 0;
   AngleCount = 0;
-  Unknown13 = 0;
+  NewSpeed = 0;
   FrameRate = 0;
   ReplayDelay = 0;
   SequenceType = 0;
   ID = -1;
-  Type = 0;
+  MirroringMode = 0;
 }
 
 Graphic::Graphic(const Graphic& other) : ISerializable(other),
@@ -91,8 +90,7 @@ Graphic &Graphic::operator=(const Graphic &other)
   Unknown1 = other.Unknown1;
   Unknown2 = other.Unknown2;
   Layer = other.Layer;
-  Unknown3 = other.Unknown3;
-  Unknown4 = other.Unknown4;
+  PlayerColor = other.PlayerColor;
   Replay = other.Replay;
   Coordinates = other.Coordinates;
   DeltaCount = other.DeltaCount;
@@ -100,12 +98,12 @@ Graphic &Graphic::operator=(const Graphic &other)
   AttackSoundUsed = other.AttackSoundUsed;
   FrameCount = other.FrameCount;
   AngleCount = other.AngleCount;
-  Unknown13 = other.Unknown13;
+  NewSpeed = other.NewSpeed;
   FrameRate = other.FrameRate;
   ReplayDelay = other.ReplayDelay;
   SequenceType = other.SequenceType;
   ID = other.ID;
-  Type = other.Type;
+  MirroringMode = other.MirroringMode;
 
   Deltas = other.Deltas;
   AttackSounds = other.AttackSounds;
@@ -161,8 +159,7 @@ void Graphic::serializeObject(void)
   serialize<char>(Unknown1);
   serialize<char>(Unknown2); /// TODO: priority?
   serialize<char>(Layer);
-  serialize<char>(Unknown3);
-  serialize<char>(Unknown4);
+  serialize<int16_t>(PlayerColor);
   serialize<char>(Replay);
 
   serialize<int16_t, COORDINATES_SIZE>(Coordinates);
@@ -172,19 +169,19 @@ void Graphic::serializeObject(void)
   serialize<char>(AttackSoundUsed);
   serialize<uint16_t>(FrameCount);
   serialize<uint16_t>(AngleCount);
-  serialize<float>(Unknown13);
+  serialize<float>(NewSpeed);
   serialize<float>(FrameRate);
   serialize<float>(ReplayDelay);
   serialize<char>(SequenceType);
   serialize<int16_t>(ID);
 
   if (getGameVersion() >= genie::GV_AoK)
-    serialize<int16_t>(Type);
+    serialize<int16_t>(MirroringMode);
   else
   {
-    char tmp = Type;
+    char tmp = MirroringMode;
     serialize<char>(tmp);
-    Type = tmp;
+    MirroringMode = tmp;
   }
 
   serializeSub<GraphicDelta>(Deltas, DeltaCount);

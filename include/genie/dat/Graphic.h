@@ -67,9 +67,10 @@ public:
   ///
   char Layer;
 
-  //TODO
-  char Unknown3;
-  char Unknown4;
+  /// Setting this to 0 forces the player color to be blue.
+  int16_t PlayerColor;
+
+  /// Will the graphic be looped.
   char Replay;
 
   static const unsigned short COORDINATES_SIZE = 4;
@@ -87,7 +88,9 @@ public:
   /// mirrored. That means angles starting from south going clockwise to
   /// north are stored and the others will be mirrored.
   uint16_t AngleCount;
-  float Unknown13;
+
+  /// If this is over 0, the speed of the unit will be replaced with this.
+  float NewSpeed;
 
   /// Frame rate in seconds. (Delay between frames)
   float FrameRate;
@@ -97,7 +100,7 @@ public:
 
   char SequenceType;
   int16_t ID;
-  int16_t Type;//char in aoe/ror //TODO: Mirroring mode?
+  int16_t MirroringMode;//char in aoe/ror //TODO: Mirroring mode?
 
   std::vector<GraphicDelta> Deltas;
   std::vector<GraphicAttackSound> AttackSounds;

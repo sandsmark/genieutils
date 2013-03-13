@@ -241,7 +241,7 @@ public:
   /// Sound that is played when this unit is selected
   int16_t SelectionSound;
   int16_t DyingSound;
-  int16_t AttackSound;
+  int16_t AttackMode;
   std::string Name;
   uint16_t NameLength2;
   std::string Name2;

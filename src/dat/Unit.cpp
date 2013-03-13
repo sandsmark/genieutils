@@ -91,7 +91,7 @@ Unit::Unit() : Unknown3(), ResourceStorages()
   HPBarHeight2 = 0;
   SelectionSound = -1;
   DyingSound = -1;
-  AttackSound = -1;
+  AttackMode = -1;
   Name = "";
   NameLength2 = 9;
   Name2 = "";
@@ -220,7 +220,7 @@ void Unit::serializeObject(void)
 
   serialize<int16_t>(SelectionSound);
   serialize<int16_t>(DyingSound);
-  serialize<int16_t>(AttackSound);
+  serialize<int16_t>(AttackMode);
 
   serialize<std::string>(Name, NameLength);
 

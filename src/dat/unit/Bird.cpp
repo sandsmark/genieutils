@@ -34,8 +34,8 @@ Bird::Bird()
   DropSite.first = -1;
   DropSite.second = -1;
   VillagerMode = 0;
+  AttackSound = -1;
   MoveSound = -1;
-  StopSound = -1;
   AnimalMode = 0;
 }
 
@@ -58,8 +58,8 @@ void Bird::serializeObject(void)
   serialize<float>(WorkRate);
   serialize<int16_t>(DropSite);
   serialize<char>(VillagerMode);
+  serialize<int16_t>(AttackSound);
   serialize<int16_t>(MoveSound);
-  serialize<int16_t>(StopSound);
   serialize<char>(AnimalMode);
 
   if (getGameVersion() <= genie::GV_AoKA)

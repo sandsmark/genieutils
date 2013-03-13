@@ -44,8 +44,8 @@ public:
 
   /// If activated unit switches villager types
   char VillagerMode;
+  int16_t AttackSound;
   int16_t MoveSound;
-  int16_t StopSound;
   /// Some animals have this.
   char AnimalMode;
   std::vector<UnitCommand> Commands;//only in aoe/ror
