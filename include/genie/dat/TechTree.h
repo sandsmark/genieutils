@@ -48,10 +48,10 @@ public:
   std::vector<ResearchConnection> ResearchConnections;
 
 private:
-  unsigned char age_count_;
-  unsigned char total_building_count_;
+  uint8_t age_count_;
+  uint8_t total_building_count_;
   uint16_t total_unit_count_; // int16_t in >= swgb
-  unsigned char total_research_count_;
+  uint8_t total_research_count_;
 
   virtual void serializeObject(void);
 
@@ -67,7 +67,7 @@ public:
 
   int32_t Unknown1;
   int32_t ID; //Age ID?
-  char Unknown2; //Always 2
+  int8_t Unknown2; //Always 2
 
   std::vector<int32_t> Buildings;
   std::vector<int32_t> Units;
@@ -80,9 +80,9 @@ public:
 
   std::vector<int16_t> Zeroes;
 private:
-  unsigned char building_count_;
-  unsigned char unit_count_;
-  unsigned char research_count_;
+  uint8_t building_count_;
+  uint8_t unit_count_;
+  uint8_t research_count_;
 
   virtual void serializeObject(void);
 };
@@ -95,7 +95,7 @@ public:
   virtual void setGameVersion(GameVersion gv);
 
   int32_t ID;
-  char Unknown1; //always 2
+  int8_t Unknown1; //always 2
 
   std::vector<int32_t> Buildings;
 
@@ -120,7 +120,7 @@ public:
   std::vector<int32_t> Unknown2b;
 
   static const unsigned short UNKNOWN3_SIZE = 11;
-  std::array<char, UNKNOWN3_SIZE> Unknown3;
+  std::array<int8_t, UNKNOWN3_SIZE> Unknown3;
 
   /// 5 One or more connections, 6 No connections.
   int32_t Connections;
@@ -128,9 +128,9 @@ public:
   int32_t EnablingResearch;
 
 private:
-  unsigned char building_count_;
-  unsigned char unit_count_;
-  unsigned char research_count_;
+  uint8_t building_count_;
+  uint8_t unit_count_;
+  uint8_t research_count_;
 
   virtual void serializeObject(void);
 };
@@ -143,7 +143,7 @@ public:
   virtual void setGameVersion(GameVersion gv);
 
   int32_t ID;
-  char Unknown1; //always 2
+  int8_t Unknown1; //always 2
   int32_t UpperBuilding;
 
   /// Minimum amount of researches that need to be researched for this to be available.
@@ -176,7 +176,7 @@ public:
   int32_t EnablingResearch;
 
 private:
-  unsigned char unit_count_;
+  uint8_t unit_count_;
 
   virtual void serializeObject(void);
 
@@ -190,7 +190,7 @@ public:
   virtual void setGameVersion(GameVersion gv);
 
   int32_t ID;
-  char Unknown1; //always 2
+  int8_t Unknown1; //always 2
   int32_t UpperBuilding;
 
   std::vector<int32_t> Buildings;
@@ -220,9 +220,9 @@ public:
   int32_t Unknown9;
 
 private:
-  unsigned char building_count_;
-  unsigned char unit_count_;
-  unsigned char research_count_;
+  uint8_t building_count_;
+  uint8_t unit_count_;
+  uint8_t research_count_;
 
   virtual void serializeObject(void);
 };

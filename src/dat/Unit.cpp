@@ -128,7 +128,7 @@ void Unit::setGameVersion(GameVersion gv)
 void Unit::serializeObject(void)
 {
   //Type 10+
-  serialize<char>(Type);
+  serialize<int8_t>(Type);
 
   serializeSize<uint16_t>(NameLength, Name);
   serialize<int16_t>(ID1);        //TODO: Check
@@ -142,80 +142,80 @@ void Unit::serializeObject(void)
     serialize<int16_t>(StandingGraphic, true);
 
   serialize<int16_t>(DyingGraphic);
-  serialize<char>(DeathMode);
+  serialize<int8_t>(DeathMode);
   serialize<int16_t>(HitPoints);
   serialize<float>(LineOfSight);
-  serialize<char>(GarrisonCapacity);
+  serialize<int8_t>(GarrisonCapacity);
   serialize<float>(SizeRadius);
 
   serialize<float>(HPBarHeight1);
 
   serialize<int16_t>(TrainSound, (getGameVersion() >= genie::GV_AoKA) ? false : true);
   serialize<int16_t>(DeadUnitID);
-  serialize<char>(PlacementMode);
-  serialize<char>(AirMode);
+  serialize<int8_t>(PlacementMode);
+  serialize<int8_t>(AirMode);
   serialize<int16_t>(IconID);
-  serialize<char>(HideInEditor);
+  serialize<int8_t>(HideInEditor);
   serialize<int16_t>(Unknown1);
 
   if (getGameVersion() >= genie::GV_AoK)
     serialize<int16_t>(Enabled);
   else
   {
-    char enabled = Enabled;
-    serialize<char>(enabled);
+    int8_t enabled = Enabled;
+    serialize<int8_t>(enabled);
     Enabled = enabled;
   }
 
   serialize<int16_t>(PlacementBypassTerrain);
   serialize<int16_t>(PlacementTerrain);
   serialize<float>(EditorRadius);
-  serialize<char>(BuildingMode);
-  serialize<char>(VisibleInFog);
+  serialize<int8_t>(BuildingMode);
+  serialize<int8_t>(VisibleInFog);
   serialize<int16_t>(TerrainRestriction);
-  serialize<char>(FlyMode);
+  serialize<int8_t>(FlyMode);
   serialize<int16_t>(ResourceCapacity);
   serialize<float>(ResourceDecay);
-  serialize<char>(BlastType); //TODO: AoE/ROR: [0]:blast_type?
-  serialize<char>(Unknown2);
-  serialize<char>(InteractionMode);
-  serialize<char>(MinimapMode);
+  serialize<int8_t>(BlastType); //TODO: AoE/ROR: [0]:blast_type?
+  serialize<int8_t>(Unknown2);
+  serialize<int8_t>(InteractionMode);
+  serialize<int8_t>(MinimapMode);
   serialize<int16_t>(CommandAttribute);
-  serialize<char, UNKNOWN3_SIZE>(Unknown3);
+  serialize<int8_t, UNKNOWN3_SIZE>(Unknown3);
   serialize<int32_t>(LanguageDLLHelp);
   serialize<int32_t>(LanguageDLLHotKeyText);
   serialize<int32_t>(HotKey);
-  serialize<char>(Unselectable);
-  serialize<char>(Unknown6);
+  serialize<int8_t>(Unselectable);
+  serialize<int8_t>(Unknown6);
 
   if (getGameVersion() >= genie::GV_AoKA)
   {
-    serialize<char>(Unknown7);
-    serialize<char>(Unknown8);
+    serialize<int8_t>(Unknown7);
+    serialize<int8_t>(Unknown8);
   }
 
-  serialize<char>(SelectionMask);
+  serialize<int8_t>(SelectionMask);
 
   if (getGameVersion() >= genie::GV_AoKA)
-    serialize<char>(SelectionShapeType);
+    serialize<int8_t>(SelectionShapeType);
 
-  serialize<char>(SelectionShape);
+  serialize<int8_t>(SelectionShape);
 
   if (getGameVersion() >= genie::GV_TC)
   {
-    serialize<char>(Attribute);
-    serialize<char>(Civilization);
+    serialize<int8_t>(Attribute);
+    serialize<int8_t>(Civilization);
     serialize<int16_t>(Unknown9);
   }
 
-  serialize<char>(SelectionEffect);
-  serialize<char>(EditorSelectionColour);
+  serialize<int8_t>(SelectionEffect);
+  serialize<int8_t>(EditorSelectionColour);
   serialize<float>(SelectionRadius);
   serialize<float>(HPBarHeight2);
 
   serializeSub<ResourceStorage, RESOURCE_STORAGE_CNT>(ResourceStorages);
 
-  serializeSize<unsigned char>(DamageGraphicCount, DamageGraphics.size());
+  serializeSize<uint8_t>(DamageGraphicCount, DamageGraphics.size());
   serializeSub<unit::DamageGraphic>(DamageGraphics, DamageGraphicCount);
 
   serialize<int16_t>(SelectionSound);
@@ -231,7 +231,7 @@ void Unit::serializeObject(void)
     serialize<std::string>(Name2, NameLength2);
 
     serialize<int16_t>(Unitline);
-    serialize<char>(MinTechLevel);
+    serialize<int8_t>(MinTechLevel);
   }
 
   serialize<int16_t>(ID2);

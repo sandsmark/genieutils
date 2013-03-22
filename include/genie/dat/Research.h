@@ -41,7 +41,7 @@ public:
   /// The size of the array is 4 in aoe/ror and 6 at games >= aok
   std::vector<int16_t> RequiredTechs;
 
-  typedef ResourceUsage<int16_t, int16_t, char> ResearchResourceCost;
+  typedef ResourceUsage<int16_t, int16_t, int8_t> ResearchResourceCost;
 
   /// Resource cost in a list of max 3
   static const unsigned short RESOURCECOSTS_SIZE = 3;
@@ -80,7 +80,7 @@ public:
   int16_t IconID;
 
   /// ID of the button
-  char ButtonID;
+  int8_t ButtonID;
 
   /// The first number is 100 000 plus the Language FIle ID for the name/description.
   int32_t LanguageDLLHelp;

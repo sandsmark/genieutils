@@ -58,8 +58,8 @@ void TerrainBorder::serializeObject(void)
   serialize<float>(Unknown3);
   serialize<int32_t>(SoundID); // -1
 
-  serialize<unsigned char, 3>(Colors);
-  serialize<char, 5>(Unknown5);
+  serialize<uint8_t, 3>(Colors);
+  serialize<int8_t, 5>(Unknown5);
   serialize<float>(Unknown6);
 
   serializeSub<TBFrameData, FRAMES_CNT>(Frames);

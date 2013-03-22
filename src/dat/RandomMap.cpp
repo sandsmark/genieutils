@@ -203,10 +203,10 @@ void BaseZone::serializeObject(void)
   serialize<int32_t>(BaseTerrain);
   serialize<int32_t>(SpacingBetweenPlayers);
   serialize<int32_t>(Unknown4);
-  serialize<char, UNKNOWN5_SIZE>(Unknown5);
+  serialize<int8_t, UNKNOWN5_SIZE>(Unknown5);
   serialize<int32_t>(Unknown6);
   serialize<int32_t>(Unknown7);
-  serialize<char, UNKNOWN8_SIZE>(Unknown8);
+  serialize<int8_t, UNKNOWN8_SIZE>(Unknown8);
   serialize<int32_t>(StartAreaRadius);
   serialize<int32_t>(Unknown10);
   serialize<int32_t>(Unknown11);
@@ -276,7 +276,7 @@ void MapUnit::serializeObject(void)
 {
   serialize<int32_t>(Unit);
   serialize<int32_t>(HostTerrain);
-  serialize<char, UNKNOWN3_SIZE>(Unknown3);
+  serialize<int8_t, UNKNOWN3_SIZE>(Unknown3);
   serialize<int32_t>(ObjectsPerPlayer);
   serialize<int32_t>(Unknown5);
   serialize<int32_t>(GroupsPerPlayer);

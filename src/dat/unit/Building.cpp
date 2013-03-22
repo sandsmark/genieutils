@@ -65,8 +65,8 @@ void Building::serializeObject(void)
     serialize<int16_t>(SnowGraphicID);
 
   serialize<int16_t>(AdjacentMode);
-  serialize<char>(Unknown31);
-  serialize<char>(Unknown31b);
+  serialize<int8_t>(Unknown31);
+  serialize<int8_t>(Unknown31b);
   serialize<int16_t>(StackUnitID);
   serialize<int16_t>(TerrainID);
   serialize<int16_t>(Unknown32); // Unit?
@@ -74,7 +74,7 @@ void Building::serializeObject(void)
 
   if (getGameVersion() >= genie::GV_AoKA)
   {
-    serialize<char>(Unknown33);
+    serialize<int8_t>(Unknown33);
     serializeSub<unit::BuildingAnnex, BUILDING_ANNEXES_SIZE>(Annexes);
     serialize<int16_t>(HeadUnit);
     serialize<int16_t>(TransformUnit);
@@ -85,10 +85,10 @@ void Building::serializeObject(void)
 
   if (getGameVersion() >= genie::GV_AoKA)
   {
-    serialize<char>(GarrisonType);
+    serialize<int8_t>(GarrisonType);
     serialize<float>(GarrisonHealRate);
     serialize<int32_t>(Unknown35);
-    serialize<char, ALFATHING_SIZE>(AlfaThingy);
+    serialize<int8_t, ALFATHING_SIZE>(AlfaThingy);
   }
 }
 

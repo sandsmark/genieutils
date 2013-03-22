@@ -48,20 +48,20 @@ void TechTree::setGameVersion(GameVersion gv)
 //------------------------------------------------------------------------------
 void TechTree::serializeObject(void)
 {
-  serializeSize<unsigned char>(age_count_, TechTreeAges.size());
+  serializeSize<uint8_t>(age_count_, TechTreeAges.size());
 
-  serializeSize<unsigned char>(total_building_count_, BuildingConnections.size());
+  serializeSize<uint8_t>(total_building_count_, BuildingConnections.size());
 
   if (getGameVersion() >= genie::GV_SWGB)
    serializeSize<uint16_t>(total_unit_count_, UnitConnections.size());
   else
   {
-    unsigned char tbc = total_unit_count_;
-    serializeSize<unsigned char>(tbc, UnitConnections.size());
+    uint8_t tbc = total_unit_count_;
+    serializeSize<uint8_t>(tbc, UnitConnections.size());
     total_unit_count_ = tbc;
   }
 
-  serializeSize<unsigned char>(total_research_count_, ResearchConnections.size());
+  serializeSize<uint8_t>(total_research_count_, ResearchConnections.size());
 
   serializeSub<TechTreeAge>(TechTreeAges, age_count_);
 
@@ -108,15 +108,15 @@ void TechTreeAge::serializeObject(void)
 {
   serialize<int32_t>(Unknown1);
   serialize<int32_t>(ID);
-  serialize<char>(Unknown2);
+  serialize<int8_t>(Unknown2);
 
-  serializeSize<unsigned char>(building_count_, Buildings.size());
+  serializeSize<uint8_t>(building_count_, Buildings.size());
   serialize<int32_t>(Buildings, building_count_);
 
-  serializeSize<unsigned char>(unit_count_, Units.size());
+  serializeSize<uint8_t>(unit_count_, Units.size());
   serialize<int32_t>(Units, unit_count_);
 
-  serializeSize<unsigned char>(research_count_, Researches.size());
+  serializeSize<uint8_t>(research_count_, Researches.size());
   serialize<int32_t>(Researches, research_count_);
 
   serialize<int32_t>(Unknown3);
@@ -175,15 +175,15 @@ unsigned short BuildingConnection::getUnknown2bSize()
 void BuildingConnection::serializeObject(void)
 {
   serialize<int32_t>(ID);
-  serialize<char>(Unknown1);
+  serialize<int8_t>(Unknown1);
 
-  serializeSize<unsigned char>(building_count_, Buildings.size());
+  serializeSize<uint8_t>(building_count_, Buildings.size());
   serialize<int32_t>(Buildings, building_count_);
 
-  serializeSize<unsigned char>(unit_count_, Units.size());
+  serializeSize<uint8_t>(unit_count_, Units.size());
   serialize<int32_t>(Units, unit_count_);
 
-  serializeSize<unsigned char>(research_count_, Researches.size());
+  serializeSize<uint8_t>(research_count_, Researches.size());
   serialize<int32_t>(Researches, research_count_);
 
   serialize<int32_t>(RequiredResearches);
@@ -198,7 +198,7 @@ void BuildingConnection::serializeObject(void)
 
   serialize<int32_t>(Unknown2b, getUnknown2bSize());
 
-  serialize<char, UNKNOWN3_SIZE>(Unknown3);
+  serialize<int8_t, UNKNOWN3_SIZE>(Unknown3);
 
   serialize<int32_t>(Connections);
   serialize<int32_t>(EnablingResearch);
@@ -258,7 +258,7 @@ unsigned short UnitConnection::getUnknown2bSize()
 void UnitConnection::serializeObject(void)
 {
   serialize<int32_t>(ID);
-  serialize<char>(Unknown1);
+  serialize<int8_t>(Unknown1);
   serialize<int32_t>(UpperBuilding);
   serialize<int32_t>(RequiredResearches);
   serialize<int32_t>(Age);
@@ -274,7 +274,7 @@ void UnitConnection::serializeObject(void)
 
   serialize<int32_t>(VerticalLine);
 
-  serializeSize<unsigned char>(unit_count_, Units.size());
+  serializeSize<uint8_t>(unit_count_, Units.size());
   serialize<int32_t>(Units, unit_count_);
 
   serialize<int32_t>(LocationInAge);
@@ -334,16 +334,16 @@ unsigned short ResearchConnection::getUnknown2bSize()
 void ResearchConnection::serializeObject(void)
 {
   serialize<int32_t>(ID);
-  serialize<char>(Unknown1);
+  serialize<int8_t>(Unknown1);
   serialize<int32_t>(UpperBuilding);
 
-  serializeSize<unsigned char>(building_count_, Buildings.size());
+  serializeSize<uint8_t>(building_count_, Buildings.size());
   serialize<int32_t>(Buildings, building_count_);
 
-  serializeSize<unsigned char>(unit_count_, Units.size());
+  serializeSize<uint8_t>(unit_count_, Units.size());
   serialize<int32_t>(Units, unit_count_);
 
-  serializeSize<unsigned char>(research_count_, Researches.size());
+  serializeSize<uint8_t>(research_count_, Researches.size());
   serialize<int32_t>(Researches, research_count_);
 
   serialize<int32_t>(RequiredResearches);

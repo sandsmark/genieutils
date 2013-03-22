@@ -63,10 +63,10 @@ void Projectile::setGameVersion(GameVersion gv)
 
 void Projectile::serializeObject(void)
 {
-  serialize<char>(Unknown20);
+  serialize<int8_t>(Unknown20);
 
   if (getGameVersion() >= genie::GV_TC)
-    serialize<char>(Unknown20_1);
+    serialize<int8_t>(Unknown20_1);
 
   serializeSize<uint16_t>(AttackCount, Attacks.size());
   serializeSub<unit::AttackOrArmor>(Attacks, AttackCount);
@@ -80,10 +80,10 @@ void Projectile::serializeObject(void)
   serialize<float>(ReloadTime1);
   serialize<int16_t>(ProjectileUnitID);
   serialize<int16_t>(AccuracyPercent);
-  serialize<char>(TowerMode);
+  serialize<int8_t>(TowerMode);
   serialize<int16_t>(Delay); //TODO: missle graphic delay
   serialize<float, GRAPHICDISPLACEMENT_SIZE>(GraphicDisplacement);
-  serialize<char>(Unknown23); //TODO: AoE/RoR blast level
+  serialize<int8_t>(Unknown23); //TODO: AoE/RoR blast level
   serialize<float>(MinRange);
 
   if (getGameVersion() >= genie::GV_AoK)

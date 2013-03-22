@@ -301,7 +301,7 @@ void DatFile::serializeObject(void)
   serializeSub<Civ>(Civs, civ_count_);
 
   if (getGameVersion() >= genie::GV_SWGB)
-    serialize<char>(SUnknown7);
+    serialize<int8_t>(SUnknown7);
 
   serializeSize<uint16_t>(research_count_, Researchs.size());
 
@@ -314,7 +314,7 @@ void DatFile::serializeObject(void)
     std::cout << "TechTrees (before eof) (0x" << std::hex << tellg();
 
   if (getGameVersion() >= genie::GV_SWGB)
-    serialize<char>(SUnknown8);
+    serialize<int8_t>(SUnknown8);
 
   if (getGameVersion() >= genie::GV_AoKA)
   {

@@ -48,11 +48,11 @@ void ProjectileOnly::setGameVersion(GameVersion gv)
 
 void ProjectileOnly::serializeObject(void)
 {
-  serialize<char>(StretchMode);
-  serialize<char>(CompensationMode);
-  serialize<char>(DropAnimationMode);
-  serialize<char>(PenetrationMode);
-  serialize<char>(Unknown24);
+  serialize<int8_t>(StretchMode);
+  serialize<int8_t>(CompensationMode);
+  serialize<int8_t>(DropAnimationMode);
+  serialize<int8_t>(PenetrationMode);
+  serialize<int8_t>(Unknown24);
   serialize<float>(ProjectileArc);
 }
 

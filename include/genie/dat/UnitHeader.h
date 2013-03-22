@@ -33,7 +33,7 @@ public:
   virtual ~UnitHeader();
   virtual void setGameVersion(GameVersion gv);
 
-  char Exists;
+  int8_t Exists;
   std::vector<UnitCommand> Commands;
 
 private:

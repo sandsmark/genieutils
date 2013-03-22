@@ -79,7 +79,7 @@ public:
   virtual void setGameVersion(GameVersion gv);
 
   /// See enum UnitType
-  char Type;
+  int8_t Type;
 
   /// Length of the internal name
   uint16_t NameLength;
@@ -102,7 +102,7 @@ public:
   std::pair<int16_t, int16_t> DyingGraphic;
 
   /// TODO
-  char DeathMode;
+  int8_t DeathMode;
 
   /// Unit's hit points
   int16_t HitPoints;
@@ -111,7 +111,7 @@ public:
   float LineOfSight;
 
   /// Maximum number of units that can be garrisonned at the same time.
-  char GarrisonCapacity;
+  int8_t GarrisonCapacity;
 
   /// Area taken by the unit. No other unit can move into this area except
   /// flying units.
@@ -126,16 +126,16 @@ public:
   int16_t DeadUnitID;
 
   /// TODO
-  char PlacementMode;
+  int8_t PlacementMode;
 
   /// TODO
-  char AirMode;
+  int8_t AirMode;
 
   /// ID of the icon shown at the bottom when selected or when building
   int16_t IconID;
 
   /// If true, unit can not be placed in the editor
-  char HideInEditor;
+  int8_t HideInEditor;
 
   /// TODO Unknown
   int16_t Unknown1;         // Always -1
@@ -145,23 +145,23 @@ public:
   std::pair<int16_t, int16_t> PlacementBypassTerrain;
   std::pair<int16_t, int16_t> PlacementTerrain;
   std::pair<float, float> EditorRadius;
-  char BuildingMode;
-  char VisibleInFog;
+  int8_t BuildingMode;
+  int8_t VisibleInFog;
 
   /// ID of terrain restrictions that are imposed on the unit.
   int16_t TerrainRestriction;
 
   /// Bool which determines wheter the unit can fly.
-  char FlyMode;
+  int8_t FlyMode;
 
   /// How much resources this unit is able to carry
   int16_t ResourceCapacity;
 
   // TODO
   float ResourceDecay;
-  char BlastType;
-  char Unknown2;
-  char InteractionMode;
+  int8_t BlastType;
+  int8_t Unknown2;
+  int8_t InteractionMode;
 
   /**
    * \brief Defines if and how a unit is shown on the minimap.
@@ -188,19 +188,19 @@ public:
    * - 10 does the same thing as “6”. Hawks, macaws, and flying dogs have
    *      this value.
    */
-  char MinimapMode;
+  int8_t MinimapMode;
 
   int16_t CommandAttribute;// Page for Build button: 2 = Page 1, 10 = Page 2, ?11 = Page 3?
   static const unsigned short UNKNOWN3_SIZE = 4;
-  std::array<char, UNKNOWN3_SIZE> Unknown3;
+  std::array<int8_t, UNKNOWN3_SIZE> Unknown3;
   int32_t LanguageDLLHelp;
   int32_t LanguageDLLHotKeyText;
   int32_t HotKey;
-  char Unselectable;
-  char Unknown6;
-  char Unknown7;// not in aoe/ror
-  char Unknown8;// not in aoe/ror
-  char SelectionMask;
+  int8_t Unselectable;
+  int8_t Unknown6;
+  int8_t Unknown7;// not in aoe/ror
+  int8_t Unknown8;// not in aoe/ror
+  int8_t SelectionMask;
 
   /// values for SelectionShapeType
   /// 0 farm, gate, dead bodies, town center
@@ -208,13 +208,13 @@ public:
   /// 3 berserk, flag x
   /// 5 units
   /// 10 mountain(matches selction mask)
-  char SelectionShapeType;
+  int8_t SelectionShapeType;
 
   /// 0 square, 1+ circle
-  char SelectionShape;
-  char Attribute;
+  int8_t SelectionShape;
+  int8_t Attribute;
   /// Seems to be used only in SWGB/CC
-  char Civilization;
+  int8_t Civilization;
   int16_t Unknown9;
 
   /**
@@ -224,14 +224,14 @@ public:
    * 4.HP Bar off, normal outline
    * Note: this doe not work with all units
    */
-  char SelectionEffect;
-  char EditorSelectionColour;
+  int8_t SelectionEffect;
+  int8_t EditorSelectionColour;
   std::pair<float, float> SelectionRadius;
   float HPBarHeight2;
 
   static const unsigned short RESOURCE_STORAGE_CNT = 3;
 
-  typedef ResourceUsage<int16_t, float, char> ResourceStorage;
+  typedef ResourceUsage<int16_t, float, int8_t> ResourceStorage;
 
   /// Resource cost of a unit
   std::array<ResourceStorage, RESOURCE_STORAGE_CNT> ResourceStorages;
@@ -250,7 +250,7 @@ public:
   int16_t Unitline;
 
   /// MinGameVersion: SWGB
-  char MinTechLevel;
+  int8_t MinTechLevel;
 
   int16_t ID2;
   int16_t ID3;//not in aoe/ror
@@ -272,7 +272,7 @@ public:
   unit::Building Building;
 
 private:
-  unsigned char DamageGraphicCount;
+  uint8_t DamageGraphicCount;
 
   virtual void serializeObject(void);
 };

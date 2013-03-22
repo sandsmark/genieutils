@@ -135,8 +135,8 @@ public:
   int32_t SUnknown4;
   int32_t SUnknown5;
 
-  char SUnknown7;
-  char SUnknown8;
+  int8_t SUnknown7;
+  int8_t SUnknown8;
 
 private:
   /// Skipping tech trees for AoK alpha

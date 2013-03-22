@@ -156,31 +156,31 @@ void Graphic::serializeObject(void)
   }
 
   serialize<int32_t>(SLP);
-  serialize<char>(Unknown1);
-  serialize<char>(Unknown2); /// TODO: priority?
-  serialize<char>(Layer);
+  serialize<int8_t>(Unknown1);
+  serialize<int8_t>(Unknown2); /// TODO: priority?
+  serialize<int8_t>(Layer);
   serialize<int16_t>(PlayerColor);
-  serialize<char>(Replay);
+  serialize<int8_t>(Replay);
 
   serialize<int16_t, COORDINATES_SIZE>(Coordinates);
 
   serializeSize<uint16_t>(DeltaCount, Deltas.size());
   serialize<int16_t>(SoundID);
-  serialize<char>(AttackSoundUsed);
+  serialize<int8_t>(AttackSoundUsed);
   serialize<uint16_t>(FrameCount);
   serialize<uint16_t>(AngleCount);
   serialize<float>(NewSpeed);
   serialize<float>(FrameRate);
   serialize<float>(ReplayDelay);
-  serialize<char>(SequenceType);
+  serialize<int8_t>(SequenceType);
   serialize<int16_t>(ID);
 
   if (getGameVersion() >= genie::GV_AoK)
     serialize<int16_t>(MirroringMode);
   else
   {
-    char tmp = MirroringMode;
-    serialize<char>(tmp);
+    int8_t tmp = MirroringMode;
+    serialize<int8_t>(tmp);
     MirroringMode = tmp;
   }
 

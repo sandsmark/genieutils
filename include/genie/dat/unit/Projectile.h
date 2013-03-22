@@ -37,8 +37,8 @@ public:
   virtual ~Projectile();
   virtual void setGameVersion(GameVersion gv);
 
-  char Unknown20; //2 //aoe/ror 1, aok 1, tc 2
-  char Unknown20_1;
+  int8_t Unknown20; //2 //aoe/ror 1, aok 1, tc 2
+  int8_t Unknown20_1;
   std::vector<unit::AttackOrArmor> Attacks;
   std::vector<unit::AttackOrArmor> Armours;
   int16_t Unknown21;
@@ -51,13 +51,13 @@ public:
   int16_t AccuracyPercent;
 
   /// Used in AoE/RoR for towers.
-  char TowerMode;
+  int8_t TowerMode;
   int16_t Delay;
 
   static const unsigned short GRAPHICDISPLACEMENT_SIZE = 3;
   std::array<float, GRAPHICDISPLACEMENT_SIZE> GraphicDisplacement;
 
-  char Unknown23;
+  int8_t Unknown23;
   float MinRange;
   float GarrisonRecoveryRate;
   int16_t AttackGraphic;

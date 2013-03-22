@@ -65,8 +65,8 @@ public:
   float Unknown3; // 0
   int32_t SoundID; // -1
 
-  std::array<unsigned char, 3> Colors;
-  std::array<char, 5> Unknown5;
+  std::array<uint8_t, 3> Colors;
+  std::array<int8_t, 5> Unknown5;
   float Unknown6;
 
   static const unsigned short FRAMES_CNT = 230;

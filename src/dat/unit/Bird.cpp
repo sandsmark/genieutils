@@ -57,10 +57,10 @@ void Bird::serializeObject(void)
   serialize<float>(SearchRadius);
   serialize<float>(WorkRate);
   serialize<int16_t>(DropSite);
-  serialize<char>(VillagerMode);
+  serialize<int8_t>(VillagerMode);
   serialize<int16_t>(AttackSound);
   serialize<int16_t>(MoveSound);
-  serialize<char>(AnimalMode);
+  serialize<int8_t>(AnimalMode);
 
   if (getGameVersion() <= genie::GV_AoKA)
   {

@@ -36,16 +36,16 @@ public:
   virtual ~ProjectileOnly();
   virtual void setGameVersion(GameVersion gv);
 
-  char StretchMode;
-  char CompensationMode;
-  char DropAnimationMode;
+  int8_t StretchMode;
+  int8_t CompensationMode;
+  int8_t DropAnimationMode;
 
   /// Affects the graphics so that they pass through the target instead of stopping
   /// 1 allows the projectile to pass through, a value of 0 stops the projectile.
   /// Only affects graphic not pass through damage.
-  char PenetrationMode;
+  int8_t PenetrationMode;
 
-  char Unknown24;
+  int8_t Unknown24;
 
   /// Determines the arc a projectile follows.
   /// Enter a non-negative value.

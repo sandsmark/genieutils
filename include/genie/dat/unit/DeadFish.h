@@ -39,15 +39,15 @@ public:
 
   std::pair<int16_t, int16_t> WalkingGraphic;
   float RotationSpeed;
-  char Unknown11;
+  int8_t Unknown11;
   int16_t TrackingUnit;
-  char TrackingUnitUsed;
+  int8_t TrackingUnitUsed;
   float TrackingUnitDensity;
   float Unknown12;//not in aoe/ror
 
-  char Unknown16;
+  int8_t Unknown16;
   static const unsigned short UNKNOWN16B_SIZE = 16;
-  std::array<char, UNKNOWN16B_SIZE> Unknown16B;
+  std::array<int8_t, UNKNOWN16B_SIZE> Unknown16B;
 
 private:
   virtual void serializeObject(void);

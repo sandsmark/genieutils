@@ -53,17 +53,17 @@ void DeadFish::serializeObject(void)
 {
   serialize<int16_t>(WalkingGraphic);
   serialize<float>(RotationSpeed);
-  serialize<char>(Unknown11);
+  serialize<int8_t>(Unknown11);
   serialize<int16_t>(TrackingUnit);
-  serialize<char>(TrackingUnitUsed);
+  serialize<int8_t>(TrackingUnitUsed);
   serialize<float>(TrackingUnitDensity);
 
   if (getGameVersion() >= genie::GV_AoK)
     serialize<float>(Unknown12);
 
-  serialize<char>(Unknown16);
+  serialize<int8_t>(Unknown16);
   if (getGameVersion() >= genie::GV_AoK)
-    serialize<char, UNKNOWN16B_SIZE>(Unknown16B);
+    serialize<int8_t, UNKNOWN16B_SIZE>(Unknown16B);
 }
 
 }

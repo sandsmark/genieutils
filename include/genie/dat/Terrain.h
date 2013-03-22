@@ -45,11 +45,11 @@ public:
   int32_t BlendPriority;//not in aoe/ror
   int32_t BlendType; //not in aoe/ror
 
-  std::array<unsigned char, 3> Colors;
-  std::array<char, 5> Unknown5;
+  std::array<uint8_t, 3> Colors;
+  std::array<int8_t, 5> Unknown5;
   float Unknown6;
   static const unsigned short UNKNOWN7_SIZE = 18;
-  std::array<char, UNKNOWN7_SIZE> Unknown7;
+  std::array<int8_t, UNKNOWN7_SIZE> Unknown7;
   int16_t FrameCount;
   int16_t AngleCount;
   int16_t TerrainID;
@@ -69,12 +69,12 @@ public:
 
   /// If two terrain units are to be placed on same spot, this selects which one will prevail others.
   /// 1 = prevails, others don't.
-  std::array<char, TERRAIN_UNITS_SIZE> TerrainUnitPriority;
+  std::array<int8_t, TERRAIN_UNITS_SIZE> TerrainUnitPriority;
 
   int16_t NumberOfTerrainUnitsUsed;
 
   static const unsigned short SWGBUNKNOWN1_SIZE = 24;
-  std::array<char, SWGBUNKNOWN1_SIZE> SWGBUnknown1;
+  std::array<int8_t, SWGBUNKNOWN1_SIZE> SWGBUnknown1;
 
 private:
   virtual void serializeObject(void);

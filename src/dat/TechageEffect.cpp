@@ -47,7 +47,7 @@ void TechageEffect::setGameVersion(GameVersion gv)
 //------------------------------------------------------------------------------
 void TechageEffect::serializeObject(void)
 {
-  serialize<char>(Type);
+  serialize<int8_t>(Type);
   serialize<int16_t>(A);  //unit (TODO)
   serialize<int16_t>(B);  //class
   serialize<int16_t>(C);  //attribute

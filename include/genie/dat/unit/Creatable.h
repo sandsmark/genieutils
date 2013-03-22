@@ -45,14 +45,14 @@ public:
   std::array<ResourceCost, RESOURCECOSTS_SIZE> ResourceCosts;
   int16_t TrainTime;
   int16_t TrainLocationID;
-  char ButtonID;
+  int8_t ButtonID;
   int32_t Unknown26;//not in aoe/ror
   int32_t Unknown27;//not in aoe/ror
-  char MissileGraphicDelay;//not in aoe/ror
-  char HeroMode;//not in aoe/ror
+  int8_t MissileGraphicDelay;//not in aoe/ror
+  int8_t HeroMode;//not in aoe/ror
   std::pair<int16_t, int16_t> GarrisonGraphic; //not in aoe/ror
   float AttackMissileDuplicationAmount1;//not in aoe/ror
-  char AttackMissileDuplicationAmount2;//not in aoe/ror
+  int8_t AttackMissileDuplicationAmount2;//not in aoe/ror
 
   static const unsigned short AMDBUNKNOWN_SIZE = 3;
   /// The area from which projectiles spawn. Size and randomness.
@@ -70,7 +70,7 @@ public:
     wall end piece, but if a wall is placed between two other walls, it will
     have a different graphic.
    */
-  char Unknown29;//not in aoe/ror
+  int8_t Unknown29;//not in aoe/ror
   int16_t DisplayedPierceArmour;
 
 private:

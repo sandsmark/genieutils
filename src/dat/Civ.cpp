@@ -51,7 +51,7 @@ unsigned short Civ::getNameSize(void)
 
 void Civ::serializeObject(void)
 {
-  serialize<char>(One); //TODO: enabled flag
+  serialize<int8_t>(One); //TODO: enabled flag
   serialize<std::string>(Name, getNameSize());
   serializeSize<uint16_t>(ResourceCount, Resources.size());
   serialize<int16_t>(TechTreeID);
@@ -69,7 +69,7 @@ void Civ::serializeObject(void)
 
   serialize<float>(Resources, ResourceCount);
 
-  serialize<char>(GraphicSet);
+  serialize<int8_t>(GraphicSet);
 
   serializeSize<uint16_t>(UnitCount, UnitPointers.size());
   serialize<int32_t>(UnitPointers, UnitCount);

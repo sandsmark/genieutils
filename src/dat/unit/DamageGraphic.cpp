@@ -47,9 +47,9 @@ void DamageGraphic::setGameVersion(GameVersion gv)
 void DamageGraphic::serializeObject(void)
 {
   serialize<int16_t>(GraphicID);
-  serialize<char>(DamagePercent);
-  serialize<char>(Unknown1);
-  serialize<char>(Unknown2);
+  serialize<int8_t>(DamagePercent);
+  serialize<int8_t>(Unknown1);
+  serialize<int8_t>(Unknown2);
 }
 
 }

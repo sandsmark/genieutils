@@ -41,13 +41,13 @@ public:
   int16_t SnowGraphicID; //not in aok/aoe/ror
   /// Enabler for annex units.
   int16_t AdjacentMode;
-  char Unknown31;
-  char Unknown31b;
+  int8_t Unknown31;
+  int8_t Unknown31b;
   int16_t StackUnitID;
   int16_t TerrainID;
   int16_t Unknown32;
   int16_t ResearchID;
-  char Unknown33;
+  int8_t Unknown33;
 
   static const unsigned short BUILDING_ANNEXES_SIZE = 4;
   std::array<unit::BuildingAnnex, BUILDING_ANNEXES_SIZE> Annexes;
@@ -55,14 +55,14 @@ public:
   int16_t TransformUnit;
   int16_t Unknown34;
   int16_t ConstructionSound;
-  char GarrisonType;
+  int8_t GarrisonType;
   float GarrisonHealRate;
   int32_t Unknown35;
 
   /// Related to annexes in any way?
   /// Widespread usage in the AoK alpha 09.07.0222
   static const unsigned short ALFATHING_SIZE = 8;
-  std::array<char, ALFATHING_SIZE> AlfaThingy;
+  std::array<int8_t, ALFATHING_SIZE> AlfaThingy;
 
 private:
   virtual void serializeObject(void);

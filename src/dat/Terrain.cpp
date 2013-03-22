@@ -95,10 +95,10 @@ void Terrain::serializeObject(void)
     serialize<int32_t>(BlendType);
   }
 
-  serialize<unsigned char, 3>(Colors);
-  serialize<char, 5>(Unknown5);
+  serialize<uint8_t, 3>(Colors);
+  serialize<int8_t, 5>(Unknown5);
   serialize<float>(Unknown6);
-  serialize<char, UNKNOWN7_SIZE>(Unknown7);
+  serialize<int8_t, UNKNOWN7_SIZE>(Unknown7);
   serialize<int16_t>(FrameCount);
   serialize<int16_t>(AngleCount);
   serialize<int16_t>(TerrainID);
@@ -109,11 +109,11 @@ void Terrain::serializeObject(void)
 
   serialize<int16_t, TERRAIN_UNITS_SIZE>(TerrainUnitID);
   serialize<int16_t, TERRAIN_UNITS_SIZE>(TerrainUnitDensity);
-  serialize<char, TERRAIN_UNITS_SIZE>(TerrainUnitPriority);
+  serialize<int8_t, TERRAIN_UNITS_SIZE>(TerrainUnitPriority);
   serialize<int16_t>(NumberOfTerrainUnitsUsed);
 
   if (getGameVersion() >= genie::GV_SWGB)
-    serialize<char, SWGBUNKNOWN1_SIZE>(SWGBUnknown1);
+    serialize<int8_t, SWGBUNKNOWN1_SIZE>(SWGBUnknown1);
 }
 
 }

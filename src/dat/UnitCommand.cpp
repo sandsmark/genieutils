@@ -67,7 +67,7 @@ void UnitCommand::serializeObject(void)
 {
   serialize<int16_t>(One);
   serialize<int16_t>(ID);
-  serialize<char>(Unknown1);
+  serialize<int8_t>(Unknown1);
   serialize<int16_t>(Type);
   serialize<int16_t>(ClassID);
   serialize<int16_t>(UnitID);
@@ -79,14 +79,14 @@ void UnitCommand::serializeObject(void)
   serialize<float>(WorkRateMultiplier);
   serialize<float>(ExecutionRadius);
   serialize<float>(ExtraRange);
-  serialize<char>(Unknown4);
+  serialize<int8_t>(Unknown4);
   serialize<float>(Unknown5);
-  serialize<char>(Unknown6);
-  serialize<char>(Unknown7);
+  serialize<int8_t>(Unknown6);
+  serialize<int8_t>(Unknown7);
   serialize<int32_t>(Unknown8);
-  serialize<char>(Unknown9);
-  serialize<char>(Unknown10);
-  serialize<char>(Unknown11);
+  serialize<int8_t>(Unknown9);
+  serialize<int8_t>(Unknown10);
+  serialize<int8_t>(Unknown11);
   serialize<int16_t, GRAPHICS_SIZE>(Graphics);
 }
 

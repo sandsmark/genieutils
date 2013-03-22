@@ -35,7 +35,7 @@ public:
   virtual void setGameVersion(GameVersion gv);
 
   /// Always one
-  char One;
+  int8_t One;
 
   /// Returns size for both names
   static unsigned short getNameSize();
@@ -55,7 +55,7 @@ public:
   /// Resources can easily added and removed using this vector.
   std::vector<float> Resources;
 
-  char GraphicSet;
+  int8_t GraphicSet;
 
   std::vector<int32_t> UnitPointers;
 

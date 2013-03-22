@@ -45,7 +45,7 @@ void UnitHeader::setGameVersion(GameVersion gv)
 //------------------------------------------------------------------------------
 void UnitHeader::serializeObject(void)
 {
-  serialize<char>(Exists);
+  serialize<int8_t>(Exists);
 
   if (Exists)
   {

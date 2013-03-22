@@ -34,7 +34,7 @@ public:
 
   int16_t One;
   int16_t ID;
-  char Unknown1;
+  int8_t Unknown1;
   int16_t Type;
   int16_t ClassID;
   int16_t UnitID;
@@ -46,14 +46,14 @@ public:
   float WorkRateMultiplier;
   float ExecutionRadius;
   float ExtraRange;
-  char Unknown4;
+  int8_t Unknown4;
   float Unknown5;
-  char Unknown6;
-  char Unknown7;
+  int8_t Unknown6;
+  int8_t Unknown7;
   int32_t Unknown8;
-  char Unknown9;
-  char Unknown10;
-  char Unknown11;
+  int8_t Unknown9;
+  int8_t Unknown10;
+  int8_t Unknown11;
 
   static const unsigned short GRAPHICS_SIZE = 6;
   std::array<int16_t, GRAPHICS_SIZE> Graphics;

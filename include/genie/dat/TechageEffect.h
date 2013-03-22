@@ -36,7 +36,7 @@ public:
   virtual void setGameVersion(GameVersion gv);
 
   //  DO NOT ALTER THESE! Unless you test that the game won't crash.
-  char Type;
+  int8_t Type;
   int16_t A;
   int16_t B;
   int16_t C;

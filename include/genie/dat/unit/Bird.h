@@ -43,11 +43,11 @@ public:
   std::pair<int16_t, int16_t> DropSite;
 
   /// If activated unit switches villager types
-  char VillagerMode;
+  int8_t VillagerMode;
   int16_t AttackSound;
   int16_t MoveSound;
   /// Some animals have this.
-  char AnimalMode;
+  int8_t AnimalMode;
   std::vector<UnitCommand> Commands;//only in aoe/ror
 
 private:

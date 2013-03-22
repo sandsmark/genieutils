@@ -36,9 +36,9 @@ public:
   virtual void setGameVersion(GameVersion gv);
 
   int16_t GraphicID;
-  char DamagePercent;
-  char Unknown1; // 1 in AoE and RoR
-  char Unknown2;
+  int8_t DamagePercent;
+  int8_t Unknown1; // 1 in AoE and RoR
+  int8_t Unknown2;
 
 private:
   virtual void serializeObject(void);

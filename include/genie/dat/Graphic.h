@@ -56,8 +56,8 @@ public:
   int32_t SLP;
 
   //TODO
-  char Unknown1;
-  char Unknown2;
+  int8_t Unknown1;
+  int8_t Unknown2;
 
   /// The layer describes order of graphics being rendered.
   /// Possible values: 0 (lowest layer) to 40 (highest layer)
@@ -65,20 +65,20 @@ public:
   /// layer. If graphics share the same layer, graphics will be displayed
   /// dependend on their map positions.
   ///
-  char Layer;
+  int8_t Layer;
 
   /// Setting this to 0 forces the player color to be blue.
   int16_t PlayerColor;
 
   /// Will the graphic be looped.
-  char Replay;
+  int8_t Replay;
 
   static const unsigned short COORDINATES_SIZE = 4;
   /// TODO: What kind of coordinates?
   std::array<int16_t, COORDINATES_SIZE> Coordinates;
 
   int16_t SoundID;
-  char AttackSoundUsed;
+  int8_t AttackSoundUsed;
 
   /// Number of frames per angle animation
   uint16_t FrameCount;
@@ -98,9 +98,9 @@ public:
   /// Time to wait until the animation sequence is started again.
   float ReplayDelay;
 
-  char SequenceType;
+  int8_t SequenceType;
   int16_t ID;
-  int16_t MirroringMode;//char in aoe/ror //TODO: Mirroring mode?
+  int16_t MirroringMode;//int8_t in aoe/ror
 
   std::vector<GraphicDelta> Deltas;
   std::vector<GraphicAttackSound> AttackSounds;

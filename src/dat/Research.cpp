@@ -88,7 +88,7 @@ void Research::serializeObject(void)
   serialize<int16_t>(TechageID);
   serialize<int16_t>(Type);
   serialize<int16_t>(IconID);
-  serialize<char>(ButtonID);
+  serialize<int8_t>(ButtonID);
   serialize<int32_t>(LanguageDLLHelp);
   serialize<int32_t>(LanguageDLLName2);
   serialize<int32_t>(Unknown1);
