@@ -4,18 +4,19 @@
 #include <fstream>
 #include <genie/resource/SlpFile.h>
 #include <genie/resource/SlpFrame.h>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Window/Event.hpp>
+#include <SFML/Graphics/Texture.hpp> 
 #include "genie/resource/DrsFile.h" 
 #include "genie/resource/SlpFile.h" 
 #include "genie/resource/Color.h"
 #include <genie/script/ScnFile.h>
 #include <genie/file/Compressor.h>
 #include <genie/lang/LangFile.h>
-#include <genie/dat/Research.h>
-#include <genie/dat/DatFile.h>
 #include <boost/iostreams/copy.hpp>
 #include <boost/smart_ptr.hpp>
 
-/*
 sf::Image createSfImage(uint32_t width, uint32_t height, const uint8_t* pixels, 
                         genie::PalFilePtr palette, uint8_t transparent_pixel)
 {
@@ -44,10 +45,10 @@ sf::Image createSfImage(genie::SlpFramePtr frame, genie::PalFilePtr palette)
                        frame->getPixelIndexes(), palette, 
                        frame->getTransparentPixelIndex());
 }
-*/
+
 
 void testDrs()
-{/*
+{
   genie::DrsFile interfac;
   
   interfac.setGameVersion(genie::GV_AoK);
@@ -112,7 +113,7 @@ void testDrs()
 
       // Display window contents on screen
       App.display();
-  }*/
+  }
 }
 
 void testScn()
@@ -135,7 +136,7 @@ void testScn()
 //   std::cout << scn.resource.bitmapIncluded << std::endl;
   std::cout << "Bitmap byte size: " << scn.resource.bitmapByteSize << std::endl;
   
-  //sf::Image img;
+  sf::Image img;
   
   //std::cout << "AI Name 0: " << scn.playerData2.aiNames[0] << std::endl;
   //std::cout << "AI Name 15: " << scn.playerData2.aiNames[15] << std::endl;
@@ -208,29 +209,7 @@ int main(int argc, char **argv) {
 //   testDrs();
   
 //   testScn();
-//   testLang();
-  
-  genie::ISerializable::setDefaultGameVersion(genie::GV_AoK);
-  genie::Research rs;
-  
-  std::vector<genie::Research> vec;
-  vec.push_back(rs);
-  vec.push_back(rs);
-  vec.push_back(rs);
-  
-  genie::DatFile df;
-  df.load("empires2.dat");
-  
-  std::cout << df.getGameVersion() << std::endl;
-  std::cout << rs.getGameVersion() << std::endl;
-  
-  genie::ISerializable::updateGameVersion(genie::GV_CC, vec);
-  
-  std::cout << vec[1].getGameVersion() << std::endl;
-  
-  df.Civs[0].setGameVersion(genie::GV_SWGB);
-  
-  std::cout << df.Civs[0].Units[0].getGameVersion() << std::endl;
+  testLang();
   
   /*
   std::ifstream ifs;

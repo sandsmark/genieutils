@@ -1,6 +1,6 @@
 /*
     genieutils - <description>
-    Copyright (C) 2011 - 2013  Armin Preiml <email>
+    Copyright (C) 2011  Armin Preiml <email>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -23,7 +23,7 @@
 #include <genie/util/Logger.h>
 #include <iconv.h>
 
-class Pcr_file;
+struct pcr_file;
 
 namespace genie
 {
@@ -75,7 +75,7 @@ private:
   
   static Logger &log;
   
-  Pcr_file *pfile_;
+  struct pcr_file *pfile_;
   
   uint32_t defaultCultureId_;
   uint32_t defaultCodepage_;
