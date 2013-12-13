@@ -11,6 +11,8 @@ set(Genieutils_LIBRARY genieutils)
 project(genieutils)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake/)
+set(ICONV_LIBRARIES "C:/Cpp/mingw64/x86_64-w64-mingw32/lib32/libiconv.a")
+set(ICONV_INCLUDE_DIR "C:/Cpp/mingw64/x86_64-w64-mingw32/include")
 set(CMAKE_CXX_FLAGS "-std=gnu++0x")
 
 # dependencies:

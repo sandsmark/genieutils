@@ -23,7 +23,6 @@
 
 #include <string>
 #include <iostream>
-#include <auto_ptr.h>
 
 #include "genie/Types.h"
 #include "genie/file/IFile.h"
