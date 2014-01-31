@@ -37,8 +37,7 @@ public:
   virtual ~Projectile();
   virtual void setGameVersion(GameVersion gv);
 
-  int8_t Unknown20; //2 //aoe/ror 1, aok 1, tc 2
-  int8_t Unknown20_1;
+  int16_t DefaultArmor; // uint8_t below TC
   std::vector<unit::AttackOrArmor> Attacks;
   std::vector<unit::AttackOrArmor> Armours;
   int16_t Unknown21;
@@ -57,7 +56,7 @@ public:
   static const unsigned short GRAPHICDISPLACEMENT_SIZE = 3;
   std::array<float, GRAPHICDISPLACEMENT_SIZE> GraphicDisplacement;
 
-  int8_t Unknown23;
+  int8_t BlastLevel;
   float MinRange;
   float GarrisonRecoveryRate;
   int16_t AttackGraphic;

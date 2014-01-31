@@ -56,7 +56,7 @@ void PlayerColour::serializeObject(void)
 
   if (getGameVersion() < genie::GV_AoKA)
   {
-    short col_short = Colour;
+    int16_t col_short = Colour;
     serialize<int16_t>(col_short);
     Colour = col_short;
   }
