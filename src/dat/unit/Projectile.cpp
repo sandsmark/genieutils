@@ -28,8 +28,7 @@ namespace unit
 
 Projectile::Projectile() : GraphicDisplacement()
 {
-  Unknown20 = 0;
-  Unknown20_1 = 0;
+  DefaultArmor = 1000;
   Unknown21 = -1;
   MaxRange = 0;
   BlastRadius = 0;
@@ -38,7 +37,7 @@ Projectile::Projectile() : GraphicDisplacement()
   AccuracyPercent = 0;
   TowerMode = 0;
   Delay = 0;
-  Unknown23 = 0;
+  BlastLevel = 0;
   MinRange = 0;
   GarrisonRecoveryRate = 0;
   AttackGraphic = -1;
@@ -63,10 +62,16 @@ void Projectile::setGameVersion(GameVersion gv)
 
 void Projectile::serializeObject(void)
 {
-  serialize<int8_t>(Unknown20);
-
-  if (getGameVersion() >= genie::GV_TC)
-    serialize<int8_t>(Unknown20_1);
+  if (getGameVersion() < genie::GV_TC)
+  {
+    uint8_t defarmor_byte = DefaultArmor;
+    serialize<uint8_t>(defarmor_byte);
+    DefaultArmor = defarmor_byte;
+  }
+  else
+  {
+    serialize<int16_t>(DefaultArmor);
+  }
 
   serializeSize<uint16_t>(AttackCount, Attacks.size());
   serializeSub<unit::AttackOrArmor>(Attacks, AttackCount);
@@ -83,7 +88,7 @@ void Projectile::serializeObject(void)
   serialize<int8_t>(TowerMode);
   serialize<int16_t>(Delay); //TODO: missle graphic delay
   serialize<float, GRAPHICDISPLACEMENT_SIZE>(GraphicDisplacement);
-  serialize<int8_t>(Unknown23); //TODO: AoE/RoR blast level
+  serialize<int8_t>(BlastLevel);
   serialize<float>(MinRange);
 
   if (getGameVersion() >= genie::GV_AoK)
