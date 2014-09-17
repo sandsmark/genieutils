@@ -35,8 +35,7 @@ Creatable::Creatable() : ResourceCosts(), AttackMissileDuplicationSpawning()
   Unknown27 = 0;
   MissileGraphicDelay = 0;
   HeroMode = 0;
-  GarrisonGraphic.first = -1;
-  GarrisonGraphic.second = -1;
+  GarrisonGraphic = -1;
   AttackMissileDuplicationAmount1 = 1;
   AttackMissileDuplicationAmount2 = 1;
   AttackMissileDuplicationUnit = -1;
@@ -76,7 +75,7 @@ void Creatable::serializeObject(void)
     if (getGameVersion() >= genie::GV_AoK)
     {
       serialize<int8_t>(HeroMode);
-      serialize<int16_t>(GarrisonGraphic);
+      serialize<int32_t>(GarrisonGraphic);
     }
 
     serialize<float>(AttackMissileDuplicationAmount1);

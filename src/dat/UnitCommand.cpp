@@ -34,20 +34,21 @@ UnitCommand::UnitCommand()
   UnitID = -1;
   Unknown2 = -1;
   ResourceIn = -1;
-  SubType = -1;
+  ResourceProductivityMultiplier = -1;
   ResourceOut = -1;
-  Unknown3 = -1;
+  Resource = -1;
   WorkRateMultiplier = 0;
   ExecutionRadius = 0;
   ExtraRange = 0;
   Unknown4 = 1;
   Unknown5 = 3;
-  Unknown6 = 1;
+  SelectionEnabler = 1;
   Unknown7 = 1;
   Unknown8 = 1;
-  Unknown9 = 5;
-  Unknown10 = 0;
+  Unknown9 = 0;
+  SelectionMode = 5;
   Unknown11 = 0;
+  Unknown12 = 0;
   Graphics.fill(-1);
 }
 
@@ -73,20 +74,21 @@ void UnitCommand::serializeObject(void)
   serialize<int16_t>(UnitID);
   serialize<int16_t>(Unknown2);
   serialize<int16_t>(ResourceIn);
-  serialize<int16_t>(SubType);
+  serialize<int16_t>(ResourceProductivityMultiplier);
   serialize<int16_t>(ResourceOut);
-  serialize<int16_t>(Unknown3);
+  serialize<int16_t>(Resource);
   serialize<float>(WorkRateMultiplier);
   serialize<float>(ExecutionRadius);
   serialize<float>(ExtraRange);
   serialize<int8_t>(Unknown4);
   serialize<float>(Unknown5);
-  serialize<int8_t>(Unknown6);
+  serialize<int8_t>(SelectionEnabler);
   serialize<int8_t>(Unknown7);
-  serialize<int32_t>(Unknown8);
-  serialize<int8_t>(Unknown9);
-  serialize<int8_t>(Unknown10);
+  serialize<int16_t>(Unknown8);
+  serialize<int16_t>(Unknown9);
+  serialize<int8_t>(SelectionMode);
   serialize<int8_t>(Unknown11);
+  serialize<int8_t>(Unknown12);
   serialize<int16_t, GRAPHICS_SIZE>(Graphics);
 }
 

@@ -212,7 +212,7 @@ public:
 
   /// 0 square, 1+ circle
   int8_t SelectionShape;
-  int8_t Attribute;
+  uint8_t Attribute;
   /// Seems to be used only in SWGB/CC
   int8_t Civilization;
   int16_t Unknown9;

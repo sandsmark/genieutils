@@ -35,6 +35,7 @@ Graphic::Graphic() : Coordinates(), CstrName(0), CstrName2(0)
   Unknown2 = 0;
   Layer = 0;
   PlayerColor = -1;
+  Rainbow = -1;
   Replay = 0;
   SoundID = -1;
   AttackSoundUsed = 0;
@@ -91,6 +92,7 @@ Graphic &Graphic::operator=(const Graphic &other)
   Unknown2 = other.Unknown2;
   Layer = other.Layer;
   PlayerColor = other.PlayerColor;
+  Rainbow = other.Rainbow;
   Replay = other.Replay;
   Coordinates = other.Coordinates;
   DeltaCount = other.DeltaCount;
@@ -159,7 +161,8 @@ void Graphic::serializeObject(void)
   serialize<int8_t>(Unknown1);
   serialize<int8_t>(Unknown2); /// TODO: priority?
   serialize<int8_t>(Layer);
-  serialize<int16_t>(PlayerColor);
+  serialize<int8_t>(PlayerColor);
+  serialize<int8_t>(Rainbow);
   serialize<int8_t>(Replay);
 
   serialize<int16_t, COORDINATES_SIZE>(Coordinates);

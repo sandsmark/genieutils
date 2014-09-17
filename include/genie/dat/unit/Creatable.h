@@ -50,7 +50,7 @@ public:
   int32_t Unknown27;//not in aoe/ror
   int8_t MissileGraphicDelay;//not in aoe/ror
   int8_t HeroMode;//not in aoe/ror
-  std::pair<int16_t, int16_t> GarrisonGraphic; //not in aoe/ror
+  int32_t GarrisonGraphic; //not in aoe/ror
   float AttackMissileDuplicationAmount1;//not in aoe/ror
   int8_t AttackMissileDuplicationAmount2;//not in aoe/ror
 

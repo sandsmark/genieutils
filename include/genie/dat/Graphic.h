@@ -68,7 +68,8 @@ public:
   int8_t Layer;
 
   /// Setting this to 0 forces the player color to be blue.
-  int16_t PlayerColor;
+  int8_t PlayerColor;
+  int8_t Rainbow;
 
   /// Will the graphic be looped.
   int8_t Replay;

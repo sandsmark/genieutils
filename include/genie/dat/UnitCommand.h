@@ -40,20 +40,21 @@ public:
   int16_t UnitID;
   int16_t Unknown2;
   int16_t ResourceIn;
-  int16_t SubType;
+  int16_t ResourceProductivityMultiplier;
   int16_t ResourceOut;
-  int16_t Unknown3;
+  int16_t Resource;
   float WorkRateMultiplier;
   float ExecutionRadius;
   float ExtraRange;
   int8_t Unknown4;
   float Unknown5;
-  int8_t Unknown6;
+  int8_t SelectionEnabler;
   int8_t Unknown7;
-  int32_t Unknown8;
-  int8_t Unknown9;
-  int8_t Unknown10;
+  int16_t Unknown8;
+  int16_t Unknown9;
+  int8_t SelectionMode;
   int8_t Unknown11;
+  int8_t Unknown12;
 
   static const unsigned short GRAPHICS_SIZE = 6;
   std::array<int16_t, GRAPHICS_SIZE> Graphics;

@@ -203,7 +203,7 @@ void Unit::serializeObject(void)
 
   if (getGameVersion() >= genie::GV_TC)
   {
-    serialize<int8_t>(Attribute);
+    serialize<uint8_t>(Attribute);
     serialize<int8_t>(Civilization);
     serialize<int16_t>(Unknown9);
   }
