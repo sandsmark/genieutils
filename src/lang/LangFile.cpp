@@ -23,7 +23,7 @@
 #include <iconv.h>
 #include <errno.h>
 
-#include "pcrio/pcrio.h"
+#include "../../extern/pcrio/pcrio.h"
 
 namespace genie
 {
@@ -98,18 +98,18 @@ void LangFile::load(const char *filename) throw (std::ios_base::failure)
   
   std::stringstream cName;
   
-  const struct pcr_language *lang = pcr_get_default_language(pfile_);
+  const Pcr_language *lang = pcr_get_default_language(pfile_);
   
   if (!lang)
   {
     log.info("Trying to choose default language...");
     
-    const struct language_info_array *linfos = pcr_get_language_info(pfile_);
+    const Language_info_array *linfos = pcr_get_language_info(pfile_);
     
     if (linfos->count == 0)
       throw std::string("Not supported: There are no resources in dll file");
     
-    struct language_info *linfo = &linfos->array[0];
+    Language_info *linfo = &linfos->array[0];
     
     // Get most common language desc
     for (unsigned int i=1; i<linfos->count; i++)
@@ -213,7 +213,7 @@ void LangFile::setString(unsigned int id, std::string str)
   
   log.info("| Convert from \"%s\" to \"%s\".", str.c_str(), encodedStr.c_str());
   
-  struct pcr_language lang;
+  struct Pcr_language lang;
   lang.id = defaultCultureId_;
   lang.codepage = defaultCodepage_;
   

@@ -11,8 +11,13 @@ set(Genieutils_LIBRARY genieutils)
 project(genieutils)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake/)
-set(ICONV_LIBRARIES "C:/Cpp/mingw32/i686-w64-mingw32/lib/libiconv.a")
-set(ICONV_INCLUDE_DIR "C:/Cpp/mingw32/i686-w64-mingw32/include")
+if (WIN32)
+	set(ICONV_LIBRARIES "C:/Cpp/mingw32/i686-w64-mingw32/lib/libiconv.a")
+	set(ICONV_INCLUDE_DIR "C:/Cpp/mingw32/i686-w64-mingw32/include")
+else()
+	find_library(iconv REQUIRED)
+endif()
+
 set(CMAKE_CXX_FLAGS "-std=gnu++0x")
 
 # dependencies:
@@ -73,8 +78,8 @@ set(FILE_SRC
     )
 
 if (${GU_LANG_SUPPORT})
-  set(PCRIO_SRC extern/pcrio/pcrio.c)
-  set_source_files_properties(extern/pcrio/pcrio.c PROPERTIES LANGUAGE CXX)
+  set(PCRIO_SRC extern/pcrio/pcrio.cpp)
+  set_source_files_properties(extern/pcrio/pcrio.cpp PROPERTIES LANGUAGE CXX)
 
   set(LANG_SRC ${PCRIO_SRC}
       src/lang/LangFile.cpp
