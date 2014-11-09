@@ -35,9 +35,9 @@ public:
   int32_t HostTerrain;
   static const unsigned short UNKNOWN3_SIZE = 4;
   std::array<int8_t, UNKNOWN3_SIZE> Unknown3;
-  int32_t ObjectsPerPlayer;
+  int32_t ObjectsPerGroup;
   int32_t Fluctuation;
-  int32_t GroupsPerGroup;
+  int32_t GroupsPerPlayer;
   int32_t GroupRadius;
   int32_t OwnAtStart;
   int32_t SetPlaceForAllPlayers;
