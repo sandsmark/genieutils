@@ -41,7 +41,7 @@ public:
   int16_t SnowGraphicID; //not in aok/aoe/ror
   /// Enabler for annex units.
   int16_t AdjacentMode;
-  int8_t Unknown31;
+  int8_t IconDisabler;
   int8_t Unknown31b;
   int16_t StackUnitID;
   int16_t TerrainID;

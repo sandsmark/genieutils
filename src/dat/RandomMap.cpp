@@ -251,9 +251,9 @@ MapUnit::MapUnit() : Unknown3()
   Unit = -1;
   HostTerrain = -1;
   ObjectsPerPlayer = 1;
-  Unknown5 = 0;
-  GroupsPerPlayer = 1;
-  Unknown7 = 1;
+  Fluctuation = 0;
+  GroupsPerGroup = 1;
+  GroupRadius = 1;
   OwnAtStart = 0;
   SetPlaceForAllPlayers = 1;
   MinDistanceToPlayers = 2;
@@ -278,9 +278,9 @@ void MapUnit::serializeObject(void)
   serialize<int32_t>(HostTerrain);
   serialize<int8_t, UNKNOWN3_SIZE>(Unknown3);
   serialize<int32_t>(ObjectsPerPlayer);
-  serialize<int32_t>(Unknown5);
-  serialize<int32_t>(GroupsPerPlayer);
-  serialize<int32_t>(Unknown7);
+  serialize<int32_t>(Fluctuation);
+  serialize<int32_t>(GroupsPerGroup);
+  serialize<int32_t>(GroupRadius);
   serialize<int32_t>(OwnAtStart);
   serialize<int32_t>(SetPlaceForAllPlayers);
   serialize<int32_t>(MinDistanceToPlayers);

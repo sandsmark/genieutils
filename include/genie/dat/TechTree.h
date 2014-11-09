@@ -74,7 +74,7 @@ public:
   std::vector<int32_t> Researches;
 
   int32_t Unknown3; //Always 1
-  int32_t Unknown4; //Second Age ID?
+  int32_t SecondAgeNumber; //Second Age ID?
 
   unsigned short getZeroesSize();
 
@@ -217,7 +217,7 @@ public:
   /// 0 Hidden, 1 First, 2 Second.
   int32_t LocationInAge;
   /// 0 First Age. Others.
-  int32_t Unknown9;
+  int32_t FirstAgeMode;
 
 private:
   uint8_t building_count_;

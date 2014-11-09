@@ -23,14 +23,14 @@
 namespace genie
 {
 
-Civ::Civ() : SUnknown1()
+Civ::Civ() : UniqueUnitsResearches()
 {
   One = 1;
   Name = "";
   Name2 = "";
   TechTreeID = -1;
   TeamBonusID = -1;
-  GraphicSet = 0;
+  IconSet = 0;
 }
 
 Civ::~Civ()
@@ -63,13 +63,13 @@ void Civ::serializeObject(void)
     if (getGameVersion() >= genie::GV_SWGB)
     {
       serialize<std::string>(Name2, getNameSize());
-      serialize<int16_t, SWUNKNOWN_SIZE>(SUnknown1);
+      serialize<int16_t, SWUNIQUE_SIZE>(UniqueUnitsResearches);
     }
   }
 
   serialize<float>(Resources, ResourceCount);
 
-  serialize<int8_t>(GraphicSet);
+  serialize<int8_t>(IconSet);
 
   serializeSize<uint16_t>(UnitCount, UnitPointers.size());
   serialize<int32_t>(UnitPointers, UnitCount);

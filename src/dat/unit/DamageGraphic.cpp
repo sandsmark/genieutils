@@ -30,7 +30,7 @@ DamageGraphic::DamageGraphic()
 {
   GraphicID = -1;
   DamagePercent = 0;
-  Unknown1 = 0;
+  ApplyMode = 0;
   Unknown2 = 0;
 }
 
@@ -48,7 +48,7 @@ void DamageGraphic::serializeObject(void)
 {
   serialize<int16_t>(GraphicID);
   serialize<int8_t>(DamagePercent);
-  serialize<int8_t>(Unknown1);
+  serialize<int8_t>(ApplyMode);
   serialize<int8_t>(Unknown2);
 }
 

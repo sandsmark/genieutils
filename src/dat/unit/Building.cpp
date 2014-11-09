@@ -31,7 +31,7 @@ Building::Building() : Annexes(), AlfaThingy()
   ConstructionGraphicID = -1;
   SnowGraphicID = -1;
   AdjacentMode = 0;
-  Unknown31 = 0;
+  IconDisabler = 0;
   Unknown31b = 0;
   StackUnitID = -1;
   TerrainID = -1;
@@ -65,7 +65,7 @@ void Building::serializeObject(void)
     serialize<int16_t>(SnowGraphicID);
 
   serialize<int16_t>(AdjacentMode);
-  serialize<int8_t>(Unknown31);
+  serialize<int8_t>(IconDisabler);
   serialize<int8_t>(Unknown31b);
   serialize<int16_t>(StackUnitID);
   serialize<int16_t>(TerrainID);

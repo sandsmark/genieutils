@@ -55,15 +55,15 @@ public:
   /// Resources can easily added and removed using this vector.
   std::vector<float> Resources;
 
-  int8_t GraphicSet;
+  int8_t IconSet;
 
   std::vector<int32_t> UnitPointers;
 
   /// Units defined for this civ.
   std::vector<Unit> Units;
 
-  static const unsigned short SWUNKNOWN_SIZE = 4;
-  std::array<int16_t, SWUNKNOWN_SIZE> SUnknown1; // Unknown in >=SWGB (cnt=4)
+  static const unsigned short SWUNIQUE_SIZE = 4;
+  std::array<int16_t, SWUNIQUE_SIZE> UniqueUnitsResearches; // Unknown in >=SWGB (cnt=4)
 
 private:
   /// Number of resources defined for this civilization

@@ -43,7 +43,7 @@ public:
   int32_t MinimapColour; // not in aoe/ror
   int32_t Unknown3; // not in aoe/ror
   int32_t Unknown4; // not in aoe/ror
-  int32_t Unknown5; // not in aoe/ror
+  int32_t StatisticsText; // not in aoe/ror
 
 private:
   virtual void serializeObject(void);

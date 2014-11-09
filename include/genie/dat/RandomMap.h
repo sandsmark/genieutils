@@ -36,9 +36,9 @@ public:
   static const unsigned short UNKNOWN3_SIZE = 4;
   std::array<int8_t, UNKNOWN3_SIZE> Unknown3;
   int32_t ObjectsPerPlayer;
-  int32_t Unknown5;
-  int32_t GroupsPerPlayer;
-  int32_t Unknown7;
+  int32_t Fluctuation;
+  int32_t GroupsPerGroup;
+  int32_t GroupRadius;
   int32_t OwnAtStart;
   int32_t SetPlaceForAllPlayers;
   int32_t MinDistanceToPlayers;

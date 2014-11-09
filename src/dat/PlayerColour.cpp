@@ -34,7 +34,7 @@ PlayerColour::PlayerColour()
   MinimapColour = 0;
   Unknown3 = 0;
   Unknown4 = 0;
-  Unknown5 = 0;
+  StatisticsText = 0;
 }
 
 PlayerColour::~PlayerColour()
@@ -69,7 +69,7 @@ void PlayerColour::serializeObject(void)
     serialize<int32_t>(MinimapColour);
     serialize<int32_t>(Unknown3);
     serialize<int32_t>(Unknown4);
-    serialize<int32_t>(Unknown5);
+    serialize<int32_t>(StatisticsText);
   }
 }
 

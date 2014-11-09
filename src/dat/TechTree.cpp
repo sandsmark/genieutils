@@ -79,7 +79,7 @@ TechTreeAge::TechTreeAge()
   ID = 0;
   Unknown2 = 2;
   Unknown3 = 0;
-  Unknown4 = 0;
+  SecondAgeNumber = 0;
 }
 
 //------------------------------------------------------------------------------
@@ -120,7 +120,7 @@ void TechTreeAge::serializeObject(void)
   serialize<int32_t>(Researches, research_count_);
 
   serialize<int32_t>(Unknown3);
-  serialize<int32_t>(Unknown4);
+  serialize<int32_t>(SecondAgeNumber);
 
   serialize<int16_t>(Zeroes, getZeroesSize());
 }
@@ -296,7 +296,7 @@ ResearchConnection::ResearchConnection()
   LineMode = 0;
   VerticalLine = 0;
   LocationInAge = 0;
-  Unknown9 = 0;
+  FirstAgeMode = 0;
 }
 
 //------------------------------------------------------------------------------
@@ -358,7 +358,7 @@ void ResearchConnection::serializeObject(void)
 
   serialize<int32_t>(VerticalLine);
   serialize<int32_t>(LocationInAge);
-  serialize<int32_t>(Unknown9);
+  serialize<int32_t>(FirstAgeMode);
 }
 
 }

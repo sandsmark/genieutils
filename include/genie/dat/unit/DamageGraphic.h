@@ -37,7 +37,7 @@ public:
 
   int16_t GraphicID;
   int8_t DamagePercent;
-  int8_t Unknown1; // 1 in AoE and RoR
+  int8_t ApplyMode; // 1 in AoE and RoR
   int8_t Unknown2;
 
 private:
