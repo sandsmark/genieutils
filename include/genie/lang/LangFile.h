@@ -22,7 +22,8 @@
 #include <genie/file/IFile.h>
 #include <genie/util/Logger.h>
 #include <iconv.h>
-#include "../../../extern/pcrio/pcrio.h"
+
+struct pcr_file;
 
 namespace genie
 {
@@ -74,7 +75,7 @@ private:
   
   static Logger &log;
   
-  Pcr_file *pfile_;
+  struct pcr_file *pfile_;
   
   uint32_t defaultCultureId_;
   uint32_t defaultCodepage_;

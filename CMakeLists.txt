@@ -78,8 +78,8 @@ set(FILE_SRC
     )
 
 if (${GU_LANG_SUPPORT})
-  set(PCRIO_SRC extern/pcrio/pcrio.cpp)
-  set_source_files_properties(extern/pcrio/pcrio.cpp PROPERTIES LANGUAGE CXX)
+  set(PCRIO_SRC extern/pcrio/pcrio.c)
+  set_source_files_properties(extern/pcrio/pcrio.c PROPERTIES LANGUAGE CXX)
 
   set(LANG_SRC ${PCRIO_SRC}
       src/lang/LangFile.cpp
