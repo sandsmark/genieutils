@@ -104,7 +104,7 @@ void Terrain::serializeObject(void)
   serialize<int16_t>(TerrainID);
   serialize<int16_t, ELEVATION_GRAPHICS_SIZE>(ElevationGraphics);
   serialize<int16_t>(TerrainReplacementID);
-  serialize<int16_t>(TerrainDimensions);
+  serializePair<int16_t>(TerrainDimensions);
   serialize<int16_t>(TerrainBorderIDs, getTerrainBorderSize());
 
   serialize<int16_t, TERRAIN_UNITS_SIZE>(TerrainUnitID);

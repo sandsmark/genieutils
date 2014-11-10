@@ -135,22 +135,15 @@ void Unit::serializeObject(void)
   serialize<uint16_t>(LanguageDLLName);
   serialize<uint16_t>(LanguageDLLCreation);
   serialize<int16_t>(Class);
-
-  if (getGameVersion() >= genie::GV_AoK)
-    serialize<int16_t>(StandingGraphic);
-  else
-    serialize<int16_t>(StandingGraphic, true);
-
-  serialize<int16_t>(DyingGraphic);
+  serializePair<int16_t>(StandingGraphic, (getGameVersion() >= genie::GV_AoK) ? false : true);
+  serializePair<int16_t>(DyingGraphic);
   serialize<int8_t>(DeathMode);
   serialize<int16_t>(HitPoints);
   serialize<float>(LineOfSight);
   serialize<int8_t>(GarrisonCapacity);
-  serialize<float>(SizeRadius);
-
+  serializePair<float>(SizeRadius);
   serialize<float>(HPBarHeight1);
-
-  serialize<int16_t>(TrainSound, (getGameVersion() >= genie::GV_AoKA) ? false : true);
+  serializePair<int16_t>(TrainSound, (getGameVersion() >= genie::GV_AoKA) ? false : true);
   serialize<int16_t>(DeadUnitID);
   serialize<int8_t>(PlacementMode);
   serialize<int8_t>(AirMode);
@@ -167,9 +160,9 @@ void Unit::serializeObject(void)
     Enabled = enabled;
   }
 
-  serialize<int16_t>(PlacementBypassTerrain);
-  serialize<int16_t>(PlacementTerrain);
-  serialize<float>(EditorRadius);
+  serializePair<int16_t>(PlacementBypassTerrain);
+  serializePair<int16_t>(PlacementTerrain);
+  serializePair<float>(EditorRadius);
   serialize<int8_t>(BuildingMode);
   serialize<int8_t>(VisibleInFog);
   serialize<int16_t>(TerrainRestriction);
@@ -210,7 +203,7 @@ void Unit::serializeObject(void)
 
   serialize<int8_t>(SelectionEffect);
   serialize<int8_t>(EditorSelectionColour);
-  serialize<float>(SelectionRadius);
+  serializePair<float>(SelectionRadius);
   serialize<float>(HPBarHeight2);
 
   serializeSub<ResourceStorage, RESOURCE_STORAGE_CNT>(ResourceStorages);

@@ -32,19 +32,20 @@ Building::Building() : Annexes(), AlfaThingy()
   SnowGraphicID = -1;
   AdjacentMode = 0;
   IconDisabler = 0;
-  Unknown31b = 0;
+  DisappearsWhenBuilt = 0;
   StackUnitID = -1;
   TerrainID = -1;
-  Unknown32 = -1;
+  ResourceID = -1;
   ResearchID = -1;
   Unknown33 = 0;
   HeadUnit = -1;
   TransformUnit = -1;
-  Unknown34 = -1;
+  UnknownUnit = -1;
   ConstructionSound = -1;
   GarrisonType = 0;
   GarrisonHealRate = 0;
   Unknown35 = 0;
+  Unknown36 = -1;
 }
 
 Building::~Building()
@@ -64,12 +65,12 @@ void Building::serializeObject(void)
   if (getGameVersion() >= genie::GV_TC)
     serialize<int16_t>(SnowGraphicID);
 
-  serialize<int16_t>(AdjacentMode);
-  serialize<int8_t>(IconDisabler);
-  serialize<int8_t>(Unknown31b);
+  serialize<int8_t>(AdjacentMode);
+  serialize<int16_t>(IconDisabler);
+  serialize<int8_t>(DisappearsWhenBuilt);
   serialize<int16_t>(StackUnitID);
   serialize<int16_t>(TerrainID);
-  serialize<int16_t>(Unknown32); // Unit?
+  serialize<int16_t>(ResourceID); // Unit?
   serialize<int16_t>(ResearchID);
 
   if (getGameVersion() >= genie::GV_AoKA)
@@ -78,7 +79,7 @@ void Building::serializeObject(void)
     serializeSub<unit::BuildingAnnex, BUILDING_ANNEXES_SIZE>(Annexes);
     serialize<int16_t>(HeadUnit);
     serialize<int16_t>(TransformUnit);
-    serialize<int16_t>(Unknown34); // Unit?
+    serialize<int16_t>(UnknownUnit); // Unit?
   }
 
   serialize<int16_t>(ConstructionSound);
@@ -88,6 +89,7 @@ void Building::serializeObject(void)
     serialize<int8_t>(GarrisonType);
     serialize<float>(GarrisonHealRate);
     serialize<int32_t>(Unknown35);
+    serialize<int16_t>(Unknown36);
     serialize<int8_t, ALFATHING_SIZE>(AlfaThingy);
   }
 }

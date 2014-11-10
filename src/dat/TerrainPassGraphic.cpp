@@ -50,7 +50,7 @@ void TerrainPassGraphic::setGameVersion(GameVersion gv)
 void TerrainPassGraphic::serializeObject()
 {
   serialize<int32_t>(Buildable);
-  serialize<int32_t>(GraphicIDs);
+  serializePair<int32_t>(GraphicIDs);
   serialize<int32_t>(ReplicationAmount);
 }
 

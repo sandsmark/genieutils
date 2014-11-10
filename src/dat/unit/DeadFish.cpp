@@ -51,7 +51,7 @@ void DeadFish::setGameVersion(GameVersion gv)
 
 void DeadFish::serializeObject(void)
 {
-  serialize<int16_t>(WalkingGraphic);
+  serializePair<int16_t>(WalkingGraphic);
   serialize<float>(RotationSpeed);
   serialize<int8_t>(Unknown11);
   serialize<int16_t>(TrackingUnit);

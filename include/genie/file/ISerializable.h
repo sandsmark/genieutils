@@ -549,7 +549,7 @@ protected:
   /// @param only_first if true only the first element will be serialized
   //
   template <typename T>
-  void serialize(std::pair<T, T> &p, bool only_first=false)
+  void serializePair(std::pair<T, T> &p, bool only_first=false)
   {
     switch(getOperation())
     {

@@ -46,7 +46,7 @@ void BuildingAnnex::setGameVersion(GameVersion gv)
 void BuildingAnnex::serializeObject(void)
 {
   serialize<int16_t>(UnitID);
-  serialize<float>(Misplacement);
+  serializePair<float>(Misplacement);
 }
 
 }
