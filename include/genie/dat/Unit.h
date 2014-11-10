@@ -190,9 +190,9 @@ public:
    */
   int8_t MinimapMode;
 
-  int16_t CommandAttribute;// Page for Build button: 2 = Page 1, 10 = Page 2, ?11 = Page 3?
-  static const unsigned short UNKNOWN3_SIZE = 4;
-  std::array<int8_t, UNKNOWN3_SIZE> Unknown3;
+  int8_t CommandAttribute;// Page for Build button: 2 = Page 1, 10 = Page 2, ?11 = Page 3?
+  float Unknown3A;
+  int8_t Unknown3B;
   int32_t LanguageDLLHelp;
   int32_t LanguageDLLHotKeyText;
   int32_t HotKey;
@@ -241,7 +241,8 @@ public:
   /// Sound that is played when this unit is selected
   int16_t SelectionSound;
   int16_t DyingSound;
-  int16_t AttackMode;
+  int8_t AttackMode;
+  int8_t EdibleMeat;
   std::string Name;
   uint16_t NameLength2;
   std::string Name2;

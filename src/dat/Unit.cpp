@@ -24,7 +24,7 @@ namespace genie
 {
 
 //------------------------------------------------------------------------------
-Unit::Unit() : Unknown3(), ResourceStorages()
+Unit::Unit() : ResourceStorages()
 {
 //    Type 10+
 
@@ -71,6 +71,8 @@ Unit::Unit() : Unknown3(), ResourceStorages()
   InteractionMode = 0;
   MinimapMode = 0;
   CommandAttribute = 0;
+  Unknown3A = 0;
+  Unknown3B = 0;
   LanguageDLLHelp = 105000;
   LanguageDLLHotKeyText = 155000;
   HotKey = 16000;
@@ -91,7 +93,8 @@ Unit::Unit() : Unknown3(), ResourceStorages()
   HPBarHeight2 = 0;
   SelectionSound = -1;
   DyingSound = -1;
-  AttackMode = -1;
+  AttackMode = 0;
+  EdibleMeat = 0;
   Name = "";
   NameLength2 = 9;
   Name2 = "";
@@ -173,32 +176,28 @@ void Unit::serializeObject(void)
   serialize<int8_t>(Unknown2);
   serialize<int8_t>(InteractionMode);
   serialize<int8_t>(MinimapMode);
-  serialize<int16_t>(CommandAttribute);
-  serialize<int8_t, UNKNOWN3_SIZE>(Unknown3);
+  serialize<int8_t>(CommandAttribute);
+  serialize<float>(Unknown3A);
+  serialize<int8_t>(Unknown3B);
   serialize<int32_t>(LanguageDLLHelp);
   serialize<int32_t>(LanguageDLLHotKeyText);
   serialize<int32_t>(HotKey);
   serialize<int8_t>(Unselectable);
   serialize<int8_t>(Unknown6);
+  serialize<int8_t>(Unknown7);
+  serialize<int8_t>(Unknown8);
 
   if (getGameVersion() >= genie::GV_AoKA)
   {
-    serialize<int8_t>(Unknown7);
-    serialize<int8_t>(Unknown8);
-  }
-
-  serialize<int8_t>(SelectionMask);
-
-  if (getGameVersion() >= genie::GV_AoKA)
+    serialize<int8_t>(SelectionMask);
     serialize<int8_t>(SelectionShapeType);
-
-  serialize<int8_t>(SelectionShape);
-
-  if (getGameVersion() >= genie::GV_TC)
-  {
-    serialize<uint8_t>(Attribute);
-    serialize<int8_t>(Civilization);
-    serialize<int16_t>(Unknown9);
+    serialize<int8_t>(SelectionShape);
+    if (getGameVersion() >= genie::GV_TC)
+    {
+      serialize<uint8_t>(Attribute);
+      serialize<int8_t>(Civilization);
+      serialize<int16_t>(Unknown9);
+    }
   }
 
   serialize<int8_t>(SelectionEffect);
@@ -213,7 +212,8 @@ void Unit::serializeObject(void)
 
   serialize<int16_t>(SelectionSound);
   serialize<int16_t>(DyingSound);
-  serialize<int16_t>(AttackMode);
+  serialize<int8_t>(AttackMode);
+  serialize<int8_t>(EdibleMeat);
 
   serialize<std::string>(Name, NameLength);
 

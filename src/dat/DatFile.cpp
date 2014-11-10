@@ -170,7 +170,7 @@ void DatFile::serializeObject(void)
 {
   compressor_.beginCompression();
 
-  serialize<char, FILE_VERSION_SIZE>(file_version_);
+  serialize<char, FILE_VERSION_SIZE>(FileVersion);
 
   if (getGameVersion() >= genie::GV_SWGB)
   {
@@ -195,7 +195,7 @@ void DatFile::serializeObject(void)
 
   if (verbose_)
   {
-	for (auto &i: file_version_)
+	for (auto &i: FileVersion)
       std::cout << i;
     std::cout << std::endl << "TerRestrictionCount: " <<terrain_restriction_count_ << std::endl;
     std::cout << "TerCount: " << NumberOfTerrainsUsed << std::endl;
