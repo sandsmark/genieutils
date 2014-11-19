@@ -26,7 +26,8 @@ namespace genie
 Sound::Sound()
 {
   ID = -1;
-  Unknown1 = 300000;
+  Unknown1 = 0;
+  Unknown2 = 300000;
 }
 
 Sound::~Sound()
@@ -43,9 +44,10 @@ void Sound::setGameVersion(GameVersion gv)
 
 void Sound::serializeObject(void)
 {
-  serialize<int32_t>(ID);
+  serialize<int16_t>(ID);
+  serialize<int16_t>(Unknown1);
   serializeSize<uint16_t>(ItemCount, Items.size());
-  serialize<int32_t>(Unknown1);
+  serialize<int32_t>(Unknown2);
 
   serializeSub<SoundItem>(Items, ItemCount);
 }

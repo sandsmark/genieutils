@@ -35,8 +35,9 @@ public:
   virtual ~Sound();
   virtual void setGameVersion(GameVersion gv);
 
-  int32_t ID;
-  int32_t Unknown1;      // This is always equal to 300000
+  int16_t ID;
+  int16_t Unknown1;
+  int32_t Unknown2;      // This is always equal to 300000
   std::vector<SoundItem> Items;
 
 private:
