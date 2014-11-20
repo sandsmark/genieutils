@@ -47,6 +47,7 @@ Graphic::Graphic() : Coordinates(), CstrName(0), CstrName2(0)
   SequenceType = 0;
   ID = -1;
   MirroringMode = 0;
+  Unknown3 = 0;
 }
 
 Graphic::Graphic(const Graphic& other) : ISerializable(other),
@@ -106,6 +107,7 @@ Graphic &Graphic::operator=(const Graphic &other)
   SequenceType = other.SequenceType;
   ID = other.ID;
   MirroringMode = other.MirroringMode;
+  Unknown3 = other.Unknown3;
 
   Deltas = other.Deltas;
   AttackSounds = other.AttackSounds;
@@ -162,7 +164,7 @@ void Graphic::serializeObject(void)
   serialize<int8_t>(Unknown2); /// TODO: priority?
   serialize<int8_t>(Layer);
   serialize<int8_t>(PlayerColor);
-  serialize<int8_t>(Rainbow);
+  serialize<int8_t>(Rainbow); // 2nd half of player color
   serialize<int8_t>(Replay);
 
   serialize<int16_t, COORDINATES_SIZE>(Coordinates);
@@ -177,15 +179,10 @@ void Graphic::serializeObject(void)
   serialize<float>(ReplayDelay);
   serialize<int8_t>(SequenceType);
   serialize<int16_t>(ID);
+  serialize<int8_t>(MirroringMode);
 
-  if (getGameVersion() >= genie::GV_AoK)
-    serialize<int16_t>(MirroringMode);
-  else
-  {
-    int8_t tmp = MirroringMode;
-    serialize<int8_t>(tmp);
-    MirroringMode = tmp;
-  }
+  if (getGameVersion() >= genie::GV_AoK) // 10.72
+    serialize<int8_t>(Unknown3); // Maybe sprite editor thing?
 
   serializeSub<GraphicDelta>(Deltas, DeltaCount);
 

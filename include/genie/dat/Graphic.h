@@ -101,7 +101,8 @@ public:
 
   int8_t SequenceType;
   int16_t ID;
-  int16_t MirroringMode;//int8_t in aoe/ror
+  int8_t MirroringMode;
+  int8_t Unknown3;
 
   std::vector<GraphicDelta> Deltas;
   std::vector<GraphicAttackSound> AttackSounds;
