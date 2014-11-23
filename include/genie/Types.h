@@ -25,13 +25,16 @@ namespace genie
 enum GameVersion
 {
   GV_None = 0, //Game version not set
-  GV_AoE,
-  GV_RoR,
-  GV_AoKA,
-  GV_AoK,
-  GV_TC,
-  GV_SWGB,
-  GV_CC
+  GV_AoETB, // 7.11
+  GV_AoE, // 7.2
+  GV_RoR, // 7.24
+  GV_AoKA, // 10.19
+  GV_AoKB, // 11.05
+  GV_AoK, // 11.5
+  GV_TC, // 11.76
+  GV_AoKHD, // 12.0
+  GV_SWGB, // 1.0
+  GV_CC // 1.1
 };
 
 }

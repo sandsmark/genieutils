@@ -181,7 +181,7 @@ void Graphic::serializeObject(void)
   serialize<int16_t>(ID);
   serialize<int8_t>(MirroringMode);
 
-  if (getGameVersion() >= genie::GV_AoK) // 10.72
+  if (getGameVersion() >= genie::GV_AoKB) // 10.72
     serialize<int8_t>(Unknown3); // Maybe sprite editor thing?
 
   serializeSub<GraphicDelta>(Deltas, DeltaCount);

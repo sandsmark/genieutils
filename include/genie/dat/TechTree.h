@@ -37,9 +37,9 @@ public:
   virtual ~TechTree();
   virtual void setGameVersion(GameVersion gv);
 
-  std::vector<TechTreeAge> TechTreeAges;
-
   int32_t Unknown2; //1
+
+  std::vector<TechTreeAge> TechTreeAges;
 
   std::vector<BuildingConnection> BuildingConnections;
 
@@ -57,6 +57,78 @@ private:
 
 };
 
+namespace techtree
+{
+
+class Common : public ISerializable
+{
+public:
+  Common()
+  {
+    RequiredResearches = 0;
+    Age = 0;
+    UnitResearch1 = 0;
+    UnitResearch2 = 0;
+    Mode1 = 0;
+    Mode2 = 0;
+  }
+
+  virtual ~Common() {}
+
+  virtual void setGameVersion(GameVersion gv)
+  {
+    ISerializable::setGameVersion(gv);
+    Unknown1.resize(getU1Size());
+    Unknown2.resize(getU2Size());
+  }
+
+  /// Minimum amount of researches that need to be researched for this to be available.
+  int32_t RequiredResearches;
+
+  int32_t Age;
+  int32_t UnitResearch1;
+  int32_t UnitResearch2;
+  std::vector<int32_t> Unknown1;
+
+  /// 0 Nothing, 1 Building, 2 Unit, 3 Research.
+  int32_t Mode1;
+  int32_t Mode2;
+  std::vector<int32_t> Unknown2;
+
+  unsigned short getU1Size()
+  {
+    if (getGameVersion() >= genie::GV_SWGB)
+      return 18;
+    else
+      return 8;
+  }
+
+  unsigned short getU2Size()
+  {
+    if (getGameVersion() >= genie::GV_SWGB)
+      return 17;
+    else
+      return 7;
+  }
+
+  std::vector<int32_t> Unknown2a;
+
+private:
+  virtual void serializeObject(void) // 84 bytes
+  {
+	serialize<int32_t>(RequiredResearches);
+	serialize<int32_t>(Age);
+	serialize<int32_t>(UnitResearch1); // UpperResearch
+	serialize<int32_t>(UnitResearch2);
+	serialize<int32_t>(Unknown1, getU1Size()); // 8 tai 18
+	serialize<int32_t>(Mode1); // LineMode
+	serialize<int32_t>(Mode2);
+	serialize<int32_t>(Unknown2, getU2Size()); // 7 tai 17
+  }
+};
+
+}
+
 /// Contains all items of an age in techtree
 class TechTreeAge : public ISerializable
 {
@@ -65,7 +137,6 @@ public:
   virtual ~TechTreeAge();
   virtual void setGameVersion(GameVersion gv);
 
-  int32_t Unknown1;
   int32_t ID; //Age ID?
   int8_t Unknown2; //Always 2
 
@@ -73,12 +144,15 @@ public:
   std::vector<int32_t> Units;
   std::vector<int32_t> Researches;
 
-  int32_t Unknown3; //Always 1
-  int32_t SecondAgeNumber; //Second Age ID?
+  techtree::Common Common;
+  int8_t Unknown3;
+  std::vector<int8_t> Unknown4;
+  std::vector<int8_t> Unknown5;
+  int8_t Unknown6;
+  int32_t Unknown7;
 
-  unsigned short getZeroesSize();
+  unsigned short getU4Size();
 
-  std::vector<int16_t> Zeroes;
 private:
   uint8_t building_count_;
   uint8_t unit_count_;
@@ -98,29 +172,15 @@ public:
   int8_t Unknown1; //always 2
 
   std::vector<int32_t> Buildings;
-
   std::vector<int32_t> Units;
-
   std::vector<int32_t> Researches;
 
-  /// Minimum amount of researches that need to be researched for this to be available.
-  int32_t RequiredResearches;
-  int32_t Age;
-  int32_t UnitOrResearch1;
-  int32_t UnitOrResearch2;
+  techtree::Common Common;
 
-  unsigned short getUnknown2aSize();
-  std::vector<int32_t> Unknown2a;
-
-  /// 0 Nothing, 1 Building, 2 Unit, 3 Research.
-  int32_t Mode1;
-  int32_t Mode2;
-
-  unsigned short getUnknown2bSize();
-  std::vector<int32_t> Unknown2b;
-
-  static const unsigned short UNKNOWN3_SIZE = 11;
-  std::array<int8_t, UNKNOWN3_SIZE> Unknown3;
+  static const unsigned short U3_SIZE = 5;
+  int8_t Unknown2;
+  std::array<int8_t, U3_SIZE> Unknown3;
+  std::array<int8_t, U3_SIZE> Unknown4;
 
   /// 5 One or more connections, 6 No connections.
   int32_t Connections;
@@ -146,21 +206,7 @@ public:
   int8_t Unknown1; //always 2
   int32_t UpperBuilding;
 
-  /// Minimum amount of researches that need to be researched for this to be available.
-  int32_t RequiredResearches;
-  int32_t Age;
-  int32_t UnitOrResearch1; // unit or research
-  int32_t UnitOrResearch2; // unit or research
-
-  unsigned short getUnknown2aSize();
-  std::vector<int32_t> Unknown2a;
-
-  /// 0 Nothing, 1 Building, 2 Unit, 3 Research.
-  int32_t Mode1;
-  int32_t Mode2;
-
-  unsigned short getUnknown2bSize();
-  std::vector<int32_t> Unknown2b;
+  techtree::Common Common;
 
   int32_t VerticalLine;
 
@@ -194,24 +240,10 @@ public:
   int32_t UpperBuilding;
 
   std::vector<int32_t> Buildings;
-
   std::vector<int32_t> Units;
-
   std::vector<int32_t> Researches;
 
-  /// Minimum amount of researches that need to be researched for this to be available.
-  int32_t RequiredResearches;
-  int32_t Age;
-  int32_t UpperResearch;
-
-  unsigned short getUnknown2aSize();
-  std::vector<int32_t> Unknown2a;
-
-  /// 0 Independent/new in its line. 3 Depends on a previous research in its line.
-  int32_t LineMode;
-
-  unsigned short getUnknown2bSize();
-  std::vector<int32_t> Unknown2b;
+  techtree::Common Common;
 
   int32_t VerticalLine;
   /// 0 Hidden, 1 First, 2 Second.
