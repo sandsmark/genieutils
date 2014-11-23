@@ -76,9 +76,9 @@ TechTreeAge::TechTreeAge()
 {
   ID = 0;
   Unknown2 = 2;
-  Unknown3 = 0;
+  SlotsUsed = 0;
   Unknown6 = 0;
-  Unknown7 = 0;
+  LineMode = 0;
 }
 
 //------------------------------------------------------------------------------
@@ -128,11 +128,11 @@ void TechTreeAge::serializeObject(void)
 
   // 9.4
   {
-    serialize<int8_t>(Unknown3);
+    serialize<int8_t>(SlotsUsed);
     serialize<int8_t>(Unknown4, getU4Size());
     serialize<int8_t>(Unknown5, getU4Size());
     serialize<int8_t>(Unknown6);
-    serialize<int32_t>(Unknown7); // 9.51
+    serialize<int32_t>(LineMode); // 9.51
   }
 }
 
@@ -142,7 +142,7 @@ BuildingConnection::BuildingConnection() : UnitsTechsTotal(), UnitsTechsFirst()
   ID = 0;
   Unknown1 = 2;
   Unknown2 = 0;
-  Connections = 0;
+  LineMode = 0;
   EnablingResearch = -1;
 }
 
@@ -181,7 +181,7 @@ void BuildingConnection::serializeObject(void)
     serialize<int8_t>(Unknown2);
 	serialize<int8_t, AGES>(UnitsTechsTotal);
 	serialize<int8_t, AGES>(UnitsTechsFirst); // 9.42
-    serialize<int32_t>(Connections); // 9.51
+    serialize<int32_t>(LineMode); // 9.51
     serialize<int32_t>(EnablingResearch); // 9.91
   }
 }
@@ -243,7 +243,7 @@ ResearchConnection::ResearchConnection()
   UpperBuilding = -1;
   VerticalLine = 0;
   LocationInAge = 0;
-  FirstAgeMode = 0;
+  LineMode = 0;
 }
 
 //------------------------------------------------------------------------------
@@ -281,7 +281,7 @@ void ResearchConnection::serializeObject(void)
   {
     serialize<int32_t>(VerticalLine);
     serialize<int32_t>(LocationInAge); // 9.46
-    serialize<int32_t>(FirstAgeMode); // 9.51
+    serialize<int32_t>(LineMode); // 9.51
   }
 }
 

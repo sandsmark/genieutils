@@ -65,12 +65,7 @@ class Common : public ISerializable
 public:
   Common()
   {
-    RequiredResearches = 0;
-    Age = 0;
-    UnitResearch1 = 0;
-    UnitResearch2 = 0;
-    Mode1 = 0;
-    Mode2 = 0;
+    SlotsUsed = 0;
   }
 
   virtual ~Common() {}
@@ -78,53 +73,32 @@ public:
   virtual void setGameVersion(GameVersion gv)
   {
     ISerializable::setGameVersion(gv);
-    Unknown1.resize(getU1Size());
-    Unknown2.resize(getU2Size());
+    UnitResearch.resize(getSlots());
+    Mode.resize(getSlots());
   }
 
-  /// Minimum amount of researches that need to be researched for this to be available.
-  int32_t RequiredResearches;
+  int32_t SlotsUsed;
 
-  int32_t Age;
   /// Connection lines when selected
-  int32_t UnitResearch1;
-  int32_t UnitResearch2;
-  std::vector<int32_t> Unknown1;
+  std::vector<int32_t> UnitResearch;
 
-  /// 0 Nothing, 1 Building, 2 Unit, 3 Research.
-  int32_t Mode1;
-  int32_t Mode2;
-  std::vector<int32_t> Unknown2;
+  /// 0 Age/Tech-level, 1 Building, 2 Unit, 3 Research.
+  std::vector<int32_t> Mode;
 
-  unsigned short getU1Size()
+  unsigned short getSlots()
   {
     if (getGameVersion() >= genie::GV_SWGB)
-      return 18;
+      return 20;
     else
-      return 8;
+      return 10;
   }
-
-  unsigned short getU2Size()
-  {
-    if (getGameVersion() >= genie::GV_SWGB)
-      return 17;
-    else
-      return 7;
-  }
-
-  std::vector<int32_t> Unknown2a;
 
 private:
   virtual void serializeObject(void) // 84 bytes, 164 in SWGB
   {
-	serialize<int32_t>(RequiredResearches);
-	serialize<int32_t>(Age);
-	serialize<int32_t>(UnitResearch1);
-	serialize<int32_t>(UnitResearch2);
-	serialize<int32_t>(Unknown1, getU1Size()); // 8 tai 18
-	serialize<int32_t>(Mode1); // LineMode
-	serialize<int32_t>(Mode2);
-	serialize<int32_t>(Unknown2, getU2Size()); // 7 tai 17
+	serialize<int32_t>(SlotsUsed);
+	serialize<int32_t>(UnitResearch, getSlots());
+	serialize<int32_t>(Mode, getSlots());
   }
 };
 
@@ -146,11 +120,11 @@ public:
   std::vector<int32_t> Researches;
 
   techtree::Common Common;
-  int8_t Unknown3;
+  int8_t SlotsUsed;
   std::vector<int8_t> Unknown4;
   std::vector<int8_t> Unknown5;
   int8_t Unknown6;
-  int32_t Unknown7;
+  int32_t LineMode;
 
   unsigned short getU4Size();
 
@@ -184,7 +158,7 @@ public:
   std::array<int8_t, AGES> UnitsTechsFirst;
 
   /// 5 One or more connections, 6 No connections.
-  int32_t Connections;
+  int32_t LineMode;
   /// Makes available. Used by buildings, which need a research to be available.
   int32_t EnablingResearch;
 
@@ -250,7 +224,7 @@ public:
   /// 0 Hidden, 1 First, 2 Second.
   int32_t LocationInAge;
   /// 0 First Age. Others.
-  int32_t FirstAgeMode;
+  int32_t LineMode;
 
 private:
   uint8_t building_count_;
