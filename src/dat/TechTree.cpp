@@ -98,7 +98,9 @@ void TechTreeAge::setGameVersion(GameVersion gv)
 //------------------------------------------------------------------------------
 unsigned short TechTreeAge::getU4Size()
 {
-  if (getGameVersion() >= genie::GV_AoKB) // 10.38
+  if (getGameVersion() >= genie::GV_SWGB)
+    return 20;
+  else if (getGameVersion() >= genie::GV_AoKB) // 10.38
     return 10;
   else
     return 3;
@@ -135,7 +137,7 @@ void TechTreeAge::serializeObject(void)
 }
 
 //------------------------------------------------------------------------------
-BuildingConnection::BuildingConnection() : Unknown3(), Unknown4()
+BuildingConnection::BuildingConnection() : UnitsTechsTotal(), UnitsTechsFirst()
 {
   ID = 0;
   Unknown1 = 2;
@@ -177,8 +179,8 @@ void BuildingConnection::serializeObject(void)
   // 9.4
   {
     serialize<int8_t>(Unknown2);
-	serialize<int8_t, U3_SIZE>(Unknown3);
-	serialize<int8_t, U3_SIZE>(Unknown4); // 9.42
+	serialize<int8_t, AGES>(UnitsTechsTotal);
+	serialize<int8_t, AGES>(UnitsTechsFirst); // 9.42
     serialize<int32_t>(Connections); // 9.51
     serialize<int32_t>(EnablingResearch); // 9.91
   }

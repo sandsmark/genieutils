@@ -25,6 +25,7 @@ namespace genie
 enum GameVersion
 {
   GV_None = 0, //Game version not set
+  GV_AoEB, // 7.04
   GV_AoETB, // 7.11
   GV_AoE, // 7.2
   GV_RoR, // 7.24

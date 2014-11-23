@@ -86,6 +86,7 @@ public:
   int32_t RequiredResearches;
 
   int32_t Age;
+  /// Connection lines when selected
   int32_t UnitResearch1;
   int32_t UnitResearch2;
   std::vector<int32_t> Unknown1;
@@ -114,11 +115,11 @@ public:
   std::vector<int32_t> Unknown2a;
 
 private:
-  virtual void serializeObject(void) // 84 bytes
+  virtual void serializeObject(void) // 84 bytes, 164 in SWGB
   {
 	serialize<int32_t>(RequiredResearches);
 	serialize<int32_t>(Age);
-	serialize<int32_t>(UnitResearch1); // UpperResearch
+	serialize<int32_t>(UnitResearch1);
 	serialize<int32_t>(UnitResearch2);
 	serialize<int32_t>(Unknown1, getU1Size()); // 8 tai 18
 	serialize<int32_t>(Mode1); // LineMode
@@ -177,10 +178,10 @@ public:
 
   techtree::Common Common;
 
-  static const unsigned short U3_SIZE = 5;
+  static const unsigned short AGES = 5;
   int8_t Unknown2;
-  std::array<int8_t, U3_SIZE> Unknown3;
-  std::array<int8_t, U3_SIZE> Unknown4;
+  std::array<int8_t, AGES> UnitsTechsTotal;
+  std::array<int8_t, AGES> UnitsTechsFirst;
 
   /// 5 One or more connections, 6 No connections.
   int32_t Connections;
