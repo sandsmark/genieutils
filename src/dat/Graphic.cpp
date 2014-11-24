@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
-    Copyright (C) 2011 - 2013  Mikko T P
+    Copyright (C) 2011 - 2014  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -26,7 +26,7 @@
 namespace genie
 {
 
-Graphic::Graphic() : Coordinates(), CstrName(0), CstrName2(0)
+Graphic::Graphic() : Coordinates()
 {
   Name = "";
   Name2 = "";
@@ -50,16 +50,13 @@ Graphic::Graphic() : Coordinates(), CstrName(0), CstrName2(0)
   Unknown3 = 0;
 }
 
-Graphic::Graphic(const Graphic& other) : ISerializable(other),
-    Coordinates(), CstrName(0), CstrName2(0)
+Graphic::Graphic(const Graphic& other) : ISerializable(other), Coordinates()
 {
   *this = other;
 }
 
 Graphic::~Graphic()
 {
-  delete [] CstrName;
-  delete [] CstrName2;
 }
 
 //------------------------------------------------------------------------------
@@ -73,18 +70,6 @@ void Graphic::setGameVersion(GameVersion gv)
 
 Graphic &Graphic::operator=(const Graphic &other)
 {
-  try
-  {
-    arraycpy<char>(&CstrName, other.CstrName, NAME_SIZE);
-    arraycpy<char>(&CstrName2, other.CstrName2, NAME_SIZE2);
-  }
-  catch (std::bad_alloc &e)
-  {
-    delete [] CstrName;
-    delete [] CstrName2;
-    throw;
-  }
-
   Name = other.Name;
   Name2 = other.Name2;
 
@@ -133,31 +118,8 @@ unsigned short Graphic::getName2Size()
 
 void Graphic::serializeObject(void)
 {
-  /*
-   * Workaround for Name strings, because in RoR, SWGB and TC there are
-   * Unknown values after the \0 on some strings. In RoR the size should be
-   * ok, but it may not be right in >= SWGB
-   */
-  if (isOperation(OP_WRITE))
-  {
-    if (CstrName == 0 || Name.compare(CstrName) != 0)
-      serialize<std::string>(Name, getNameSize());
-    else
-      serialize<char>(&CstrName, getNameSize());
-
-    if (CstrName2 == 0 || Name2.compare(CstrName2) != 0)
-      serialize<std::string>(Name2, getName2Size());
-    else
-      serialize<char>(&CstrName2, getName2Size());
-  }
-  else
-  {
-    serialize<char>(&CstrName, getNameSize());
-    serialize<char>(&CstrName2, getName2Size());
-
-    Name = std::string(CstrName);
-    Name2 = std::string(CstrName2);
-  }
+  serialize<std::string>(Name, getNameSize());
+  serialize<std::string>(Name2, getName2Size());
 
   serialize<int32_t>(SLP);
   serialize<int8_t>(Unknown1);

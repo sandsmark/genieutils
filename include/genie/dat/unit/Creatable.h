@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
-    Copyright (C) 2011 - 2013  Mikko T P
+    Copyright (C) 2011 - 2014  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -51,12 +51,12 @@ public:
   int8_t MissileGraphicDelay;//not in aoe/ror
   int8_t HeroMode;//not in aoe/ror
   int32_t GarrisonGraphic; //not in aoe/ror
-  float AttackMissileDuplicationAmount1;//not in aoe/ror
-  int8_t AttackMissileDuplicationAmount2;//not in aoe/ror
+  float DuplicatedMissilesMin;//not in aoe/ror
+  int8_t DuplicatedMissilesMax;//not in aoe/ror
 
   static const unsigned short AMDBUNKNOWN_SIZE = 3;
   /// The area from which projectiles spawn. Size and randomness.
-  std::array<float, AMDBUNKNOWN_SIZE> AttackMissileDuplicationSpawning;
+  std::array<float, AMDBUNKNOWN_SIZE> MissileSpawningArea;
 
   int32_t AttackMissileDuplicationUnit;//not in aoe/ror
   int32_t AttackMissileDuplicationGraphic;//not in aoe/ror

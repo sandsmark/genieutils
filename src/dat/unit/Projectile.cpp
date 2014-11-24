@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
-    Copyright (C) 2011 - 2013  Mikko T P
+    Copyright (C) 2011 - 2014  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -44,7 +44,7 @@ Projectile::Projectile() : GraphicDisplacement()
   DisplayedMeleeArmour = 0;
   DisplayedAttack = 0;
   DisplayedRange = 0;
-  ReloadTime2 = 0;
+  DisplayedReloadTime = 0;
 }
 
 Projectile::~Projectile()
@@ -62,7 +62,7 @@ void Projectile::setGameVersion(GameVersion gv)
 
 void Projectile::serializeObject(void)
 {
-  if (getGameVersion() < genie::GV_TC)
+  if (getGameVersion() < genie::GV_TC) // 11.52
   {
     uint8_t defarmor_byte = DefaultArmor;
     serialize<uint8_t>(defarmor_byte);
@@ -91,14 +91,17 @@ void Projectile::serializeObject(void)
   serialize<int8_t>(BlastLevel);
   serialize<float>(MinRange);
 
-  if (getGameVersion() >= genie::GV_AoK)
+  if (getGameVersion() >= genie::GV_AoK) // 10.36
     serialize<float>(GarrisonRecoveryRate);
 
   serialize<int16_t>(AttackGraphic);
-  serialize<int16_t>(DisplayedMeleeArmour);
-  serialize<int16_t>(DisplayedAttack);
-  serialize<float>(DisplayedRange);
-  serialize<float>(ReloadTime2);
+  //  7.01
+  {
+    serialize<int16_t>(DisplayedMeleeArmour);
+    serialize<int16_t>(DisplayedAttack);
+    serialize<float>(DisplayedRange);
+    serialize<float>(DisplayedReloadTime);
+  }
 }
 
 }

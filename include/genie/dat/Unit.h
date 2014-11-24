@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
-    Copyright (C) 2011 - 2013  Mikko T P
+    Copyright (C) 2011 - 2014  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -24,7 +24,6 @@
 #include "unit/DamageGraphic.h"
 #include "UnitCommand.h"
 #include "unit/AttackOrArmor.h"
-#include "unit/BuildingAnnex.h"
 #include "unit/DeadFish.h"
 #include "unit/Bird.h"
 #include "unit/Projectile.h"
@@ -54,6 +53,9 @@ enum UnitType
 
   /// Only birds in aoe and ror are of this type.
   UT_Bird = 40,
+
+  /// ???.
+  UT_Unknown = 50,
 
   /// Projectiles
   UT_Projectile = 60,
@@ -145,7 +147,7 @@ public:
   std::pair<int16_t, int16_t> PlacementBypassTerrain;
   std::pair<int16_t, int16_t> PlacementTerrain;
   std::pair<float, float> EditorRadius;
-  int8_t BuildingMode;
+  int8_t HillMode;
   int8_t VisibleInFog;
 
   /// ID of terrain restrictions that are imposed on the unit.

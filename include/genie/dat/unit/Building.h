@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
-    Copyright (C) 2011 - 2013  Mikko T P
+    Copyright (C) 2011 - 2014  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -22,13 +22,39 @@
 #define GENIE_BUILDING_H
 
 #include "genie/file/ISerializable.h"
-#include "BuildingAnnex.h"
 
 namespace genie
 {
 
 namespace unit
 {
+
+/// A building can hold annexes like the town center.
+class BuildingAnnex : public ISerializable
+{
+public:
+  BuildingAnnex()
+  {
+    UnitID = -1;
+    Misplacement.first = 0;
+    Misplacement.second = 0;
+  }
+  virtual ~BuildingAnnex() {}
+  virtual void setGameVersion(GameVersion gv)
+  {
+    ISerializable::setGameVersion(gv);
+  }
+
+  int16_t UnitID;
+  std::pair <float, float> Misplacement;
+
+private:
+  virtual void serializeObject(void)
+  {
+    serialize<int16_t>(UnitID);
+    serializePair<float>(Misplacement);
+  }
+};
 
 class Building : public ISerializable
 {
@@ -47,18 +73,18 @@ public:
   int16_t TerrainID;
   int16_t ResourceID;
   int16_t ResearchID;
-  int8_t Unknown33;
+  int8_t PlayerAlive;
 
   static const unsigned short BUILDING_ANNEXES_SIZE = 4;
   std::array<unit::BuildingAnnex, BUILDING_ANNEXES_SIZE> Annexes;
   int16_t HeadUnit;
   int16_t TransformUnit;
-  int16_t UnknownUnit;
+  int16_t UnknownSound;
   int16_t ConstructionSound;
   int8_t GarrisonType;
   float GarrisonHealRate;
-  int32_t Unknown35;
-  int16_t Unknown36;
+  float Unknown35;
+  int16_t UnknownDyingEffect;
 
   /// Related to annexes in any way?
   /// Widespread usage in the AoK alpha 09.07.0222

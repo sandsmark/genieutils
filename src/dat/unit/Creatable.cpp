@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
-    Copyright (C) 2011 - 2013  Mikko T P
+    Copyright (C) 2011 - 2014  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -26,7 +26,7 @@ namespace genie
 namespace unit
 {
 
-Creatable::Creatable() : ResourceCosts(), AttackMissileDuplicationSpawning()
+Creatable::Creatable() : ResourceCosts(), MissileSpawningArea()
 {
   TrainTime = 0;
   TrainLocationID = -1;
@@ -36,8 +36,8 @@ Creatable::Creatable() : ResourceCosts(), AttackMissileDuplicationSpawning()
   MissileGraphicDelay = 0;
   HeroMode = 0;
   GarrisonGraphic = -1;
-  AttackMissileDuplicationAmount1 = 1;
-  AttackMissileDuplicationAmount2 = 1;
+  DuplicatedMissilesMin = 1;
+  DuplicatedMissilesMax = 1;
   AttackMissileDuplicationUnit = -1;
   AttackMissileDuplicationGraphic = -1;
   Unknown29 = 0;
@@ -66,27 +66,30 @@ void Creatable::serializeObject(void)
   serialize<int16_t>(TrainLocationID);
   serialize<int8_t>(ButtonID);
 
-  if (getGameVersion() >= genie::GV_AoKA)
+  if (getGameVersion() >= genie::GV_AoKA) // 9.07
   {
     serialize<int32_t>(Unknown26);
     serialize<int32_t>(Unknown27);
     serialize<int8_t>(MissileGraphicDelay);
 
-    if (getGameVersion() >= genie::GV_AoK)
+    if (getGameVersion() >= genie::GV_AoKB)
     {
-      serialize<int8_t>(HeroMode);
-      serialize<int32_t>(GarrisonGraphic);
+      serialize<int8_t>(HeroMode); // 10.49
+      serialize<int32_t>(GarrisonGraphic); // 10.73
     }
 
-    serialize<float>(AttackMissileDuplicationAmount1);
-    serialize<int8_t>(AttackMissileDuplicationAmount2);
-    serialize<float, AMDBUNKNOWN_SIZE>(AttackMissileDuplicationSpawning);
-    serialize<int32_t>(AttackMissileDuplicationUnit);
-    serialize<int32_t>(AttackMissileDuplicationGraphic);
-    serialize<int8_t>(Unknown29);
+    serialize<float>(DuplicatedMissilesMin);
+    serialize<int8_t>(DuplicatedMissilesMax);
+    serialize<float, AMDBUNKNOWN_SIZE>(MissileSpawningArea);
+    serialize<int32_t>(AttackMissileDuplicationUnit); // 9.08
+	// 9.2
+	{
+      serialize<int32_t>(AttackMissileDuplicationGraphic);
+      serialize<int8_t>(Unknown29);
+	}
   }
 
-  serialize<int16_t>(DisplayedPierceArmour);
+  serialize<int16_t>(DisplayedPierceArmour); // 7.01
 }
 
 }

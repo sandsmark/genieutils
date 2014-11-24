@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
-    Copyright (C) 2011 - 2013  Mikko T P
+    Copyright (C) 2011 - 2014  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -37,15 +37,15 @@ Building::Building() : Annexes(), AlfaThingy()
   TerrainID = -1;
   ResourceID = -1;
   ResearchID = -1;
-  Unknown33 = 0;
+  PlayerAlive = 0;
   HeadUnit = -1;
   TransformUnit = -1;
-  UnknownUnit = -1;
+  UnknownSound = -1;
   ConstructionSound = -1;
   GarrisonType = 0;
   GarrisonHealRate = 0;
   Unknown35 = 0;
-  Unknown36 = -1;
+  UnknownDyingEffect = -1;
 }
 
 Building::~Building()
@@ -62,7 +62,7 @@ void Building::serializeObject(void)
 {
   serialize<int16_t>(ConstructionGraphicID);
 
-  if (getGameVersion() >= genie::GV_TC)
+  if (getGameVersion() >= genie::GV_TC) // 11.53
     serialize<int16_t>(SnowGraphicID);
 
   serialize<int8_t>(AdjacentMode);
@@ -70,16 +70,16 @@ void Building::serializeObject(void)
   serialize<int8_t>(DisappearsWhenBuilt);
   serialize<int16_t>(StackUnitID);
   serialize<int16_t>(TerrainID);
-  serialize<int16_t>(ResourceID); // Unit?
+  serialize<int16_t>(ResourceID); // Resource?
   serialize<int16_t>(ResearchID);
 
   if (getGameVersion() >= genie::GV_AoKA)
   {
-    serialize<int8_t>(Unknown33);
-    serializeSub<unit::BuildingAnnex, BUILDING_ANNEXES_SIZE>(Annexes);
-    serialize<int16_t>(HeadUnit);
+    serialize<int8_t>(PlayerAlive);
+    serializeSub<unit::BuildingAnnex, BUILDING_ANNEXES_SIZE>(Annexes); // 40 bytes
+    serialize<int16_t>(HeadUnit); // 9.89
     serialize<int16_t>(TransformUnit);
-    serialize<int16_t>(UnknownUnit); // Unit?
+    serialize<int16_t>(UnknownSound);
   }
 
   serialize<int16_t>(ConstructionSound);
@@ -88,9 +88,12 @@ void Building::serializeObject(void)
   {
     serialize<int8_t>(GarrisonType);
     serialize<float>(GarrisonHealRate);
-    serialize<int32_t>(Unknown35);
-    serialize<int16_t>(Unknown36);
-    serialize<int8_t, ALFATHING_SIZE>(AlfaThingy);
+    serialize<float>(Unknown35);
+	// 9.06
+	{
+      serialize<int16_t>(UnknownDyingEffect);
+      serialize<int8_t, ALFATHING_SIZE>(AlfaThingy);
+    }
   }
 }
 

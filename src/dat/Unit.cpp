@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
-    Copyright (C) 2011 - 2013  Mikko T P
+    Copyright (C) 2011 - 2014  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -60,7 +60,7 @@ Unit::Unit() : ResourceStorages()
   PlacementTerrain.second = -1;
   EditorRadius.first = 0;
   EditorRadius.second = 0;
-  BuildingMode = 0;
+  HillMode = 0;
   VisibleInFog = 0;
   TerrainRestriction = 0;
   FlyMode = 0;
@@ -166,7 +166,7 @@ void Unit::serializeObject(void)
   serializePair<int16_t>(PlacementBypassTerrain);
   serializePair<int16_t>(PlacementTerrain);
   serializePair<float>(EditorRadius);
-  serialize<int8_t>(BuildingMode);
+  serialize<int8_t>(HillMode);
   serialize<int8_t>(VisibleInFog);
   serialize<int16_t>(TerrainRestriction);
   serialize<int8_t>(FlyMode);
@@ -246,7 +246,7 @@ void Unit::serializeObject(void)
   if (Type >= genie::UT_Bird)
     serialize<ISerializable>(Bird);
 
-  if (Type >= genie::UT_Projectile)
+  if (Type >= genie::UT_Unknown)
     serialize<ISerializable>(Projectile);
 
   if (Type == genie::UT_Projectile)

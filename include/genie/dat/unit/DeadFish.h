@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
-    Copyright (C) 2011 - 2013  Mikko T P
+    Copyright (C) 2011 - 2014  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -43,11 +43,11 @@ public:
   int16_t TrackingUnit;
   int8_t TrackingUnitUsed;
   float TrackingUnitDensity;
-  float Unknown12;//not in aoe/ror
-
   int8_t Unknown16;
-  static const unsigned short UNKNOWN16B_SIZE = 16;
-  std::array<int8_t, UNKNOWN16B_SIZE> Unknown16B;
+  int32_t Unknown16A;
+
+  static const unsigned short U16B_SIZE = 4;
+  std::array<float, U16B_SIZE> Unknown16B;
 
 private:
   virtual void serializeObject(void);

@@ -1,7 +1,7 @@
 /*
     genieutils - <description>
     Copyright (C) 2011 - 2013  Armin Preiml <email>
-    Copyright (C) 2013  Mikko T P
+    Copyright (C) 2013 - 2014  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -594,7 +594,7 @@ private:
 //----------------------------------------------------------------------------
 /// Copies data from src to dest, but also allocates memory for dest or
 /// sets dest to 0 if src is 0.
-//
+/*/
 template <typename T>
 void arraycpy(T **dest, const T *src, size_t size)
 {
@@ -605,7 +605,7 @@ void arraycpy(T **dest, const T *src, size_t size)
     *dest = new T[size];
     memcpy(*dest, src, size * sizeof(T));
   }
-}
+}*/
 
 }
 
