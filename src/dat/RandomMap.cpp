@@ -287,4 +287,37 @@ void MapUnit::serializeObject(void)
   serialize<int32_t>(MaxDistanceToPlayers);
 }
 
+//------------------------------------------------------------------------------
+MapUnknown::MapUnknown()
+{
+  Unknown1 = 0;
+  Unknown2 = 0;
+  Unknown3 = 0;
+  Unknown4 = 0;
+  Unknown5 = 0;
+  Unknown6 = 0;
+}
+
+//------------------------------------------------------------------------------
+MapUnknown::~MapUnknown()
+{
+}
+
+//------------------------------------------------------------------------------
+void MapUnknown::setGameVersion(GameVersion gv)
+{
+  ISerializable::setGameVersion(gv);
+}
+
+//------------------------------------------------------------------------------
+void MapUnknown::serializeObject(void)
+{
+  serialize<int32_t>(Unknown1);
+  serialize<int32_t>(Unknown2);
+  serialize<int32_t>(Unknown3);
+  serialize<int32_t>(Unknown4);
+  serialize<int32_t>(Unknown5);
+  serialize<int32_t>(Unknown6);
+}
+
 }

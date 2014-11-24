@@ -24,6 +24,24 @@
 namespace genie
 {
 
+class MapUnknown : public ISerializable
+{
+public:
+  MapUnknown();
+  virtual ~MapUnknown();
+  virtual void setGameVersion(GameVersion gv);
+
+  int32_t Unknown1;
+  int32_t Unknown2;
+  int32_t Unknown3;
+  int32_t Unknown4;
+  int32_t Unknown5;
+  int32_t Unknown6;
+
+private:
+  virtual void serializeObject(void);
+};
+
 class MapUnit : public ISerializable
 {
 public:
@@ -114,14 +132,14 @@ public:
   std::vector<MapTerrain> MapTerrains;
   int32_t MapUnitPointer;
   std::vector<MapUnit> MapUnits;
-
-  static const unsigned short UNKNOWN2_SIZE = 2;
-  std::array<int32_t, UNKNOWN2_SIZE> Unknown2;
+  int32_t MapUnknownPointer;
+  std::vector<MapUnknown> MapUnknowns;
 
 private:
   uint32_t BaseZoneCount;
   uint32_t MapTerrainCount;
   uint32_t MapUnitCount;
+  uint32_t MapUnknownCount;
 
   virtual void serializeObject(void);
 };
@@ -147,13 +165,13 @@ public:
   int32_t BaseZonePointer;
   int32_t MapTerrainPointer;
   int32_t MapUnitPointer;
+  int32_t MapUnknownPointer;
 
-  static const unsigned short UNKNOWN2_SIZE = 2;
-  std::array<int32_t, UNKNOWN2_SIZE> Unknown2;
-
+  /// These *HAVE* to be same as Map class counterparts!
   uint32_t BaseZoneCount;
   uint32_t MapTerrainCount;
   uint32_t MapUnitCount;
+  uint32_t MapUnknownCount;
 
 private:
   virtual void serializeObject(void);
