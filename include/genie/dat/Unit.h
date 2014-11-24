@@ -143,7 +143,8 @@ public:
   int16_t Unknown1;         // Always -1
 
   /// TODO
-  int16_t Enabled;
+  int8_t Enabled;
+  int8_t NewUnknown;
   std::pair<int16_t, int16_t> PlacementBypassTerrain;
   std::pair<int16_t, int16_t> PlacementTerrain;
   std::pair<float, float> EditorRadius;

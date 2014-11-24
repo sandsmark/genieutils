@@ -75,10 +75,10 @@ void Research::serializeObject(void)
   serializeSub<ResearchResourceCost, RESOURCECOSTS_SIZE>(ResourceCosts);
   serialize<int16_t>(RequiredTechCount);
 
-  if (getGameVersion() >= genie::GV_AoK)
+  if (getGameVersion() >= genie::GV_AoKB)
   {
-    serialize<int16_t>(Civ);
-    serialize<int16_t>(FullTechMode);
+    serialize<int16_t>(Civ);// 10.22
+    serialize<int16_t>(FullTechMode); // 10.77
   }
 
   serialize<int16_t>(ResearchLocation);

@@ -68,6 +68,7 @@ Unit::Unit() : ResourceStorages()
   ResourceDecay = 0;
   BlastType = 0;
   Unknown2 = 0;
+  NewUnknown = 0;
   InteractionMode = 0;
   MinimapMode = 0;
   CommandAttribute = 0;
@@ -153,15 +154,10 @@ void Unit::serializeObject(void)
   serialize<int16_t>(IconID);
   serialize<int8_t>(HideInEditor);
   serialize<int16_t>(Unknown1);
+  serialize<int8_t>(Enabled);
 
-  if (getGameVersion() >= genie::GV_AoK)
-    serialize<int16_t>(Enabled);
-  else
-  {
-    int8_t enabled = Enabled;
-    serialize<int8_t>(enabled);
-    Enabled = enabled;
-  }
+  if (getGameVersion() >= genie::GV_AoK) // 11.48
+    serialize<int8_t>(NewUnknown);
 
   serializePair<int16_t>(PlacementBypassTerrain);
   serializePair<int16_t>(PlacementTerrain);

@@ -32,7 +32,7 @@ Projectile::Projectile() : GraphicDisplacement()
   Unknown21 = -1;
   MaxRange = 0;
   BlastRadius = 0;
-  ReloadTime1 = 0;
+  ReloadTime = 0;
   ProjectileUnitID = -1;
   AccuracyPercent = 0;
   TowerMode = 0;
@@ -82,7 +82,7 @@ void Projectile::serializeObject(void)
   serialize<int16_t>(Unknown21);
   serialize<float>(MaxRange);
   serialize<float>(BlastRadius);
-  serialize<float>(ReloadTime1);
+  serialize<float>(ReloadTime);
   serialize<int16_t>(ProjectileUnitID);
   serialize<int16_t>(AccuracyPercent);
   serialize<int8_t>(TowerMode);

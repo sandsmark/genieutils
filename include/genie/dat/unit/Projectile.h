@@ -43,7 +43,7 @@ public:
   int16_t Unknown21;
   float MaxRange;
   float BlastRadius;
-  float ReloadTime1;
+  float ReloadTime;
   int16_t ProjectileUnitID;
 
   /// Percentage value determining the probability of an attack hiting
