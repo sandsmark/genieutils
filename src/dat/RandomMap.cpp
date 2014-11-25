@@ -54,7 +54,7 @@ void RandomMaps::serializeObject()
 }
 
 //------------------------------------------------------------------------------
-MapHeader::MapHeader() : Unknown2()
+MapHeader::MapHeader()
 {
   ScriptNumber = 0;
   BorderSouthWest = 0;
@@ -69,10 +69,12 @@ MapHeader::MapHeader() : Unknown2()
   BaseZonePointer = 0;
   MapTerrainPointer = 0;
   MapUnitPointer = 0;
+  MapUnknownPointer = 0;
   // Remove these after you have made them automatic.
   BaseZoneCount = 0;
   MapTerrainCount = 0;
   MapUnitCount = 0;
+  MapUnknownCount = 0;
 }
 
 //------------------------------------------------------------------------------
@@ -105,11 +107,12 @@ void MapHeader::serializeObject(void)
   serialize<int32_t>(MapTerrainPointer);
   serialize<uint32_t>(MapUnitCount);
   serialize<int32_t>(MapUnitPointer);
-  serialize<int32_t, UNKNOWN2_SIZE>(Unknown2);
+  serialize<uint32_t>(MapUnknownCount);
+  serialize<int32_t>(MapUnknownPointer);
 }
 
 //------------------------------------------------------------------------------
-Map::Map() : Unknown2()
+Map::Map()
 {
   BorderSouthWest = 0;
   BorderNorthWest = 0;
@@ -123,6 +126,7 @@ Map::Map() : Unknown2()
   BaseZonePointer = 0;
   MapTerrainPointer = 0;
   MapUnitPointer = 0;
+  MapUnknownPointer = 0;
 }
 
 //------------------------------------------------------------------------------
@@ -138,6 +142,7 @@ void Map::setGameVersion(GameVersion gv)
   updateGameVersion(BaseZones);
   updateGameVersion(MapTerrains);
   updateGameVersion(MapUnits);
+  updateGameVersion(MapUnknowns);
 }
 
 //------------------------------------------------------------------------------
@@ -165,7 +170,9 @@ void Map::serializeObject(void)
   serialize<int32_t>(MapUnitPointer);
   serializeSub<MapUnit>(MapUnits, MapUnitCount);
 
-  serialize<int32_t, UNKNOWN2_SIZE>(Unknown2);
+  serializeSize<uint32_t>(MapUnknownCount, MapUnknowns.size());
+  serialize<int32_t>(MapUnknownPointer);
+  serializeSub<MapUnknown>(MapUnknowns, MapUnknownCount);
 }
 
 //------------------------------------------------------------------------------
