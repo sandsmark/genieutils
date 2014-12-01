@@ -153,7 +153,7 @@ public:
   techtree::Common Common;
 
   static const unsigned short AGES = 5;
-  int8_t Unknown2;
+  int8_t LocationInAge;
   std::array<int8_t, AGES> UnitsTechsTotal;
   std::array<int8_t, AGES> UnitsTechsFirst;
 

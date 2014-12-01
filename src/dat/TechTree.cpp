@@ -141,7 +141,7 @@ BuildingConnection::BuildingConnection() : UnitsTechsTotal(), UnitsTechsFirst()
 {
   ID = 0;
   Unknown1 = 2;
-  Unknown2 = 0;
+  LocationInAge = 0;
   LineMode = 0;
   EnablingResearch = -1;
 }
@@ -178,9 +178,9 @@ void BuildingConnection::serializeObject(void)
 
   // 9.4
   {
-    serialize<int8_t>(Unknown2);
-	serialize<int8_t, AGES>(UnitsTechsTotal);
-	serialize<int8_t, AGES>(UnitsTechsFirst); // 9.42
+    serialize<int8_t>(LocationInAge);
+    serialize<int8_t, AGES>(UnitsTechsTotal);
+    serialize<int8_t, AGES>(UnitsTechsFirst); // 9.42
     serialize<int32_t>(LineMode); // 9.51
     serialize<int32_t>(EnablingResearch); // 9.91
   }

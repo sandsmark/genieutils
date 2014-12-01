@@ -52,12 +52,12 @@ void PlayerColour::serializeObject(void)
   if (getGameVersion() < genie::GV_AoKA)
     serialize<std::string>(Name, NAME_SIZE);
 
-  serialize<int32_t>(ID);
+  serialize<int32_t>(ID); // int16 + int16 in RoR (2nd part being 0)
 
   if (getGameVersion() < genie::GV_AoKA)
   {
     int16_t col_short = Colour;
-    serialize<int16_t>(col_short);
+    serialize<int16_t>(col_short); // int8 + int8 (2nd part being 1 or 2)
     Colour = col_short;
   }
   else

@@ -44,7 +44,7 @@ void SoundItem::setGameVersion(GameVersion gv)
 
 unsigned short SoundItem::getFileNameSize()
 {
-  if (getGameVersion() <= genie::GV_TC)
+  if (getGameVersion() < genie::GV_SWGB)
     return 13;
   else
     return 27;

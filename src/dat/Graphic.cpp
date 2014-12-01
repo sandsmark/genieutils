@@ -102,7 +102,7 @@ Graphic &Graphic::operator=(const Graphic &other)
 
 unsigned short Graphic::getNameSize()
 {
-  if (getGameVersion() <= genie::GV_TC)
+  if (getGameVersion() < genie::GV_SWGB)
     return NAME_SIZE;
   else
     return NAME_SIZE_SWGB;
@@ -110,7 +110,7 @@ unsigned short Graphic::getNameSize()
 
 unsigned short Graphic::getName2Size()
 {
-  if (getGameVersion() <= genie::GV_TC)
+  if (getGameVersion() < genie::GV_SWGB)
     return NAME_SIZE2;
   else
     return NAME_SIZE_SWGB;
