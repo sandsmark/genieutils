@@ -31,11 +31,8 @@ class Graphic : public ISerializable
 {
 public:
   Graphic();
-  Graphic(const Graphic& other);
   virtual ~Graphic();
   virtual void setGameVersion(GameVersion gv);
-
-  Graphic &operator=(const Graphic& other);
 
   /// Returns the size of Name
   unsigned short getNameSize(void);

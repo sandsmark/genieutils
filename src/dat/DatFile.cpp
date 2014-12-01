@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
-    Copyright (C) 2011 - 2013  Mikko T P
+    Copyright (C) 2011 - 2014  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -65,8 +65,6 @@ void DatFile::setGameVersion(GameVersion gv)
   updateGameVersion(PlayerColours);
   updateGameVersion(Sounds);
   updateGameVersion(Graphics);
-  updateGameVersion(Terrains);
-  updateGameVersion(TerrainBorders);
   updateGameVersion(Techages);
   updateGameVersion(UnitLines);
   updateGameVersion(UnitHeaders);
@@ -74,10 +72,6 @@ void DatFile::setGameVersion(GameVersion gv)
   updateGameVersion(Researchs);
   RandomMaps.setGameVersion(gv);
   TechTree.setGameVersion(gv);
-
-  ZeroSpace.resize(getZeroSpaceSize());
-  Rendering.resize(getRenderingSize());
-  Something.resize(getSomethingSize());
 }
 
 //------------------------------------------------------------------------------
@@ -99,70 +93,6 @@ void DatFile::extractRaw(const char *inFile, const char *outFile)
 void DatFile::setVerboseMode(bool verbose)
 {
   verbose_ = verbose;
-}
-
-//------------------------------------------------------------------------------
-unsigned short DatFile::getTerrainsSize(void)
-{
-  switch (getGameVersion())
-  {
-    case genie::GV_AoE:
-    case genie::GV_RoR:
-    case genie::GV_AoKA:
-    case genie::GV_AoK:  return 32;
-    case genie::GV_TC:   return 42;
-    case genie::GV_SWGB:
-    case genie::GV_CC:   return 55;
-    default: return 0;
-  }
-}
-
-//------------------------------------------------------------------------------
-unsigned short DatFile::getZeroSpaceSize(void)
-{
-  switch (getGameVersion())
-  {
-    case genie::GV_AoE:
-    case genie::GV_RoR:  return 3;
-    case genie::GV_AoKA: return 11;
-    case genie::GV_AoK:
-    case genie::GV_TC:
-    case genie::GV_SWGB:
-    case genie::GV_CC:   return 15;
-    default: return 0;
-  }
-}
-
-//------------------------------------------------------------------------------
-unsigned short DatFile::getRenderingSize(void)
-{
-  switch (getGameVersion())
-  {
-    case genie::GV_AoE:
-    case genie::GV_RoR:  return 21;
-    case genie::GV_AoKA:
-    case genie::GV_AoK:
-    case genie::GV_TC:   return 29;
-    case genie::GV_SWGB:
-    case genie::GV_CC:   return 31;
-    default: return 0;
-  }
-}
-
-//------------------------------------------------------------------------------
-unsigned short DatFile::getSomethingSize(void)
-{
-  switch (getGameVersion())
-  {
-    case genie::GV_AoE:
-    case genie::GV_RoR:  return 5;
-    case genie::GV_AoKA: return 6;
-    case genie::GV_AoK:
-    case genie::GV_TC:
-    case genie::GV_SWGB:
-    case genie::GV_CC:   return 157;
-    default: return 0;
-  }
 }
 
 //------------------------------------------------------------------------------
@@ -231,36 +161,9 @@ void DatFile::serializeObject(void)
   {
     std::cout << "Graphics: " << Graphics.size() << std::endl;
 
-    std::cout << "GraphicsRendering " << "(0x" << std::hex << tellg();
+    std::cout << "Terrain block " << "(0x" << std::hex << tellg();
   }
-  //TODO: AoE/RoR: maybe:
-  // struct { short unknown[3]; } terrainheader[terrain_count_]
-  serialize<int16_t, TERRAIN_HEADER_SIZE>(GraphicsRendering);
-
-  if (verbose_)
-    std::cout << " to 0x" << std::hex << tellg() << std::dec << ")" << std::endl;
-
-  serializeSub<Terrain>(Terrains, getTerrainsSize());
-
-  if (verbose_)
-    std::cout << " to 0x" << std::hex << tellg() << std::dec << ")" << std::endl;
-
-
-  // TerrainBorders seem to be unused (are empty) in GV > AoK Alpha
-  serializeSub<TerrainBorder>(TerrainBorders, 16); //TODO: fixed size?
-
-  // Empty space.
-  serialize<int16_t>(ZeroSpace, getZeroSpaceSize());
-
-  serialize<uint16_t>(NumberOfTerrainsUsed2);
-
-  if (verbose_)
-    std::cout << "RenderingPlusSomething?? (0x" << std::hex << tellg() << std::dec;
-
-  serialize<int16_t>(Rendering, getRenderingSize());
-
-  // Few pointers and small numbers.
-  serialize<int32_t>(Something, getSomethingSize());
+  serialize<ISerializable>(TerrainBlock);
 
   // This data seems to be needed only in AoE and RoR.
   // In later games it is removable.
@@ -341,7 +244,7 @@ void DatFile::unload()
   Sounds.clear();
   GraphicPointers.clear();
   Graphics.clear();
-  Terrains.clear();
+  TerrainBlock.Terrains.clear();
   RandomMaps.MapHeaders.clear();
   RandomMaps.Maps.clear();
   Techages.clear();
@@ -353,11 +256,11 @@ void DatFile::unload()
   Civs.clear();
   Researchs.clear();
   UnitLines.clear();
-  TerrainBorders.clear();
+  TerrainBlock.TerrainBorders.clear();
   UnknownPreTechTree.clear();
-  ZeroSpace.clear();
-  Rendering.clear();
-  Something.clear();
+  TerrainBlock.ZeroSpace.clear();
+  TerrainBlock.Rendering.clear();
+  TerrainBlock.Something.clear();
 
   delete [] TechTreeAoKA;
 

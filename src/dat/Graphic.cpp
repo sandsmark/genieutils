@@ -50,11 +50,6 @@ Graphic::Graphic() : Coordinates()
   Unknown3 = 0;
 }
 
-Graphic::Graphic(const Graphic& other) : ISerializable(other), Coordinates()
-{
-  *this = other;
-}
-
 Graphic::~Graphic()
 {
 }
@@ -66,38 +61,6 @@ void Graphic::setGameVersion(GameVersion gv)
 
   updateGameVersion(Deltas);
   updateGameVersion(AttackSounds);
-}
-
-Graphic &Graphic::operator=(const Graphic &other)
-{
-  Name = other.Name;
-  Name2 = other.Name2;
-
-  SLP = other.SLP;
-  Unknown1 = other.Unknown1;
-  Unknown2 = other.Unknown2;
-  Layer = other.Layer;
-  PlayerColor = other.PlayerColor;
-  Rainbow = other.Rainbow;
-  Replay = other.Replay;
-  Coordinates = other.Coordinates;
-  DeltaCount = other.DeltaCount;
-  SoundID = other.SoundID;
-  AttackSoundUsed = other.AttackSoundUsed;
-  FrameCount = other.FrameCount;
-  AngleCount = other.AngleCount;
-  NewSpeed = other.NewSpeed;
-  FrameRate = other.FrameRate;
-  ReplayDelay = other.ReplayDelay;
-  SequenceType = other.SequenceType;
-  ID = other.ID;
-  MirroringMode = other.MirroringMode;
-  Unknown3 = other.Unknown3;
-
-  Deltas = other.Deltas;
-  AttackSounds = other.AttackSounds;
-
-  return *this;
 }
 
 unsigned short Graphic::getNameSize()

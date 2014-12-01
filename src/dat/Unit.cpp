@@ -251,7 +251,7 @@ void Unit::serializeObject(void)
   if (Type >= genie::UT_Creatable)
     serialize<ISerializable>(Creatable);
 
-  if (Type >= genie::UT_Building)
+  if (Type == genie::UT_Building)
     serialize<ISerializable>(Building);
 }
 

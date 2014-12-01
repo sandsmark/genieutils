@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
-    Copyright (C) 2011 - 2013  Mikko T P
+    Copyright (C) 2011 - 2014  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -31,6 +31,7 @@
 #include "PlayerColour.h"
 #include "Sound.h"
 #include "Graphic.h"
+#include "TerrainBlock.h"
 #include "Terrain.h"
 #include "Techage.h"
 #include "UnitHeader.h"
@@ -93,20 +94,7 @@ public:
   std::vector<int32_t> GraphicPointers;
   std::vector<Graphic> Graphics;
 
-  static const unsigned short TERRAIN_HEADER_SIZE = 69;
-  std::array<int16_t, TERRAIN_HEADER_SIZE> GraphicsRendering;
-  unsigned short getTerrainsSize(void);
-  std::vector<Terrain> Terrains;
-
-  std::vector<TerrainBorder> TerrainBorders;
-
-  unsigned short getZeroSpaceSize(void);
-  std::vector<int16_t> ZeroSpace;
-  unsigned short getRenderingSize(void);
-  std::vector<int16_t> Rendering;
-  unsigned short getSomethingSize(void);
-  std::vector<int32_t> Something;
-
+  genie::TerrainBlock TerrainBlock;
   genie::RandomMaps RandomMaps;
 
   std::vector<Techage> Techages;
@@ -125,7 +113,6 @@ public:
   std::vector<int32_t> UnknownPreTechTree;
 
   uint16_t NumberOfTerrainsUsed;
-  uint16_t NumberOfTerrainsUsed2;
 
    //SWGB Unknowns:
   /// Seems to be the CivCount

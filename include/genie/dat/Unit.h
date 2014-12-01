@@ -41,6 +41,9 @@ enum UnitType
   /// Basic units like rubble and flares.
   UT_EyeCandy = 10,
 
+  /// Trees, used to be 90?
+  UT_Trees = 15,
+
   /// With Speed but mostly flags. Purpose of speed is unknown
   UT_Flag = 20,
 
@@ -54,7 +57,7 @@ enum UnitType
   /// Only birds in aoe and ror are of this type.
   UT_Bird = 40,
 
-  /// ???.
+  /// ???
   UT_Unknown = 50,
 
   /// Projectiles

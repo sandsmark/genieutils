@@ -98,6 +98,7 @@ set(DAT_SRC
 
     src/dat/TechTree.cpp
     src/dat/Terrain.cpp
+    src/dat/TerrainBlock.cpp
     src/dat/TerrainBorder.cpp
     src/dat/GraphicAttackSound.cpp
     src/dat/GraphicDelta.cpp
@@ -117,7 +118,6 @@ set(DAT_SRC
 
     src/dat/unit/AttackOrArmor.cpp
     src/dat/unit/DamageGraphic.cpp
-    src/dat/unit/BuildingAnnex.cpp
     src/dat/unit/DeadFish.cpp 
     src/dat/unit/Bird.cpp
     src/dat/unit/Projectile.cpp
