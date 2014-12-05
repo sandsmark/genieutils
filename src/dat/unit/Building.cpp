@@ -45,7 +45,7 @@ Building::Building() : Annexes(), AlfaThingy()
   GarrisonType = 0;
   GarrisonHealRate = 0;
   Unknown35 = 0;
-  UnknownDyingEffect = -1;
+  PileUnit = -1;
 }
 
 Building::~Building()
@@ -91,8 +91,8 @@ void Building::serializeObject(void)
     serialize<float>(Unknown35);
 	// 9.06
 	{
-      serialize<int16_t>(UnknownDyingEffect);
-      serialize<int8_t, ALFATHING_SIZE>(AlfaThingy);
+      serialize<int16_t>(PileUnit);
+      serialize<int8_t, LOOTABLE_RES_COUNT>(AlfaThingy);
     }
   }
 }

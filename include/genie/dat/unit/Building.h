@@ -84,12 +84,12 @@ public:
   int8_t GarrisonType;
   float GarrisonHealRate;
   float Unknown35;
-  int16_t UnknownDyingEffect;
+  int16_t PileUnit;
 
   /// Related to annexes in any way?
   /// Widespread usage in the AoK alpha 09.07.0222
-  static const unsigned short ALFATHING_SIZE = 6;
-  std::array<int8_t, ALFATHING_SIZE> AlfaThingy;
+  static const unsigned short LOOTABLE_RES_COUNT = 6;
+  std::array<int8_t, LOOTABLE_RES_COUNT> AlfaThingy;
 
 private:
   virtual void serializeObject(void);

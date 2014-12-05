@@ -198,7 +198,7 @@ public:
 
   int8_t CommandAttribute;// Page for Build button: 2 = Page 1, 10 = Page 2, ?11 = Page 3?
   float Unknown3A;
-  int8_t Unknown3B;
+  uint8_t Unknown3B;
   int32_t LanguageDLLHelp;
   int32_t LanguageDLLHotKeyText;
   int32_t HotKey;
@@ -231,7 +231,7 @@ public:
    * Note: this doe not work with all units
    */
   int8_t SelectionEffect;
-  int8_t EditorSelectionColour;
+  uint8_t EditorSelectionColour;
   std::pair<float, float> SelectionRadius;
   float HPBarHeight2;
 

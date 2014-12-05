@@ -174,7 +174,7 @@ void Unit::serializeObject(void)
   serialize<int8_t>(MinimapMode);
   serialize<int8_t>(CommandAttribute);
   serialize<float>(Unknown3A);
-  serialize<int8_t>(Unknown3B);
+  serialize<uint8_t>(Unknown3B);
   serialize<int32_t>(LanguageDLLHelp);
   serialize<int32_t>(LanguageDLLHotKeyText);
   serialize<int32_t>(HotKey);
@@ -197,7 +197,7 @@ void Unit::serializeObject(void)
   }
 
   serialize<int8_t>(SelectionEffect);
-  serialize<int8_t>(EditorSelectionColour);
+  serialize<uint8_t>(EditorSelectionColour);
   serializePair<float>(SelectionRadius);
   serialize<float>(HPBarHeight2);
 
