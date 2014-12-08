@@ -253,8 +253,8 @@ void DatFile::unload()
   TechTree.UnitConnections.clear();
   TechTree.ResearchConnections.clear();
   UnitHeaders.clear();
-  Civs.clear();
   Researchs.clear();
+  Civs.clear();
   UnitLines.clear();
   TerrainBlock.TerrainBorders.clear();
   UnknownPreTechTree.clear();

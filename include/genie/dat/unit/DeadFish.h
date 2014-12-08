@@ -44,9 +44,8 @@ public:
   int8_t TrackingUnitUsed;
   float TrackingUnitDensity;
   int8_t Unknown16;
-  int32_t Unknown16A;
 
-  static const unsigned short U16B_SIZE = 4;
+  static const unsigned short U16B_SIZE = 5;
   std::array<float, U16B_SIZE> Unknown16B;
 
 private:

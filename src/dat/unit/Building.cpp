@@ -89,10 +89,9 @@ void Building::serializeObject(void)
     serialize<int8_t>(GarrisonType);
     serialize<float>(GarrisonHealRate);
     serialize<float>(Unknown35);
-	// 9.06
 	{
-      serialize<int16_t>(PileUnit);
-      serialize<int8_t, LOOTABLE_RES_COUNT>(AlfaThingy);
+      serialize<int16_t>(PileUnit); // 9.06
+      serialize<int8_t, LOOTABLE_RES_COUNT>(AlfaThingy); // 9.26
     }
   }
 }

@@ -36,7 +36,6 @@ DeadFish::DeadFish() : Unknown16B()
   TrackingUnitUsed = 0;
   TrackingUnitDensity = 0;
   Unknown16 = 0;
-  Unknown16A = 0;
 }
 
 DeadFish::~DeadFish()
@@ -61,7 +60,6 @@ void DeadFish::serializeObject(void)
 
   if (getGameVersion() >= genie::GV_AoKB) // 10.28
   {
-    serialize<int32_t>(Unknown16A);
     serialize<float, U16B_SIZE>(Unknown16B);
   }
 }

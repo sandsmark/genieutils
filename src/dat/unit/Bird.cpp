@@ -62,7 +62,7 @@ void Bird::serializeObject(void)
   serialize<int16_t>(MoveSound); // 6.92
   serialize<int8_t>(AnimalMode);
 
-  if (getGameVersion() <= genie::GV_AoKA) // 11.24
+  if (getGameVersion() < genie::GV_AoK) // 11.24
   {
     serializeSize<uint16_t>(CommandCount, Commands.size());
     serializeSub<UnitCommand>(Commands, CommandCount);
