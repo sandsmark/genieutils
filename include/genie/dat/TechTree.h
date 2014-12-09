@@ -47,6 +47,8 @@ public:
 
   std::vector<ResearchConnection> ResearchConnections;
 
+  static unsigned short getCount();
+
 private:
   uint8_t age_count_;
   uint8_t total_building_count_;
@@ -89,8 +91,10 @@ public:
   {
     if (getGameVersion() >= genie::GV_SWGB)
       return 20;
-    else
+    else if (getGameVersion() >= genie::GV_AoK)
       return 10;
+	else
+      return 5;
   }
 
 private:

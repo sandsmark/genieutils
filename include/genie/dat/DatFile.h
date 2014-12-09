@@ -125,10 +125,6 @@ public:
   int8_t SUnknown8;
 
 private:
-  /// Skipping tech trees for AoK alpha
-  // Is it worth to discover the structure of this?
-  int8_t *TechTreeAoKA;
-
   // if true print debug messages
   bool verbose_;
 

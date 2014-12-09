@@ -38,9 +38,7 @@ namespace genie
 typedef boost::interprocess::basic_vectorstream<std::vector<char>> v_stream;
 
 //------------------------------------------------------------------------------
-DatFile::DatFile() : TechTreeAoKA(0),
-               verbose_(false), file_name_(""), file_(0),
-               compressor_(this)
+DatFile::DatFile() : verbose_(false), file_name_(""), file_(0), compressor_(this)
 {
   SUnknown2 = -1;
   SUnknown3 = -1;
@@ -222,10 +220,7 @@ void DatFile::serializeObject(void)
   if (getGameVersion() >= genie::GV_AoKA)
   {
     serialize<int32_t>(UnknownPreTechTree, 7);
-	if (getGameVersion() == genie::GV_AoKA)
-	  serialize<int8_t>(&TechTreeAoKA, 63895);
-	else
-      serialize<ISerializable>(TechTree);
+    serialize<ISerializable>(TechTree);
   }
 
   if (verbose_)
@@ -261,10 +256,6 @@ void DatFile::unload()
   TerrainBlock.ZeroSpace.clear();
   TerrainBlock.Rendering.clear();
   TerrainBlock.Something.clear();
-
-  delete [] TechTreeAoKA;
-
-  TechTreeAoKA = 0;
 }
 
 }
