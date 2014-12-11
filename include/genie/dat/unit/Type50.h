@@ -18,10 +18,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_PROJECTILEONLY_H
-#define GENIE_PROJECTILEONLY_H
+#ifndef GENIE_TYPE50_H
+#define GENIE_TYPE50_H
 
 #include "genie/file/ISerializable.h"
+#include "AttackOrArmor.h"
 
 namespace genie
 {
@@ -29,32 +30,45 @@ namespace genie
 namespace unit
 {
 
-class ProjectileOnly : public ISerializable
+class Type50 : public ISerializable
 {
 public:
-  ProjectileOnly();
-  virtual ~ProjectileOnly();
+  Type50();
+  virtual ~Type50();
   virtual void setGameVersion(GameVersion gv);
 
-  int8_t StretchMode;
-  int8_t CompensationMode;
-  int8_t DropAnimationMode;
+  int16_t DefaultArmor; // uint8_t below TC
+  std::vector<unit::AttackOrArmor> Attacks;
+  std::vector<unit::AttackOrArmor> Armours;
+  int16_t Unknown21;
+  float MaxRange;
+  float BlastRadius;
+  float ReloadTime;
+  int16_t ProjectileUnitID;
 
-  /// Affects the graphics so that they pass through the target instead of stopping
-  /// 1 allows the projectile to pass through, a value of 0 stops the projectile.
-  /// Only affects graphic not pass through damage.
-  int8_t PenetrationMode;
+  /// Percentage value determining the probability of an attack hiting
+  int16_t AccuracyPercent;
 
-  int8_t Unknown24;
+  /// Used in AoE/RoR for towers.
+  int8_t TowerMode;
+  int16_t Delay;
 
-  /// Determines the arc a projectile follows.
-  /// Enter a non-negative value.
-  /// The higher the value, the higher the arc will be that the projectile travels.
-  /// The graphics do not change, so a scorpion bolt will still always point forwards,
-  /// even if it has a very high arc.
-  float ProjectileArc;
+  static const unsigned short GRAPHICDISPLACEMENT_SIZE = 3;
+  std::array<float, GRAPHICDISPLACEMENT_SIZE> GraphicDisplacement;
+
+  int8_t BlastLevel;
+  float MinRange;
+  float GarrisonRecoveryRate;
+  int16_t AttackGraphic;
+  int16_t DisplayedMeleeArmour;
+  int16_t DisplayedAttack;
+  float DisplayedRange;
+  float DisplayedReloadTime;
 
 private:
+  uint16_t AttackCount;
+  uint16_t ArmourCount;
+
   virtual void serializeObject(void);
 };
 
@@ -62,4 +76,4 @@ private:
 
 }
 
-#endif // GENIE_PROJECTILEONLY_H
+#endif // GENIE_TYPE50_H

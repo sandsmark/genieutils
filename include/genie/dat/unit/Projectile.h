@@ -22,7 +22,6 @@
 #define GENIE_PROJECTILE_H
 
 #include "genie/file/ISerializable.h"
-#include "AttackOrArmor.h"
 
 namespace genie
 {
@@ -37,38 +36,25 @@ public:
   virtual ~Projectile();
   virtual void setGameVersion(GameVersion gv);
 
-  int16_t DefaultArmor; // uint8_t below TC
-  std::vector<unit::AttackOrArmor> Attacks;
-  std::vector<unit::AttackOrArmor> Armours;
-  int16_t Unknown21;
-  float MaxRange;
-  float BlastRadius;
-  float ReloadTime;
-  int16_t ProjectileUnitID;
+  int8_t StretchMode;
+  int8_t CompensationMode;
+  int8_t DropAnimationMode;
 
-  /// Percentage value determining the probability of an attack hiting
-  int16_t AccuracyPercent;
+  /// Affects the graphics so that they pass through the target instead of stopping
+  /// 1 allows the projectile to pass through, a value of 0 stops the projectile.
+  /// Only affects graphic not pass through damage.
+  int8_t PenetrationMode;
 
-  /// Used in AoE/RoR for towers.
-  int8_t TowerMode;
-  int16_t Delay;
+  int8_t Unknown24;
 
-  static const unsigned short GRAPHICDISPLACEMENT_SIZE = 3;
-  std::array<float, GRAPHICDISPLACEMENT_SIZE> GraphicDisplacement;
-
-  int8_t BlastLevel;
-  float MinRange;
-  float GarrisonRecoveryRate;
-  int16_t AttackGraphic;
-  int16_t DisplayedMeleeArmour;
-  int16_t DisplayedAttack;
-  float DisplayedRange;
-  float DisplayedReloadTime;
+  /// Determines the arc a projectile follows.
+  /// Enter a non-negative value.
+  /// The higher the value, the higher the arc will be that the projectile travels.
+  /// The graphics do not change, so a scorpion bolt will still always point forwards,
+  /// even if it has a very high arc.
+  float ProjectileArc;
 
 private:
-  uint16_t AttackCount;
-  uint16_t ArmourCount;
-
   virtual void serializeObject(void);
 };
 

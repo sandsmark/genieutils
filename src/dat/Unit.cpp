@@ -122,8 +122,8 @@ void Unit::setGameVersion(GameVersion gv)
   updateGameVersion(DamageGraphics);
   DeadFish.setGameVersion(gv);
   Bird.setGameVersion(gv);
+  Type50.setGameVersion(gv);
   Projectile.setGameVersion(gv);
-  ProjectileOnly.setGameVersion(gv);
   Creatable.setGameVersion(gv);
   Building.setGameVersion(gv);
 }
@@ -243,10 +243,10 @@ void Unit::serializeObject(void)
     serialize<ISerializable>(Bird);
 
   if (Type >= genie::UT_Unknown)
-    serialize<ISerializable>(Projectile);
+    serialize<ISerializable>(Type50);
 
   if (Type == genie::UT_Projectile)
-    serialize<ISerializable>(ProjectileOnly);
+    serialize<ISerializable>(Projectile);
 
   if (Type >= genie::UT_Creatable)
     serialize<ISerializable>(Creatable);

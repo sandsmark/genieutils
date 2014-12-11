@@ -120,8 +120,8 @@ set(DAT_SRC
     src/dat/unit/DamageGraphic.cpp
     src/dat/unit/DeadFish.cpp 
     src/dat/unit/Bird.cpp
+    src/dat/unit/Type50.cpp
     src/dat/unit/Projectile.cpp
-    src/dat/unit/ProjectileOnly.cpp
     src/dat/unit/Creatable.cpp
     src/dat/unit/Building.cpp
     )

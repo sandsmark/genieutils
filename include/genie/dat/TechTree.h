@@ -91,7 +91,7 @@ public:
   {
     if (getGameVersion() >= genie::GV_SWGB)
       return 20;
-    else if (getGameVersion() >= genie::GV_AoK)
+    else if (getGameVersion() >= genie::GV_AoKB)
       return 10;
 	else
       return 5;

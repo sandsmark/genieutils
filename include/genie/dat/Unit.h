@@ -26,8 +26,8 @@
 #include "unit/AttackOrArmor.h"
 #include "unit/DeadFish.h"
 #include "unit/Bird.h"
+#include "unit/Type50.h"
 #include "unit/Projectile.h"
-#include "unit/ProjectileOnly.h"
 #include "unit/Creatable.h"
 #include "unit/Building.h"
 #include "ResourceUsage.h"
@@ -270,9 +270,9 @@ public:
 
   unit::Bird Bird;
 
-  unit::Projectile Projectile;
+  unit::Type50 Type50;
 
-  unit::ProjectileOnly ProjectileOnly;
+  unit::Projectile Projectile;
 
   unit::Creatable Creatable;
 
