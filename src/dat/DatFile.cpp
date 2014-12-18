@@ -123,7 +123,7 @@ void DatFile::serializeObject(void)
 
   if (verbose_)
   {
-	for (auto &i: FileVersion)
+    for (auto &i: FileVersion)
       std::cout << i;
     std::cout << std::endl << "TerRestrictionCount: " <<terrain_restriction_count_ << std::endl;
     std::cout << "TerCount: " << NumberOfTerrainsUsed << std::endl;

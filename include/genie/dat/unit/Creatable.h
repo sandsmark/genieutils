@@ -58,8 +58,8 @@ public:
   /// The area from which projectiles spawn. Size and randomness.
   std::array<float, AMDBUNKNOWN_SIZE> MissileSpawningArea;
 
-  int32_t AttackMissileDuplicationUnit;//not in aoe/ror
-  int32_t AttackMissileDuplicationGraphic;//not in aoe/ror
+  int32_t AlternativeProjectileUnit;//not in aoe/ror
+  int32_t ChargingGraphic;//not in aoe/ror
 
   //TODO:
   /*
@@ -70,7 +70,7 @@ public:
     wall end piece, but if a wall is placed between two other walls, it will
     have a different graphic.
    */
-  int8_t Unknown29;//not in aoe/ror
+  int8_t ChargingMode;//not in aoe/ror
   int16_t DisplayedPierceArmour;
 
 private:

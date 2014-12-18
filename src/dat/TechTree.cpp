@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
-    Copyright (C) 2011 - 2013  Mikko T P
+    Copyright (C) 2011 - 2014  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -253,7 +253,7 @@ void UnitConnection::serializeObject(void)
   {
     serialize<int32_t>(VerticalLine);
 
-	if (getGameVersion() < genie::GV_AoKB)// < 10.84
+    if (getGameVersion() < genie::GV_AoKB)// < 10.84
     {
       serialize<uint8_t>(unit_count_);
       serialize<int32_t>(Units, TechTree::getCount());
@@ -262,7 +262,7 @@ void UnitConnection::serializeObject(void)
     {
       serializeSize<uint8_t>(unit_count_, Units.size());
       serialize<int32_t>(Units, unit_count_);
-	}
+    }
 
     serialize<int32_t>(LocationInAge); // 9.46
     serialize<int32_t>(RequiredResearch); // 9.5
