@@ -53,7 +53,8 @@ Unit::Unit() : ResourceStorages()
   IconID = -1;
   HideInEditor = 0;
   Unknown1 = -1;
-  Enabled = 0;
+  Enabled = 1;
+  Disabled = 0;
   PlacementBypassTerrain.first = -1;
   PlacementBypassTerrain.second = -1;
   PlacementTerrain.first = -1;
@@ -68,7 +69,6 @@ Unit::Unit() : ResourceStorages()
   ResourceDecay = 0;
   BlastType = 0;
   Unknown2 = 0;
-  NewUnknown = 0;
   InteractionMode = 0;
   MinimapMode = 0;
   CommandAttribute = 0;
@@ -79,14 +79,14 @@ Unit::Unit() : ResourceStorages()
   HotKey = 16000;
   Unselectable = 0;
   Unknown6 = 0;
-  Unknown7 = 0;
+  UnknownSelectionMode = 0;
   Unknown8 = 0;
   SelectionMask = 0;
   SelectionShapeType = 0;
   SelectionShape = 0;
   Attribute = 0;
   Civilization = 0;
-  Unknown9 = 0;
+  Nothing = 0;
   SelectionEffect = 1;
   EditorSelectionColour = 52;
   SelectionRadius.first = 0;
@@ -157,7 +157,7 @@ void Unit::serializeObject(void)
   serialize<int8_t>(Enabled);
 
   if (getGameVersion() >= genie::GV_AoK) // 11.48
-    serialize<int8_t>(NewUnknown);
+    serialize<int8_t>(Disabled);
 
   serializePair<int16_t>(PlacementBypassTerrain);
   serializePair<int16_t>(PlacementTerrain);
@@ -180,7 +180,7 @@ void Unit::serializeObject(void)
   serialize<int32_t>(HotKey);
   serialize<int8_t>(Unselectable);
   serialize<int8_t>(Unknown6);
-  serialize<int8_t>(Unknown7);
+  serialize<int8_t>(UnknownSelectionMode);
   serialize<int8_t>(Unknown8);
 
   if (getGameVersion() >= genie::GV_AoKA)
@@ -192,7 +192,7 @@ void Unit::serializeObject(void)
     {
       serialize<uint8_t>(Attribute);
       serialize<int8_t>(Civilization);
-      serialize<int16_t>(Unknown9);
+      serialize<int16_t>(Nothing);
     }
   }
 

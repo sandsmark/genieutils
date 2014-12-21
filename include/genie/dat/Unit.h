@@ -147,7 +147,7 @@ public:
 
   /// TODO
   int8_t Enabled;
-  int8_t NewUnknown;
+  int8_t Disabled;
   std::pair<int16_t, int16_t> PlacementBypassTerrain;
   std::pair<int16_t, int16_t> PlacementTerrain;
   std::pair<float, float> EditorRadius;
@@ -204,8 +204,8 @@ public:
   int32_t HotKey;
   int8_t Unselectable;
   int8_t Unknown6;
-  int8_t Unknown7;// not in aoe/ror
-  int8_t Unknown8;// not in aoe/ror
+  int8_t UnknownSelectionMode;
+  int8_t Unknown8;
   int8_t SelectionMask;
 
   /// values for SelectionShapeType
@@ -221,7 +221,7 @@ public:
   uint8_t Attribute;
   /// Seems to be used only in SWGB/CC
   int8_t Civilization;
-  int16_t Unknown9;
+  int16_t Nothing;
 
   /**
    * 1.HP Bar on, selection shadow (permanent darker outline in editor only, disappears in game)

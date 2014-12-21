@@ -58,7 +58,7 @@ public:
 
   int8_t BlastLevel;
   float MinRange;
-  float GarrisonRecoveryRate;
+  float AccuracyErrorRadius;
   int16_t AttackGraphic;
   int16_t DisplayedMeleeArmour;
   int16_t DisplayedAttack;

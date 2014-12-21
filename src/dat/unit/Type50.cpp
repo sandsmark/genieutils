@@ -39,7 +39,7 @@ Type50::Type50() : GraphicDisplacement()
   Delay = 0;
   BlastLevel = 0;
   MinRange = 0;
-  GarrisonRecoveryRate = 0;
+  AccuracyErrorRadius = 0;
   AttackGraphic = -1;
   DisplayedMeleeArmour = 0;
   DisplayedAttack = 0;
@@ -91,8 +91,8 @@ void Type50::serializeObject(void)
   serialize<int8_t>(BlastLevel);
   serialize<float>(MinRange);
 
-  if (getGameVersion() >= genie::GV_AoK) // 10.36
-    serialize<float>(GarrisonRecoveryRate);
+  if (getGameVersion() >= genie::GV_AoKB) // 10.36
+    serialize<float>(AccuracyErrorRadius);
 
   serialize<int16_t>(AttackGraphic);
   //  7.01
