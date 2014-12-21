@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
-    Copyright (C) 2011 - 2013  Mikko T P
+    Copyright (C) 2011 - 2014  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -48,7 +48,6 @@ uint32_t TerrainBorder::getNameSize()
 //------------------------------------------------------------------------------
 void TerrainBorder::serializeObject(void)
 {
-  serialize<int16_t>(Unknown1);
   serialize<int16_t>(Enabled);
 
   serialize<std::string>(Name, getNameSize());
@@ -59,7 +58,7 @@ void TerrainBorder::serializeObject(void)
   serialize<int32_t>(SoundID); // -1
 
   serialize<uint8_t, 3>(Colors);
-  serialize<int8_t, 5>(Unknown5);
+  serialize<int8_t, 5>(Unknown5); // 1st and 2nd are colors, 3rd and 4th are terrains
   serialize<float>(Unknown6);
 
   serializeSub<TBFrameData, FRAMES_CNT>(Frames);
@@ -67,6 +66,7 @@ void TerrainBorder::serializeObject(void)
   serialize<int16_t>(FrameCount);
   serialize<int16_t>(AngleCount);
   serialize<int16_t>(TerrainID);
+  serialize<int16_t>(Unknown1);
 }
 
 //------------------------------------------------------------------------------

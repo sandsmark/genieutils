@@ -31,6 +31,7 @@ public:
   Terrain();
   virtual ~Terrain();
   virtual void setGameVersion(GameVersion gv);
+  static unsigned short getTerrainsSize(GameVersion gv);
 
   int16_t Unknown1;
   int16_t Enabled; //must be one or the game will crash
@@ -46,10 +47,11 @@ public:
   int32_t BlendType; //not in aoe/ror
 
   std::array<uint8_t, 3> Colors;
-  std::array<int8_t, 5> Unknown5;
-  float Unknown6;
-  static const unsigned short UNKNOWN7_SIZE = 18;
-  std::array<int8_t, UNKNOWN7_SIZE> Unknown7;
+  std::array<uint8_t, 2> Unknown5;
+  int8_t Terrain1;
+  int8_t Terrain2;
+  static const unsigned short TERRAINS_USED_AOE = 23;
+  std::array<int8_t, TERRAINS_USED_AOE> Unknown7;
   int16_t FrameCount;
   int16_t AngleCount;
   int16_t TerrainID;
@@ -58,7 +60,6 @@ public:
   int16_t TerrainReplacementID;
   static const unsigned short TERRAIN_DIMENSIONS_SIZE = 2;
   std::pair<int16_t, int16_t> TerrainDimensions;
-  unsigned short getTerrainBorderSize();
 
   /// These refer to terrain borders, which are actually used only in AoE and RoR.
   std::vector<int16_t> TerrainBorderIDs;
@@ -72,9 +73,6 @@ public:
   std::array<int8_t, TERRAIN_UNITS_SIZE> TerrainUnitPriority;
 
   int16_t NumberOfTerrainUnitsUsed;
-
-  static const unsigned short SWGBUNKNOWN1_SIZE = 24;
-  std::array<int8_t, SWGBUNKNOWN1_SIZE> SWGBUnknown1;
 
 private:
   virtual void serializeObject(void);

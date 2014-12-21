@@ -46,33 +46,17 @@ void TerrainBlock::setGameVersion(GameVersion gv)
 }
 
 //------------------------------------------------------------------------------
-unsigned short TerrainBlock::getTerrainsSize(void)
-{
-  switch (getGameVersion())
-  {
-    case genie::GV_AoE:
-    case genie::GV_RoR:
-    case genie::GV_AoKA:
-    case genie::GV_AoK:  return 32;
-    case genie::GV_TC:   return 42;
-    case genie::GV_SWGB:
-    case genie::GV_CC:   return 55;
-    default: return 0;
-  }
-}
-
-//------------------------------------------------------------------------------
 unsigned short TerrainBlock::getZeroSpaceSize(void)
 {
   switch (getGameVersion())
   {
     case genie::GV_AoE:
-    case genie::GV_RoR:  return 3;
-    case genie::GV_AoKA: return 11;
+    case genie::GV_RoR:  return 2;
+    case genie::GV_AoKA: return 10;
     case genie::GV_AoK:
     case genie::GV_TC:
     case genie::GV_SWGB:
-    case genie::GV_CC:   return 15;
+    case genie::GV_CC:   return 14;
     default: return 0;
   }
 }
@@ -123,7 +107,7 @@ void TerrainBlock::serializeObject(void)
   // struct { short unknown[3]; } terrainheader[terrain_count_]
   serialize<int16_t, TERRAIN_HEADER_SIZE>(GraphicsRendering);
 
-  serializeSub<Terrain>(Terrains, getTerrainsSize());
+  serializeSub<Terrain>(Terrains, Terrain::getTerrainsSize(getGameVersion()));
 
   // TerrainBorders seem to be unused (are empty) in GV > AoK Alpha
   serializeSub<TerrainBorder>(TerrainBorders, 16); //TODO: fixed size?

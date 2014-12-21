@@ -33,9 +33,8 @@ public:
   virtual ~TerrainBlock();
   virtual void setGameVersion(GameVersion gv);
 
-  static const unsigned short TERRAIN_HEADER_SIZE = 69;
+  static const unsigned short TERRAIN_HEADER_SIZE = 70;
   std::array<int16_t, TERRAIN_HEADER_SIZE> GraphicsRendering;
-  unsigned short getTerrainsSize(void);
   std::vector<Terrain> Terrains;
 
   std::vector<TerrainBorder> TerrainBorders;
