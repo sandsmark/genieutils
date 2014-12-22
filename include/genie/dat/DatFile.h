@@ -112,7 +112,7 @@ public:
 
   std::vector<int32_t> UnknownPreTechTree;
 
-  uint16_t NumberOfTerrainsUsed;
+  uint16_t TerrainsUsed1;
 
    //SWGB Unknowns:
   /// Seems to be the CivCount

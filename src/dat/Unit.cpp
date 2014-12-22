@@ -139,7 +139,7 @@ void Unit::serializeObject(void)
   serialize<uint16_t>(LanguageDLLName);
   serialize<uint16_t>(LanguageDLLCreation);
   serialize<int16_t>(Class);
-  serializePair<int16_t>(StandingGraphic, (getGameVersion() >= genie::GV_AoK) ? false : true);
+  serializePair<int16_t>(StandingGraphic, (getGameVersion() >= genie::GV_AoKB) ? false : true);
   serializePair<int16_t>(DyingGraphic);
   serialize<int8_t>(DeathMode);
   serialize<int16_t>(HitPoints);

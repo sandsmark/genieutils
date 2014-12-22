@@ -48,49 +48,33 @@ void TerrainBlock::setGameVersion(GameVersion gv)
 //------------------------------------------------------------------------------
 unsigned short TerrainBlock::getZeroSpaceSize(void)
 {
-  switch (getGameVersion())
-  {
-    case genie::GV_AoE:
-    case genie::GV_RoR:  return 2;
-    case genie::GV_AoKA: return 10;
-    case genie::GV_AoK:
-    case genie::GV_TC:
-    case genie::GV_SWGB:
-    case genie::GV_CC:   return 14;
-    default: return 0;
-  }
+  if (getGameVersion() >= genie::GV_AoK)
+    return 14;
+  if (getGameVersion() >= genie::GV_AoKA)
+    return 10;
+  return 2;
 }
 
 //------------------------------------------------------------------------------
 unsigned short TerrainBlock::getRenderingSize(void)
 {
-  switch (getGameVersion())
-  {
-    case genie::GV_AoE:
-    case genie::GV_RoR:  return 21;
-    case genie::GV_AoKA:
-    case genie::GV_AoK:
-    case genie::GV_TC:   return 29;
-    case genie::GV_SWGB:
-    case genie::GV_CC:   return 31;
-    default: return 0;
-  }
+  if (getGameVersion() >= genie::GV_SWGB)
+    return 30;
+  if (getGameVersion() >= genie::GV_AoKA)
+    return 28;
+  return 20;
 }
 
 //------------------------------------------------------------------------------
 unsigned short TerrainBlock::getSomethingSize(void)
 {
-  switch (getGameVersion())
-  {
-    case genie::GV_AoE:
-    case genie::GV_RoR:  return 5;
-    case genie::GV_AoKA: return 6;
-    case genie::GV_AoK:
-    case genie::GV_TC:
-    case genie::GV_SWGB:
-    case genie::GV_CC:   return 157;
-    default: return 0;
-  }
+  if (getGameVersion() >= genie::GV_AoK)
+    return 157;
+  if (getGameVersion() >= genie::GV_AoKB)
+    return 84;
+  if (getGameVersion() >= genie::GV_AoKA)
+    return 6;
+  return 5;
 }
 
 //------------------------------------------------------------------------------
@@ -115,7 +99,8 @@ void TerrainBlock::serializeObject(void)
   // Empty space.
   serialize<int16_t>(ZeroSpace, getZeroSpaceSize());
 
-  serialize<uint16_t>(NumberOfTerrainsUsed2);
+  serialize<uint16_t>(TerrainsUsed2);
+  serialize<uint16_t>(TerrainBordersUsed);
 
   serialize<int16_t>(Rendering, getRenderingSize());
 

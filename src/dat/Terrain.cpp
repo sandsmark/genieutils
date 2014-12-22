@@ -89,7 +89,7 @@ void Terrain::serializeObject(void)
   serialize<float>(Unknown3);
   serialize<int32_t>(SoundID);
 
-  if (getGameVersion() >= genie::GV_AoK)
+  if (getGameVersion() >= genie::GV_AoKB)
   {
     serialize<int32_t>(BlendPriority);
     serialize<int32_t>(BlendType);

@@ -42,7 +42,8 @@ public:
   unsigned short getZeroSpaceSize(void);
   std::vector<int16_t> ZeroSpace;
 
-  uint16_t NumberOfTerrainsUsed2;
+  uint16_t TerrainsUsed2;
+  uint16_t TerrainBordersUsed;
 
   unsigned short getRenderingSize(void);
   std::vector<int16_t> Rendering;

@@ -119,14 +119,14 @@ void DatFile::serializeObject(void)
   }
 
   serializeSize<uint16_t>(terrain_restriction_count_, TerrainRestrictions.size());
-  serialize<uint16_t>(NumberOfTerrainsUsed);
+  serialize<uint16_t>(TerrainsUsed1);
 
   if (verbose_)
   {
     for (auto &i: FileVersion)
       std::cout << i;
     std::cout << std::endl << "TerRestrictionCount: " <<terrain_restriction_count_ << std::endl;
-    std::cout << "TerCount: " << NumberOfTerrainsUsed << std::endl;
+    std::cout << "TerCount: " << TerrainsUsed1 << std::endl;
   }
 
   serialize<int32_t>(TerrainRestrictionPointers1, terrain_restriction_count_);
@@ -134,7 +134,7 @@ void DatFile::serializeObject(void)
   if (getGameVersion() >= genie::GV_AoKA)
     serialize<int32_t>(TerrainRestrictionPointers2, terrain_restriction_count_);
 
-  TerrainRestriction::setTerrainCount(NumberOfTerrainsUsed);
+  TerrainRestriction::setTerrainCount(TerrainsUsed1);
   serializeSub<TerrainRestriction>(TerrainRestrictions, terrain_restriction_count_);
 
   serializeSize<uint16_t>(player_color_count_, PlayerColours.size());
