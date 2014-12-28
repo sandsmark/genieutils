@@ -70,7 +70,7 @@ public:
   float Unknown6;
 
   static const unsigned short FRAMES_CNT = 230;
-  std::array<TBFrameData, FRAMES_CNT> Frames;
+  std::vector<TBFrameData> Frames;
 
   int16_t FrameCount; //?
   int16_t AngleCount; // always 0

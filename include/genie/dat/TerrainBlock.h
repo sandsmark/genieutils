@@ -37,12 +37,14 @@ public:
   std::vector<int16_t> GraphicsRendering;
   std::vector<Terrain> Terrains;
 
+  std::vector<int16_t> AoEAlphaUnknown; // These are very similar to borders
   std::vector<TerrainBorder> TerrainBorders;
 
   unsigned short getZeroSpaceSize(void);
   std::vector<int16_t> ZeroSpace;
 
   uint16_t TerrainsUsed2;
+  uint16_t RemovedBlocksUsed;
   uint16_t TerrainBordersUsed;
 
   unsigned short getRenderingSize(void);

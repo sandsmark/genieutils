@@ -24,8 +24,18 @@ namespace genie
 {
 
 //------------------------------------------------------------------------------
-TerrainBorder::TerrainBorder()
+TerrainBorder::TerrainBorder() : Colors(), Unknown5()
 {
+	Name = "";
+	Name2 = "";
+	SLP = -1;
+	Unknown3 = 0;
+	SoundID = -1;
+	Unknown6 = 0;
+	FrameCount = 0;
+	AngleCount = 0;
+	TerrainID = -1;
+	Unknown1 = 0;
 }
 
 //------------------------------------------------------------------------------
@@ -53,15 +63,16 @@ void TerrainBorder::serializeObject(void)
   serialize<std::string>(Name, getNameSize());
   serialize<std::string>(Name2, getNameSize());
 
-  serialize<int32_t>(SLP);
+  if (getGameVersion() >= genie::GV_AoE)
+    serialize<int32_t>(SLP);
   serialize<float>(Unknown3);
-  serialize<int32_t>(SoundID); // -1
+  serialize<int32_t>(SoundID);
 
   serialize<uint8_t, 3>(Colors);
   serialize<int8_t, 5>(Unknown5); // 1st and 2nd are colors, 3rd and 4th are terrains
   serialize<float>(Unknown6);
 
-  serializeSub<TBFrameData, FRAMES_CNT>(Frames);
+  serializeSub<TBFrameData>(Frames, FRAMES_CNT);
 
   serialize<int16_t>(FrameCount);
   serialize<int16_t>(AngleCount);

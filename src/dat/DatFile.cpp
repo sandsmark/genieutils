@@ -167,12 +167,13 @@ void DatFile::serializeObject(void)
     std::cout << "Graphics: " << Graphics.size() << std::endl;
 
     std::cout << "Terrain block " << "(0x" << std::hex << tellg();
-  }compressor_.endCompression();return;
+  }
   serialize<ISerializable>(TerrainBlock);
 
   // This data seems to be needed only in AoE and RoR.
   // In later games it is removable.
   // It exists in Star Wars games too, but is not used.
+  if (getGameVersion() >= genie::GV_AoE) // Temp fix
   serialize<ISerializable>(RandomMaps);
 
   if (verbose_)
@@ -200,7 +201,7 @@ void DatFile::serializeObject(void)
 
     serializeSub<UnitHeader>(UnitHeaders, unit_count_);
   }
-
+compressor_.endCompression();return;
   serializeSize<uint16_t>(civ_count_, Civs.size());
 
   if (verbose_)
@@ -260,6 +261,7 @@ void DatFile::unload()
   UnitLines.clear();
   TerrainBlock.TerrainBorders.clear();
   UnknownPreTechTree.clear();
+  TerrainBlock.AoEAlphaUnknown.clear();
   TerrainBlock.ZeroSpace.clear();
   TerrainBlock.Rendering.clear();
   TerrainBlock.Something.clear();

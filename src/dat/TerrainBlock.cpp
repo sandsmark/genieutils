@@ -25,6 +25,9 @@ namespace genie
 //------------------------------------------------------------------------------
 TerrainBlock::TerrainBlock()
 {
+  TerrainsUsed2 = 0;
+  RemovedBlocksUsed = 0;
+  TerrainBordersUsed = 0;
 }
 
 //------------------------------------------------------------------------------
@@ -41,6 +44,7 @@ void TerrainBlock::setGameVersion(GameVersion gv)
   updateGameVersion(TerrainBorders);
 
   GraphicsRendering.resize(getTerrainHeaderSize());
+  //AoEAlphaUnknown.resize(0);
   ZeroSpace.resize(getZeroSpaceSize());
   Rendering.resize(getRenderingSize());
   Something.resize(getSomethingSize());
@@ -51,7 +55,7 @@ unsigned short TerrainBlock::getTerrainHeaderSize(void)
 {
   if (getGameVersion() >= genie::GV_AoE)
     return 70;
-  return 100;
+  return 50;
 }
 
 //------------------------------------------------------------------------------
@@ -71,7 +75,9 @@ unsigned short TerrainBlock::getRenderingSize(void)
     return 30;
   if (getGameVersion() >= genie::GV_AoKA)
     return 28;
-  return 20;
+  if (getGameVersion() >= genie::GV_AoE)
+    return 20;
+  return 13;
 }
 
 //------------------------------------------------------------------------------
@@ -83,7 +89,9 @@ unsigned short TerrainBlock::getSomethingSize(void)
     return 84;
   if (getGameVersion() >= genie::GV_AoKA)
     return 6;
-  return 5;
+  if (getGameVersion() >= genie::GV_AoE)
+    return 5;
+  return 2625; // Temporary skip for random maps
 }
 
 //------------------------------------------------------------------------------
@@ -100,6 +108,8 @@ void TerrainBlock::serializeObject(void)
 
   serializeSub<Terrain>(Terrains, Terrain::getTerrainsSize(getGameVersion()));
 
+  if (getGameVersion() < genie::GV_AoE)
+    serialize<int16_t>(AoEAlphaUnknown, (16 * 1888) / 2);
   // TerrainBorders seem to be unused (are empty) in GV > AoK Alpha
   serializeSub<TerrainBorder>(TerrainBorders, 16); //TODO: fixed size?
 
@@ -107,6 +117,8 @@ void TerrainBlock::serializeObject(void)
   serialize<int16_t>(ZeroSpace, getZeroSpaceSize());
 
   serialize<uint16_t>(TerrainsUsed2);
+  if (getGameVersion() < genie::GV_AoE)
+    serialize<uint16_t>(RemovedBlocksUsed);
   serialize<uint16_t>(TerrainBordersUsed);
 
   serialize<int16_t>(Rendering, getRenderingSize());
