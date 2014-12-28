@@ -85,7 +85,8 @@ void Terrain::serializeObject(void)
   serialize<std::string>(Name, getNameSize());
   serialize<std::string>(Name2, getNameSize());
 
-  serialize<int32_t>(SLP);
+  if (getGameVersion() >= genie::GV_AoE)
+    serialize<int32_t>(SLP);
   serialize<float>(Unknown3);
   serialize<int32_t>(SoundID);
 

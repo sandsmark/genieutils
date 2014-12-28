@@ -152,15 +152,22 @@ void DatFile::serializeObject(void)
   serializeSub<Sound>(Sounds, sound_count_);
 
   serializeSize<uint16_t>(graphic_count_, GraphicPointers.size());
-  serialize<int32_t>(GraphicPointers, graphic_count_);
-  serializeSubWithPointers<Graphic>(Graphics, graphic_count_, GraphicPointers);
+  if (getGameVersion() < genie::GV_AoE)
+  {
+    serializeSub<Graphic>(Graphics, graphic_count_);
+  }
+  else
+  {
+    serialize<int32_t>(GraphicPointers, graphic_count_);
+    serializeSubWithPointers<Graphic>(Graphics, graphic_count_, GraphicPointers);
+  }
 
   if (verbose_)
   {
     std::cout << "Graphics: " << Graphics.size() << std::endl;
 
     std::cout << "Terrain block " << "(0x" << std::hex << tellg();
-  }
+  }compressor_.endCompression();return;
   serialize<ISerializable>(TerrainBlock);
 
   // This data seems to be needed only in AoE and RoR.

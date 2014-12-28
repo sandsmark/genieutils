@@ -40,9 +40,18 @@ void TerrainBlock::setGameVersion(GameVersion gv)
   updateGameVersion(Terrains);
   updateGameVersion(TerrainBorders);
 
+  GraphicsRendering.resize(getTerrainHeaderSize());
   ZeroSpace.resize(getZeroSpaceSize());
   Rendering.resize(getRenderingSize());
   Something.resize(getSomethingSize());
+}
+
+//------------------------------------------------------------------------------
+unsigned short TerrainBlock::getTerrainHeaderSize(void)
+{
+  if (getGameVersion() >= genie::GV_AoE)
+    return 70;
+  return 100;
 }
 
 //------------------------------------------------------------------------------
@@ -87,9 +96,7 @@ unsigned short TerrainBlock::getSomethingSize(void)
 /// SWGB & CC		49640
 void TerrainBlock::serializeObject(void)
 {
-  //TODO: AoE/RoR: maybe:
-  // struct { short unknown[3]; } terrainheader[terrain_count_]
-  serialize<int16_t, TERRAIN_HEADER_SIZE>(GraphicsRendering);
+  serialize<int16_t>(GraphicsRendering, getTerrainHeaderSize());
 
   serializeSub<Terrain>(Terrains, Terrain::getTerrainsSize(getGameVersion()));
 
