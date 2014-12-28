@@ -95,7 +95,7 @@ void Type50::serializeObject(void)
     serialize<float>(AccuracyErrorRadius);
 
   serialize<int16_t>(AttackGraphic);
-  //  7.01
+  if (getGameVersion() >= genie::GV_AoE) // 7.01
   {
     serialize<int16_t>(DisplayedMeleeArmour);
     serialize<int16_t>(DisplayedAttack);

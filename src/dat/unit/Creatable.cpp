@@ -66,30 +66,32 @@ void Creatable::serializeObject(void)
   serialize<int16_t>(TrainLocationID);
   serialize<int8_t>(ButtonID);
 
-  if (getGameVersion() >= genie::GV_AoKA) // 9.07
+  if (getGameVersion() >= genie::GV_AoE) // 7.01
   {
-    serialize<int32_t>(Unknown26);
-    serialize<int32_t>(Unknown27);
-    serialize<int8_t>(MissileGraphicDelay);
-
-    if (getGameVersion() >= genie::GV_AoKB)
+    if (getGameVersion() >= genie::GV_AoKA) // 9.07
     {
-      serialize<int8_t>(HeroMode); // 10.49
-      serialize<int32_t>(GarrisonGraphic); // 10.73
-    }
+      serialize<int32_t>(Unknown26);
+      serialize<int32_t>(Unknown27);
+      serialize<int8_t>(MissileGraphicDelay);
 
-    serialize<float>(DuplicatedMissilesMin);
-    serialize<int8_t>(DuplicatedMissilesMax);
-    serialize<float, AMDBUNKNOWN_SIZE>(MissileSpawningArea);
-    serialize<int32_t>(AlternativeProjectileUnit); // 9.08
-    // 9.2
-    {
-      serialize<int32_t>(ChargingGraphic);
-      serialize<int8_t>(ChargingMode);
+      if (getGameVersion() >= genie::GV_AoKB)
+      {
+        serialize<int8_t>(HeroMode); // 10.49
+        serialize<int32_t>(GarrisonGraphic); // 10.73
+      }
+
+      serialize<float>(DuplicatedMissilesMin);
+      serialize<int8_t>(DuplicatedMissilesMax);
+      serialize<float, AMDBUNKNOWN_SIZE>(MissileSpawningArea);
+      serialize<int32_t>(AlternativeProjectileUnit); // 9.08
+      // 9.2
+      {
+        serialize<int32_t>(ChargingGraphic);
+        serialize<int8_t>(ChargingMode);
+      }
     }
+    serialize<int16_t>(DisplayedPierceArmour);
   }
-
-  serialize<int16_t>(DisplayedPierceArmour); // 7.01
 }
 
 }

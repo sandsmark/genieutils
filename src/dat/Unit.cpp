@@ -132,12 +132,13 @@ void Unit::setGameVersion(GameVersion gv)
 void Unit::serializeObject(void)
 {
   //Type 10+
-  serialize<int8_t>(Type);
+  serialize<int8_t>(Type); // 7 = 70 in AoE alphas etc
 
   serializeSize<uint16_t>(NameLength, Name);
   serialize<int16_t>(ID1);        //TODO: Check
   serialize<uint16_t>(LanguageDLLName);
-  serialize<uint16_t>(LanguageDLLCreation);
+  if (getGameVersion() >= genie::GV_AoE)
+    serialize<uint16_t>(LanguageDLLCreation);
   serialize<int16_t>(Class);
   serializePair<int16_t>(StandingGraphic, (getGameVersion() >= genie::GV_AoKB) ? false : true);
   serializePair<int16_t>(DyingGraphic);
@@ -159,7 +160,8 @@ void Unit::serializeObject(void)
   if (getGameVersion() >= genie::GV_AoK) // 11.48
     serialize<int8_t>(Disabled);
 
-  serializePair<int16_t>(PlacementBypassTerrain);
+  if (getGameVersion() >= genie::GV_AoE)
+    serializePair<int16_t>(PlacementBypassTerrain);
   serializePair<int16_t>(PlacementTerrain);
   serializePair<float>(EditorRadius);
   serialize<int8_t>(HillMode);
@@ -175,31 +177,34 @@ void Unit::serializeObject(void)
   serialize<int8_t>(CommandAttribute);
   serialize<float>(Unknown3A);
   serialize<uint8_t>(Unknown3B);
-  serialize<int32_t>(LanguageDLLHelp);
-  serialize<int32_t>(LanguageDLLHotKeyText);
-  serialize<int32_t>(HotKey);
-  serialize<int8_t>(Unselectable);
-  serialize<int8_t>(Unknown6);
-  serialize<int8_t>(UnknownSelectionMode);
-  serialize<int8_t>(Unknown8);
-
-  if (getGameVersion() >= genie::GV_AoKA)
+  if (getGameVersion() >= genie::GV_AoE)
   {
-    serialize<int8_t>(SelectionMask);
-    serialize<int8_t>(SelectionShapeType);
-    serialize<int8_t>(SelectionShape);
-    if (getGameVersion() >= genie::GV_TC)
-    {
-      serialize<uint8_t>(Attribute);
-      serialize<int8_t>(Civilization);
-      serialize<int16_t>(Nothing);
-    }
-  }
+    serialize<int32_t>(LanguageDLLHelp);
+    serialize<int32_t>(LanguageDLLHotKeyText);
+    serialize<int32_t>(HotKey);
+    serialize<int8_t>(Unselectable);
+    serialize<int8_t>(Unknown6);
+    serialize<int8_t>(UnknownSelectionMode);
+    serialize<int8_t>(Unknown8);
 
-  serialize<int8_t>(SelectionEffect);
-  serialize<uint8_t>(EditorSelectionColour);
-  serializePair<float>(SelectionRadius);
-  serialize<float>(HPBarHeight2);
+    if (getGameVersion() >= genie::GV_AoKA)
+    {
+      serialize<int8_t>(SelectionMask);
+      serialize<int8_t>(SelectionShapeType);
+      serialize<int8_t>(SelectionShape);
+      if (getGameVersion() >= genie::GV_TC)
+      {
+        serialize<uint8_t>(Attribute);
+        serialize<int8_t>(Civilization);
+        serialize<int16_t>(Nothing);
+      }
+    }
+
+    serialize<int8_t>(SelectionEffect);
+    serialize<uint8_t>(EditorSelectionColour);
+    serializePair<float>(SelectionRadius);
+    serialize<float>(HPBarHeight2);
+  }
 
   serializeSub<ResourceStorage, RESOURCE_STORAGE_CNT>(ResourceStorages);
 
@@ -223,7 +228,8 @@ void Unit::serializeObject(void)
     serialize<int8_t>(MinTechLevel);
   }
 
-  serialize<int16_t>(ID2);
+  if (getGameVersion() >= genie::GV_AoE)
+    serialize<int16_t>(ID2);
 
   if (getGameVersion() >= genie::GV_AoKA)
     serialize<int16_t>(ID3);

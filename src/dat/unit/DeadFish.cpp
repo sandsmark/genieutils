@@ -51,8 +51,17 @@ void DeadFish::setGameVersion(GameVersion gv)
 void DeadFish::serializeObject(void)
 {
   serializePair<int16_t>(WalkingGraphic);
-  serialize<float>(RotationSpeed);
-  serialize<int8_t>(Unknown11);
+  if (getGameVersion() >= genie::GV_AoE)
+  {
+    serialize<float>(RotationSpeed);
+    serialize<int8_t>(Unknown11);
+  }
+  else // Ugly hack
+  {
+    serialize<int16_t>(TrackingUnit);
+    serialize<int8_t>(TrackingUnitUsed);
+    serialize<float>(TrackingUnitDensity);
+  }
   serialize<int16_t>(TrackingUnit);
   serialize<int8_t>(TrackingUnitUsed);
   serialize<float>(TrackingUnitDensity);

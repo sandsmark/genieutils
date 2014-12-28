@@ -54,16 +54,19 @@ void Civ::serializeObject(void)
   serialize<int8_t>(One); //TODO: enabled flag
   serialize<std::string>(Name, getNameSize());
   serializeSize<uint16_t>(ResourceCount, Resources.size());
-  serialize<int16_t>(TechTreeID);
 
-  if (getGameVersion() >= genie::GV_AoKB) // 10.38
+  if (getGameVersion() >= genie::GV_AoE)
   {
-    serialize<int16_t>(TeamBonusID);
-
-    if (getGameVersion() >= genie::GV_SWGB)
+    serialize<int16_t>(TechTreeID);
+    if (getGameVersion() >= genie::GV_AoKB) // 10.38
     {
-      serialize<std::string>(Name2, getNameSize());
-      serialize<int16_t, SWUNIQUE_SIZE>(UniqueUnitsResearches);
+      serialize<int16_t>(TeamBonusID);
+
+      if (getGameVersion() >= genie::GV_SWGB)
+      {
+        serialize<std::string>(Name2, getNameSize());
+        serialize<int16_t, SWUNIQUE_SIZE>(UniqueUnitsResearches);
+      }
     }
   }
 

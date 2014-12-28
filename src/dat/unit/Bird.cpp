@@ -59,7 +59,8 @@ void Bird::serializeObject(void)
   serializePair<int16_t>(DropSite);
   serialize<int8_t>(VillagerMode);
   serialize<int16_t>(AttackSound);
-  serialize<int16_t>(MoveSound); // 6.92
+  if (getGameVersion() >= genie::GV_AoE)
+    serialize<int16_t>(MoveSound); // 6.92
   serialize<int8_t>(AnimalMode);
 
   if (getGameVersion() < genie::GV_AoK) // 11.24
