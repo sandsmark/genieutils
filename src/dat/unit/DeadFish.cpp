@@ -50,7 +50,7 @@ void DeadFish::setGameVersion(GameVersion gv)
 
 void DeadFish::serializeObject(void)
 {
-  serializePair<int16_t>(WalkingGraphic);
+  serializePair<int16_t>(WalkingGraphic, (getGameVersion() < genie::GV_AoE) ? true : false);
   if (getGameVersion() >= genie::GV_AoE)
   {
     serialize<float>(RotationSpeed);

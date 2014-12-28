@@ -133,6 +133,7 @@ void Unit::serializeObject(void)
 {
   //Type 10+
   serialize<int8_t>(Type); // 7 = 70 in AoE alphas etc
+  if (getGameVersion() < genie::GV_AoE) Type *= 10;
 
   serializeSize<uint16_t>(NameLength, Name);
   serialize<int16_t>(ID1);        //TODO: Check

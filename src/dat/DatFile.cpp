@@ -211,7 +211,7 @@ void DatFile::serializeObject(void)
 
   if (getGameVersion() >= genie::GV_SWGB)
     serialize<int8_t>(SUnknown7);
-compressor_.endCompression();return;
+
   serializeSize<uint16_t>(research_count_, Researchs.size());
 
   if (verbose_)

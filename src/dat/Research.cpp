@@ -82,16 +82,22 @@ void Research::serializeObject(void)
   }
 
   serialize<int16_t>(ResearchLocation);
-  serialize<uint16_t>(LanguageDLLName);
-  serialize<uint16_t>(LanguageDLLDescription);
+  if (getGameVersion() >= genie::GV_AoE)
+  {
+    serialize<uint16_t>(LanguageDLLName);
+    serialize<uint16_t>(LanguageDLLDescription);
+  }
   serialize<int16_t>(ResearchTime);
   serialize<int16_t>(TechageID);
   serialize<int16_t>(Type);
   serialize<int16_t>(IconID);
   serialize<int8_t>(ButtonID);
-  serialize<int32_t>(LanguageDLLHelp);
-  serialize<int32_t>(LanguageDLLName2);
-  serialize<int32_t>(Unknown1);
+  if (getGameVersion() >= genie::GV_AoE)
+  {
+    serialize<int32_t>(LanguageDLLHelp);
+    serialize<int32_t>(LanguageDLLName2);
+    serialize<int32_t>(Unknown1);
+  }
 
   serializeSize<uint16_t>(NameLength, Name);
   if (NameLength > 0)
