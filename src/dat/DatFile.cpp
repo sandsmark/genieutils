@@ -248,23 +248,24 @@ void DatFile::unload()
   GraphicPointers.clear();
   Graphics.clear();
   TerrainBlock.Terrains.clear();
+  TerrainBlock.TerrainBorders.clear();
+  TerrainBlock.AoEAlphaUnknown.clear();
+  TerrainBlock.ZeroSpace.clear();
+  TerrainBlock.CivData.clear();
+  TerrainBlock.SomeBytes.clear();
+  TerrainBlock.SomeInt32.clear();
   RandomMaps.MapHeaders.clear();
   RandomMaps.Maps.clear();
   Techages.clear();
+  UnitLines.clear();
+  UnitHeaders.clear();
+  Civs.clear();
+  Researchs.clear();
+  UnknownPreTechTree.clear();
   TechTree.TechTreeAges.clear();
   TechTree.BuildingConnections.clear();
   TechTree.UnitConnections.clear();
   TechTree.ResearchConnections.clear();
-  UnitHeaders.clear();
-  Researchs.clear();
-  Civs.clear();
-  UnitLines.clear();
-  TerrainBlock.TerrainBorders.clear();
-  UnknownPreTechTree.clear();
-  TerrainBlock.AoEAlphaUnknown.clear();
-  TerrainBlock.ZeroSpace.clear();
-  TerrainBlock.Rendering.clear();
-  TerrainBlock.Something.clear();
 }
 
 }

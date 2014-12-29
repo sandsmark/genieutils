@@ -132,13 +132,14 @@ void Unit::setGameVersion(GameVersion gv)
 void Unit::serializeObject(void)
 {
   //Type 10+
+  if (getGameVersion() < genie::GV_AoE && isOperation(OP_WRITE)) Type /= 10;
   serialize<int8_t>(Type); // 7 = 70 in AoE alphas etc
-  if (getGameVersion() < genie::GV_AoE) Type *= 10;
+  if (getGameVersion() < genie::GV_AoE && isOperation(OP_READ)) Type *= 10;
 
   serializeSize<uint16_t>(NameLength, Name);
   serialize<int16_t>(ID1);        //TODO: Check
   serialize<uint16_t>(LanguageDLLName);
-  if (getGameVersion() >= genie::GV_AoE)
+  if (getGameVersion() >= genie::GV_MATT)
     serialize<uint16_t>(LanguageDLLCreation);
   serialize<int16_t>(Class);
   serializePair<int16_t>(StandingGraphic, (getGameVersion() >= genie::GV_AoKB) ? false : true);
@@ -161,9 +162,9 @@ void Unit::serializeObject(void)
   if (getGameVersion() >= genie::GV_AoK) // 11.48
     serialize<int8_t>(Disabled);
 
-  if (getGameVersion() >= genie::GV_AoE)
+  if (getGameVersion() >= genie::GV_DAVE)
     serializePair<int16_t>(PlacementBypassTerrain);
-  serializePair<int16_t>(PlacementTerrain);
+  serializePair<int16_t>(PlacementTerrain); // Before AoE, this also contains side terrain.
   serializePair<float>(EditorRadius);
   serialize<int8_t>(HillMode);
   serialize<int8_t>(VisibleInFog);

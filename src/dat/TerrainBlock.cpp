@@ -46,8 +46,9 @@ void TerrainBlock::setGameVersion(GameVersion gv)
   GraphicsRendering.resize(getTerrainHeaderSize());
   //AoEAlphaUnknown.resize(0);
   ZeroSpace.resize(getZeroSpaceSize());
-  Rendering.resize(getRenderingSize());
-  Something.resize(getSomethingSize());
+  CivData.resize(getCivDataSize());
+  SomeBytes.resize(getBytesSize());
+  SomeInt32.resize(getSomethingSize());
 }
 
 //------------------------------------------------------------------------------
@@ -69,15 +70,25 @@ unsigned short TerrainBlock::getZeroSpaceSize(void)
 }
 
 //------------------------------------------------------------------------------
-unsigned short TerrainBlock::getRenderingSize(void)
+unsigned short TerrainBlock::getCivDataSize(void)
+{
+  if (getGameVersion() >= genie::GV_AoKA)
+    return 17;
+  if (getGameVersion() >= genie::GV_AoE)
+    return 18; // 17.5
+  return 12; // 12.5
+}
+
+//------------------------------------------------------------------------------
+unsigned short TerrainBlock::getBytesSize(void)
 {
   if (getGameVersion() >= genie::GV_SWGB)
-    return 30;
+    return 26;
   if (getGameVersion() >= genie::GV_AoKA)
-    return 28;
+    return 22;
   if (getGameVersion() >= genie::GV_AoE)
-    return 20;
-  return 13;
+    return 4;
+  return 2;
 }
 
 //------------------------------------------------------------------------------
@@ -121,10 +132,12 @@ void TerrainBlock::serializeObject(void)
     serialize<uint16_t>(RemovedBlocksUsed);
   serialize<uint16_t>(TerrainBordersUsed);
 
-  serialize<int16_t>(Rendering, getRenderingSize());
+  serialize<int16_t>(CivData, getCivDataSize());
+  serialize<int8_t>(SomeBytes, getBytesSize());
 
   // Few pointers and small numbers.
-  serialize<int32_t>(Something, getSomethingSize());
+  serialize<int32_t>(SomeInt32, getSomethingSize());
+  SomeInt32.resize(157);
 }
 
 }

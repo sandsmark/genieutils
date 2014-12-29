@@ -82,7 +82,7 @@ void Research::serializeObject(void)
   }
 
   serialize<int16_t>(ResearchLocation);
-  if (getGameVersion() >= genie::GV_AoE)
+  if (getGameVersion() >= genie::GV_MATT)
   {
     serialize<uint16_t>(LanguageDLLName);
     serialize<uint16_t>(LanguageDLLDescription);

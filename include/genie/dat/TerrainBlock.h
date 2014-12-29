@@ -47,10 +47,12 @@ public:
   uint16_t RemovedBlocksUsed;
   uint16_t TerrainBordersUsed;
 
-  unsigned short getRenderingSize(void);
-  std::vector<int16_t> Rendering;
+  unsigned short getCivDataSize(void);
+  std::vector<int16_t> CivData;
+  unsigned short getBytesSize(void);
+  std::vector<int8_t> SomeBytes;
   unsigned short getSomethingSize(void);
-  std::vector<int32_t> Something;
+  std::vector<int32_t> SomeInt32;
 
 private:
   virtual void serializeObject(void);
