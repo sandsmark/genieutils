@@ -84,7 +84,16 @@ void Graphic::serializeObject(void)
   serialize<std::string>(Name, getNameSize());
   serialize<std::string>(Name2, getName2Size());
 
-  serialize<int32_t>(SLP);
+  if (getGameVersion() < genie::GV_TEST)
+  {
+    int16_t slp = SLP;
+    serialize<int16_t>(slp);
+    SLP = slp;
+  }
+  else
+  {
+    serialize<int32_t>(SLP);
+  }
   serialize<int8_t>(Unknown1);
   serialize<int8_t>(Unknown2); /// TODO: priority?
   serialize<int8_t>(Layer);

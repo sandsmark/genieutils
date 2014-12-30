@@ -56,7 +56,7 @@ void Bird::serializeObject(void)
   serialize<int16_t>(SheepConversion);
   serialize<float>(SearchRadius);
   serialize<float>(WorkRate);
-  serializePair<int16_t>(DropSite);
+  serializePair<int16_t>(DropSite, (getGameVersion() < genie::GV_TEST) ? true : false);
   serialize<int8_t>(VillagerMode);
   serialize<int16_t>(AttackSound);
   if (getGameVersion() >= genie::GV_AoE)
