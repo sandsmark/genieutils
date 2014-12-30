@@ -72,12 +72,19 @@ void TerrainBorder::serializeObject(void)
   serialize<int8_t, 5>(Unknown5); // 1st and 2nd are colors, 3rd and 4th are terrains
   serialize<float>(Unknown6);
 
-  serializeSub<TBFrameData>(Frames, FRAMES_CNT);
+  if (getGameVersion() == genie::GV_MIK) // Just a hack to make it read
+    serializeSub<TBFrameData>(Frames, FRAMES_CNT + 18);
+  else
+    serializeSub<TBFrameData>(Frames, FRAMES_CNT);
+
 
   serialize<int16_t>(FrameCount);
   serialize<int16_t>(AngleCount);
   serialize<int16_t>(TerrainID);
   serialize<int16_t>(Unknown1);
+  float hack;
+  if (getGameVersion() == genie::GV_MIK)
+    serialize<float>(hack);
 }
 
 //------------------------------------------------------------------------------

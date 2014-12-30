@@ -55,7 +55,7 @@ void Civ::serializeObject(void)
   serialize<std::string>(Name, getNameSize());
   serializeSize<uint16_t>(ResourceCount, Resources.size());
 
-  if (getGameVersion() >= genie::GV_DAVE)
+  if (getGameVersion() >= genie::GV_MIK)
   {
     serialize<int16_t>(TechTreeID);
     if (getGameVersion() >= genie::GV_AoKB) // 10.38

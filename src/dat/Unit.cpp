@@ -162,7 +162,7 @@ void Unit::serializeObject(void)
   if (getGameVersion() >= genie::GV_AoK) // 11.48
     serialize<int8_t>(Disabled);
 
-  if (getGameVersion() >= genie::GV_DAVE)
+  if (getGameVersion() >= genie::GV_MIK)
     serializePair<int16_t>(PlacementBypassTerrain);
   serializePair<int16_t>(PlacementTerrain); // Before AoE, this also contains side terrain.
   serializePair<float>(EditorRadius);

@@ -27,6 +27,7 @@ enum GameVersion
 {
   GV_None = 0, //Game version not set
   GV_TEST, // ?
+  GV_MIK, // ?
   GV_DAVE, // ?
   GV_MATT, // ?
   GV_AoEB, // 7.04
