@@ -53,7 +53,7 @@ set(Boost_USE_STATIC_RUNTIME     ON)
 
 # include directories:
 
-set(GU_INCLUDE_DIRS include/ extern/ ${Boost_INCLUDE_DIRS})
+set(GU_INCLUDE_DIRS include/ ../ ${Boost_INCLUDE_DIRS})
 
 if (${ICONV_FOUND})
   set(GU_INCLUDE_DIRS ${GU_INCLUDE_DIRS} ${ICONV_INCLUDE_DIR})
@@ -78,8 +78,8 @@ set(FILE_SRC
     )
 
 if (${GU_LANG_SUPPORT})
-  set(PCRIO_SRC extern/pcrio/pcrio.c)
-  set_source_files_properties(extern/pcrio/pcrio.c PROPERTIES LANGUAGE CXX)
+  set(PCRIO_SRC ../pcrio/pcrio.c)
+  set_source_files_properties(../pcrio/pcrio.c PROPERTIES LANGUAGE CXX)
 
   set(LANG_SRC ${PCRIO_SRC}
       src/lang/LangFile.cpp
