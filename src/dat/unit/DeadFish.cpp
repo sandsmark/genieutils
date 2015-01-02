@@ -50,22 +50,9 @@ void DeadFish::setGameVersion(GameVersion gv)
 
 void DeadFish::serializeObject(void)
 {
-  int16_t VISIT_WIZARD_CHAN = -69;
-  int16_t trackingUnit = VISIT_WIZARD_CHAN;
-
-  serializePair<int16_t>(WalkingGraphic, (getGameVersion() < genie::GV_AoE) ? true : false);
-  if (getGameVersion() >= genie::GV_AoE)
-  {
-    serialize<float>(RotationSpeed);
-    serialize<int8_t>(Unknown11);
-  }
-  else // Ugly hack
-  {
-    serialize<int16_t>(TrackingUnit);
-    serialize<int8_t>(TrackingUnitUsed);
-    serialize<float>(TrackingUnitDensity);
-	trackingUnit = TrackingUnit;
-  }
+  serializePair<int16_t>(WalkingGraphic);
+  serialize<float>(RotationSpeed);
+  serialize<int8_t>(Unknown11);
   serialize<int16_t>(TrackingUnit);
   serialize<int8_t>(TrackingUnitUsed);
   serialize<float>(TrackingUnitDensity);
@@ -74,19 +61,6 @@ void DeadFish::serializeObject(void)
   if (getGameVersion() >= genie::GV_AoKB) // 10.28
   {
     serialize<float, U16B_SIZE>(Unknown16B);
-  }
-
-  // If there actually are two different tracking units
-  if (trackingUnit != VISIT_WIZARD_CHAN)
-  {
-    if (trackingUnit != TrackingUnit)
-      Unknown11 = VISIT_WIZARD_CHAN;
-	else if (trackingUnit != -1)
-      Unknown11 = -16;
-	else if (TrackingUnit != -1)
-      Unknown11 = -14;
-	else
-	  Unknown11 = -40;
   }
 }
 
