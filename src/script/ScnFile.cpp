@@ -171,7 +171,7 @@ void ScnFile::serializeVersion(void)
     switch (getGameVersion())
     {
       case genie::GV_AoE:
-      case genie::GV_RoR:
+      //case genie::GV_RoR:
         version_ = "1.10";
         break;
         
@@ -181,7 +181,7 @@ void ScnFile::serializeVersion(void)
         
       case genie::GV_TC:
       case genie::GV_SWGB:
-      case genie::GV_CC:
+      //case genie::GV_CC:
         version_ = "1.21";
         break;
       
@@ -201,7 +201,7 @@ void ScnFile::serializeVersion2(void)
     switch (getGameVersion())
     {
       case genie::GV_AoE:
-      case genie::GV_RoR:
+      //case genie::GV_RoR:
 //         version2_ = ; //TODO
         break;
         
@@ -214,7 +214,7 @@ void ScnFile::serializeVersion2(void)
         break;
         
       case genie::GV_SWGB:
-      case genie::GV_CC:
+      //case genie::GV_CC:
         version2_ = 1.30;
         break;
       
