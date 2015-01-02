@@ -1,7 +1,7 @@
 /*
     genie/dat - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2014  Mikko T P
+    Copyright (C) 2015  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -74,7 +74,7 @@ unsigned short TerrainBlock::getCivDataSize(void)
 {
   if (getGameVersion() >= genie::GV_AoKA)
     return 17;
-  if (getGameVersion() >= genie::GV_AoE)
+  if (getGameVersion() >= genie::GV_AoEB)
     return 18; // 17.5
   return 12; // 12.5
 }
@@ -86,7 +86,7 @@ unsigned short TerrainBlock::getBytesSize(void)
     return 26;
   if (getGameVersion() >= genie::GV_AoKA)
     return 22;
-  if (getGameVersion() >= genie::GV_AoE)
+  if (getGameVersion() >= genie::GV_AoEB)
     return 4;
   return 2;
 }
@@ -100,9 +100,9 @@ unsigned short TerrainBlock::getSomethingSize(void)
     return 84;
   if (getGameVersion() >= genie::GV_AoKA)
     return 6;
-  if (getGameVersion() >= genie::GV_AoE)
+  if (getGameVersion() >= genie::GV_AoEB)
     return 5;
-  return 2625; // Temporary skip for random maps
+  return 68;//return 2625; // Temporary skip for random maps
 }
 
 //------------------------------------------------------------------------------
@@ -119,7 +119,7 @@ void TerrainBlock::serializeObject(void)
 
   serializeSub<Terrain>(Terrains, Terrain::getTerrainsSize(getGameVersion()));
 
-  if (getGameVersion() < genie::GV_AoE)
+  if (getGameVersion() < genie::GV_AoEB)
     serialize<int16_t>(AoEAlphaUnknown, (16 * 1888) / 2);
   // TerrainBorders seem to be unused (are empty) in GV > AoK Alpha
   serializeSub<TerrainBorder>(TerrainBorders, 16); //TODO: fixed size?
@@ -128,7 +128,7 @@ void TerrainBlock::serializeObject(void)
   serialize<int16_t>(ZeroSpace, getZeroSpaceSize());
 
   serialize<uint16_t>(TerrainsUsed2);
-  if (getGameVersion() < genie::GV_AoE)
+  if (getGameVersion() < genie::GV_AoEB)
     serialize<uint16_t>(RemovedBlocksUsed);
   serialize<uint16_t>(TerrainBordersUsed);
 
@@ -137,7 +137,10 @@ void TerrainBlock::serializeObject(void)
 
   // Few pointers and small numbers.
   serialize<int32_t>(SomeInt32, getSomethingSize());
-  SomeInt32.resize(157);
+  float hack;
+  if (getGameVersion() < genie::GV_AoEB)
+  for (int i=0; i < 10228 / 4; i++)
+  serialize<float>(hack);
 }
 
 }

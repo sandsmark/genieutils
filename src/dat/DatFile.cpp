@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
-    Copyright (C) 2011 - 2014  Mikko T P
+    Copyright (C) 2011 - 2015  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -173,7 +173,7 @@ void DatFile::serializeObject(void)
   // This data seems to be needed only in AoE and RoR.
   // In later games it is removable.
   // It exists in Star Wars games too, but is not used.
-  if (getGameVersion() >= genie::GV_AoE) // Temp fix
+  if (getGameVersion() >= genie::GV_AoEB) // Temp fix
   serialize<ISerializable>(RandomMaps);
 
   if (verbose_)
