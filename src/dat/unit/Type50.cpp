@@ -29,7 +29,7 @@ namespace unit
 Type50::Type50() : GraphicDisplacement()
 {
   DefaultArmor = 1000;
-  Unknown21 = -1;
+  TerRestrictionForDmgMultiplying = -1;
   MaxRange = 0;
   BlastRadius = 0;
   ReloadTime = 0;
@@ -79,7 +79,7 @@ void Type50::serializeObject(void)
   serializeSize<uint16_t>(ArmourCount, Armours.size());
   serializeSub<unit::AttackOrArmor>(Armours, ArmourCount);
 
-  serialize<int16_t>(Unknown21);
+  serialize<int16_t>(TerRestrictionForDmgMultiplying);
   serialize<float>(MaxRange);
   serialize<float>(BlastRadius);
   serialize<float>(ReloadTime);

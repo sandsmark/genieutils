@@ -40,7 +40,7 @@ public:
   int16_t DefaultArmor; // uint8_t below TC
   std::vector<unit::AttackOrArmor> Attacks;
   std::vector<unit::AttackOrArmor> Armours;
-  int16_t Unknown21;
+  int16_t TerRestrictionForDmgMultiplying;
   float MaxRange;
   float BlastRadius;
   float ReloadTime;
