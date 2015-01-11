@@ -48,7 +48,7 @@ public:
   int8_t ButtonID;
   int32_t Unknown26;//not in aoe/ror
   int32_t Unknown27;//not in aoe/ror
-  int8_t MissileGraphicDelay;//not in aoe/ror
+  int8_t Unknown28;//not in aoe/ror
   int8_t HeroMode;//not in aoe/ror
   int32_t GarrisonGraphic; //not in aoe/ror
   float DuplicatedMissilesMin;//not in aoe/ror

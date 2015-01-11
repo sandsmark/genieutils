@@ -67,13 +67,14 @@ public:
   int16_t SnowGraphicID; //not in aok/aoe/ror
   /// Enabler for annex units.
   int8_t AdjacentMode;
-  int16_t IconDisabler;
+  int16_t GraphicsAngle;
   int8_t DisappearsWhenBuilt;
   int16_t StackUnitID;
-  int16_t TerrainID;
-  int16_t ResourceID;
+  int16_t FoundationTerrainID;
+  /// ES forgot to remove this when AoE was still in its alpha stages
+  int16_t OldTerrainLikeID;
   int16_t ResearchID;
-  int8_t PlayerAlive;
+  int8_t Unknown33;
 
   static const unsigned short BUILDING_ANNEXES_SIZE = 4;
   std::array<unit::BuildingAnnex, BUILDING_ANNEXES_SIZE> Annexes;
@@ -89,7 +90,7 @@ public:
   /// Related to annexes in any way?
   /// Widespread usage in the AoK alpha 09.07.0222
   static const unsigned short LOOTABLE_RES_COUNT = 6;
-  std::array<int8_t, LOOTABLE_RES_COUNT> AlfaThingy;
+  std::array<int8_t, LOOTABLE_RES_COUNT> LootingTable;
 
 private:
   virtual void serializeObject(void);

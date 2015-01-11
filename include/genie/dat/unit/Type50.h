@@ -51,7 +51,7 @@ public:
 
   /// Used in AoE/RoR for towers.
   int8_t TowerMode;
-  int16_t Delay;
+  int16_t FrameDelay;
 
   static const unsigned short GRAPHICDISPLACEMENT_SIZE = 3;
   std::array<float, GRAPHICDISPLACEMENT_SIZE> GraphicDisplacement;

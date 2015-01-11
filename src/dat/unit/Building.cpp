@@ -26,18 +26,18 @@ namespace genie
 namespace unit
 {
 
-Building::Building() : Annexes(), AlfaThingy()
+Building::Building() : Annexes(), LootingTable()
 {
   ConstructionGraphicID = -1;
   SnowGraphicID = -1;
   AdjacentMode = 0;
-  IconDisabler = 0;
+  GraphicsAngle = 0;
   DisappearsWhenBuilt = 0;
   StackUnitID = -1;
-  TerrainID = -1;
-  ResourceID = -1;
+  FoundationTerrainID = -1;
+  OldTerrainLikeID = -1;
   ResearchID = -1;
-  PlayerAlive = 0;
+  Unknown33 = 0;
   HeadUnit = -1;
   TransformUnit = -1;
   UnknownSound = -1;
@@ -66,16 +66,16 @@ void Building::serializeObject(void)
     serialize<int16_t>(SnowGraphicID);
 
   serialize<int8_t>(AdjacentMode);
-  serialize<int16_t>(IconDisabler);
+  serialize<int16_t>(GraphicsAngle);
   serialize<int8_t>(DisappearsWhenBuilt);
   serialize<int16_t>(StackUnitID);
-  serialize<int16_t>(TerrainID);
-  serialize<int16_t>(ResourceID); // Resource?
+  serialize<int16_t>(FoundationTerrainID);
+  serialize<int16_t>(OldTerrainLikeID); // Resource?
   serialize<int16_t>(ResearchID);
 
   if (getGameVersion() >= genie::GV_AoKA)
   {
-    serialize<int8_t>(PlayerAlive);
+    serialize<int8_t>(Unknown33);
     serializeSub<unit::BuildingAnnex, BUILDING_ANNEXES_SIZE>(Annexes); // 40 bytes
     serialize<int16_t>(HeadUnit); // 9.89
     serialize<int16_t>(TransformUnit);
@@ -91,7 +91,7 @@ void Building::serializeObject(void)
     serialize<float>(Unknown35);
     {
       serialize<int16_t>(PileUnit); // 9.06
-      serialize<int8_t, LOOTABLE_RES_COUNT>(AlfaThingy); // 9.26
+      serialize<int8_t, LOOTABLE_RES_COUNT>(LootingTable); // 9.26
     }
   }
 }

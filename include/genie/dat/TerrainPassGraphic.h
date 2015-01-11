@@ -35,7 +35,7 @@ public:
   /// Indicates if you can build on it: 0 = no, -1 = yes
   int32_t Buildable;
   std::pair<int32_t, int32_t> GraphicIDs;
-  int32_t ReplicationAmount;
+  float ReplicationAmount;
 
 private:
   virtual void serializeObject(void);

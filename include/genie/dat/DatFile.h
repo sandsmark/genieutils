@@ -81,7 +81,7 @@ public:
 
   // File data
   static const unsigned short FILE_VERSION_SIZE = 8;
-  std::array<char, FILE_VERSION_SIZE> FileVersion;
+  std::string FileVersion;
 
   std::vector<int32_t> TerrainRestrictionPointers1;
   std::vector<int32_t> TerrainRestrictionPointers2;

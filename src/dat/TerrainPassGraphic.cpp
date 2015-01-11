@@ -51,7 +51,16 @@ void TerrainPassGraphic::serializeObject()
 {
   serialize<int32_t>(Buildable);
   serializePair<int32_t>(GraphicIDs);
-  serialize<int32_t>(ReplicationAmount);
+  if (getGameVersion() < genie::GV_SWGB)
+  {
+    int32_t replicationAmount = ReplicationAmount;
+    serialize<int32_t>(replicationAmount);
+    ReplicationAmount = replicationAmount;
+  }
+  else
+  {
+    serialize<float>(ReplicationAmount);
+  }
 }
 
 }

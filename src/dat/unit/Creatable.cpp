@@ -33,7 +33,7 @@ Creatable::Creatable() : ResourceCosts(), MissileSpawningArea()
   ButtonID = 0;
   Unknown26 = 0;
   Unknown27 = 0;
-  MissileGraphicDelay = 0;
+  Unknown28 = 0;
   HeroMode = 0;
   GarrisonGraphic = -1;
   DuplicatedMissilesMin = 1;
@@ -72,7 +72,7 @@ void Creatable::serializeObject(void)
     {
       serialize<int32_t>(Unknown26);
       serialize<int32_t>(Unknown27);
-      serialize<int8_t>(MissileGraphicDelay);
+      serialize<int8_t>(Unknown28);
 
       if (getGameVersion() >= genie::GV_AoKB)
       {
