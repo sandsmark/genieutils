@@ -73,7 +73,7 @@ Unit::Unit() : ResourceStorages()
   MinimapMode = 0;
   CommandAttribute = 0;
   Unknown3A = 0;
-  Unknown3B = 0;
+  MinimapColor = 0;
   LanguageDLLHelp = 105000;
   LanguageDLLHotKeyText = 155000;
   HotKey = 16000;
@@ -178,7 +178,7 @@ void Unit::serializeObject(void)
   serialize<int8_t>(MinimapMode);
   serialize<int8_t>(CommandAttribute);
   serialize<float>(Unknown3A);
-  serialize<uint8_t>(Unknown3B);
+  serialize<uint8_t>(MinimapColor);
   if (getGameVersion() >= genie::GV_AoEB)
   {
     serialize<int32_t>(LanguageDLLHelp);
