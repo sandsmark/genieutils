@@ -174,6 +174,7 @@ BuildingConnection::~BuildingConnection()
 void BuildingConnection::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
+  Common.setGameVersion(gv);
 }
 
 //------------------------------------------------------------------------------
@@ -238,6 +239,7 @@ UnitConnection::~UnitConnection()
 void UnitConnection::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
+  Common.setGameVersion(gv);
 }
 
 //------------------------------------------------------------------------------
@@ -290,6 +292,7 @@ ResearchConnection::~ResearchConnection()
 void ResearchConnection::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
+  Common.setGameVersion(gv);
 }
 
 //------------------------------------------------------------------------------
