@@ -36,6 +36,7 @@ enum GameVersion
   GV_AoKB, // 11.05
   GV_AoK, // 11.5
   GV_TC, // 11.76 - GV_AoKHD, // 12.0
+  GV_Cysion, // 12.0
   GV_SWGB, // 1.0 - GV_CC // 1.1
 };
 

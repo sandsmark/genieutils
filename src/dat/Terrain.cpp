@@ -109,7 +109,10 @@ void Terrain::serializeObject(void)
   serialize<int16_t, ELEVATION_GRAPHICS_SIZE>(ElevationGraphics);
   serialize<int16_t>(TerrainReplacementID);
   serializePair<int16_t>(TerrainDimensions);
-  serialize<int16_t>(TerrainBorderIDs, getTerrainsSize(getGameVersion()));
+  if (isOperation(OP_READ))
+    serialize<int16_t>(TerrainBorderIDs, getTerrainsSize(getGameVersion()));
+  else
+    serialize<int16_t>(TerrainBorderIDs, TerrainBorderIDs.size());
   serialize<int16_t, TERRAIN_UNITS_SIZE>(TerrainUnitID);
   serialize<int16_t, TERRAIN_UNITS_SIZE>(TerrainUnitDensity);
   serialize<int8_t, TERRAIN_UNITS_SIZE>(TerrainUnitPriority);
