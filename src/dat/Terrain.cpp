@@ -63,6 +63,8 @@ unsigned short Terrain::getTerrainsSize(GameVersion gv)
 {
   if (gv >= genie::GV_SWGB)
     return 55;
+  if (gv >= genie::GV_Cysion)
+    return 47; // 200 pls
   if (gv >= genie::GV_TC)
     return 42;
     return 32;

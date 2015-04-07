@@ -117,7 +117,10 @@ void TerrainBlock::serializeObject(void)
 {
   serialize<int16_t>(GraphicsRendering, getTerrainHeaderSize());
 
-  serializeSub<Terrain>(Terrains, Terrain::getTerrainsSize(getGameVersion()));
+  if (isOperation(OP_READ))
+    serializeSub<Terrain>(Terrains, Terrain::getTerrainsSize(getGameVersion()));
+  else
+    serializeSub<Terrain>(Terrains, Terrains.size());
 
   if (getGameVersion() < genie::GV_AoEB)
     serialize<int16_t>(AoEAlphaUnknown, (16 * 1888) / 2);
