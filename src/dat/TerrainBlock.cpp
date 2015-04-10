@@ -25,6 +25,7 @@ namespace genie
 //------------------------------------------------------------------------------
 TerrainBlock::TerrainBlock()
 {
+  Terrain::customTerrainAmount = 0;
   TerrainsUsed2 = 0;
   RemovedBlocksUsed = 0;
   TerrainBordersUsed = 0;

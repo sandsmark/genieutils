@@ -23,12 +23,13 @@
 namespace genie
 {
 
+int Terrain::customTerrainAmount;
 //------------------------------------------------------------------------------
 Terrain::Terrain() : Colors(), Unknown5(), Unknown7(), ElevationGraphics(),
   TerrainUnitID(), TerrainUnitDensity(), TerrainUnitPriority()
 {
   Unknown1 = 0;
-  Enabled = 1;
+  Enabled = 0;
   Name = "";
   Name2 = "";
   SLP = -1;
@@ -55,7 +56,7 @@ void Terrain::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
 
-  TerrainBorderIDs.resize(getTerrainsSize(gv));
+  TerrainBorderIDs.resize(getTerrainsSize(gv), 0);
 }
 
 //------------------------------------------------------------------------------
@@ -63,8 +64,8 @@ unsigned short Terrain::getTerrainsSize(GameVersion gv)
 {
   if (gv >= genie::GV_SWGB)
     return 55;
-  if (gv >= genie::GV_Cysion)
-    return 47; // 200 pls
+  if (gv == genie::GV_Cysion)
+    return Terrain::customTerrainAmount;//47; // 200 pls
   if (gv >= genie::GV_TC)
     return 42;
     return 32;

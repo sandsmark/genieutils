@@ -32,6 +32,7 @@ public:
   virtual ~Terrain();
   virtual void setGameVersion(GameVersion gv);
   static unsigned short getTerrainsSize(GameVersion gv);
+  static int customTerrainAmount;
 
   int16_t Unknown1;
   int16_t Enabled; //must be one or the game will crash
