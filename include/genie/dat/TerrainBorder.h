@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
-    Copyright (C) 2011 - 2013  Mikko T P
+    Copyright (C) 2011 - 2015  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -25,11 +25,11 @@
 namespace genie
 {
 
-class TBFrameData : public ISerializable
+class ShapeFrameData : public ISerializable
 {
 public:
-  TBFrameData();
-  virtual ~TBFrameData();
+  ShapeFrameData();
+  virtual ~ShapeFrameData();
   virtual void setGameVersion(GameVersion gv);
 
   int16_t FrameID;
@@ -70,7 +70,7 @@ public:
   float Unknown6;
 
   static const unsigned short FRAMES_CNT = 230;
-  std::vector<TBFrameData> Frames;
+  std::vector<ShapeFrameData> Frames;
 
   int16_t FrameCount; //?
   int16_t AngleCount; // always 0

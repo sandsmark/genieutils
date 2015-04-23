@@ -73,9 +73,9 @@ void TerrainBorder::serializeObject(void)
   serialize<float>(Unknown6);
 
   if (getGameVersion() == genie::GV_MIK) // Just a hack to make it read
-    serializeSub<TBFrameData>(Frames, FRAMES_CNT + 18);
+    serializeSub<ShapeFrameData>(Frames, FRAMES_CNT + 18);
   else
-    serializeSub<TBFrameData>(Frames, FRAMES_CNT);
+    serializeSub<ShapeFrameData>(Frames, FRAMES_CNT);
 
 
   serialize<int16_t>(FrameCount);
@@ -88,23 +88,23 @@ void TerrainBorder::serializeObject(void)
 }
 
 //------------------------------------------------------------------------------
-TBFrameData::TBFrameData()
+ShapeFrameData::ShapeFrameData()
 {
 }
 
 //------------------------------------------------------------------------------
-TBFrameData::~TBFrameData()
+ShapeFrameData::~ShapeFrameData()
 {
 }
 
 //------------------------------------------------------------------------------
-void TBFrameData::setGameVersion(GameVersion gv)
+void ShapeFrameData::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
 }
 
 //------------------------------------------------------------------------------
-void TBFrameData::serializeObject(void)
+void ShapeFrameData::serializeObject(void)
 {
   serialize<int16_t>(FrameID);
   serialize<int16_t>(Flag1);

@@ -56,7 +56,7 @@ void TerrainBlock::setGameVersion(GameVersion gv)
 unsigned short TerrainBlock::getTerrainHeaderSize(void)
 {
   if (getGameVersion() >= genie::GV_AoE)
-    return 70;
+    return 70; // 4 x int32, 19 x 6 bytes
   return 50;
 }
 
