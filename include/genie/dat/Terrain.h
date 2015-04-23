@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml <email>
-    Copyright (C) 2011 - 2013  Mikko T P
+    Copyright (C) 2011 - 2015  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -25,6 +25,22 @@
 namespace genie
 {
 
+class FrameData : public ISerializable
+{
+public:
+  FrameData();
+  virtual ~FrameData();
+  virtual void setGameVersion(GameVersion gv);
+
+  int16_t FrameCount;
+  int16_t AngleCount;
+  int16_t ShapeID;
+
+private:
+  virtual void serializeObject(void);
+
+};
+
 class Terrain : public ISerializable
 {
 public:
@@ -35,35 +51,43 @@ public:
   static int customTerrainAmount;
 
   int16_t Unknown1;
-  int16_t Enabled; //must be one or the game will crash
+  int8_t Enabled; //must be one or the game will crash
+  int8_t Random;
 
   unsigned short getNameSize(void);
 
   std::string Name;
   std::string Name2;
   int32_t SLP;
-  float Unknown3;
+  int32_t Unknown3;
   int32_t SoundID;
   int32_t BlendPriority;//not in aoe/ror
   int32_t BlendType; //not in aoe/ror
 
   std::array<uint8_t, 3> Colors;
-  std::array<uint8_t, 2> Unknown5;
-  int8_t Terrain1;
-  int8_t Terrain2;
-  static const unsigned short TERRAINS_USED_AOE = 23;
-  std::array<int8_t, TERRAINS_USED_AOE> Unknown7;
-  int16_t FrameCount;
-  int16_t AngleCount;
-  int16_t TerrainID;
-  static const unsigned short ELEVATION_GRAPHICS_SIZE = 54;
-  std::array<int16_t, ELEVATION_GRAPHICS_SIZE> ElevationGraphics;
-  int16_t TerrainReplacementID;
-  static const unsigned short TERRAIN_DIMENSIONS_SIZE = 2;
-  std::pair<int16_t, int16_t> TerrainDimensions;
+  std::pair<uint8_t, uint8_t> CliffColors;
+  int8_t PassableTerrain;
+  int8_t ImpassableTerrain;
+
+  int8_t IsAnimated;
+  int16_t AnimationFrames; // # of frames to animate through
+  int16_t PauseFames; // # of frames to pause animation after last frame is drawn
+  float Interval; // time between frames
+  float PauseBetweenLoops; // time to pause after last frame
+  int16_t Frame; // the current frame (includes animation & pause frames)
+  int16_t DrawFrame; // the current frame to draw
+  float AnimateLast; // last time animation frame was changed
+  int8_t FrameChanged; // has the DrawFrame changed since terrain was drawn?
+  int8_t Drawn;
+
+  static const unsigned short ELEVATION_GRAPHICS_SIZE = 19;
+  std::vector<FrameData> ElevationGraphics;
+
+  int16_t TerrainToDraw;
+  std::pair<int16_t, int16_t> TerrainDimensions; // rows + cols
 
   /// These refer to terrain borders, which are actually used only in AoE and RoR.
-  std::vector<int16_t> TerrainBorderIDs;
+  std::vector<int16_t> Borders;
 
   static const unsigned short TERRAIN_UNITS_SIZE = 30;
   std::array<int16_t, TERRAIN_UNITS_SIZE> TerrainUnitID;
