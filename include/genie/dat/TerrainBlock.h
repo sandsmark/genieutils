@@ -63,15 +63,37 @@ public:
   std::vector<int16_t> AoEAlphaUnknown; // These are very similar to borders
   std::vector<TerrainBorder> TerrainBorders;
 
-  unsigned short getZeroSpaceSize(void);
-  std::vector<int16_t> ZeroSpace;
+  int32_t UnknownPointer1;
+  float MapMinX;
+  float MapMinY;
+  float MapMaxX;
+  float MapMaxY;
+  float MapMaxXplus1;
+  float MapMaxYplus1;
 
   uint16_t TerrainsUsed2;
   uint16_t RemovedBlocksUsed;
-  uint16_t TerrainBordersUsed;
+  uint16_t BordersUsed;
+  int16_t MaxTerrain;
+  int16_t TileWidth;
+  int16_t TileHeight;
+  int16_t TileHalfHeight;
+  int16_t TileHalfWidth;
+  int16_t ElevHeight;
+  int16_t CurRow;
+  int16_t CurCol;
+  int16_t BlockBegRow;
+  int16_t BlockEndRow;
+  int16_t BlockBegCol;
+  int16_t BlockEndCol;
 
-  unsigned short getCivDataSize(void);
-  std::vector<int16_t> CivData;
+  int32_t UnknownPointer2;
+  int32_t UnknownPointer3;
+  int8_t AnyFrameChange;
+
+  int8_t MapVisibleFlag;
+  int8_t FogFlag;
+
   unsigned short getBytesSize(void);
   std::vector<int8_t> SomeBytes;
   unsigned short getSomethingSize(void);

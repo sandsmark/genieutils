@@ -249,8 +249,6 @@ void DatFile::unload()
   TerrainBlock.Terrains.clear();
   TerrainBlock.TerrainBorders.clear();
   TerrainBlock.AoEAlphaUnknown.clear();
-  TerrainBlock.ZeroSpace.clear();
-  TerrainBlock.CivData.clear();
   TerrainBlock.SomeBytes.clear();
   TerrainBlock.SomeInt32.clear();
   RandomMaps.MapHeaders.clear();

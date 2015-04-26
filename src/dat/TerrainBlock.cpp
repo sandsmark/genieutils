@@ -33,9 +33,33 @@ TerrainBlock::TerrainBlock()
   WorldWidth = 0;
   WorldHeight = 0;
   Unknown2 = 0;
+  UnknownPointer1 = 0;
+  MapMinX = 0;
+  MapMinY = 0;
+  MapMaxX = 0;
+  MapMaxY = 0;
+  MapMaxXplus1 = 0;
+  MapMaxYplus1 = 0;
   TerrainsUsed2 = 0;
   RemovedBlocksUsed = 0;
-  TerrainBordersUsed = 0;
+  BordersUsed = 0;
+  MaxTerrain = 0;
+  TileWidth = 0;
+  TileHeight = 0;
+  TileHalfHeight = 0;
+  TileHalfWidth = 0;
+  ElevHeight = 0;
+  CurRow = 0;
+  CurCol = 0;
+  BlockBegRow = 0;
+  BlockEndRow = 0;
+  BlockBegCol = 0;
+  BlockEndCol = 0;
+  UnknownPointer2 = 0;
+  UnknownPointer3 = 0;
+  AnyFrameChange = 0;
+  MapVisibleFlag = 0;
+  FogFlag = 1;
 }
 
 //------------------------------------------------------------------------------
@@ -52,9 +76,6 @@ void TerrainBlock::setGameVersion(GameVersion gv)
   updateGameVersion(TerrainBorders);
 
   TileSizes.resize(getTileTypeCount());
-  //AoEAlphaUnknown.resize(0);
-  ZeroSpace.resize(getZeroSpaceSize());
-  CivData.resize(getCivDataSize());
   SomeBytes.resize(getBytesSize());
   SomeInt32.resize(getSomethingSize());
 }
@@ -66,34 +87,14 @@ unsigned short TerrainBlock::getTileTypeCount(void)
 }
 
 //------------------------------------------------------------------------------
-unsigned short TerrainBlock::getZeroSpaceSize(void)
-{
-  if (getGameVersion() >= genie::GV_AoK)
-    return 14;
-  if (getGameVersion() >= genie::GV_AoKA)
-    return 10;
-  return 2;
-}
-
-//------------------------------------------------------------------------------
-unsigned short TerrainBlock::getCivDataSize(void)
-{
-  if (getGameVersion() >= genie::GV_AoKA)
-    return 17;
-  if (getGameVersion() >= genie::GV_AoEB)
-    return 18; // 17.5
-  return 12; // 12.5
-}
-
-//------------------------------------------------------------------------------
 unsigned short TerrainBlock::getBytesSize(void)
 {
   if (getGameVersion() >= genie::GV_SWGB)
-    return 26;
+    return 25;
   if (getGameVersion() >= genie::GV_AoKA)
-    return 22;
+    return 21;
   if (getGameVersion() >= genie::GV_AoEB)
-    return 4;
+    return 5;
   return 2;
 }
 
@@ -108,17 +109,17 @@ unsigned short TerrainBlock::getSomethingSize(void)
     return 6;
   if (getGameVersion() >= genie::GV_AoEB)
     return 5;
-  return 68;//return 2625; // Temporary skip for random maps
+  return 157;//return 2625; // Temporary skip for random maps
 }
 
 //------------------------------------------------------------------------------
 /// Size in bytes
-/// AoE Trial Beta	36264
-/// AoE & RoR		36304
-/// AoK A & B		36340
-/// AoK				37208
-/// TC				42208
-/// SWGB & CC		49640
+/// AoE Trial Beta  36264
+/// AoE & RoR       36304
+/// AoK A & B       36340
+/// AoK             37208
+/// TC              42208
+/// SWGB & CC       49640
 void TerrainBlock::serializeObject(void)
 {
   float hack; // pls remove
@@ -144,21 +145,52 @@ void TerrainBlock::serializeObject(void)
   // TerrainBorders seem to be unused (are empty) in GV > AoK Alpha
   serializeSub<TerrainBorder>(TerrainBorders, 16); //TODO: fixed size?
 
-  // Empty space.
-  serialize<int16_t>(ZeroSpace, getZeroSpaceSize());
+  // Probably filled after loading map in game.
+  serialize<int32_t>(UnknownPointer1);
+  if (getGameVersion() >= genie::GV_AoKA)
+  {
+    serialize<float>(MapMinX);
+    serialize<float>(MapMinY);
+    serialize<float>(MapMaxX);
+    serialize<float>(MapMaxY);
+    if (getGameVersion() >= genie::GV_AoK)
+    {
+      serialize<float>(MapMaxXplus1);
+      serialize<float>(MapMaxYplus1);
+    }
+  }
 
   serialize<uint16_t>(TerrainsUsed2);
   if (getGameVersion() < genie::GV_AoEB)
     serialize<uint16_t>(RemovedBlocksUsed);
-  serialize<uint16_t>(TerrainBordersUsed);
+  serialize<uint16_t>(BordersUsed);
+  serialize<int16_t>(MaxTerrain);
+  serialize<int16_t>(TileWidth);
+  serialize<int16_t>(TileHeight);
+  serialize<int16_t>(TileHalfHeight);
+  serialize<int16_t>(TileHalfWidth);
+  serialize<int16_t>(ElevHeight);
+  serialize<int16_t>(CurRow);
+  serialize<int16_t>(CurCol);
+  serialize<int16_t>(BlockBegRow);
+  serialize<int16_t>(BlockEndRow);
+  serialize<int16_t>(BlockBegCol);
+  serialize<int16_t>(BlockEndCol);
 
-  serialize<int16_t>(CivData, getCivDataSize());
+  {
+    serialize<int32_t>(UnknownPointer2);
+	serialize<int32_t>(UnknownPointer3);
+    serialize<int8_t>(AnyFrameChange);
+    serialize<int8_t>(MapVisibleFlag);
+    serialize<int8_t>(FogFlag);
+  }
+
   serialize<int8_t>(SomeBytes, getBytesSize());
 
   // Few pointers and small numbers.
   serialize<int32_t>(SomeInt32, getSomethingSize());
   if (getGameVersion() < genie::GV_AoEB)
-  for (int i=0; i < 10228 / 4; i++)
+  for (int i=0; i < 2468; i++)
   serialize<float>(hack);
 }
 
