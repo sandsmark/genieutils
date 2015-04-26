@@ -1,7 +1,7 @@
 /*
     genie/dat - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2015  Mikko T P
+    Copyright (C) 2014 - 2015  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -26,6 +26,13 @@ namespace genie
 TerrainBlock::TerrainBlock()
 {
   Terrain::customTerrainAmount = 0;
+  MapPointer = 0;
+  Unknown1 = 0;
+  MapWidth = 0;
+  MapHeight = 0;
+  WorldWidth = 0;
+  WorldHeight = 0;
+  Unknown2 = 0;
   TerrainsUsed2 = 0;
   RemovedBlocksUsed = 0;
   TerrainBordersUsed = 0;
@@ -44,7 +51,7 @@ void TerrainBlock::setGameVersion(GameVersion gv)
   updateGameVersion(Terrains);
   updateGameVersion(TerrainBorders);
 
-  GraphicsRendering.resize(getTerrainHeaderSize());
+  TileSizes.resize(getTileTypeCount());
   //AoEAlphaUnknown.resize(0);
   ZeroSpace.resize(getZeroSpaceSize());
   CivData.resize(getCivDataSize());
@@ -53,11 +60,9 @@ void TerrainBlock::setGameVersion(GameVersion gv)
 }
 
 //------------------------------------------------------------------------------
-unsigned short TerrainBlock::getTerrainHeaderSize(void)
+unsigned short TerrainBlock::getTileTypeCount(void)
 {
-  if (getGameVersion() >= genie::GV_AoE)
-    return 70; // 4 x int32, 19 x 6 bytes
-  return 50;
+  return 19;
 }
 
 //------------------------------------------------------------------------------
@@ -116,7 +121,18 @@ unsigned short TerrainBlock::getSomethingSize(void)
 /// SWGB & CC		49640
 void TerrainBlock::serializeObject(void)
 {
-  serialize<int16_t>(GraphicsRendering, getTerrainHeaderSize());
+  float hack; // pls remove
+
+  serialize<int32_t>(MapPointer);
+  serialize<int32_t>(Unknown1); // <-- this could be here or just before tile sizes
+  serialize<int32_t>(MapWidth);
+  serialize<int32_t>(MapHeight);
+  serialize<int32_t>(WorldWidth);
+  serialize<int32_t>(WorldHeight);
+
+  serializeSub<TileSize>(TileSizes, getTileTypeCount());
+  if (getGameVersion() >= genie::GV_AoE)
+    serialize<int16_t>(Unknown2);
 
   if (isOperation(OP_READ))
     serializeSub<Terrain>(Terrains, Terrain::getTerrainsSize(getGameVersion()));
@@ -141,10 +157,37 @@ void TerrainBlock::serializeObject(void)
 
   // Few pointers and small numbers.
   serialize<int32_t>(SomeInt32, getSomethingSize());
-  float hack;
   if (getGameVersion() < genie::GV_AoEB)
   for (int i=0; i < 10228 / 4; i++)
   serialize<float>(hack);
+}
+
+//------------------------------------------------------------------------------
+TileSize::TileSize()
+{
+  Width = 0;
+  Height = 0;
+  DeltaY = 0;
+}
+
+//------------------------------------------------------------------------------
+TileSize::~TileSize()
+{
+}
+
+//------------------------------------------------------------------------------
+void TileSize::setGameVersion(GameVersion gv)
+{
+  ISerializable::setGameVersion(gv);
+}
+
+//------------------------------------------------------------------------------
+void TileSize::serializeObject(void)
+{
+  serialize<int16_t>(Width);
+  serialize<int16_t>(Height);
+  if (getGameVersion() >= genie::GV_AoE)
+    serialize<int16_t>(DeltaY);
 }
 
 }

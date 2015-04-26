@@ -38,7 +38,6 @@ public:
 
 private:
   virtual void serializeObject(void);
-
 };
 
 class Terrain : public ISerializable

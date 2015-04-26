@@ -1,7 +1,7 @@
 /*
     geniedat - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2014  Mikko T P
+    Copyright (C) 2014 - 2015  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -26,6 +26,21 @@
 namespace genie
 {
 
+class TileSize : public ISerializable
+{
+public:
+  TileSize();
+  virtual ~TileSize();
+  virtual void setGameVersion(GameVersion gv);
+
+  int16_t Width;
+  int16_t Height;
+  int16_t DeltaY;
+
+private:
+  virtual void serializeObject(void);
+};
+
 class TerrainBlock : public ISerializable
 {
 public:
@@ -33,8 +48,16 @@ public:
   virtual ~TerrainBlock();
   virtual void setGameVersion(GameVersion gv);
 
-  unsigned short getTerrainHeaderSize(void);
-  std::vector<int16_t> GraphicsRendering;
+  int32_t MapPointer;
+  int32_t Unknown1;
+  int32_t MapWidth;
+  int32_t MapHeight;
+  int32_t WorldWidth;
+  int32_t WorldHeight;
+  int16_t Unknown2;
+
+  unsigned short getTileTypeCount(void);
+  std::vector<TileSize> TileSizes;
   std::vector<Terrain> Terrains;
 
   std::vector<int16_t> AoEAlphaUnknown; // These are very similar to borders
