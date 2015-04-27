@@ -94,7 +94,7 @@ void TerrainBorder::serializeObject(void)
   serialize<int8_t>(Drawn);
 
   if (getGameVersion() == genie::GV_MIK) // Just a hack to make it read
-    serializeSub<FrameData>(Frames, TILE_TYPE_COUNT * 12 + 20);
+    serializeSub<FrameData>(Frames, TILE_TYPE_COUNT * 12 + 18);
   else
     serializeSub<FrameData>(Frames, TILE_TYPE_COUNT * 12);
 
