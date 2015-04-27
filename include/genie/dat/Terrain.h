@@ -21,26 +21,12 @@
 #ifndef GENIE_TERRAIN_H
 #define GENIE_TERRAIN_H
 #include "genie/file/ISerializable.h"
+#include "genie/dat/TerrainCommon.h"
 
 namespace genie
 {
 
-class FrameData : public ISerializable
-{
-public:
-  FrameData();
-  virtual ~FrameData();
-  virtual void setGameVersion(GameVersion gv);
-
-  int16_t FrameCount;
-  int16_t AngleCount;
-  int16_t ShapeID;
-
-private:
-  virtual void serializeObject(void);
-};
-
-class Terrain : public ISerializable
+class Terrain : public SharedTerrain
 {
 public:
   Terrain();
@@ -50,36 +36,16 @@ public:
   static int customTerrainAmount;
 
   int16_t Unknown1;
-  int8_t Enabled; //must be one or the game will crash
-  int8_t Random;
 
   unsigned short getNameSize(void);
 
-  std::string Name;
-  std::string Name2;
-  int32_t SLP;
-  int32_t Unknown3;
-  int32_t SoundID;
   int32_t BlendPriority;//not in aoe/ror
   int32_t BlendType; //not in aoe/ror
 
-  std::array<uint8_t, 3> Colors;
   std::pair<uint8_t, uint8_t> CliffColors;
   int8_t PassableTerrain;
   int8_t ImpassableTerrain;
 
-  int8_t IsAnimated;
-  int16_t AnimationFrames; // # of frames to animate through
-  int16_t PauseFames; // # of frames to pause animation after last frame is drawn
-  float Interval; // time between frames
-  float PauseBetweenLoops; // time to pause after last frame
-  int16_t Frame; // the current frame (includes animation & pause frames)
-  int16_t DrawFrame; // the current frame to draw
-  float AnimateLast; // last time animation frame was changed
-  int8_t FrameChanged; // has the DrawFrame changed since terrain was drawn?
-  int8_t Drawn;
-
-  static const unsigned short ELEVATION_GRAPHICS_SIZE = 19;
   std::vector<FrameData> ElevationGraphics;
 
   int16_t TerrainToDraw;

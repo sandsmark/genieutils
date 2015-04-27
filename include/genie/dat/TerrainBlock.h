@@ -20,6 +20,7 @@
 #ifndef GENIE_TERRAINBLOCK_H
 #define GENIE_TERRAINBLOCK_H
 #include "genie/file/ISerializable.h"
+#include "genie/dat/TerrainCommon.h"
 #include "genie/dat/Terrain.h"
 #include "genie/dat/TerrainBorder.h"
 
@@ -56,7 +57,6 @@ public:
   int32_t WorldHeight;
   int16_t Unknown2;
 
-  unsigned short getTileTypeCount(void);
   std::vector<TileSize> TileSizes;
   std::vector<Terrain> Terrains;
 

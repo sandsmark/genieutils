@@ -21,60 +21,26 @@
 #ifndef GENIE_TERRAINBORDER_H
 #define GENIE_TERRAINBORDER_H
 #include "genie/file/ISerializable.h"
+#include "genie/dat/TerrainCommon.h"
 
 namespace genie
 {
 
-class ShapeFrameData : public ISerializable
-{
-public:
-  ShapeFrameData();
-  virtual ~ShapeFrameData();
-  virtual void setGameVersion(GameVersion gv);
-
-  int16_t FrameID;
-  int16_t Flag1;
-  int16_t Flag2;
-
-private:
-  virtual void serializeObject(void);
-
-};
-
 /// Seems to be unused in GV > RoR
-class TerrainBorder : public ISerializable
+class TerrainBorder : public SharedTerrain
 {
 public:
   TerrainBorder();
   virtual ~TerrainBorder();
   virtual void setGameVersion(GameVersion gv);
 
-  int16_t Unknown1;
-  int16_t Enabled;
+  unsigned short getNameSize(void);
 
-  static uint32_t getNameSize();
+  std::vector<FrameData> Frames;
 
-  /// Internal long name
-  std::string Name;
-
-  /// Internal SLP name
-  std::string Name2;
-
-  /// ID of the SLP Resource in BORDER.DRS
-  int32_t SLP;
-  float Unknown3; // 0
-  int32_t SoundID; // -1
-
-  std::array<uint8_t, 3> Colors;
-  std::array<int8_t, 5> Unknown5;
-  float Unknown6;
-
-  static const unsigned short FRAMES_CNT = 230;
-  std::vector<ShapeFrameData> Frames;
-
-  int16_t FrameCount; //?
-  int16_t AngleCount; // always 0
-  int16_t TerrainID;
+  int16_t DrawTile; // always 0
+  int16_t UnderlayTerrain;
+  int16_t BorderStyle;
 
 private:
   virtual void serializeObject(void);

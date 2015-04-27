@@ -24,18 +24,30 @@ namespace genie
 {
 
 //------------------------------------------------------------------------------
-TerrainBorder::TerrainBorder() : Colors(), Unknown5()
+TerrainBorder::TerrainBorder()
 {
-	Name = "";
-	Name2 = "";
-	SLP = -1;
-	Unknown3 = 0;
-	SoundID = -1;
-	Unknown6 = 0;
-	FrameCount = 0;
-	AngleCount = 0;
-	TerrainID = -1;
-	Unknown1 = 0;
+  Enabled = 0;
+  Random = 0;
+  Name = "";
+  Name2 = "";
+  SLP = -1;
+  Unknown3 = 0;
+  SoundID = -1;
+
+  IsAnimated = 0;
+  AnimationFrames = 0;
+  PauseFames = 0;
+  Interval = 0;
+  PauseBetweenLoops = 0;
+  Frame = 0;
+  DrawFrame = 0;
+  AnimateLast = 0;
+  FrameChanged = 0;
+  Drawn = 0;
+
+  DrawTile = 0;
+  UnderlayTerrain = -1;
+  BorderStyle = 0;
 }
 
 //------------------------------------------------------------------------------
@@ -50,7 +62,7 @@ void TerrainBorder::setGameVersion(GameVersion gv)
 }
 
 //------------------------------------------------------------------------------
-uint32_t TerrainBorder::getNameSize()
+unsigned short TerrainBorder::getNameSize()
 {
   return 13;
 }
@@ -58,57 +70,41 @@ uint32_t TerrainBorder::getNameSize()
 //------------------------------------------------------------------------------
 void TerrainBorder::serializeObject(void)
 {
-  serialize<int16_t>(Enabled);
+  serialize<int8_t>(Enabled);
+  serialize<int8_t>(Random);
 
   serialize<std::string>(Name, getNameSize());
   serialize<std::string>(Name2, getNameSize());
 
   if (getGameVersion() >= genie::GV_AoEB)
     serialize<int32_t>(SLP);
-  serialize<float>(Unknown3);
+  serialize<int32_t>(Unknown3);
   serialize<int32_t>(SoundID);
-
   serialize<uint8_t, 3>(Colors);
-  serialize<int8_t, 5>(Unknown5); // 1st and 2nd are colors, 3rd and 4th are terrains
-  serialize<float>(Unknown6);
+
+  serialize<int8_t>(IsAnimated);
+  serialize<int16_t>(AnimationFrames);
+  serialize<int16_t>(PauseFames);
+  serialize<float>(Interval);
+  serialize<float>(PauseBetweenLoops);
+  serialize<int16_t>(Frame);
+  serialize<int16_t>(DrawFrame);
+  serialize<float>(AnimateLast);
+  serialize<int8_t>(FrameChanged);
+  serialize<int8_t>(Drawn);
 
   if (getGameVersion() == genie::GV_MIK) // Just a hack to make it read
-    serializeSub<ShapeFrameData>(Frames, FRAMES_CNT + 18);
+    serializeSub<FrameData>(Frames, TILE_TYPE_COUNT * 12 + 20);
   else
-    serializeSub<ShapeFrameData>(Frames, FRAMES_CNT);
+    serializeSub<FrameData>(Frames, TILE_TYPE_COUNT * 12);
 
+  serialize<int16_t>(DrawTile);
+  serialize<int16_t>(UnderlayTerrain);
+  serialize<int16_t>(BorderStyle);
 
-  serialize<int16_t>(FrameCount);
-  serialize<int16_t>(AngleCount);
-  serialize<int16_t>(TerrainID);
-  serialize<int16_t>(Unknown1);
   float hack;
   if (getGameVersion() == genie::GV_MIK)
     serialize<float>(hack);
-}
-
-//------------------------------------------------------------------------------
-ShapeFrameData::ShapeFrameData()
-{
-}
-
-//------------------------------------------------------------------------------
-ShapeFrameData::~ShapeFrameData()
-{
-}
-
-//------------------------------------------------------------------------------
-void ShapeFrameData::setGameVersion(GameVersion gv)
-{
-  ISerializable::setGameVersion(gv);
-}
-
-//------------------------------------------------------------------------------
-void ShapeFrameData::serializeObject(void)
-{
-  serialize<int16_t>(FrameID);
-  serialize<int16_t>(Flag1);
-  serialize<int16_t>(Flag2);
 }
 
 }

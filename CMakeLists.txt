@@ -97,6 +97,7 @@ set(DAT_SRC
     src/dat/Techage.cpp
 
     src/dat/TechTree.cpp
+    src/dat/TerrainCommon.cpp
     src/dat/Terrain.cpp
     src/dat/TerrainBlock.cpp
     src/dat/TerrainBorder.cpp

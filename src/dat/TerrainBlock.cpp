@@ -75,15 +75,9 @@ void TerrainBlock::setGameVersion(GameVersion gv)
   updateGameVersion(Terrains);
   updateGameVersion(TerrainBorders);
 
-  TileSizes.resize(getTileTypeCount());
+  TileSizes.resize(SharedTerrain::TILE_TYPE_COUNT);
   SomeBytes.resize(getBytesSize());
   SomeInt32.resize(getSomethingSize());
-}
-
-//------------------------------------------------------------------------------
-unsigned short TerrainBlock::getTileTypeCount(void)
-{
-  return 19;
 }
 
 //------------------------------------------------------------------------------
@@ -131,7 +125,7 @@ void TerrainBlock::serializeObject(void)
   serialize<int32_t>(WorldWidth);
   serialize<int32_t>(WorldHeight);
 
-  serializeSub<TileSize>(TileSizes, getTileTypeCount());
+  serializeSub<TileSize>(TileSizes, SharedTerrain::TILE_TYPE_COUNT);
   if (getGameVersion() >= genie::GV_AoE)
     serialize<int16_t>(Unknown2);
 
@@ -177,6 +171,7 @@ void TerrainBlock::serializeObject(void)
   serialize<int16_t>(BlockBegCol);
   serialize<int16_t>(BlockEndCol);
 
+  if (getGameVersion() >= genie::GV_AoEB) // Maybe?
   {
     serialize<int32_t>(UnknownPointer2);
 	serialize<int32_t>(UnknownPointer3);

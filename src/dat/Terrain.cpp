@@ -25,7 +25,7 @@ namespace genie
 
 int Terrain::customTerrainAmount;
 //------------------------------------------------------------------------------
-Terrain::Terrain() : Colors(), CliffColors(),
+Terrain::Terrain() : CliffColors(),
   TerrainUnitID(), TerrainUnitDensity(), TerrainUnitPriority()
 {
   Unknown1 = 0;
@@ -40,6 +40,18 @@ Terrain::Terrain() : Colors(), CliffColors(),
   BlendType = -1;
   PassableTerrain = -1;
   ImpassableTerrain = -1;
+
+  IsAnimated = 0;
+  AnimationFrames = 0;
+  PauseFames = 0;
+  Interval = 0;
+  PauseBetweenLoops = 0;
+  Frame = 0;
+  DrawFrame = 0;
+  AnimateLast = 0;
+  FrameChanged = 0;
+  Drawn = 0;
+
   TerrainToDraw = 0;
   NumberOfTerrainUnitsUsed = 0;
   TerrainDimensions.first = TerrainDimensions.second = -1;
@@ -54,7 +66,7 @@ void Terrain::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
 
-  ElevationGraphics.resize(ELEVATION_GRAPHICS_SIZE);
+  ElevationGraphics.resize(TILE_TYPE_COUNT);
   Borders.resize(getTerrainsSize(gv), 0);
 }
 
@@ -115,7 +127,7 @@ void Terrain::serializeObject(void)
   serialize<int8_t>(FrameChanged);
   serialize<int8_t>(Drawn);
 
-  serializeSub<FrameData>(ElevationGraphics, ELEVATION_GRAPHICS_SIZE);
+  serializeSub<FrameData>(ElevationGraphics, TILE_TYPE_COUNT);
   serialize<int16_t>(TerrainToDraw);
   serializePair<int16_t>(TerrainDimensions);
   if (isOperation(OP_READ))
@@ -129,33 +141,6 @@ void Terrain::serializeObject(void)
 
   if (getGameVersion() < genie::GV_SWGB)
     serialize<int16_t>(Unknown1);
-}
-
-//------------------------------------------------------------------------------
-FrameData::FrameData()
-{
-  FrameCount = 0;
-  AngleCount = 0;
-  ShapeID = 0;
-}
-
-//------------------------------------------------------------------------------
-FrameData::~FrameData()
-{
-}
-
-//------------------------------------------------------------------------------
-void FrameData::setGameVersion(GameVersion gv)
-{
-  ISerializable::setGameVersion(gv);
-}
-
-//------------------------------------------------------------------------------
-void FrameData::serializeObject(void)
-{
-  serialize<int16_t>(FrameCount);
-  serialize<int16_t>(AngleCount);
-  serialize<int16_t>(ShapeID);
 }
 
 }
