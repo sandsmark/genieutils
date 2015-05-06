@@ -68,6 +68,7 @@ void DatFile::setGameVersion(GameVersion gv)
   updateGameVersion(UnitHeaders);
   updateGameVersion(Civs);
   updateGameVersion(Researchs);
+  TerrainBlock.setGameVersion(gv);
   RandomMaps.setGameVersion(gv);
   TechTree.setGameVersion(gv);
 }
