@@ -30,14 +30,16 @@ enum GameVersion
   GV_MIK, // ?
   GV_DAVE, // ?
   GV_MATT, // ?
-  GV_AoEB, // 7.04 - GV_AoETB, // 7.11
-  GV_AoE, // 7.2 - GV_RoR, // 7.24
+  GV_AoEB, // 7.04 - 7.11
+  GV_AoE, // 7.2
+  GV_RoR, // 7.24
   GV_AoKA, // 10.19
   GV_AoKB, // 11.05
   GV_AoK, // 11.5
-  GV_TC, // 11.76 - GV_AoKHD, // 12.0
+  GV_TC, // 11.76 - 12.0
   GV_Cysion, // 12.0
-  GV_SWGB, // 1.0 - GV_CC // 1.1
+  GV_SWGB, // 1.0
+  GV_CC // 1.1
 };
 
 }
