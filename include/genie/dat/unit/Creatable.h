@@ -46,8 +46,8 @@ public:
   int16_t TrainTime;
   int16_t TrainLocationID;
   int8_t ButtonID;
-  int32_t Unknown26;
-  int32_t Unknown27;
+  float Unknown26;
+  float Unknown27;
   int8_t Unknown28;
   int8_t HeroMode;
   int32_t GarrisonGraphic; 

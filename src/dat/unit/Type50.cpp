@@ -37,7 +37,7 @@ Type50::Type50() : GraphicDisplacement()
   AccuracyPercent = 0;
   TowerMode = 0;
   FrameDelay = 0;
-  BlastLevel = 0;
+  BlastAttackLevel = 0;
   MinRange = 0;
   AccuracyErrorRadius = 0;
   AttackGraphic = -1;
@@ -86,9 +86,9 @@ void Type50::serializeObject(void)
   serialize<int16_t>(ProjectileUnitID);
   serialize<int16_t>(AccuracyPercent);
   serialize<int8_t>(TowerMode);
-  serialize<int16_t>(FrameDelay); //TODO: missle graphic delay
+  serialize<int16_t>(FrameDelay);
   serialize<float, GRAPHICDISPLACEMENT_SIZE>(GraphicDisplacement);
-  serialize<int8_t>(BlastLevel);
+  serialize<int8_t>(BlastAttackLevel);
   serialize<float>(MinRange);
 
   if (getGameVersion() >= genie::GV_AoKB) // 10.36

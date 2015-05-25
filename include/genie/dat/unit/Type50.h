@@ -56,7 +56,7 @@ public:
   static const unsigned short GRAPHICDISPLACEMENT_SIZE = 3;
   std::array<float, GRAPHICDISPLACEMENT_SIZE> GraphicDisplacement;
 
-  int8_t BlastLevel;
+  int8_t BlastAttackLevel;
   float MinRange;
   float AccuracyErrorRadius;
   int16_t AttackGraphic;

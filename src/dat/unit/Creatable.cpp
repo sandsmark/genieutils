@@ -70,8 +70,8 @@ void Creatable::serializeObject(void)
   {
     if (getGameVersion() >= genie::GV_AoKA) // 9.07
     {
-      serialize<int32_t>(Unknown26);
-      serialize<int32_t>(Unknown27);
+      serialize<float>(Unknown26);
+      serialize<float>(Unknown27);
       serialize<int8_t>(Unknown28);
 
       if (getGameVersion() >= genie::GV_AoKB)
