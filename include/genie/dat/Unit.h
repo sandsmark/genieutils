@@ -166,7 +166,7 @@ public:
   // TODO
   float ResourceDecay;
   int8_t BlastType;
-  int8_t Unknown2;
+  int8_t TriggerType;
   int8_t InteractionMode;
 
   /**

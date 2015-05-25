@@ -68,7 +68,7 @@ Unit::Unit() : ResourceStorages()
   ResourceCapacity = 0;
   ResourceDecay = 0;
   BlastType = 0;
-  Unknown2 = 0;
+  TriggerType = 0;
   InteractionMode = 0;
   MinimapMode = 0;
   CommandAttribute = 0;
@@ -173,7 +173,7 @@ void Unit::serializeObject(void)
   serialize<int16_t>(ResourceCapacity);
   serialize<float>(ResourceDecay);
   serialize<int8_t>(BlastType); //TODO: AoE/ROR: [0]:blast_type?
-  serialize<int8_t>(Unknown2);
+  serialize<int8_t>(TriggerType);
   serialize<int8_t>(InteractionMode);
   serialize<int8_t>(MinimapMode);
   serialize<int8_t>(CommandAttribute);

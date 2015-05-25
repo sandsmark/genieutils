@@ -46,20 +46,20 @@ public:
   int16_t TrainTime;
   int16_t TrainLocationID;
   int8_t ButtonID;
-  int32_t Unknown26;//not in aoe/ror
-  int32_t Unknown27;//not in aoe/ror
-  int8_t Unknown28;//not in aoe/ror
-  int8_t HeroMode;//not in aoe/ror
-  int32_t GarrisonGraphic; //not in aoe/ror
-  float DuplicatedMissilesMin;//not in aoe/ror
-  int8_t DuplicatedMissilesMax;//not in aoe/ror
+  int32_t Unknown26;
+  int32_t Unknown27;
+  int8_t Unknown28;
+  int8_t HeroMode;
+  int32_t GarrisonGraphic; 
+  float TotalMissiles;
+  int8_t TotalMissilesMax;
 
   static const unsigned short AMDBUNKNOWN_SIZE = 3;
   /// The area from which projectiles spawn. Size and randomness.
   std::array<float, AMDBUNKNOWN_SIZE> MissileSpawningArea;
 
-  int32_t AlternativeProjectileUnit;//not in aoe/ror
-  int32_t ChargingGraphic;//not in aoe/ror
+  int32_t AlternativeProjectileUnit;
+  int32_t ChargingGraphic;
 
   //TODO:
   /*
@@ -70,7 +70,7 @@ public:
     wall end piece, but if a wall is placed between two other walls, it will
     have a different graphic.
    */
-  int8_t ChargingMode;//not in aoe/ror
+  int8_t ChargingMode;
   int16_t DisplayedPierceArmour;
 
 private:

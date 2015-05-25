@@ -36,8 +36,8 @@ Creatable::Creatable() : ResourceCosts(), MissileSpawningArea()
   Unknown28 = 0;
   HeroMode = 0;
   GarrisonGraphic = -1;
-  DuplicatedMissilesMin = 1;
-  DuplicatedMissilesMax = 1;
+  TotalMissiles = 1;
+  TotalMissilesMax = 1;
   AlternativeProjectileUnit = -1;
   ChargingGraphic = -1;
   ChargingMode = 0;
@@ -80,8 +80,8 @@ void Creatable::serializeObject(void)
         serialize<int32_t>(GarrisonGraphic); // 10.73
       }
 
-      serialize<float>(DuplicatedMissilesMin);
-      serialize<int8_t>(DuplicatedMissilesMax);
+      serialize<float>(TotalMissiles);
+      serialize<int8_t>(TotalMissilesMax);
       serialize<float, AMDBUNKNOWN_SIZE>(MissileSpawningArea);
       serialize<int32_t>(AlternativeProjectileUnit); // 9.08
       // 9.2
