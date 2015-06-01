@@ -26,7 +26,7 @@ namespace genie
 namespace unit
 {
 
-DeadFish::DeadFish() : Unknown16B()
+DeadFish::DeadFish() : RotationAngles()
 {
   WalkingGraphic.first = -1;
   WalkingGraphic.second = -1;
@@ -60,7 +60,7 @@ void DeadFish::serializeObject(void)
 
   if (getGameVersion() >= genie::GV_AoKB) // 10.28
   {
-    serialize<float, U16B_SIZE>(Unknown16B);
+    serialize<float, U16B_SIZE>(RotationAngles);
   }
 }
 

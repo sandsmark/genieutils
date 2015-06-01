@@ -46,7 +46,7 @@ public:
   int8_t Unknown16;
 
   static const unsigned short U16B_SIZE = 5;
-  std::array<float, U16B_SIZE> Unknown16B;
+  std::array<float, U16B_SIZE> RotationAngles;
 
 private:
   virtual void serializeObject(void);
