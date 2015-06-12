@@ -4,10 +4,10 @@
 #include <fstream>
 #include <genie/resource/SlpFile.h>
 #include <genie/resource/SlpFrame.h>
-#include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/Graphics/Sprite.hpp>
-#include <SFML/Window/Event.hpp>
-#include <SFML/Graphics/Texture.hpp> 
+//#include <SFML/Graphics/RenderWindow.hpp>
+//#include <SFML/Graphics/Sprite.hpp>
+//#include <SFML/Window/Event.hpp>
+//#include <SFML/Graphics/Texture.hpp>
 #include "genie/resource/DrsFile.h" 
 #include "genie/resource/SlpFile.h" 
 #include "genie/resource/Color.h"
@@ -17,7 +17,7 @@
 #include <boost/iostreams/copy.hpp>
 #include <boost/smart_ptr.hpp>
 
-sf::Image createSfImage(uint32_t width, uint32_t height, const uint8_t* pixels, 
+/*sf::Image createSfImage(uint32_t width, uint32_t height, const uint8_t* pixels,
                         genie::PalFilePtr palette, uint8_t transparent_pixel)
 {
   sf::Image img;
@@ -44,10 +44,10 @@ sf::Image createSfImage(genie::SlpFramePtr frame, genie::PalFilePtr palette)
   return createSfImage(frame->getWidth(), frame->getHeight(), 
                        frame->getPixelIndexes(), palette, 
                        frame->getTransparentPixelIndex());
-}
+}*/
 
 
-void testDrs()
+/*void testDrs()
 {
   genie::DrsFile interfac;
   
@@ -114,9 +114,9 @@ void testDrs()
       // Display window contents on screen
       App.display();
   }
-}
+}*/
 
-void testScn()
+/*void testScn()
 {
   genie::ScnFile scn;
   
@@ -149,7 +149,7 @@ void testScn()
   
   ofs.write(scn.resource.bitmap, scn.resource.bitmapByteSize);
   ofs.close();
-  */
+  /
   
   
 //   scn.saveAs("xxxx.scx");
@@ -160,7 +160,7 @@ void testScn()
   
 //   std::cout << "Original filename: " << scn2.originalFileName << std::endl;
   
-}
+}*/
 
 void testLang()
 {
@@ -200,6 +200,7 @@ void testLang()
 int main(int argc, char **argv) {
 
   genie::Logger::setLogLevel(genie::Logger::L_INFO);
+  std::cout << "Hello" << std::endl;
   
   std::ofstream log_out;
   log_out.open("log.txt");

@@ -21,7 +21,7 @@
 
 #include <genie/file/IFile.h>
 #include <genie/util/Logger.h>
-#include <iconv.h>
+#include <iconv.h> //Sorry no iconv for msvc
 
 struct pcr_file;
 

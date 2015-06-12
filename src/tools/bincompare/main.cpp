@@ -21,6 +21,9 @@
 
 int main(int argc, char **argv)
 {
+  if (argc < 3)
+    return 0;
+
   int fail_cnt = binaryCompare(argv[1], argv[2]);
   
   if (fail_cnt)

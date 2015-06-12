@@ -3,8 +3,11 @@
 # GUTILS_TOOLS:BOOL     if true to enable compilation of gutils tools
 # GUTILS_TEST:BOOL      if true some debug/test classes will be compiled
 #
+# You may need to manually tell CMake Wizard Boost library file paths.
+# Yes. It is that stupid!
+# -DBoost_DIR:PATH="C:\Boost" -DZLIB_LIBRARY:FILEPATH="C:\Cpp\zlib\libz.a" -DZLIB_INCLUDE_DIR:PATH="C:\Cpp\zlib" -DEXTERN_DIR:PATH="C:\Users\Tapsa"
 
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.2.3)
 
 set(Genieutils_LIBRARY genieutils)
 
@@ -23,14 +26,14 @@ set(CMAKE_CXX_FLAGS "-std=gnu++0x")
 # dependencies:
 
 find_package(ZLIB REQUIRED)
-find_package(Boost 1.42 COMPONENTS iostreams REQUIRED)
+find_package(Boost 1.58 COMPONENTS iostreams REQUIRED)
 
 if (GUTILS_TOOLS)
-  find_package(Boost 1.42 COMPONENTS program_options REQUIRED)
+  find_package(Boost 1.58 COMPONENTS program_options REQUIRED)
 endif(GUTILS_TOOLS)
 
 if (GUTILS_TEST)
-  find_package(Boost 1.42 COMPONENTS unit_test_framework program_options REQUIRED)
+  find_package(Boost 1.58 COMPONENTS unit_test_framework program_options REQUIRED)
   find_package(SFML COMPONENTS SYSTEM WINDOW GRAPHICS REQUIRED)
 endif (GUTILS_TEST)
 
