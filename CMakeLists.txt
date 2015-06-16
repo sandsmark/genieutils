@@ -2,10 +2,6 @@
 #
 # GUTILS_TOOLS:BOOL     if true to enable compilation of gutils tools
 # GUTILS_TEST:BOOL      if true some debug/test classes will be compiled
-#
-# You may need to manually tell CMake Wizard Boost library file paths.
-# Yes. It is that stupid!
-# -DBoost_DIR:PATH="C:\Boost" -DZLIB_LIBRARY:FILEPATH="C:\Cpp\zlib\libz.a" -DZLIB_INCLUDE_DIR:PATH="C:\Cpp\zlib" -DEXTERN_DIR:PATH="C:\Users\Tapsa"
 
 cmake_minimum_required(VERSION 3.2.3)
 
@@ -14,14 +10,26 @@ set(Genieutils_LIBRARY genieutils)
 project(genieutils)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake/)
+set(CMAKE_CXX_FLAGS "-std=gnu++0x")
+
+set(Boost_USE_STATIC_LIBS        ON)
+set(Boost_USE_MULTITHREADED      ON)
+set(Boost_USE_STATIC_RUNTIME     ON)
+
+set(ZLIB_INCLUDE_DIR "C:/Cpp/zlib")
+set(ZLIB_LIBRARY "C:/Cpp/zlib-build/libzlibstatic.a")
+
+set(GDAT_TOOLS FALSE)
+set(GDAT_STATIC TRUE)
+set(GUTILS_TOOLS FALSE)
+set(GUTILS_TEST FALSE)
+
 if (WIN32)
 	set(ICONV_LIBRARIES "C:/Cpp/MinGW/lib/libiconv.a")
 	set(ICONV_INCLUDE_DIR "C:/Cpp/MinGW/include")
 else()
 	find_library(iconv REQUIRED)
 endif()
-
-set(CMAKE_CXX_FLAGS "-std=gnu++0x")
 
 # dependencies:
 
@@ -46,13 +54,6 @@ else (${ICONV_FOUND})
   message(STATUS "Iconv not found: Language file support: DISABLED")
   set(GU_LANG_SUPPORT false)
 endif (${ICONV_FOUND})
-
-
-# boost options:
-
-set(Boost_USE_STATIC_LIBS        ON)
-set(Boost_USE_MULTITHREADED      ON)
-set(Boost_USE_STATIC_RUNTIME     ON)
 
 # include directories:
 
