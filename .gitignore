@@ -2,6 +2,7 @@
 *.*~
 *~
 *.swp
+*.user
 
 # IDE Files
 *.kdev4
@@ -13,4 +14,3 @@ release/
 
 # generated files by doxygen
 doc/
-
