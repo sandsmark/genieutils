@@ -34,14 +34,14 @@ endif()
 # dependencies:
 
 find_package(ZLIB REQUIRED)
-find_package(Boost 1.58 COMPONENTS iostreams REQUIRED)
+find_package(Boost 1.55 COMPONENTS iostreams REQUIRED)
 
 if (GUTILS_TOOLS)
-  find_package(Boost 1.58 COMPONENTS program_options REQUIRED)
+  find_package(Boost 1.55 COMPONENTS program_options REQUIRED)
 endif(GUTILS_TOOLS)
 
 if (GUTILS_TEST)
-  find_package(Boost 1.58 COMPONENTS unit_test_framework program_options REQUIRED)
+  find_package(Boost 1.55 COMPONENTS unit_test_framework program_options REQUIRED)
   find_package(SFML COMPONENTS SYSTEM WINDOW GRAPHICS REQUIRED)
 endif (GUTILS_TEST)
 
