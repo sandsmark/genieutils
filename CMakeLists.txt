@@ -3,7 +3,7 @@
 # GUTILS_TOOLS:BOOL     if true to enable compilation of gutils tools
 # GUTILS_TEST:BOOL      if true some debug/test classes will be compiled
 
-cmake_minimum_required(VERSION 3.2.3)
+cmake_minimum_required(VERSION 2.8)
 
 set(Genieutils_LIBRARY genieutils)
 
@@ -16,6 +16,7 @@ set(Boost_USE_STATIC_LIBS        ON)
 set(Boost_USE_MULTITHREADED      ON)
 set(Boost_USE_STATIC_RUNTIME     ON)
 
+# These paths should be in batch files, but Qt NEEDS them here.
 set(ZLIB_INCLUDE_DIR "C:/Cpp/zlib")
 set(ZLIB_LIBRARY "C:/Cpp/zlib-build/libzlibstatic.a")
 
