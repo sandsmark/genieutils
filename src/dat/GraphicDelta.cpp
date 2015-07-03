@@ -31,7 +31,7 @@ GraphicDelta::GraphicDelta()
   Unknown3 = 0;
   DirectionX = 0;
   DirectionY = 0;
-  Unknown4 = -1;
+  DisplayAngle = -1;
   Unknown5 = 0;
 }
 
@@ -53,7 +53,7 @@ void GraphicDelta::serializeObject(void)
   serialize<int16_t>(Unknown3);
   serialize<int16_t>(DirectionX);
   serialize<int16_t>(DirectionY);
-  serialize<int16_t>(Unknown4);
+  serialize<int16_t>(DisplayAngle);
   serialize<int16_t>(Unknown5);
 }
 

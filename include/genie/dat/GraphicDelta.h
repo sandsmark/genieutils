@@ -38,7 +38,7 @@ public:
   int16_t Unknown3;
   int16_t DirectionX; //In Pixels?
   int16_t DirectionY; //In Pixels?
-  int16_t Unknown4;
+  int16_t DisplayAngle;
   int16_t Unknown5;
 
 private:
