@@ -38,7 +38,7 @@ public:
   int16_t Type;
   int16_t ClassID;
   int16_t UnitID;
-  int16_t Unknown2;
+  int16_t TerrainID;
   int16_t ResourceIn;
   int16_t ResourceProductivityMultiplier;
   int16_t ResourceOut;

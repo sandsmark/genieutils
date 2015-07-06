@@ -32,7 +32,7 @@ UnitCommand::UnitCommand()
   Type = 7;
   ClassID = -1;
   UnitID = -1;
-  Unknown2 = -1;
+  TerrainID = -1;
   ResourceIn = -1;
   ResourceProductivityMultiplier = -1;
   ResourceOut = -1;
@@ -72,7 +72,7 @@ void UnitCommand::serializeObject(void)
   serialize<int16_t>(Type);
   serialize<int16_t>(ClassID);
   serialize<int16_t>(UnitID);
-  serialize<int16_t>(Unknown2);
+  serialize<int16_t>(TerrainID);
   serialize<int16_t>(ResourceIn);
   serialize<int16_t>(ResourceProductivityMultiplier);
   serialize<int16_t>(ResourceOut);
