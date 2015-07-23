@@ -1,6 +1,7 @@
 /*
     genieutils - <description>
     Copyright (C) 2011 - 2013  Armin Preiml <email>
+    Copyright (C) 2015  Mikko "Tapsa" P <email>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -29,7 +30,7 @@ MapDescription::MapDescription()
   width = 0;
   height = 0;
 }
-  
+
 MapDescription::~MapDescription()
 {
 }
@@ -41,7 +42,7 @@ void MapDescription::serializeObject(void)
   serialize<int32_t>(aiType);
   serialize<uint32_t>(width);
   serialize<uint32_t>(height);
-  
+
   serializeSub<MapTile>(tiles, width * height);
 }
 
@@ -56,11 +57,11 @@ MapTile::~MapTile()
 {
 }
 
-void MapTile::serializeObject(void) 
+void MapTile::serializeObject(void)
 {
   serialize<uint8_t>(terrainId);
   serialize<uint8_t>(elevation);
   serialize<uint8_t>(unused);
 }
-  
+
 }

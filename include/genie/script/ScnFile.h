@@ -1,6 +1,7 @@
 /*
     genieutils - <description>
     Copyright (C) 2011 - 2013  Armin Preiml <email>
+    Copyright (C) 2015  Mikko "Tapsa" P <email>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -30,82 +31,86 @@
 
 namespace genie
 {
-  
+
 //------------------------------------------------------------------------------
 /// Class to read and write scenario files (.scn and .scx). The version of the
-/// game will be auto-detected on read. 
+/// game will be auto-detected on read.
 //
 class ScnFile : public IFile
 {
 public:
   ScnFile();
   virtual ~ScnFile();
-  
+
   //----------------------------------------------------------------------------
   /// Extracts a scenario (for debugging purpose).
   //
   void extractRaw(const char *from, const char *to);
-  
+
   static uint32_t getSeparator(void);
-  
+
   // Uncompressed Header:
-  
+
   int32_t unknown1;
-  
+
   /// Timestamp of last save
   uint32_t lastSaveTime;
-  
+
   std::string scenarioInstructions;
-  
+
   uint32_t unknown2;
-  
+
   uint32_t playerCount;
-  
+
   // Compressed header:
-  
+
   /// aokts description: "Next unit ID to place" ??
-  uint32_t unknown3; 
-  
+  uint32_t unknown3;
+
   /// 16
   std::vector<std::string> playerNames;
-  
+
   /// GameVersion >= AoK, 16
   std::vector<uint32_t> playerNamesStringTable;
-  
+
   /// 16
   std::vector<ScnPlayerData1> playerData1;
-  
+
   /// usually 1
   uint32_t unknown4;
-  
+
   char unknown5;
-  
+
   /// always -1 ?
   float unknown6;
-  
+
   std::string originalFileName;
-  
+
   ScnResource resource;
-  
+
   ScnPlayerData2 playerData2;
-  
+
+  ScnVictory victoryConditions;
+  ScnDiplomacy diplomacy;
+  ScnDisables disables;
+
   MapDescription map;
-  
+
+  std::string version;
+
+  float version2;
+
 private:
-  std::string version_;
-  
   uint32_t headerLength_; //starting after this
-  
-  float version2_;
-  
+
   Compressor compressor_;
-  
+
   virtual void serializeObject(void);
-  
+
   void serializeVersion(void);
   void serializeVersion2(void);
 };
-  
+
 }
 
 #endif // GENIE_SCNFILE_H

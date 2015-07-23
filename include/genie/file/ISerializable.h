@@ -1,7 +1,7 @@
 /*
     genieutils - <description>
     Copyright (C) 2011 - 2013  Armin Preiml <email>
-    Copyright (C) 2013 - 2014  Mikko T P
+    Copyright (C) 2013 - 2015  Mikko T P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -94,7 +94,7 @@ public:
   template <typename T>
   static void updateGameVersion(GameVersion gv, std::vector<T> &vec)
   {
-    for (unsigned int i=0; i<vec.size(); i++)
+    for (unsigned int i=0; i<vec.size(); ++i)
     {
       ISerializable *item = dynamic_cast<ISerializable *>(&vec[i]);
       item->setGameVersion(gv);
@@ -268,7 +268,7 @@ protected:
       vec.resize(size);
     }
 
-    for (size_t i=0; i<size; i++)
+    for (size_t i=0; i<size; ++i)
       serializeSizedString<T>(vec[i], cString);
 
   }
@@ -355,13 +355,13 @@ protected:
     switch(getOperation())
     {
       case OP_WRITE:
-        for (auto it = arr.begin(); it != arr.end(); it++)
+        for (auto it = arr.begin(); it != arr.end(); ++it)
           write<T>(*it);
 
         break;
 
       case OP_READ:
-        for (size_t i=0; i < arr.size(); i++)
+        for (size_t i=0; i < arr.size(); ++i)
           arr[i] = read<T>();
 
         break;
@@ -384,7 +384,7 @@ protected:
         if (vec.size() != size)
           std::cerr << "Warning!: vector size differs len!" << vec.size() << " " << size <<  std::endl;
 
-        for (auto it = vec.begin(); it != vec.end(); it++)
+        for (auto it = vec.begin(); it != vec.end(); ++it)
           write<T>(*it);
 
         break;
@@ -392,13 +392,49 @@ protected:
       case OP_READ:
         vec.resize(size);
 
-        for (size_t i=0; i < size; i++)
+        for (size_t i=0; i < size; ++i)
           vec[i] = read<T>();
 
         break;
 
       case OP_CALC_SIZE:
         size_ += size * sizeof(T);
+        break;
+    }
+  }
+
+  //----------------------------------------------------------------------------
+  /// Reads or writes an array of data to/from a vector of vectors dependent on operation.
+  //
+  template <typename T>
+  void serialize(std::vector<std::vector<T>> &vec, size_t size, size_t size2)
+  {
+    switch(getOperation())
+    {
+      case OP_WRITE:
+        if (vec.size() != size)
+          std::cerr << "Warning!: vector size differs len!" << vec.size() << " " << size <<  std::endl;
+
+        for (size_t i=0; i < size; ++i)
+          for (auto it = vec[i].begin(); it != vec[i].end(); ++it)
+            write<T>(*it);
+
+        break;
+
+      case OP_READ:
+        vec.resize(size);
+
+        for (size_t i=0; i < size; ++i)
+        {
+          vec[i].resize(size2);
+          for (size_t j=0; j < size2; ++j)
+            vec[i][j] = read<T>();
+        }
+
+        break;
+
+      case OP_CALC_SIZE:
+        size_ += size * size2 * sizeof(T);
         break;
     }
   }
@@ -411,7 +447,7 @@ protected:
   {
     if (isOperation(OP_WRITE) || isOperation(OP_CALC_SIZE))
     {
-      for (auto it = arr.begin(); it != arr.end(); it++)
+      for (auto it = arr.begin(); it != arr.end(); ++it)
       {
         ISerializable *data = dynamic_cast<ISerializable *>(&(*it));
 
@@ -423,7 +459,7 @@ protected:
     }
     else
     {
-      for (size_t i=0; i < arr.size(); i++)
+      for (size_t i=0; i < arr.size(); ++i)
       {
         ISerializable *cast_obj = dynamic_cast<ISerializable *>(&arr[i]);
         cast_obj->serializeSubObject(this);
@@ -442,7 +478,7 @@ protected:
       if (vec.size() != size)
         std::cerr << "Warning!: vector size differs size!" << vec.size() << " " << size <<  std::endl;
 
-      for (auto it = vec.begin(); it != vec.end(); it++)
+      for (auto it = vec.begin(); it != vec.end(); ++it)
       {
         ISerializable *data = dynamic_cast<ISerializable *>(&(*it));
 
@@ -456,7 +492,7 @@ protected:
     {
       vec.resize(size);
 
-      for (size_t i=0; i < size; i++)
+      for (size_t i=0; i < size; ++i)
       {
         ISerializable *cast_obj = dynamic_cast<ISerializable *>(&vec[i]);
         cast_obj->serializeSubObject(this);
@@ -512,7 +548,7 @@ protected:
   {
     if (isOperation(OP_WRITE) || isOperation(OP_CALC_SIZE))
     {
-      for (size_t i=0; i < size; i++)
+      for (size_t i=0; i < size; ++i)
       {
         if (pointers[i] != 0)
         {
@@ -529,7 +565,7 @@ protected:
     {
       vec.resize(size);
 
-      for (size_t i=0; i < size; i++)
+      for (size_t i=0; i < size; ++i)
       {
         T *obj = &vec[i];
 

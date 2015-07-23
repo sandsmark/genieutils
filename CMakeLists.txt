@@ -18,7 +18,7 @@ set(Boost_USE_STATIC_RUNTIME     ON)
 
 # These paths should be in batch files, but Qt NEEDS them here.
 set(ZLIB_INCLUDE_DIR "C:/Cpp/zlib")
-set(ZLIB_LIBRARY "C:/Cpp/zlib-build/libzlibstatic.a")
+set(ZLIB_LIBRARY "C:/Cpp/zlib/libz.a")
 
 set(GDAT_TOOLS FALSE)
 set(GDAT_STATIC TRUE)
@@ -26,8 +26,8 @@ set(GUTILS_TOOLS FALSE)
 set(GUTILS_TEST FALSE)
 
 if (WIN32)
-	set(ICONV_LIBRARIES "C:/Qt/Tools/mingw491_32/i686-w64-mingw32/lib/libiconv.a")
-	set(ICONV_INCLUDE_DIR "C:/Qt/Tools/mingw491_32/i686-w64-mingw32")
+	set(ICONV_LIBRARIES "C:/Cpp/MinGW/lib/libiconv.a")
+	set(ICONV_INCLUDE_DIR "C:/Cpp/MinGW")
 else()
 	find_library(iconv REQUIRED)
 endif()
