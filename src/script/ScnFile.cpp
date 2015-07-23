@@ -99,26 +99,10 @@ void ScnFile::serializeObject(void)
 
   serialize<uint32_t>(nextUnitID);
   serializeVersion2();
-  if (isOperation(OP_READ))
-  {
-    playerNames.resize(16);
-    for (uint8_t i=0; i<16; i++)
-      playerNames[i] = readString(256);
-  }
-  else if (isOperation(OP_WRITE))
-    for (uint8_t i=0; i<16; i++)
-      writeString(playerNames[i], 256);
-  if (getGameVersion() >= genie::GV_AoK) // 1.16
-    serialize<uint32_t>(playerNamesStringTable, 16);
-  serializeSub<ScnPlayerData1>(playerData1, 16);
-  serialize<uint32_t>(unknown4);
-  serialize<char>(unknown5); //TODO
-  serialize<float>(unknown6);
-  serializeSizedString<uint16_t>(originalFileName);
 
-  // Messages and cinematics
+  serialize<ISerializable>(playerData1);
 
-  serialize<ISerializable>(resource);
+  serialize<uint32_t>(separator_);
 
   serialize<ISerializable>(playerData2);
 
@@ -228,20 +212,20 @@ void ScnFile::serializeVersion2(void)
     {
       case genie::GV_AoE:
       case genie::GV_RoR:
-//         version2 = ; //TODO
+//         playerDataVersion = ; //TODO
         break;
 
       case genie::GV_AoK:
-        version2 = 1.18;
+        playerDataVersion = 1.18;
         break;
 
       case genie::GV_TC:
-        version2 = 1.22;
+        playerDataVersion = 1.22;
         break;
 
       case genie::GV_SWGB:
       case genie::GV_CC:
-        version2 = 1.30;
+        playerDataVersion = 1.30;
         break;
 
       default:
@@ -249,15 +233,15 @@ void ScnFile::serializeVersion2(void)
     }
   }
 
-  serialize<float>(version2);
+  serialize<float>(playerDataVersion);
 
   if (isOperation(OP_READ))
   {
-    if (fabs(version2 - 1.18) < 0.01)
+    if (fabs(playerDataVersion - 1.18) < 0.01)
       setGameVersion(genie::GV_AoK);
-    else if (fabs(version2 - 1.22) < 0.01)
+    else if (fabs(playerDataVersion - 1.22) < 0.01)
         setGameVersion(genie::GV_TC);
-    else if (fabs(version2 - 1.30) < 0.01)
+    else if (fabs(playerDataVersion - 1.30) < 0.01)
       setGameVersion(genie::GV_SWGB);
     else
       setGameVersion(genie::GV_AoE);

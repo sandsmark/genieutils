@@ -33,24 +33,26 @@ ScnPlayerData1::~ScnPlayerData1()
 
 void ScnPlayerData1::serializeObject(void)
 {
-  serialize<uint32_t>(active);
-  serialize<uint32_t>(human);
-  serialize<uint32_t>(civilizationID);
-  serialize<uint32_t>(unknown1);
-}
+  if (isOperation(OP_READ))
+  {
+    playerNames.resize(16);
+    for (uint8_t i=0; i<16; i++)
+      playerNames[i] = readString(256);
+  }
+  else if (isOperation(OP_WRITE))
+    for (uint8_t i=0; i<16; i++)
+      writeString(playerNames[i], 256);
+  if (getGameVersion() >= genie::GV_AoK) // 1.16
+    serialize<uint32_t>(playerNamesStringTable, 16);
+  serializeSub<ScnPlayerInfo>(playerInfo, 16);
+  serialize<uint32_t>(unknown4);
+  serialize<char>(unknown5); //TODO
+  serialize<float>(unknown6);
+  serializeSizedString<uint16_t>(originalFileName);
 
+  // Messages and cinematics
+  serialize<ISerializable>(resource);
 
-ScnPlayerData2::ScnPlayerData2()
-{
-  separator_ = ScnFile::getSeparator();
-}
-
-ScnPlayerData2::~ScnPlayerData2()
-{
-}
-
-void ScnPlayerData2::serializeObject(void)
-{
   serializeSizedStrings<uint16_t>(aiNames, 16);
   serializeSizedStrings<uint16_t>(cityNames, 16);
   if (getGameVersion() >= genie::GV_AoE) // 1.08
@@ -59,10 +61,22 @@ void ScnPlayerData2::serializeObject(void)
   serializeSub(aiFiles, 16);
 
   serialize<uint8_t>(aiTypes, 16);
+}
 
-  serialize<uint32_t>(separator_);
+ScnPlayerInfo::ScnPlayerInfo()
+{
+}
 
-  serializeSub(resources, 16);
+ScnPlayerInfo::~ScnPlayerInfo()
+{
+}
+
+void ScnPlayerInfo::serializeObject(void)
+{
+  serialize<uint32_t>(active);
+  serialize<uint32_t>(human);
+  serialize<uint32_t>(civilizationID);
+  serialize<uint32_t>(unknown1);
 }
 
 AiFile::AiFile()
@@ -84,6 +98,19 @@ void AiFile::serializeObject(void)
   serialize<std::string>(cityFilename, cityFileSize);
   if (getGameVersion() >= genie::GV_AoE) // 1.08
     serialize<std::string>(perFilename, perFileSize);
+}
+
+ScnPlayerData2::ScnPlayerData2()
+{
+}
+
+ScnPlayerData2::~ScnPlayerData2()
+{
+}
+
+void ScnPlayerData2::serializeObject(void)
+{
+  serializeSub(resources, 16);
 }
 
 Resources::Resources()

@@ -25,7 +25,6 @@
 #include "genie/file/IFile.h"
 #include "genie/file/Compressor.h"
 
-#include "scn/ScnResource.h"
 #include "scn/ScnPlayerData.h"
 #include "scn/MapDescription.h"
 
@@ -67,26 +66,9 @@ public:
   /// aokts description: "Next unit ID to place" ??
   uint32_t nextUnitID;
 
-  /// 16
-  std::vector<std::string> playerNames;
+  float playerDataVersion;
 
-  /// GameVersion >= AoK, 16
-  std::vector<uint32_t> playerNamesStringTable;
-
-  /// 16
-  std::vector<ScnPlayerData1> playerData1;
-
-  /// usually 1
-  uint32_t unknown4;
-
-  char unknown5;
-
-  /// always -1 ?
-  float unknown6;
-
-  std::string originalFileName;
-
-  ScnResource resource;
+  ScnPlayerData1 playerData1;
 
   ScnPlayerData2 playerData2;
 
@@ -98,10 +80,9 @@ public:
 
   std::string version;
 
-  float version2;
-
 private:
   uint32_t headerLength_; //starting after this
+  uint32_t separator_;
 
   Compressor compressor_;
 

@@ -21,12 +21,14 @@
 #define GENIE_SCN_PLAYER_DATA_H
 
 #include "genie/file/ISerializable.h"
+#include "ScnResource.h"
 
 #include <stdint.h>
 
 namespace genie
 {
 
+class ScnPlayerInfo;
 class AiFile;
 class Resources;
 
@@ -35,6 +37,31 @@ class ScnPlayerData1 : public ISerializable
 public:
   ScnPlayerData1();
   virtual ~ScnPlayerData1();
+
+  std::vector<std::string> playerNames;
+  std::vector<uint32_t> playerNamesStringTable;
+  std::vector<ScnPlayerInfo> playerInfo;
+  uint32_t unknown4;
+  char unknown5;
+  float unknown6;
+  std::string originalFileName;
+  ScnResource resource;
+
+  std::vector<std::string> aiNames;
+  std::vector<std::string> cityNames;
+  std::vector<std::string> personalityNames;
+  std::vector<AiFile> aiFiles;
+  std::vector<uint8_t> aiTypes;
+
+private:
+  virtual void serializeObject(void);
+};
+
+class ScnPlayerInfo : public ISerializable
+{
+public:
+  ScnPlayerInfo();
+  virtual ~ScnPlayerInfo();
 
   /// boolean
   uint32_t active;
@@ -46,32 +73,7 @@ public:
 
   /// constant = 4 ??
   uint32_t unknown1;
-
 private:
-  virtual void serializeObject(void);
-};
-
-class ScnPlayerData2 : public ISerializable
-{
-public:
-  ScnPlayerData2();
-  virtual ~ScnPlayerData2();
-
-  /// 16
-  std::vector<std::string> aiNames;
-  std::vector<std::string> cityNames;
-  std::vector<std::string> personalityNames;
-
-  std::vector<AiFile> aiFiles;
-
-  /// 0 = custom, 1 = standard, 2 = none. TODO: enum?
-  std::vector<uint8_t> aiTypes;
-
-  std::vector<Resources> resources;
-
-private:
-  uint32_t separator_;
-
   virtual void serializeObject(void);
 };
 
@@ -91,6 +93,18 @@ public:
 private:
   virtual void serializeObject(void);
 
+};
+
+class ScnPlayerData2 : public ISerializable
+{
+public:
+  ScnPlayerData2();
+  virtual ~ScnPlayerData2();
+
+  std::vector<Resources> resources;
+
+private:
+  virtual void serializeObject(void);
 };
 
 class Resources : public ISerializable
