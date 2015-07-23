@@ -28,10 +28,58 @@
 namespace genie
 {
 
-class ScnPlayerInfo;
-class UnknownData1;
-class AiFile;
-class Resources;
+class ScnPlayerInfo : public ISerializable
+{
+public:
+  ScnPlayerInfo();
+  virtual ~ScnPlayerInfo();
+
+  /// boolean
+  uint32_t active;
+
+  /// boolean
+  uint32_t human;
+
+  uint32_t civilizationID;
+
+  /// constant = 4 ??
+  uint32_t unknown1;
+
+private:
+  virtual void serializeObject(void);
+};
+
+class UnknownData1 : public ISerializable
+{
+public:
+  UnknownData1();
+  virtual ~UnknownData1();
+
+  uint16_t unknownCount;
+  uint16_t unknown2;
+  float unknown3;
+
+private:
+  virtual void serializeObject(void);
+};
+
+class AiFile : public ISerializable
+{
+public:
+  AiFile();
+  virtual ~AiFile();
+
+  uint32_t aiFilenameSize;
+  uint32_t cityFileSize;
+  uint32_t perFileSize;
+  std::string aiFilename;
+  std::string cityFilename;
+  std::string perFilename;
+
+private:
+  virtual void serializeObject(void);
+
+};
 
 class ScnPlayerData1 : public ISerializable
 {
@@ -57,71 +105,6 @@ private:
   virtual void serializeObject(void);
 };
 
-class UnknownData1 : public ISerializable
-{
-public:
-  UnknownData1();
-  virtual ~UnknownData1();
-
-  uint16_t unknownCount;
-  uint16_t unknown2;
-  float unknown3;
-
-private:
-  virtual void serializeObject(void);
-};
-
-class ScnPlayerInfo : public ISerializable
-{
-public:
-  ScnPlayerInfo();
-  virtual ~ScnPlayerInfo();
-
-  /// boolean
-  uint32_t active;
-
-  /// boolean
-  uint32_t human;
-
-  uint32_t civilizationID;
-
-  /// constant = 4 ??
-  uint32_t unknown1;
-
-private:
-  virtual void serializeObject(void);
-};
-
-class AiFile : public ISerializable
-{
-public:
-  AiFile();
-  virtual ~AiFile();
-
-  uint32_t aiFilenameSize;
-  uint32_t cityFileSize;
-  uint32_t perFileSize;
-  std::string aiFilename;
-  std::string cityFilename;
-  std::string perFilename;
-
-private:
-  virtual void serializeObject(void);
-
-};
-
-class ScnPlayerData2 : public ISerializable
-{
-public:
-  ScnPlayerData2();
-  virtual ~ScnPlayerData2();
-
-  std::vector<Resources> resources;
-
-private:
-  virtual void serializeObject(void);
-};
-
 class Resources : public ISerializable
 {
 public:
@@ -138,6 +121,18 @@ public:
 
   /// always 0
   uint32_t padding;
+
+private:
+  virtual void serializeObject(void);
+};
+
+class ScnPlayerData2 : public ISerializable
+{
+public:
+  ScnPlayerData2();
+  virtual ~ScnPlayerData2();
+
+  std::vector<Resources> resources;
 
 private:
   virtual void serializeObject(void);

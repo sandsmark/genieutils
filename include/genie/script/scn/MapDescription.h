@@ -26,7 +26,21 @@
 namespace genie
 {
 
-class MapTile;
+class MapTile : public ISerializable
+{
+public:
+  MapTile();
+  virtual ~MapTile();
+
+  uint8_t terrainID;
+  uint8_t elevation;
+
+  /// always 0
+  uint8_t unused;
+
+private:
+  virtual void serializeObject(void);
+};
 
 /// Naming it MapDescription because it may be used elsewhere
 class MapDescription : public ISerializable
@@ -55,21 +69,6 @@ private:
   virtual void serializeObject(void);
 };
 
-class MapTile : public ISerializable
-{
-public:
-  MapTile();
-  virtual ~MapTile();
-
-  uint8_t terrainID;
-  uint8_t elevation;
-
-  /// always 0
-  uint8_t unused;
-
-private:
-  virtual void serializeObject(void);
-};
 }
 
 #endif // GENIE_MAP_DESCRIPTION_H

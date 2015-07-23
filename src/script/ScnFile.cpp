@@ -19,8 +19,6 @@
 
 #include "genie/script/ScnFile.h"
 
-#include "genie/script/scn/ScnPlayerData.h"
-
 #include <math.h>
 #include <boost/iostreams/copy.hpp>
 
@@ -163,7 +161,7 @@ void ScnFile::serializeVersion(void)
 // "1.07"
 // "1.08"
 // "1.09"
-// "1.10" Rise of Rome? AoK beta mentions this.
+// "1.10" Rise of Rome? 1.10 is used for trial versions till 1.19
 // "1.11"
 // "1.12"
 // "1.13"
