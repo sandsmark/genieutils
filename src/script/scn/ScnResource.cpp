@@ -24,7 +24,7 @@
 namespace genie
 {
 
-ScnResource::ScnResource()
+ScnMessagesCinematics::ScnMessagesCinematics()
 {
   instructionsStringTable = 0;
   hintsStringTable = 0;
@@ -43,13 +43,13 @@ ScnResource::ScnResource()
   bitmap = 0;
 }
 
-ScnResource::~ScnResource()
+ScnMessagesCinematics::~ScnMessagesCinematics()
 {
   delete bitmap;
   delete bmpHeader;
 }
 
-void ScnResource::serializeObject(void)
+void ScnMessagesCinematics::serializeObject(void)
 {
   std::cout << "Resource start pos: " << tellg() << std::endl;
 
@@ -90,7 +90,7 @@ void ScnResource::serializeObject(void)
     serializeBitmap();
 }
 
-void ScnResource::serializeBitmap(void)
+void ScnMessagesCinematics::serializeBitmap(void)
 {
   serialize<uint32_t>(bitmapIncluded);
 

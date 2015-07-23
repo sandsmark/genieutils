@@ -28,11 +28,11 @@ namespace genie
 {
 
 // TODO: right name?
-class ScnResource : public ISerializable
+class ScnMessagesCinematics : public ISerializable
 {
 public:
-  ScnResource();
-  virtual ~ScnResource();
+  ScnMessagesCinematics();
+  virtual ~ScnMessagesCinematics();
 
   /// GV >= AoK
   uint32_t instructionsStringTable;

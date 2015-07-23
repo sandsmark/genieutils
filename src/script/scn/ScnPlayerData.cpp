@@ -45,13 +45,12 @@ void ScnPlayerData1::serializeObject(void)
   if (getGameVersion() >= genie::GV_AoK) // 1.16
     serialize<uint32_t>(playerNamesStringTable, 16);
   serializeSub<ScnPlayerInfo>(playerInfo, 16);
-  serialize<uint32_t>(unknown4);
-  serialize<char>(unknown5); //TODO
-  serialize<float>(unknown6);
+  serialize<uint8_t>(conquestVictory);
+  serialize<ISerializable>(unknownData);
   serializeSizedString<uint16_t>(originalFileName);
 
   // Messages and cinematics
-  serialize<ISerializable>(resource);
+  serialize<ISerializable>(messagesCinematics);
 
   serializeSizedStrings<uint16_t>(aiNames, 16);
   serializeSizedStrings<uint16_t>(cityNames, 16);
@@ -77,6 +76,23 @@ void ScnPlayerInfo::serializeObject(void)
   serialize<uint32_t>(human);
   serialize<uint32_t>(civilizationID);
   serialize<uint32_t>(unknown1);
+}
+
+UnknownData1::UnknownData1()
+{
+}
+
+UnknownData1::~UnknownData1()
+{
+}
+
+void UnknownData1::serializeObject(void)
+{
+  serialize<uint16_t>(unknownCount);
+  serialize<uint16_t>(unknown2);
+  serialize<float>(unknown3);
+
+  // Lots of data if count it over 0
 }
 
 AiFile::AiFile()

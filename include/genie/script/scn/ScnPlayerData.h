@@ -29,6 +29,7 @@ namespace genie
 {
 
 class ScnPlayerInfo;
+class UnknownData1;
 class AiFile;
 class Resources;
 
@@ -41,17 +42,30 @@ public:
   std::vector<std::string> playerNames;
   std::vector<uint32_t> playerNamesStringTable;
   std::vector<ScnPlayerInfo> playerInfo;
-  uint32_t unknown4;
-  char unknown5;
-  float unknown6;
+  uint8_t conquestVictory;
+  UnknownData1 unknownData;
   std::string originalFileName;
-  ScnResource resource;
+  ScnMessagesCinematics messagesCinematics;
 
   std::vector<std::string> aiNames;
   std::vector<std::string> cityNames;
   std::vector<std::string> personalityNames;
   std::vector<AiFile> aiFiles;
   std::vector<uint8_t> aiTypes;
+
+private:
+  virtual void serializeObject(void);
+};
+
+class UnknownData1 : public ISerializable
+{
+public:
+  UnknownData1();
+  virtual ~UnknownData1();
+
+  uint16_t unknownCount;
+  uint16_t unknown2;
+  float unknown3;
 
 private:
   virtual void serializeObject(void);
@@ -73,6 +87,7 @@ public:
 
   /// constant = 4 ??
   uint32_t unknown1;
+
 private:
   virtual void serializeObject(void);
 };
