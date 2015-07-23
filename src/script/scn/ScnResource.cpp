@@ -53,7 +53,7 @@ void ScnResource::serializeObject(void)
 {
   std::cout << "Resource start pos: " << tellg() << std::endl;
 
-  if (getGameVersion() >= genie::GV_AoK) // 1.18
+  if (getGameVersion() >= genie::GV_AoK) // 1.16
   {
     serialize<uint32_t>(instructionsStringTable);
     serialize<uint32_t>(hintsStringTable);
@@ -74,12 +74,20 @@ void ScnResource::serializeObject(void)
   if (getGameVersion() >= genie::GV_TC) // 1.22
     serializeSizedString<uint16_t>(scouts);
 
+  if (getGameVersion() < genie::GV_AoE) // 1.03
+  {
+    serializeSizedString<uint16_t>(oldFilename1);
+    serializeSizedString<uint16_t>(oldFilename2);
+    serializeSizedString<uint16_t>(oldFilename3);
+  }
+
   serializeSizedString<uint16_t>(pregameCinematicFilename);
   serializeSizedString<uint16_t>(victoryCinematicFilename);
   serializeSizedString<uint16_t>(lossCinematicFilename);
   serializeSizedString<uint16_t>(backgroundFilename);
 
-  serializeBitmap();
+  if (getGameVersion() >= genie::GV_AoE) // 1.1
+    serializeBitmap();
 }
 
 void ScnResource::serializeBitmap(void)

@@ -67,6 +67,10 @@ public:
   /// GV >= TC
   std::string scouts;
 
+  std::string oldFilename1;
+  std::string oldFilename2;
+  std::string oldFilename3;
+
   std::string pregameCinematicFilename;
 
   std::string victoryCinematicFilename;

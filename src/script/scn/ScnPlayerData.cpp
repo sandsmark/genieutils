@@ -35,7 +35,7 @@ void ScnPlayerData1::serializeObject(void)
 {
   serialize<uint32_t>(active);
   serialize<uint32_t>(human);
-  serialize<uint32_t>(civilizationId);
+  serialize<uint32_t>(civilizationID);
   serialize<uint32_t>(unknown1);
 }
 
@@ -51,18 +51,16 @@ ScnPlayerData2::~ScnPlayerData2()
 
 void ScnPlayerData2::serializeObject(void)
 {
-  serializeSizedStrings<uint16_t>(unknownStrings, 32);
   serializeSizedStrings<uint16_t>(aiNames, 16);
+  serializeSizedStrings<uint16_t>(cityNames, 16);
+  if (getGameVersion() >= genie::GV_AoE) // 1.08
+    serializeSizedStrings<uint16_t>(personalityNames, 16);
 
   serializeSub(aiFiles, 16);
 
   serialize<uint8_t>(aiTypes, 16);
 
   serialize<uint32_t>(separator_);
-
-  //TODO
-  if (separator_ != ScnFile::getSeparator())
-    std::cerr << "Scn: File corruption!" << std::endl;
 
   serializeSub(resources, 16);
 }
@@ -77,10 +75,15 @@ AiFile::~AiFile()
 
 void AiFile::serializeObject(void)
 {
-  serialize<uint32_t>(unknown1);
-  serialize<uint32_t>(unknown2);
+  serializeSize<uint32_t>(aiFilenameSize, aiFilename, true);
+  serializeSize<uint32_t>(cityFileSize, cityFilename, true);
+  if (getGameVersion() >= genie::GV_AoE) // 1.08
+    serializeSize<uint32_t>(perFileSize, perFilename, true);
 
-  serializeSizedString<uint32_t>(perFile);
+  serialize<std::string>(aiFilename, aiFilenameSize);
+  serialize<std::string>(cityFilename, cityFileSize);
+  if (getGameVersion() >= genie::GV_AoE) // 1.08
+    serialize<std::string>(perFilename, perFileSize);
 }
 
 Resources::Resources()

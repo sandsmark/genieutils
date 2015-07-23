@@ -42,7 +42,7 @@ public:
   /// boolean
   uint32_t human;
 
-  uint32_t civilizationId;
+  uint32_t civilizationID;
 
   /// constant = 4 ??
   uint32_t unknown1;
@@ -57,11 +57,10 @@ public:
   ScnPlayerData2();
   virtual ~ScnPlayerData2();
 
-  /// 32
-  std::vector<std::string> unknownStrings;
-
   /// 16
   std::vector<std::string> aiNames;
+  std::vector<std::string> cityNames;
+  std::vector<std::string> personalityNames;
 
   std::vector<AiFile> aiFiles;
 
@@ -82,14 +81,12 @@ public:
   AiFile();
   virtual ~AiFile();
 
-  /// Always 0
-  uint32_t unknown1;
-
-  /// Always 0
-  uint32_t unknown2;
-
-  /// .per text
-  std::string perFile;
+  uint32_t aiFilenameSize;
+  uint32_t cityFileSize;
+  uint32_t perFileSize;
+  std::string aiFilename;
+  std::string cityFilename;
+  std::string perFilename;
 
 private:
   virtual void serializeObject(void);

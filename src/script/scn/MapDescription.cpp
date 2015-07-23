@@ -18,12 +18,14 @@
 */
 
 #include "genie/script/scn/MapDescription.h"
+#include "genie/script/ScnFile.h"
 
 namespace genie
 {
 
 MapDescription::MapDescription()
 {
+  separator_ = ScnFile::getSeparator();
   player1CameraX = 0;
   player1CameraY = 0;
   aiType = 0;
@@ -37,9 +39,11 @@ MapDescription::~MapDescription()
 
 void MapDescription::serializeObject(void)
 {
+  serialize<uint32_t>(separator_);
   serialize<int32_t>(player1CameraX);
   serialize<int32_t>(player1CameraY);
-  serialize<int32_t>(aiType);
+  if (getGameVersion() >= genie::GV_TC) // 1.21
+    serialize<int32_t>(aiType);
   serialize<uint32_t>(width);
   serialize<uint32_t>(height);
 
@@ -48,7 +52,7 @@ void MapDescription::serializeObject(void)
 
 MapTile::MapTile()
 {
-  terrainId = 0;
+  terrainID = 0;
   elevation = 0;
   unused = 0;
 }
@@ -59,7 +63,7 @@ MapTile::~MapTile()
 
 void MapTile::serializeObject(void)
 {
-  serialize<uint8_t>(terrainId);
+  serialize<uint8_t>(terrainID);
   serialize<uint8_t>(elevation);
   serialize<uint8_t>(unused);
 }

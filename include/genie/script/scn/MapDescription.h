@@ -50,6 +50,8 @@ public:
   std::vector<MapTile> tiles;
 
 private:
+  uint32_t separator_;
+
   virtual void serializeObject(void);
 };
 
@@ -59,7 +61,7 @@ public:
   MapTile();
   virtual ~MapTile();
 
-  uint8_t terrainId;
+  uint8_t terrainID;
   uint8_t elevation;
 
   /// always 0
@@ -67,7 +69,6 @@ public:
 
 private:
   virtual void serializeObject(void);
-
 };
 }
 

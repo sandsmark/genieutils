@@ -65,7 +65,7 @@ public:
   // Compressed header:
 
   /// aokts description: "Next unit ID to place" ??
-  uint32_t unknown3;
+  uint32_t nextUnitID;
 
   /// 16
   std::vector<std::string> playerNames;
