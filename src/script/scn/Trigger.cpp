@@ -33,6 +33,7 @@ Trigger::~Trigger()
 
 void Trigger::serializeObject(void)
 {
+  serialize<double>(triggerVersion);
   serialize<int8_t>(unknown);
   serializeSize<int32_t>(numTriggers_, triggers.size());
   serializeSub<TriggerSub>(triggers, numTriggers_);

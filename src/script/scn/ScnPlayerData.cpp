@@ -230,7 +230,6 @@ void ScnPlayerData3::serializeObject(void)
 {
   serialize<uint32_t>(playerCount_);
   serializeSub<ScnPlayerData3Sub>(playerData, 8);
-  serialize<double>(unknown);
 }
 
 ScnPlayerData3Sub::ScnPlayerData3Sub()

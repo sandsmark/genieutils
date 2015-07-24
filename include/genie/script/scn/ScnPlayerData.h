@@ -228,7 +228,6 @@ public:
   virtual ~ScnPlayerData3();
 
   std::vector<ScnPlayerData3Sub> playerData;
-  double unknown;
 
 private:
   uint32_t playerCount_;

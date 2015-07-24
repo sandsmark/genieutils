@@ -125,6 +125,7 @@ public:
   Trigger();
   virtual ~Trigger();
 
+  double triggerVersion;
   int8_t unknown;
   std::vector<TriggerSub> triggers;
   std::vector<int32_t> triggerDisplayOrder;
