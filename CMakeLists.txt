@@ -146,6 +146,7 @@ set(SCRIPT_SRC
     src/script/scn/ScnResource.cpp
     src/script/scn/ScnPlayerData.cpp
     src/script/scn/MapDescription.cpp
+    src/script/scn/Trigger.cpp
     )
 
 set(UTIL_SRC

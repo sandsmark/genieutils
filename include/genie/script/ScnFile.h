@@ -27,6 +27,7 @@
 
 #include "scn/ScnPlayerData.h"
 #include "scn/MapDescription.h"
+#include "scn/Trigger.h"
 
 namespace genie
 {
@@ -75,10 +76,11 @@ public:
   ScnVictory victoryConditions;
   ScnDiplomacy diplomacy;
   ScnDisables disables;
-  ScnPlayerData3 playerData3;
 
   MapDescription map;
   MapUnits units;
+  ScnPlayerData3 playerData3;
+  Trigger triggers;
 
   std::string version;
 
