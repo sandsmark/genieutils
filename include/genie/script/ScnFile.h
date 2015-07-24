@@ -70,13 +70,14 @@ public:
 
   ScnPlayerData1 playerData1;
 
-  ScnPlayerData2 playerData2;
+  PlayerResources resources;
 
   ScnVictory victoryConditions;
   ScnDiplomacy diplomacy;
   ScnDisables disables;
 
   MapDescription map;
+  MapUnits units;
 
   std::string version;
 

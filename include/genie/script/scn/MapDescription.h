@@ -63,9 +63,71 @@ public:
 
   std::vector<MapTile> tiles;
 
-private:
-  uint32_t separator_;
+  virtual void serializeObject(void);
+};
 
+class ScnUnit : public ISerializable
+{
+public:
+  ScnUnit();
+  virtual ~ScnUnit();
+
+  float positionX;
+  float positionY;
+  float positionZ;
+  uint32_t ID;
+  uint16_t unitClass;
+  uint8_t unknown2;
+  float rotation;
+  uint16_t initAnimationFrame;
+  uint32_t garrisonedInID;
+
+private:
+  virtual void serializeObject(void);
+};
+
+class ScnPlayerResources : public ISerializable
+{
+public:
+  ScnPlayerResources();
+  virtual ~ScnPlayerResources();
+
+  float food;
+  float wood;
+  float gold;
+  float stone;
+  float oreX;
+  float padding;
+  float popLimit;
+
+private:
+  virtual void serializeObject(void);
+};
+
+class ScnPlayerUnits : public ISerializable
+{
+public:
+  ScnPlayerUnits();
+  virtual ~ScnPlayerUnits();
+
+  std::vector<ScnUnit> units;
+
+private:
+  uint32_t unitCount_;
+  virtual void serializeObject(void);
+};
+
+class MapUnits : public ISerializable
+{
+public:
+  MapUnits();
+  virtual ~MapUnits();
+
+  std::vector<ScnPlayerResources> playerResources;
+  std::vector<ScnPlayerUnits> playerUnits;
+
+private:
+  uint32_t playerCount_;
   virtual void serializeObject(void);
 };
 

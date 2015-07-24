@@ -126,11 +126,11 @@ private:
   virtual void serializeObject(void);
 };
 
-class ScnPlayerData2 : public ISerializable
+class PlayerResources : public ISerializable
 {
 public:
-  ScnPlayerData2();
-  virtual ~ScnPlayerData2();
+  PlayerResources();
+  virtual ~PlayerResources();
 
   std::vector<Resources> resources;
 
@@ -156,8 +156,6 @@ public:
   uint32_t timeForTimedGame;
 
 private:
-  uint32_t separator_;
-
   virtual void serializeObject(void);
 };
 
@@ -169,11 +167,8 @@ public:
 
   std::vector<std::vector<uint32_t>> stances;
   std::vector<uint32_t> unused;
-  std::vector<uint32_t> alliedVictory;
 
 private:
-  uint32_t separator_;
-
   virtual void serializeObject(void);
 };
 
@@ -183,6 +178,7 @@ public:
   ScnDisables();
   virtual ~ScnDisables();
 
+  std::vector<uint32_t> alliedVictory;
   std::vector<uint32_t> numDisabledTechs;
   std::vector<std::vector<uint32_t>> disabledTechs;
   std::vector<uint32_t> numDisabledUnits;

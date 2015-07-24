@@ -1,4 +1,5 @@
 AOK Scenario (SCN/SCX) format, by DiGiT
+This format is missing many new finds.
 Tab-size: 4
 
 === Introduction ===

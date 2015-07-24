@@ -25,7 +25,6 @@ namespace genie
 
 MapDescription::MapDescription()
 {
-  separator_ = ScnFile::getSeparator();
   player1CameraX = 0;
   player1CameraY = 0;
   aiType = 0;
@@ -39,7 +38,6 @@ MapDescription::~MapDescription()
 
 void MapDescription::serializeObject(void)
 {
-  serialize<uint32_t>(separator_);
   serialize<int32_t>(player1CameraX);
   serialize<int32_t>(player1CameraY);
   if (getGameVersion() >= genie::GV_TC) // 1.21
@@ -66,6 +64,77 @@ void MapTile::serializeObject(void)
   serialize<uint8_t>(terrainID);
   serialize<uint8_t>(elevation);
   serialize<uint8_t>(unused);
+}
+
+ScnPlayerResources::ScnPlayerResources()
+{
+}
+
+ScnPlayerResources::~ScnPlayerResources()
+{
+}
+
+void ScnPlayerResources::serializeObject(void)
+{
+  serialize<float>(food);
+  serialize<float>(wood);
+  serialize<float>(gold);
+  serialize<float>(stone);
+  serialize<float>(oreX);
+  if (getGameVersion() < genie::GV_SWGB)
+    serialize<float>(padding);
+  if (getGameVersion() >= genie::GV_TC) // 1.21
+    serialize<float>(popLimit);
+}
+
+ScnUnit::ScnUnit()
+{
+}
+
+ScnUnit::~ScnUnit()
+{
+}
+
+void ScnUnit::serializeObject(void)
+{
+  serialize<float>(positionX);
+  serialize<float>(positionY);
+  serialize<float>(positionZ);
+  serialize<uint32_t>(ID);
+  serialize<uint16_t>(unitClass);
+  serialize<uint8_t>(unknown2);
+  serialize<float>(rotation);
+  serialize<uint16_t>(initAnimationFrame);
+  serialize<uint32_t>(garrisonedInID);
+}
+
+ScnPlayerUnits::ScnPlayerUnits()
+{
+}
+
+ScnPlayerUnits::~ScnPlayerUnits()
+{
+}
+
+void ScnPlayerUnits::serializeObject(void)
+{
+  serializeSize<uint32_t>(unitCount_, units.size());
+  serializeSub<ScnUnit>(units, unitCount_);
+}
+
+MapUnits::MapUnits()
+{
+}
+
+MapUnits::~MapUnits()
+{
+}
+
+void MapUnits::serializeObject(void)
+{
+  serializeSize<uint32_t>(playerCount_, playerUnits.size());
+  serializeSub<ScnPlayerResources>(playerResources, 8);
+  serializeSub<ScnPlayerUnits>(playerUnits, playerCount_);
 }
 
 }

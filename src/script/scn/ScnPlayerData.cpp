@@ -92,7 +92,19 @@ void UnknownData1::serializeObject(void)
   serialize<uint16_t>(unknown2);
   serialize<float>(unknown3);
 
-  // Lots of data if count it over 0
+  /*/ 48 bytes? Lots of data if count is over 0
+  ReadData((HANDLE)_hScenFile, hUnknown, 4u);
+  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 4, 1u);
+  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 6, 2u);
+  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 8, 1u);
+  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 12, 4u);
+  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 16, 4u);
+  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 20, 4u);
+  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 24, 2u);
+  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 32, 2u);
+  ReadData((HANDLE)_hScenFile, &hScenFile, 2u);
+  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 40, 2u);
+  ReadData((HANDLE)_hScenFile, &v15, 2u);*/
 }
 
 AiFile::AiFile()
@@ -116,15 +128,15 @@ void AiFile::serializeObject(void)
     serialize<std::string>(perFilename, perFileSize);
 }
 
-ScnPlayerData2::ScnPlayerData2()
+PlayerResources::PlayerResources()
 {
 }
 
-ScnPlayerData2::~ScnPlayerData2()
+PlayerResources::~PlayerResources()
 {
 }
 
-void ScnPlayerData2::serializeObject(void)
+void PlayerResources::serializeObject(void)
 {
   serializeSub(resources, 16);
 }
@@ -149,7 +161,6 @@ void Resources::serializeObject(void)
 
 ScnVictory::ScnVictory()
 {
-  separator_ = ScnFile::getSeparator();
 }
 
 ScnVictory::~ScnVictory()
@@ -158,7 +169,6 @@ ScnVictory::~ScnVictory()
 
 void ScnVictory::serializeObject(void)
 {
-  serialize<uint32_t>(separator_);
   serialize<uint32_t>(conquestRequired);
   serialize<uint32_t>(unused1);
   serialize<uint32_t>(numRelicsRequired);
@@ -173,7 +183,6 @@ void ScnVictory::serializeObject(void)
 
 ScnDiplomacy::ScnDiplomacy()
 {
-  separator_ = ScnFile::getSeparator();
 }
 
 ScnDiplomacy::~ScnDiplomacy()
@@ -184,8 +193,6 @@ void ScnDiplomacy::serializeObject(void) // 12612 bytes
 {
   serialize<uint32_t>(stances, 16, 16); // 1024 bytes
   serialize<uint32_t>(unused, 2880); // 11520 bytes
-  serialize<uint32_t>(separator_); // 4 bytes
-  serialize<uint32_t>(alliedVictory, 16); // 64 bytes
 }
 
 ScnDisables::ScnDisables()
@@ -198,6 +205,7 @@ ScnDisables::~ScnDisables()
 
 void ScnDisables::serializeObject(void) // 5388 : 9868 bytes
 {
+  serialize<uint32_t>(alliedVictory, 16); // 64 bytes
   serialize<uint32_t>(numDisabledTechs, 16); // 64 bytes
   serialize<uint32_t>(disabledTechs, 16, getGameVersion() < genie::GV_SWGB ? 30 : 60); // 1920 : 3840 bytes
   serialize<uint32_t>(numDisabledUnits, 16); // 64 bytes

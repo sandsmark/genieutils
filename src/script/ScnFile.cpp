@@ -93,34 +93,25 @@ void ScnFile::serializeObject(void)
   compressor_.beginCompression();
   std::cout << "Start compression: " << tellg() << std::endl;
 
-  // Compressed header:
+// Compressed header:
 
   serialize<uint32_t>(nextUnitID);
   serializeVersion2();
 
   serialize<ISerializable>(playerData1);
+  serialize<uint32_t>(separator_); // > 1.02
+
+  serialize<ISerializable>(resources);
 
   serialize<uint32_t>(separator_);
-
-  serialize<ISerializable>(playerData2);
-
   serialize<ISerializable>(victoryConditions);
   serialize<ISerializable>(diplomacy);
+  serialize<uint32_t>(separator_);
   serialize<ISerializable>(disables);
 
-  /*uint32_t *victoryConditions = 0; // TODO diplomacy
-  serialize<uint32_t>(&victoryConditions, 11);
-  delete [] victoryConditions;
-
-  char *diplomacy = 0;
-  serialize<char>(&diplomacy, 12608);
-  delete [] diplomacy;
-
-  char *disables = 0;
-  serialize<char>(&disables, 5388);
-  delete [] disables;*/
-
+  serialize<uint32_t>(separator_);
   serialize<ISerializable>(map);
+  serialize<ISerializable>(units);
 
   compressor_.endCompression();
 }
