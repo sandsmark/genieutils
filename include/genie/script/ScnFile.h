@@ -75,6 +75,7 @@ public:
   ScnVictory victoryConditions;
   ScnDiplomacy diplomacy;
   ScnDisables disables;
+  ScnPlayerData3 playerData3;
 
   MapDescription map;
   MapUnits units;

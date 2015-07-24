@@ -112,6 +112,7 @@ void ScnFile::serializeObject(void)
   serialize<uint32_t>(separator_);
   serialize<ISerializable>(map);
   serialize<ISerializable>(units);
+  serialize<ISerializable>(playerData3);
 
   compressor_.endCompression();
 }

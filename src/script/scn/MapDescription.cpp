@@ -101,7 +101,7 @@ void ScnUnit::serializeObject(void)
   serialize<float>(positionY);
   serialize<float>(positionZ);
   serialize<uint32_t>(ID);
-  serialize<uint16_t>(unitClass);
+  serialize<uint16_t>(unitID);
   serialize<uint8_t>(unknown2);
   serialize<float>(rotation);
   serialize<uint16_t>(initAnimationFrame);

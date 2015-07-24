@@ -218,4 +218,47 @@ void ScnDisables::serializeObject(void) // 5388 : 9868 bytes
   serialize<uint32_t>(startingAge, 16); // 64 bytes
 }
 
+ScnPlayerData3::ScnPlayerData3()
+{
+}
+
+ScnPlayerData3::~ScnPlayerData3()
+{
+}
+
+void ScnPlayerData3::serializeObject(void)
+{
+  serialize<uint32_t>(playerCount_);
+  serializeSub<ScnPlayerData3Sub>(playerData, 8);
+  serialize<double>(unknown);
+}
+
+ScnPlayerData3Sub::ScnPlayerData3Sub()
+{
+}
+
+ScnPlayerData3Sub::~ScnPlayerData3Sub()
+{
+}
+
+void ScnPlayerData3Sub::serializeObject(void)
+{
+  serializeSizedString<uint16_t>(playerName);
+  serialize<float>(initCameraX);
+  serialize<float>(initCameraY);
+  serialize<int16_t>(initCameraX2);
+  serialize<int16_t>(initCameraY2);
+  serialize<uint8_t>(alliedVictory);
+  serializeSize<uint16_t>(playerCount_, diplomacy1.size());
+  serialize<uint8_t>(diplomacy1, playerCount_);
+  serialize<uint32_t>(diplomacy2, playerCount_);
+  serialize<uint32_t>(playerColor);
+  serialize<float>(unknown1);
+  serializeSize<uint16_t>(unknownCount_, unknown3.size() / 44);
+  serialize<uint8_t>(unknown2, 8);
+  serialize<uint8_t>(unknown3, unknownCount_ * 44);
+  serialize<uint8_t>(unknown4, 7);
+  serialize<int32_t>(unknown5);
+}
+
 }

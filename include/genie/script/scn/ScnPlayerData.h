@@ -194,6 +194,47 @@ private:
   virtual void serializeObject(void);
 };
 
+class ScnPlayerData3Sub : public ISerializable
+{
+public:
+  ScnPlayerData3Sub();
+  virtual ~ScnPlayerData3Sub();
+
+  std::string playerName;
+  float initCameraX;
+  float initCameraY;
+  int16_t initCameraX2;
+  int16_t initCameraY2;
+  uint8_t alliedVictory;
+  std::vector<uint8_t> diplomacy1;
+  std::vector<uint32_t> diplomacy2;
+  uint32_t playerColor;
+  float unknown1;
+  std::vector<uint8_t> unknown2;
+  std::vector<uint8_t> unknown3;// found in Grand Theft Empires
+  std::vector<uint8_t> unknown4;
+  int32_t unknown5;
+
+private:
+  uint16_t playerCount_;
+  uint16_t unknownCount_;
+  virtual void serializeObject(void);
+};
+
+class ScnPlayerData3 : public ISerializable
+{
+public:
+  ScnPlayerData3();
+  virtual ~ScnPlayerData3();
+
+  std::vector<ScnPlayerData3Sub> playerData;
+  double unknown;
+
+private:
+  uint32_t playerCount_;
+  virtual void serializeObject(void);
+};
+
 }
 
 #endif // GENIE_SCN_PLAYER_DATA_H

@@ -76,7 +76,7 @@ public:
   float positionY;
   float positionZ;
   uint32_t ID;
-  uint16_t unitClass;
+  uint16_t unitID;
   uint8_t unknown2;
   float rotation;
   uint16_t initAnimationFrame;
