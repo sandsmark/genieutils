@@ -37,7 +37,22 @@ public:
   TriggerCondition();
   virtual ~TriggerCondition();
 
-  
+  int32_t type;
+  int32_t check; //always = 0x10 (for internal use)
+  int32_t amount; //of objects, difficult level
+  int32_t resource; //resource type (see constants below)
+  int32_t unitObject;
+  int32_t unitLocation;
+  int32_t unitType;
+  int32_t player;
+  int32_t technology;
+  int32_t timer;
+  int32_t unknown;
+  MapPoint areaLL;
+  MapPoint areaUR;
+  int32_t unitGroup;
+  int32_t unitClass; //Civilian, Military, Building, Other
+  int32_t aiSignal;
 
 private:
   virtual void serializeObject(void);
@@ -49,9 +64,33 @@ public:
   TriggerEffect();
   virtual ~TriggerEffect();
 
-  
+  int32_t type;
+  int32_t check;
+  int32_t aiGoal;
+  int32_t amount;
+  int32_t resource;
+  int32_t diplomacy;
+  int32_t locationUnit;
+  int32_t unitType;
+  int32_t playerSource;
+  int32_t playerTarget;
+  int32_t technology;
+  int32_t stringID;
+  int32_t unknown;
+  int32_t displayTime;
+  int32_t triggerID;
+  MapPoint location;
+  MapPoint areaLL; //lower-left corner of area
+  MapPoint areaUR; //upper-right corner
+  int32_t unitGroup;
+  int32_t unitClass; //Civilian, Military, Building, Other
+  int32_t instructionPanel;
+  std::string text;	//Instructions/Chat
+  std::string soundFile;
+  std::vector<int32_t> selectedUnits;
 
 private:
+  int32_t numSelected_;
   virtual void serializeObject(void);
 };
 

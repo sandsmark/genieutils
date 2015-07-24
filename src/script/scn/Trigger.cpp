@@ -65,18 +65,6 @@ void TriggerSub::serializeObject(void)
   serialize<int32_t>(conditionDisplayOrder, numConditions_);
 }
 
-TriggerEffect::TriggerEffect()
-{
-}
-
-TriggerEffect::~TriggerEffect()
-{
-}
-
-void TriggerEffect::serializeObject(void)
-{
-}
-
 TriggerCondition::TriggerCondition()
 {
 }
@@ -87,6 +75,64 @@ TriggerCondition::~TriggerCondition()
 
 void TriggerCondition::serializeObject(void)
 {
+  serialize<int32_t>(type);
+  serialize<int32_t>(check);
+  serialize<int32_t>(amount);
+  serialize<int32_t>(resource);
+  serialize<int32_t>(unitObject);
+  serialize<int32_t>(unitLocation);
+  serialize<int32_t>(unitType);
+  serialize<int32_t>(player);
+  serialize<int32_t>(technology);
+  serialize<int32_t>(timer);
+  serialize<int32_t>(unknown);
+  serialize<int32_t>(areaLL.x);
+  serialize<int32_t>(areaLL.y);
+  serialize<int32_t>(areaUR.x);
+  serialize<int32_t>(areaUR.y);
+  serialize<int32_t>(unitGroup);
+  serialize<int32_t>(unitClass);
+  serialize<int32_t>(aiSignal);
+}
+
+TriggerEffect::TriggerEffect()
+{
+}
+
+TriggerEffect::~TriggerEffect()
+{
+}
+
+void TriggerEffect::serializeObject(void)
+{
+  serialize<int32_t>(type);
+  serialize<int32_t>(check);
+  serialize<int32_t>(aiGoal);
+  serialize<int32_t>(amount);
+  serialize<int32_t>(resource);
+  serialize<int32_t>(diplomacy);
+  serializeSize<int32_t>(numSelected_, selectedUnits.size());
+  serialize<int32_t>(locationUnit);
+  serialize<int32_t>(unitType);
+  serialize<int32_t>(playerSource);
+  serialize<int32_t>(playerTarget);
+  serialize<int32_t>(technology);
+  serialize<int32_t>(stringID);
+  serialize<int32_t>(unknown);
+  serialize<int32_t>(displayTime);
+  serialize<int32_t>(triggerID);
+  serialize<int32_t>(location.x);
+  serialize<int32_t>(location.y);
+  serialize<int32_t>(areaLL.x);
+  serialize<int32_t>(areaLL.y);
+  serialize<int32_t>(areaUR.x);
+  serialize<int32_t>(areaUR.y);
+  serialize<int32_t>(unitGroup);
+  serialize<int32_t>(unitClass);
+  serialize<int32_t>(instructionPanel);
+  serializeSizedString<uint32_t>(text);
+  serializeSizedString<uint32_t>(soundFile);
+  serialize<int32_t>(selectedUnits, numSelected_);
 }
 
 }
