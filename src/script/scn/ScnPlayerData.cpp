@@ -23,6 +23,8 @@
 namespace genie
 {
 
+bool CombinedResources::playerInfo = false;
+
 ScnPlayerData1::ScnPlayerData1()
 {
   playerNames.resize(16);
@@ -34,12 +36,14 @@ ScnPlayerData1::~ScnPlayerData1()
 
 void ScnPlayerData1::serializeObject(void)
 {
+  serializePlayerDataVersion();
   if (getGameVersion() >= genie::GV_AoK)
   {
     for (unsigned int i=0; i<16; ++i)
-      serialize<std::string>(playerNames[i], 256); // 1.14 <-- this is read much later in AoE 1, expand this class to cover it
+      serialize<std::string>(playerNames[i], 256); // 1.14 <-- this is read much later in AoE 1
     serialize<uint32_t>(playerNamesStringTable, 16); // 1.16
-    serializeSub<ScnPlayerInfo>(playerInfo, 16); // 1.14
+    CombinedResources::playerInfo = true;
+    serializeSub<CombinedResources>(resourcesPlusPlayerInfo, 16); // 1.14
   }
   if (getGameVersion() >= genie::GV_AoE) // 1.07
     serialize<uint8_t>(conquestVictory);
@@ -53,27 +57,75 @@ void ScnPlayerData1::serializeObject(void)
   serializeSizedStrings<uint16_t>(cityNames, 16);
   if (getGameVersion() >= genie::GV_AoE) // 1.08
     serializeSizedStrings<uint16_t>(personalityNames, 16);
-
   serializeSub(aiFiles, 16);
-
   if (getGameVersion() >= genie::GV_TC) // 1.2
     serialize<uint8_t>(aiTypes, 16);
+  serialize<uint32_t>(separator_); // > 1.02
+
+  if (getGameVersion() < genie::GV_AoK) // 1.14
+  {
+    for (unsigned int i=0; i<16; ++i)
+      serialize<std::string>(playerNames[i], 256);
+    serializeSub<CombinedResources>(resourcesPlusPlayerInfo, 16);
+  }
+  else
+  {
+    CombinedResources::playerInfo = false;
+    serializeSub<CombinedResources>(resourcesPlusPlayerInfo, 16);
+  }
+  serialize<uint32_t>(separator_); // > 1.02
+  serialize<ISerializable>(victoryConditions);
+  serialize<ISerializable>(diplomacy);
+  serialize<uint32_t>(separator_); // > 1.02
+  serialize<uint32_t>(alliedVictory, 16); // 16*16*4 in 1.01
+  if (getGameVersion() >= genie::GV_AoE) // 1.04
+  {
+    serialize<ISerializable>(disables);
+    if (getGameVersion() >= genie::GV_AoE) // 1.05
+    {
+      serialize<uint32_t>(unused1);
+      if (getGameVersion() >= genie::GV_AoK) // 1.12
+      {
+        serialize<uint32_t>(unused2);
+        serialize<uint32_t>(allTechs);
+      }
+      if (getGameVersion() >= genie::GV_AoE) // 1.06
+        serialize<uint32_t>(startingAge, 16);
+    }
+  }
+  serialize<uint32_t>(separator_); // > 1.02
 }
 
-ScnPlayerInfo::ScnPlayerInfo()
+CombinedResources::CombinedResources()
 {
 }
 
-ScnPlayerInfo::~ScnPlayerInfo()
+CombinedResources::~CombinedResources()
 {
 }
 
-void ScnPlayerInfo::serializeObject(void)
+void CombinedResources::serializeObject(void)
 {
-  serialize<uint32_t>(active);
-  serialize<uint32_t>(human);
-  serialize<uint32_t>(civilizationID);
-  serialize<uint32_t>(unknown1);
+  if (playerInfo || getGameVersion() < genie::GV_AoK) // 1.14
+    serialize<uint32_t>(state);
+  if (!playerInfo || getGameVersion() < genie::GV_AoK) // 1.14
+  {
+    serialize<uint32_t>(gold);
+    serialize<uint32_t>(wood);
+    serialize<uint32_t>(food);
+    serialize<uint32_t>(stone);
+  }
+  if (playerInfo || getGameVersion() < genie::GV_AoK) // 1.14
+  {
+    serialize<uint32_t>(type);
+    serialize<uint32_t>(civilizationID);
+    serialize<uint32_t>(unknown1);
+  }
+  if (!playerInfo && getGameVersion() >= genie::GV_AoK) // 1.17
+  {
+    serialize<uint32_t>(ore);
+    serialize<uint32_t>(goods);
+  }
 }
 
 UnknownData1::UnknownData1()
@@ -127,50 +179,6 @@ void AiFile::serializeObject(void)
     serialize<std::string>(perFilename, perFileSize);
 }
 
-PlayerResources::PlayerResources()
-{
-}
-
-PlayerResources::~PlayerResources()
-{
-}
-
-void PlayerResources::serializeObject(void)
-{
-  serializeSub(resources, 16);
-}
-
-Resources::Resources()
-{
-}
-
-Resources::~Resources()
-{
-}
-
-void Resources::serializeObject(void)
-{
-/*/ <= 1.13 has very different variables here
-ReadFileC((HANDLE)_hScenFile, (LPVOID)(hPlayerSettings + 128), 4u);// State
-ReadFileC((HANDLE)_hScenFile, (LPVOID)(hPlayerResources - 4), 4u);// Gold
-ReadFileC((HANDLE)_hScenFile, (LPVOID)hPlayerResources, 4u);// Wood
-ReadFileC((HANDLE)_hScenFile, (LPVOID)(hPlayerResources + 4), 4u);// Food
-ReadFileC((HANDLE)_hScenFile, (LPVOID)(hPlayerResources + 8), 4u);// Stone
-ReadFileC((HANDLE)_hScenFile, (LPVOID)hPlayerSettings, 4u);// Type
-ReadFileC((HANDLE)_hScenFile, (LPVOID)(hPlayerSettings + 64), 4u);// Civilization
-ReadFileC((HANDLE)_hScenFile, (LPVOID)(hPlayerSettings - 64), 4u);// Unknown1
-*/
-  serialize<uint32_t>(gold);
-  serialize<uint32_t>(wood);
-  serialize<uint32_t>(food);
-  serialize<uint32_t>(stone);
-  if (getGameVersion() >= genie::GV_AoK) // 1.17
-  {
-    serialize<uint32_t>(ore);
-    serialize<uint32_t>(goods);
-  }
-}
-
 ScnVictory::ScnVictory()
 {
 }
@@ -181,16 +189,21 @@ ScnVictory::~ScnVictory()
 
 void ScnVictory::serializeObject(void)
 {
-  serialize<uint32_t>(conquestRequired);
-  serialize<uint32_t>(unused1);
-  serialize<uint32_t>(numRelicsRequired);
-  serialize<uint32_t>(unused2);
-  serialize<uint32_t>(exploredPerCentRequired);
-  serialize<uint32_t>(unused3);
-  serialize<uint32_t>(allCustomConditionsRequired);
-  serialize<uint32_t>(victoryMode);
-  serialize<uint32_t>(scoreRequired);
-  serialize<uint32_t>(timeForTimedGame);
+  {
+    serialize<uint32_t>(conquestRequired);
+    serialize<uint32_t>(unused1);
+    serialize<uint32_t>(numRelicsRequired);
+    serialize<uint32_t>(unused2);
+    serialize<uint32_t>(exploredPerCentRequired);
+    serialize<uint32_t>(unused3);
+  }
+  serialize<uint32_t>(allConditionsRequired);
+  if (getGameVersion() >= genie::GV_AoK) // 1.14
+  {
+    serialize<uint32_t>(victoryMode);
+    serialize<uint32_t>(scoreRequired);
+    serialize<uint32_t>(timeForTimedGame);
+  }
 }
 
 ScnDiplomacy::ScnDiplomacy()
@@ -201,10 +214,10 @@ ScnDiplomacy::~ScnDiplomacy()
 {
 }
 
-void ScnDiplomacy::serializeObject(void) // 12612 bytes
+void ScnDiplomacy::serializeObject(void)
 {
-  serialize<uint32_t>(stances, 16, 16); // 1024 bytes
-  serialize<uint32_t>(unused, 2880); // 11520 bytes
+  serialize<uint32_t>(stances, 16, 16); // Diplomacy (16*16*4)
+  serialize<uint32_t>(individualVictory, 16, 180); // Individual Victory (12*60)
 }
 
 ScnDisables::ScnDisables()
@@ -215,19 +228,18 @@ ScnDisables::~ScnDisables()
 {
 }
 
-void ScnDisables::serializeObject(void) // 5388 : 9868 bytes
+void ScnDisables::serializeObject(void)
 {
-  serialize<uint32_t>(alliedVictory, 16); // 64 bytes
-  serialize<uint32_t>(numDisabledTechs, 16); // 64 bytes
-  serialize<uint32_t>(disabledTechs, 16, getGameVersion() < genie::GV_SWGB ? 30 : 60); // 1920 : 3840 bytes
-  serialize<uint32_t>(numDisabledUnits, 16); // 64 bytes
-  serialize<uint32_t>(disabledUnits, 16, getGameVersion() < genie::GV_SWGB ? 30 : 60); // 1920 : 3840 bytes
-  serialize<uint32_t>(numDisabledBuildings, 16); // 64 bytes
-  serialize<uint32_t>(disabledBuildings, 16, getGameVersion() < genie::GV_SWGB ? 20 : 60); // 1280 : 3840 bytes
-  serialize<uint32_t>(unused1); // 4 bytes
-  serialize<uint32_t>(unused2); // 4 bytes
-  serialize<uint32_t>(allTechs); // 4 bytes
-  serialize<uint32_t>(startingAge, 16); // 64 bytes
+  if (getGameVersion() >= genie::GV_AoK) // 1.18
+    serialize<uint32_t>(numDisabledTechs, 16);
+  serialize<uint32_t>(disabledTechs, 16, getGameVersion() < genie::GV_AoK /*>1.03*/ ? 20 : getGameVersion() < genie::GV_SWGB ? 30 : 60);
+  if (getGameVersion() >= genie::GV_AoK) // 1.18
+  {
+    serialize<uint32_t>(numDisabledUnits, 16);
+    serialize<uint32_t>(disabledUnits, 16, getGameVersion() < genie::GV_SWGB ? 30 : 60);
+    serialize<uint32_t>(numDisabledBuildings, 16);
+    serialize<uint32_t>(disabledBuildings, 16, getGameVersion() < genie::GV_SWGB ? 20 : 60);
+  }
 }
 
 ScnPlayerData3::ScnPlayerData3()

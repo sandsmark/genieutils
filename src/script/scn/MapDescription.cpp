@@ -38,10 +38,14 @@ MapDescription::~MapDescription()
 
 void MapDescription::serializeObject(void)
 {
-  serialize<int32_t>(player1CameraX);
-  serialize<int32_t>(player1CameraY);
-  if (getGameVersion() >= genie::GV_TC) // 1.21
-    serialize<int32_t>(aiType);
+  if (getGameVersion() >= genie::GV_TC) // 1.19
+  {
+    serialize<int32_t>(player1CameraX);
+    serialize<int32_t>(player1CameraY);
+    if (getGameVersion() >= genie::GV_TC) // 1.21
+      serialize<int32_t>(aiType);
+  }
+  // <- here actually switches the reading function in exe
   serialize<uint32_t>(width);
   serialize<uint32_t>(height);
 

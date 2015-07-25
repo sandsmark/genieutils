@@ -82,10 +82,10 @@ void ScnFile::serializeObject(void)
   serializeVersion();
   serialize<uint32_t>(headerLength_); // Used in AoE 1 lobby
   {
-    serialize<int32_t>(unknown1);
+    serialize<int32_t>(saveType);
     serialize<uint32_t>(lastSaveTime);
     serializeSizedString<uint32_t>(scenarioInstructions);
-    serialize<uint32_t>(unknown2);
+    serialize<uint32_t>(victoryType);
     serialize<uint32_t>(playerCount);
   }
 
@@ -96,24 +96,13 @@ void ScnFile::serializeObject(void)
 // Compressed header:
 
   serialize<uint32_t>(nextUnitID);
-  serializePlayerDataVersion();
 
   serialize<ISerializable>(playerData1);
-  serialize<uint32_t>(separator_); // > 1.02
 
-  serialize<ISerializable>(resources);
-
-  serialize<uint32_t>(separator_);
-  serialize<ISerializable>(victoryConditions);
-  serialize<ISerializable>(diplomacy);
-  serialize<uint32_t>(separator_);
-  serialize<ISerializable>(disables);
-
-  serialize<uint32_t>(separator_);
   serialize<ISerializable>(map);
   serialize<ISerializable>(units);
   serialize<ISerializable>(playerData3);
-  serialize<ISerializable>(triggers);
+  //serialize<ISerializable>(triggers);
 
   compressor_.endCompression();
 }
@@ -195,7 +184,7 @@ void ScnFile::serializeVersion(void)
 }
 
 //------------------------------------------------------------------------------
-void ScnFile::serializePlayerDataVersion(void)
+void ScnPlayerData1::serializePlayerDataVersion(void)
 {
   if (isOperation(OP_WRITE))
   {

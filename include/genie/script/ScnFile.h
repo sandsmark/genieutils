@@ -51,14 +51,14 @@ public:
 
   // Uncompressed Header:
 
-  int32_t unknown1;
+  int32_t saveType;
 
   /// Timestamp of last save
   uint32_t lastSaveTime;
 
   std::string scenarioInstructions;
 
-  uint32_t unknown2;
+  uint32_t victoryType;
 
   uint32_t playerCount;
 
@@ -67,15 +67,7 @@ public:
   /// aokts description: "Next unit ID to place" ??
   uint32_t nextUnitID;
 
-  float playerDataVersion;
-
   ScnPlayerData1 playerData1;
-
-  PlayerResources resources;
-
-  ScnVictory victoryConditions;
-  ScnDiplomacy diplomacy;
-  ScnDisables disables;
 
   MapDescription map;
   MapUnits units;
@@ -86,14 +78,12 @@ public:
 
 private:
   uint32_t headerLength_; //starting after this
-  uint32_t separator_;
 
   Compressor compressor_;
 
   virtual void serializeObject(void);
 
   void serializeVersion(void);
-  void serializePlayerDataVersion(void);
 };
 
 }

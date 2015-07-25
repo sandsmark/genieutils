@@ -28,23 +28,25 @@
 namespace genie
 {
 
-class ScnPlayerInfo : public ISerializable
+class CombinedResources : public ISerializable
 {
 public:
-  ScnPlayerInfo();
-  virtual ~ScnPlayerInfo();
+  CombinedResources();
+  virtual ~CombinedResources();
 
-  /// boolean
-  uint32_t active;
-
-  /// boolean
-  uint32_t human;
-
+  uint32_t state;
+  uint32_t type;
   uint32_t civilizationID;
-
-  /// constant = 4 ??
   uint32_t unknown1;
 
+  uint32_t gold;
+  uint32_t wood;
+  uint32_t food;
+  uint32_t stone;
+  uint32_t ore;
+  uint32_t goods;
+
+  static bool playerInfo;
 private:
   virtual void serializeObject(void);
 };
@@ -81,63 +83,6 @@ private:
 
 };
 
-class ScnPlayerData1 : public ISerializable
-{
-public:
-  ScnPlayerData1();
-  virtual ~ScnPlayerData1();
-
-  std::vector<std::string> playerNames;
-  std::vector<uint32_t> playerNamesStringTable;
-  std::vector<ScnPlayerInfo> playerInfo;
-  uint8_t conquestVictory;
-  UnknownData1 unknownData;
-  std::string originalFileName;
-  ScnMessagesCinematics messagesCinematics;
-
-  std::vector<std::string> aiNames;
-  std::vector<std::string> cityNames;
-  std::vector<std::string> personalityNames;
-  std::vector<AiFile> aiFiles;
-  std::vector<uint8_t> aiTypes;
-
-private:
-  virtual void serializeObject(void);
-};
-
-class Resources : public ISerializable
-{
-public:
-  Resources();
-  virtual ~Resources();
-
-  uint32_t gold;
-  uint32_t wood;
-  uint32_t food;
-  uint32_t stone;
-
-  /// ?
-  uint32_t ore;
-
-  /// always 0
-  uint32_t goods;
-
-private:
-  virtual void serializeObject(void);
-};
-
-class PlayerResources : public ISerializable
-{
-public:
-  PlayerResources();
-  virtual ~PlayerResources();
-
-  std::vector<Resources> resources;
-
-private:
-  virtual void serializeObject(void);
-};
-
 class ScnVictory : public ISerializable
 {
 public:
@@ -150,7 +95,7 @@ public:
   uint32_t unused2;
   uint32_t exploredPerCentRequired;
   uint32_t unused3;
-  uint32_t allCustomConditionsRequired;
+  uint32_t allConditionsRequired;
   uint32_t victoryMode;
   uint32_t scoreRequired;
   uint32_t timeForTimedGame;
@@ -166,7 +111,7 @@ public:
   virtual ~ScnDiplomacy();
 
   std::vector<std::vector<uint32_t>> stances;
-  std::vector<uint32_t> unused;
+  std::vector<std::vector<uint32_t>> individualVictory;
 
 private:
   virtual void serializeObject(void);
@@ -178,19 +123,52 @@ public:
   ScnDisables();
   virtual ~ScnDisables();
 
-  std::vector<uint32_t> alliedVictory;
   std::vector<uint32_t> numDisabledTechs;
   std::vector<std::vector<uint32_t>> disabledTechs;
   std::vector<uint32_t> numDisabledUnits;
   std::vector<std::vector<uint32_t>> disabledUnits;
   std::vector<uint32_t> numDisabledBuildings;
   std::vector<std::vector<uint32_t>> disabledBuildings;
+
+private:
+  virtual void serializeObject(void);
+};
+
+class ScnPlayerData1 : public ISerializable
+{
+public:
+  ScnPlayerData1();
+  virtual ~ScnPlayerData1();
+
+  float playerDataVersion;
+  static float version;
+  std::vector<std::string> playerNames;
+  std::vector<uint32_t> playerNamesStringTable;
+  uint8_t conquestVictory;
+  UnknownData1 unknownData;
+  std::string originalFileName;
+  ScnMessagesCinematics messagesCinematics;
+
+  std::vector<std::string> aiNames;
+  std::vector<std::string> cityNames;
+  std::vector<std::string> personalityNames;
+  std::vector<AiFile> aiFiles;
+  std::vector<uint8_t> aiTypes;
+
+  std::vector<CombinedResources> resourcesPlusPlayerInfo;
+
+  ScnVictory victoryConditions;
+  ScnDiplomacy diplomacy;
+  std::vector<uint32_t> alliedVictory;
+  ScnDisables disables;
   uint32_t unused1;
   uint32_t unused2;
   uint32_t allTechs;
   std::vector<uint32_t> startingAge;
 
 private:
+  uint32_t separator_;
+  void serializePlayerDataVersion(void);
   virtual void serializeObject(void);
 };
 
