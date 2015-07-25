@@ -25,6 +25,7 @@ namespace genie
 
 ScnPlayerData1::ScnPlayerData1()
 {
+  playerNames.resize(16);
 }
 
 ScnPlayerData1::~ScnPlayerData1()
@@ -33,24 +34,20 @@ ScnPlayerData1::~ScnPlayerData1()
 
 void ScnPlayerData1::serializeObject(void)
 {
-  if (isOperation(OP_READ))
+  if (getGameVersion() >= genie::GV_AoK)
   {
-    playerNames.resize(16);
-    for (uint8_t i=0; i<16; i++)
-      playerNames[i] = readString(256);
+    for (unsigned int i=0; i<16; ++i)
+      serialize<std::string>(playerNames[i], 256); // 1.14 <-- this is read much later in AoE 1, expand this class to cover it
+    serialize<uint32_t>(playerNamesStringTable, 16); // 1.16
+    serializeSub<ScnPlayerInfo>(playerInfo, 16); // 1.14
   }
-  else if (isOperation(OP_WRITE))
-    for (uint8_t i=0; i<16; i++)
-      writeString(playerNames[i], 256);
-  if (getGameVersion() >= genie::GV_AoK) // 1.16
-    serialize<uint32_t>(playerNamesStringTable, 16);
-  serializeSub<ScnPlayerInfo>(playerInfo, 16);
-  serialize<uint8_t>(conquestVictory);
+  if (getGameVersion() >= genie::GV_AoE) // 1.07
+    serialize<uint8_t>(conquestVictory);
   serialize<ISerializable>(unknownData);
   serializeSizedString<uint16_t>(originalFileName);
 
   // Messages and cinematics
-  serialize<ISerializable>(messagesCinematics);
+  serialize<ISerializable>(messagesCinematics); // should be 100 % done for 1.13+
 
   serializeSizedStrings<uint16_t>(aiNames, 16);
   serializeSizedStrings<uint16_t>(cityNames, 16);
@@ -59,7 +56,8 @@ void ScnPlayerData1::serializeObject(void)
 
   serializeSub(aiFiles, 16);
 
-  serialize<uint8_t>(aiTypes, 16);
+  if (getGameVersion() >= genie::GV_TC) // 1.2
+    serialize<uint8_t>(aiTypes, 16);
 }
 
 ScnPlayerInfo::ScnPlayerInfo()
@@ -122,6 +120,7 @@ void AiFile::serializeObject(void)
   if (getGameVersion() >= genie::GV_AoE) // 1.08
     serializeSize<uint32_t>(perFileSize, perFilename, true);
 
+  // crap in exe, says these are >= 1.15
   serialize<std::string>(aiFilename, aiFilenameSize);
   serialize<std::string>(cityFilename, cityFileSize);
   if (getGameVersion() >= genie::GV_AoE) // 1.08
@@ -151,12 +150,25 @@ Resources::~Resources()
 
 void Resources::serializeObject(void)
 {
+/*/ <= 1.13 has very different variables here
+ReadFileC((HANDLE)_hScenFile, (LPVOID)(hPlayerSettings + 128), 4u);// State
+ReadFileC((HANDLE)_hScenFile, (LPVOID)(hPlayerResources - 4), 4u);// Gold
+ReadFileC((HANDLE)_hScenFile, (LPVOID)hPlayerResources, 4u);// Wood
+ReadFileC((HANDLE)_hScenFile, (LPVOID)(hPlayerResources + 4), 4u);// Food
+ReadFileC((HANDLE)_hScenFile, (LPVOID)(hPlayerResources + 8), 4u);// Stone
+ReadFileC((HANDLE)_hScenFile, (LPVOID)hPlayerSettings, 4u);// Type
+ReadFileC((HANDLE)_hScenFile, (LPVOID)(hPlayerSettings + 64), 4u);// Civilization
+ReadFileC((HANDLE)_hScenFile, (LPVOID)(hPlayerSettings - 64), 4u);// Unknown1
+*/
   serialize<uint32_t>(gold);
   serialize<uint32_t>(wood);
   serialize<uint32_t>(food);
   serialize<uint32_t>(stone);
-  serialize<uint32_t>(oreX);
-  serialize<uint32_t>(padding);
+  if (getGameVersion() >= genie::GV_AoK) // 1.17
+  {
+    serialize<uint32_t>(ore);
+    serialize<uint32_t>(goods);
+  }
 }
 
 ScnVictory::ScnVictory()

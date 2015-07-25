@@ -96,7 +96,7 @@ void ScnFile::serializeObject(void)
 // Compressed header:
 
   serialize<uint32_t>(nextUnitID);
-  serializeVersion2();
+  serializePlayerDataVersion();
 
   serialize<ISerializable>(playerData1);
   serialize<uint32_t>(separator_); // > 1.02
@@ -195,7 +195,7 @@ void ScnFile::serializeVersion(void)
 }
 
 //------------------------------------------------------------------------------
-void ScnFile::serializeVersion2(void)
+void ScnFile::serializePlayerDataVersion(void)
 {
   if (isOperation(OP_WRITE))
   {

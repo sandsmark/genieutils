@@ -117,10 +117,10 @@ public:
   uint32_t stone;
 
   /// ?
-  uint32_t oreX;
+  uint32_t ore;
 
   /// always 0
-  uint32_t padding;
+  uint32_t goods;
 
 private:
   virtual void serializeObject(void);

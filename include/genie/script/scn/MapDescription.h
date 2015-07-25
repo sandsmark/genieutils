@@ -96,7 +96,7 @@ public:
   float wood;
   float gold;
   float stone;
-  float oreX;
+  float ore;
   float padding;
   float popLimit;
 

@@ -93,7 +93,7 @@ private:
   virtual void serializeObject(void);
 
   void serializeVersion(void);
-  void serializeVersion2(void);
+  void serializePlayerDataVersion(void);
 };
 
 }

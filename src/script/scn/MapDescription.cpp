@@ -80,7 +80,7 @@ void ScnPlayerResources::serializeObject(void)
   serialize<float>(wood);
   serialize<float>(gold);
   serialize<float>(stone);
-  serialize<float>(oreX);
+  serialize<float>(ore);
   if (getGameVersion() < genie::GV_SWGB)
     serialize<float>(padding);
   if (getGameVersion() >= genie::GV_TC) // 1.21

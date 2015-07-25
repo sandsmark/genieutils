@@ -66,13 +66,16 @@ void ScnMessagesCinematics::serializeObject(void)
   }
 
   serializeSizedString<uint16_t>(instructions);
-  serializeSizedString<uint16_t>(hints);
-  serializeSizedString<uint16_t>(victory);
-  serializeSizedString<uint16_t>(loss);
-  serializeSizedString<uint16_t>(history);
+  if (getGameVersion() >= genie::GV_AoE) // 1.11
+  {
+    serializeSizedString<uint16_t>(hints);
+    serializeSizedString<uint16_t>(victory);
+    serializeSizedString<uint16_t>(loss);
+    serializeSizedString<uint16_t>(history);
 
-  if (getGameVersion() >= genie::GV_TC) // 1.22
-    serializeSizedString<uint16_t>(scouts);
+    if (getGameVersion() >= genie::GV_TC) // 1.22
+      serializeSizedString<uint16_t>(scouts);
+  }
 
   if (getGameVersion() < genie::GV_AoE) // 1.03
   {
@@ -84,10 +87,11 @@ void ScnMessagesCinematics::serializeObject(void)
   serializeSizedString<uint16_t>(pregameCinematicFilename);
   serializeSizedString<uint16_t>(victoryCinematicFilename);
   serializeSizedString<uint16_t>(lossCinematicFilename);
-  serializeSizedString<uint16_t>(backgroundFilename);
-
-  if (getGameVersion() >= genie::GV_AoE) // 1.1
-    serializeBitmap();
+  if (getGameVersion() >= genie::GV_AoE)
+  {
+    serializeSizedString<uint16_t>(backgroundFilename); // 1.09
+    serializeBitmap(); // 1.1
+  }
 }
 
 void ScnMessagesCinematics::serializeBitmap(void)
