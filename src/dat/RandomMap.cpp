@@ -176,15 +176,17 @@ void Map::serializeObject(void)
 }
 
 //------------------------------------------------------------------------------
-BaseZone::BaseZone() : Unknown5(), Unknown8()
+BaseZone::BaseZone()
 {
   Unknown1 = 1;
   BaseTerrain = 0;
   SpacingBetweenPlayers = 2;
   Unknown4 = 7;
+  Unknown5.resize(UNKNOWN5_SIZE);
   Unknown5[1] = 1;
   Unknown6 = 0;
   Unknown7 = 0;
+  Unknown8.resize(UNKNOWN8_SIZE);
   Unknown8[0] = 100;
   Unknown8[1] = 1;
   StartAreaRadius = 10;
@@ -210,10 +212,10 @@ void BaseZone::serializeObject(void)
   serialize<int32_t>(BaseTerrain);
   serialize<int32_t>(SpacingBetweenPlayers);
   serialize<int32_t>(Unknown4);
-  serialize<int8_t, UNKNOWN5_SIZE>(Unknown5);
+  serialize<int8_t>(Unknown5, UNKNOWN5_SIZE);
   serialize<int32_t>(Unknown6);
   serialize<int32_t>(Unknown7);
-  serialize<int8_t, UNKNOWN8_SIZE>(Unknown8);
+  serialize<int8_t>(Unknown8, UNKNOWN8_SIZE);
   serialize<int32_t>(StartAreaRadius);
   serialize<int32_t>(Unknown10);
   serialize<int32_t>(Unknown11);
@@ -253,7 +255,7 @@ void MapTerrain::serializeObject(void)
 }
 
 //------------------------------------------------------------------------------
-MapUnit::MapUnit() : Unknown3()
+MapUnit::MapUnit()
 {
   Unit = -1;
   HostTerrain = -1;
@@ -283,7 +285,7 @@ void MapUnit::serializeObject(void)
 {
   serialize<int32_t>(Unit);
   serialize<int32_t>(HostTerrain);
-  serialize<int8_t, UNKNOWN3_SIZE>(Unknown3);
+  serialize<int8_t>(Unknown3, UNKNOWN3_SIZE);
   serialize<int32_t>(ObjectsPerGroup);
   serialize<int32_t>(Fluctuation);
   serialize<int32_t>(GroupsPerPlayer);

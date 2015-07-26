@@ -63,7 +63,7 @@ public:
   std::vector<Unit> Units;
 
   static const unsigned short SWUNIQUE_SIZE = 4;
-  std::array<int16_t, SWUNIQUE_SIZE> UniqueUnitsResearches; // Unknown in >=SWGB (cnt=4)
+  std::vector<int16_t> UniqueUnitsResearches; // Unknown in >=SWGB (cnt=4)
 
 private:
   /// Number of resources defined for this civilization

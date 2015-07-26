@@ -26,7 +26,7 @@ namespace genie
 namespace unit
 {
 
-Building::Building() : Annexes(), LootingTable()
+Building::Building()
 {
   ConstructionGraphicID = -1;
   SnowGraphicID = -1;
@@ -76,7 +76,7 @@ void Building::serializeObject(void)
   if (getGameVersion() >= genie::GV_AoKA)
   {
     serialize<int8_t>(Unknown33);
-    serializeSub<unit::BuildingAnnex, BUILDING_ANNEXES_SIZE>(Annexes); // 40 bytes
+    serializeSub<unit::BuildingAnnex>(Annexes, BUILDING_ANNEXES_SIZE); // 40 bytes
     serialize<int16_t>(HeadUnit); // 9.89
     serialize<int16_t>(TransformUnit);
     serialize<int16_t>(UnknownSound);
@@ -91,7 +91,7 @@ void Building::serializeObject(void)
     serialize<float>(Unknown35);
     {
       serialize<int16_t>(PileUnit); // 9.06
-      serialize<int8_t, LOOTABLE_RES_COUNT>(LootingTable); // 9.26
+      serialize<int8_t>(LootingTable, LOOTABLE_RES_COUNT); // 9.26
     }
   }
 }

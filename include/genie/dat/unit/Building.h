@@ -77,7 +77,7 @@ public:
   int8_t Unknown33;
 
   static const unsigned short BUILDING_ANNEXES_SIZE = 4;
-  std::array<unit::BuildingAnnex, BUILDING_ANNEXES_SIZE> Annexes;
+  std::vector<unit::BuildingAnnex> Annexes;
   int16_t HeadUnit;
   int16_t TransformUnit;
   int16_t UnknownSound;
@@ -90,7 +90,7 @@ public:
   /// Related to annexes in any way?
   /// Widespread usage in the AoK alpha 09.07.0222
   static const unsigned short LOOTABLE_RES_COUNT = 6;
-  std::array<int8_t, LOOTABLE_RES_COUNT> LootingTable;
+  std::vector<int8_t> LootingTable;
 
 private:
   virtual void serializeObject(void);

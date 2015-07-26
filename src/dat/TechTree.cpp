@@ -157,7 +157,7 @@ void TechTreeAge::serializeObject(void)
 }
 
 //------------------------------------------------------------------------------
-BuildingConnection::BuildingConnection() : UnitsTechsTotal(), UnitsTechsFirst()
+BuildingConnection::BuildingConnection()
 {
   ID = 0;
   Unknown1 = 2;
@@ -211,8 +211,8 @@ void BuildingConnection::serializeObject(void)
   // 9.39
   {
     serialize<int8_t>(LocationInAge);
-    serialize<int8_t, AGES>(UnitsTechsTotal);
-    serialize<int8_t, AGES>(UnitsTechsFirst); // 9.42
+    serialize<int8_t>(UnitsTechsTotal, AGES);
+    serialize<int8_t>(UnitsTechsFirst, AGES); // 9.42
     serialize<int32_t>(LineMode); // 9.51
     serialize<int32_t>(EnablingResearch); // 9.91
   }

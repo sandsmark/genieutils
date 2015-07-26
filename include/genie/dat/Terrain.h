@@ -55,12 +55,12 @@ public:
   std::vector<int16_t> Borders;
 
   static const unsigned short TERRAIN_UNITS_SIZE = 30;
-  std::array<int16_t, TERRAIN_UNITS_SIZE> TerrainUnitID;
-  std::array<int16_t, TERRAIN_UNITS_SIZE> TerrainUnitDensity;
+  std::vector<int16_t> TerrainUnitID;
+  std::vector<int16_t> TerrainUnitDensity;
 
   /// If two terrain units are to be placed on same spot, this selects which one will prevail others.
   /// 1 = prevails, others don't.
-  std::array<int8_t, TERRAIN_UNITS_SIZE> TerrainUnitPriority;
+  std::vector<int8_t> TerrainUnitPriority;
 
   int16_t NumberOfTerrainUnitsUsed;
 

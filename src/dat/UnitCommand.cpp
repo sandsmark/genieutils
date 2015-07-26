@@ -49,7 +49,7 @@ UnitCommand::UnitCommand()
   SelectionMode = 5;
   Unknown11 = 0;
   Unknown12 = 0;
-  Graphics.fill(-1);
+  Graphics.resize(GRAPHICS_SIZE, -1);
 }
 
 //------------------------------------------------------------------------------
@@ -89,7 +89,7 @@ void UnitCommand::serializeObject(void)
   serialize<int8_t>(SelectionMode);
   serialize<int8_t>(Unknown11);
   serialize<int8_t>(Unknown12);
-  serialize<int16_t, GRAPHICS_SIZE>(Graphics);
+  serialize<int16_t>(Graphics, GRAPHICS_SIZE);
 }
 
 }

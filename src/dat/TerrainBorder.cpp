@@ -80,7 +80,7 @@ void TerrainBorder::serializeObject(void)
     serialize<int32_t>(SLP);
   serialize<int32_t>(Unknown3);
   serialize<int32_t>(SoundID);
-  serialize<uint8_t, 3>(Colors);
+  serialize<uint8_t>(Colors, 3);
 
   serialize<int8_t>(IsAnimated);
   serialize<int16_t>(AnimationFrames);

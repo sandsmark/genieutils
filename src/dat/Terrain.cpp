@@ -25,8 +25,7 @@ namespace genie
 
 int Terrain::customTerrainAmount;
 //------------------------------------------------------------------------------
-Terrain::Terrain() : CliffColors(),
-  TerrainUnitID(), TerrainUnitDensity(), TerrainUnitPriority()
+Terrain::Terrain()
 {
   Unknown1 = 0;
   Enabled = 0;
@@ -111,7 +110,7 @@ void Terrain::serializeObject(void)
     serialize<int32_t>(BlendType);
   }
 
-  serialize<uint8_t, 3>(Colors);
+  serialize<uint8_t>(Colors, 3);
   serializePair<uint8_t>(CliffColors);
   serialize<int8_t>(PassableTerrain);
   serialize<int8_t>(ImpassableTerrain);
@@ -134,9 +133,9 @@ void Terrain::serializeObject(void)
     serialize<int16_t>(Borders, getTerrainsSize(getGameVersion()));
   else
     serialize<int16_t>(Borders, Borders.size());
-  serialize<int16_t, TERRAIN_UNITS_SIZE>(TerrainUnitID);
-  serialize<int16_t, TERRAIN_UNITS_SIZE>(TerrainUnitDensity);
-  serialize<int8_t, TERRAIN_UNITS_SIZE>(TerrainUnitPriority);
+  serialize<int16_t>(TerrainUnitID, TERRAIN_UNITS_SIZE);
+  serialize<int16_t>(TerrainUnitDensity, TERRAIN_UNITS_SIZE);
+  serialize<int8_t>(TerrainUnitPriority, TERRAIN_UNITS_SIZE);
   serialize<int16_t>(NumberOfTerrainUnitsUsed);
 
   if (getGameVersion() < genie::GV_SWGB)

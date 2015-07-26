@@ -52,7 +52,7 @@ public:
   int32_t Unit;
   int32_t HostTerrain;
   static const unsigned short UNKNOWN3_SIZE = 4;
-  std::array<int8_t, UNKNOWN3_SIZE> Unknown3;
+  std::vector<int8_t> Unknown3;
   int32_t ObjectsPerGroup;
   int32_t Fluctuation;
   int32_t GroupsPerPlayer;
@@ -96,11 +96,11 @@ public:
   int32_t SpacingBetweenPlayers;
   int32_t Unknown4;
   static const unsigned short UNKNOWN5_SIZE = 4;
-  std::array<int8_t, UNKNOWN5_SIZE> Unknown5;
+  std::vector<int8_t> Unknown5;
   int32_t Unknown6;
   int32_t Unknown7;
   static const unsigned short UNKNOWN8_SIZE = 4;
-  std::array<int8_t, UNKNOWN8_SIZE> Unknown8;
+  std::vector<int8_t> Unknown8;
   int32_t StartAreaRadius;
   int32_t Unknown10;
   int32_t Unknown11;

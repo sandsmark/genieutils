@@ -26,7 +26,7 @@ namespace genie
 namespace unit
 {
 
-Type50::Type50() : GraphicDisplacement()
+Type50::Type50()
 {
   DefaultArmor = 1000;
   TerRestrictionForDmgMultiplying = -1;
@@ -87,7 +87,7 @@ void Type50::serializeObject(void)
   serialize<int16_t>(AccuracyPercent);
   serialize<int8_t>(TowerMode);
   serialize<int16_t>(FrameDelay);
-  serialize<float, GRAPHICDISPLACEMENT_SIZE>(GraphicDisplacement);
+  serialize<float>(GraphicDisplacement, GRAPHICDISPLACEMENT_SIZE);
   serialize<int8_t>(BlastAttackLevel);
   serialize<float>(MinRange);
 

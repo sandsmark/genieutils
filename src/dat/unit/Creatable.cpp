@@ -26,7 +26,7 @@ namespace genie
 namespace unit
 {
 
-Creatable::Creatable() : ResourceCosts(), MissileSpawningArea()
+Creatable::Creatable()
 {
   TrainTime = 0;
   TrainLocationID = -1;
@@ -61,7 +61,7 @@ short Creatable::getResourceCostsSize()
 
 void Creatable::serializeObject(void)
 {
-  serializeSub<ResourceCost, RESOURCECOSTS_SIZE>(ResourceCosts);
+  serializeSub<ResourceCost>(ResourceCosts, RESOURCECOSTS_SIZE);
   serialize<int16_t>(TrainTime);
   serialize<int16_t>(TrainLocationID);
   serialize<int8_t>(ButtonID);
@@ -82,7 +82,7 @@ void Creatable::serializeObject(void)
 
       serialize<float>(TotalMissiles);
       serialize<int8_t>(TotalMissilesMax);
-      serialize<float, AMDBUNKNOWN_SIZE>(MissileSpawningArea);
+      serialize<float>(MissileSpawningArea, AMDBUNKNOWN_SIZE);
       serialize<int32_t>(AlternativeProjectileUnit); // 9.08
       // 9.2
       {

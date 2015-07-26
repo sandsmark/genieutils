@@ -57,7 +57,7 @@ public:
   int32_t Unknown3;
   int32_t SoundID;
 
-  std::array<uint8_t, 3> Colors;
+  std::vector<uint8_t> Colors;
 
   int8_t IsAnimated;
   int16_t AnimationFrames; // # of frames to animate through

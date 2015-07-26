@@ -45,7 +45,7 @@ public:
 
   /// Resource cost in a list of max 3
   static const unsigned short RESOURCECOSTS_SIZE = 3;
-  std::array<ResearchResourceCost, RESOURCECOSTS_SIZE> ResourceCosts;
+  std::vector<ResearchResourceCost> ResourceCosts;
 
   /// Holds the number of how much of the required technologies you need.
   int16_t RequiredTechCount;

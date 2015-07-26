@@ -57,7 +57,7 @@ public:
   int8_t Unknown12;
 
   static const unsigned short GRAPHICS_SIZE = 6;
-  std::array<int16_t, GRAPHICS_SIZE> Graphics;
+  std::vector<int16_t> Graphics;
 
 private:
   virtual void serializeObject(void);

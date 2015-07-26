@@ -240,7 +240,7 @@ public:
   typedef ResourceUsage<int16_t, float, int8_t> ResourceStorage;
 
   /// Resource cost of a unit
-  std::array<ResourceStorage, RESOURCE_STORAGE_CNT> ResourceStorages;
+  std::vector<ResourceStorage> ResourceStorages;
 
   std::vector<unit::DamageGraphic> DamageGraphics;
 

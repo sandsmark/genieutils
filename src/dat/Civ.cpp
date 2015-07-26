@@ -23,7 +23,7 @@
 namespace genie
 {
 
-Civ::Civ() : UniqueUnitsResearches()
+Civ::Civ()
 {
   One = 1;
   Name = "";
@@ -65,7 +65,7 @@ void Civ::serializeObject(void)
       if (getGameVersion() >= genie::GV_SWGB)
       {
         serialize<std::string>(Name2, getNameSize());
-        serialize<int16_t, SWUNIQUE_SIZE>(UniqueUnitsResearches);
+        serialize<int16_t>(UniqueUnitsResearches, SWUNIQUE_SIZE);
       }
     }
   }

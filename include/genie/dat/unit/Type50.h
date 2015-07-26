@@ -54,7 +54,7 @@ public:
   int16_t FrameDelay;
 
   static const unsigned short GRAPHICDISPLACEMENT_SIZE = 3;
-  std::array<float, GRAPHICDISPLACEMENT_SIZE> GraphicDisplacement;
+  std::vector<float> GraphicDisplacement;
 
   int8_t BlastAttackLevel;
   float MinRange;

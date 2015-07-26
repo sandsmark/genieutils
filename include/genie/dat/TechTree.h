@@ -158,8 +158,8 @@ public:
 
   static const unsigned short AGES = 5;
   int8_t LocationInAge;
-  std::array<int8_t, AGES> UnitsTechsTotal;
-  std::array<int8_t, AGES> UnitsTechsFirst;
+  std::vector<int8_t> UnitsTechsTotal;
+  std::vector<int8_t> UnitsTechsFirst;
 
   /// 5 One or more connections, 6 No connections.
   int32_t LineMode;

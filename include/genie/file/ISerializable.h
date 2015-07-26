@@ -347,32 +347,6 @@ protected:
   }
 
   //----------------------------------------------------------------------------
-  /// Reads or writes an array of data to/from an array dependent on operation.
-  //
-  template <typename T, size_t N>
-  void serialize(std::array<T, N> &arr)
-  {
-    switch(getOperation())
-    {
-      case OP_WRITE:
-        for (auto it = arr.begin(); it != arr.end(); ++it)
-          write<T>(*it);
-
-        break;
-
-      case OP_READ:
-        for (size_t i=0; i < arr.size(); ++i)
-          arr[i] = read<T>();
-
-        break;
-
-      case OP_CALC_SIZE:
-        size_ += arr.size() * sizeof(T);
-        break;
-    }
-  }
-
-  //----------------------------------------------------------------------------
   /// Reads or writes an array of data to/from a vector dependent on operation.
   //
   template <typename T>
@@ -436,34 +410,6 @@ protected:
       case OP_CALC_SIZE:
         size_ += size * size2 * sizeof(T);
         break;
-    }
-  }
-
-  //----------------------------------------------------------------------------
-  /// Serializes a collection of objects that inherit from ISerializable.
-  //
-  template <typename T, size_t N>
-  void serializeSub(std::array<T, N> &arr)
-  {
-    if (isOperation(OP_WRITE) || isOperation(OP_CALC_SIZE))
-    {
-      for (auto it = arr.begin(); it != arr.end(); ++it)
-      {
-        ISerializable *data = dynamic_cast<ISerializable *>(&(*it));
-
-        data->serializeSubObject(this);
-
-        if (isOperation(OP_CALC_SIZE))
-          size_ += data->objectSize();
-      }
-    }
-    else
-    {
-      for (size_t i=0; i < arr.size(); ++i)
-      {
-        ISerializable *cast_obj = dynamic_cast<ISerializable *>(&arr[i]);
-        cast_obj->serializeSubObject(this);
-      }
     }
   }
 

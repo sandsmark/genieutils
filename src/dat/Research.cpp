@@ -24,7 +24,7 @@ namespace genie
 {
 
 //------------------------------------------------------------------------------
-Research::Research() : ResourceCosts()
+Research::Research()
 {
   RequiredTechCount = 0;
   Civ = -1;
@@ -72,7 +72,7 @@ void Research::serializeObject(void)
 {
   serialize<int16_t>(RequiredTechs, getRequiredTechsSize());
 
-  serializeSub<ResearchResourceCost, RESOURCECOSTS_SIZE>(ResourceCosts);
+  serializeSub<ResearchResourceCost>(ResourceCosts, RESOURCECOSTS_SIZE);
   serialize<int16_t>(RequiredTechCount);
 
   if (getGameVersion() >= genie::GV_AoKB)

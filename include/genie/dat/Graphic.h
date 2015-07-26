@@ -73,7 +73,7 @@ public:
 
   static const unsigned short COORDINATES_SIZE = 4;
   /// TODO: What kind of coordinates?
-  std::array<int16_t, COORDINATES_SIZE> Coordinates;
+  std::vector<int16_t> Coordinates;
 
   int16_t SoundID;
   int8_t AttackSoundUsed;

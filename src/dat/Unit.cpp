@@ -24,7 +24,7 @@ namespace genie
 {
 
 //------------------------------------------------------------------------------
-Unit::Unit() : ResourceStorages()
+Unit::Unit()
 {
 //    Type 10+
 
@@ -208,7 +208,7 @@ void Unit::serializeObject(void)
     serialize<float>(HPBarHeight2);
   }
 
-  serializeSub<ResourceStorage, RESOURCE_STORAGE_CNT>(ResourceStorages);
+  serializeSub<ResourceStorage>(ResourceStorages, RESOURCE_STORAGE_CNT);
 
   serializeSize<uint8_t>(DamageGraphicCount, DamageGraphics.size());
   serializeSub<unit::DamageGraphic>(DamageGraphics, DamageGraphicCount);

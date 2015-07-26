@@ -26,7 +26,7 @@
 namespace genie
 {
 
-Graphic::Graphic() : Coordinates()
+Graphic::Graphic()
 {
   Name = "";
   Name2 = "";
@@ -101,7 +101,7 @@ void Graphic::serializeObject(void)
   serialize<int8_t>(Rainbow); // 2nd half of player color
   serialize<int8_t>(Replay);
 
-  serialize<int16_t, COORDINATES_SIZE>(Coordinates);
+  serialize<int16_t>(Coordinates, COORDINATES_SIZE);
 
   serializeSize<uint16_t>(DeltaCount, Deltas.size());
   serialize<int16_t>(SoundID);
