@@ -167,6 +167,9 @@ public:
   uint32_t unused2;
   uint32_t allTechs;
   std::vector<uint32_t> startingAge;
+  int32_t player1CameraX;
+  int32_t player1CameraY;
+  int32_t aiType;
 
 private:
   uint32_t separator_;

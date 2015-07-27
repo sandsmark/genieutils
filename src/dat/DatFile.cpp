@@ -35,6 +35,7 @@
 namespace genie
 {
 
+float ISerializable::dat_internal_ver = 0.f;
 typedef boost::interprocess::basic_vectorstream<std::vector<char>> v_stream;
 
 //------------------------------------------------------------------------------

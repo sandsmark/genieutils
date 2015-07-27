@@ -55,7 +55,7 @@ void ScnMessagesCinematics::serializeObject(void)
 {
   std::cout << "Resource start pos: " << tellg() << std::endl;
 
-  if (getGameVersion() >= genie::GV_AoK) // 1.16
+  if (scn_plr_data_ver > 1.15)
   {
     serialize<uint32_t>(instructionsStringTable);
     serialize<uint32_t>(hintsStringTable);
@@ -63,23 +63,23 @@ void ScnMessagesCinematics::serializeObject(void)
     serialize<uint32_t>(lossStringTable);
     serialize<uint32_t>(historyStringTable);
 
-    if (getGameVersion() >= genie::GV_TC) // 1.22
+    if (scn_plr_data_ver > 1.21)
       serialize<uint32_t>(scoutsStringTable);
   }
 
   serializeSizedString<uint16_t>(instructions);
-  if (getGameVersion() >= genie::GV_AoE) // 1.11
+  if (scn_plr_data_ver > 1.1)
   {
     serializeSizedString<uint16_t>(hints);
     serializeSizedString<uint16_t>(victory);
     serializeSizedString<uint16_t>(loss);
     serializeSizedString<uint16_t>(history);
 
-    if (getGameVersion() >= genie::GV_TC) // 1.22
+    if (scn_plr_data_ver > 1.21)
       serializeSizedString<uint16_t>(scouts);
   }
 
-  if (getGameVersion() < genie::GV_AoE) // 1.03
+  if (scn_plr_data_ver < 1.03)
   {
     serializeSizedString<uint16_t>(oldFilename1);
     serializeSizedString<uint16_t>(oldFilename2);
@@ -89,11 +89,10 @@ void ScnMessagesCinematics::serializeObject(void)
   serializeSizedString<uint16_t>(pregameCinematicFilename);
   serializeSizedString<uint16_t>(victoryCinematicFilename);
   serializeSizedString<uint16_t>(lossCinematicFilename);
-  if (getGameVersion() >= genie::GV_AoE)
-  {
-    serializeSizedString<uint16_t>(backgroundFilename); // 1.09
-    serializeBitmap(); // 1.1
-  }
+  if (scn_plr_data_ver > 1.08)
+    serializeSizedString<uint16_t>(backgroundFilename);
+  if (scn_plr_data_ver > 1.0)
+    serializeBitmap();
 }
 
 void ScnMessagesCinematics::serializeBitmap(void)

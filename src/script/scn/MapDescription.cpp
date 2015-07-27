@@ -27,9 +27,6 @@ namespace genie
 
 MapDescription::MapDescription()
 {
-  player1CameraX = 0;
-  player1CameraY = 0;
-  aiType = 0;
   width = 0;
   height = 0;
 }
@@ -40,14 +37,6 @@ MapDescription::~MapDescription()
 
 void MapDescription::serializeObject(void)
 {
-  if (getGameVersion() >= genie::GV_TC) // 1.19
-  {
-    serialize<int32_t>(player1CameraX);
-    serialize<int32_t>(player1CameraY);
-    if (getGameVersion() >= genie::GV_TC) // 1.21
-      serialize<int32_t>(aiType);
-  }
-  // <- here actually switches the reading function in exe
   serialize<uint32_t>(width);
   serialize<uint32_t>(height);
 
@@ -83,12 +72,16 @@ MapUnits::~MapUnits()
 void MapUnits::serializeObject(void)
 {
   serializeSize<uint32_t>(playerCount_, playerUnits.size());
-  serializeSub<ScnPlayerResources>(playerResources, 8);
+  if (scn_internal_ver > 1.06)
+    serializeSub<ScnPlayerResources>(playerResources, 8);
   serializeSub<ScnPlayerUnits>(playerUnits, playerCount_);
 }
 
 ScnPlayerResources::ScnPlayerResources()
 {
+  ore = 0;
+  goods = 0;
+  popLimit = 75;
 }
 
 ScnPlayerResources::~ScnPlayerResources()
@@ -101,11 +94,28 @@ void ScnPlayerResources::serializeObject(void)
   serialize<float>(wood);
   serialize<float>(gold);
   serialize<float>(stone);
-  serialize<float>(ore);
-  if (getGameVersion() < genie::GV_SWGB)
-    serialize<float>(padding);
-  if (getGameVersion() >= genie::GV_TC) // 1.21
-    serialize<float>(popLimit);
+  if (scn_internal_ver > 1.12)
+  {
+    serialize<float>(ore);
+    if (scn_internal_ver < 1.3)
+      serialize<float>(goods);
+  }
+  if (scn_internal_ver > 1.13)
+    serialize<float>(popLimit); // game forces range from 25 to 200, defaults to 75
+}
+
+ScnPlayerUnits::ScnPlayerUnits()
+{
+}
+
+ScnPlayerUnits::~ScnPlayerUnits()
+{
+}
+
+void ScnPlayerUnits::serializeObject(void)
+{
+  serializeSize<uint32_t>(unitCount_, units.size());
+  serializeSub<ScnUnit>(units, unitCount_);
 }
 
 ScnUnit::ScnUnit()
@@ -121,26 +131,13 @@ void ScnUnit::serializeObject(void)
   serialize<float>(positionX);
   serialize<float>(positionY);
   serialize<float>(positionZ);
-  serialize<uint32_t>(ID);
-  serialize<uint16_t>(unitID);
-  serialize<uint8_t>(unknown2);
+  serialize<uint32_t>(spawnID);
+  serialize<uint16_t>(objectID); // units with hardcoded behaviour 102, 66, 59, 768, 420, 770, 691
+  serialize<uint8_t>(state);
   serialize<float>(rotation);
-  serialize<uint16_t>(initAnimationFrame);
+  if (scn_ver != "1.14")
+    serialize<uint16_t>(initAnimationFrame);
   serialize<uint32_t>(garrisonedInID);
-}
-
-ScnPlayerUnits::ScnPlayerUnits()
-{
-}
-
-ScnPlayerUnits::~ScnPlayerUnits()
-{
-}
-
-void ScnPlayerUnits::serializeObject(void)
-{
-  serializeSize<uint32_t>(unitCount_, units.size());
-  serializeSub<ScnUnit>(units, unitCount_);
 }
 
 }

@@ -27,9 +27,15 @@
 namespace genie
 {
 
+std::string ISerializable::scn_ver = "0.00";
+float ISerializable::scn_plr_data_ver = 0.f;
+float ISerializable::scn_internal_ver = 0.f;
+double ISerializable::scn_trigger_ver = 0.0;
+
 //------------------------------------------------------------------------------
 ScnFile::ScnFile() : IFile(), compressor_(this)
 {
+  scn_internal_ver = 0;
 }
 
 //------------------------------------------------------------------------------
@@ -102,6 +108,11 @@ void ScnFile::serializeObject(void)
   serialize<ISerializable>(playerData1);
 
   serialize<ISerializable>(map);
+
+  if (scn_ver == "1.20" || scn_ver == "1.21") scn_internal_ver = 1.14;
+  else if (scn_ver == "1.17" || scn_ver == "1.18" || scn_ver == "1.19") scn_internal_ver = 1.13;
+  else if (scn_ver == "1.14" || scn_ver == "1.15" || scn_ver == "1.16") scn_internal_ver = 1.12;
+
   serialize<ISerializable>(units);
   serialize<ISerializable>(playerData3);
   serialize<ISerializable>(triggers);
@@ -158,7 +169,7 @@ void ScnFile::serializeVersion(void)
 // "1.20"
 // "1.21" The Conquerors?
 
-  if (isOperation(OP_WRITE))
+  /*if (isOperation(OP_WRITE))
   {
     switch (getGameVersion())
     {
@@ -180,15 +191,17 @@ void ScnFile::serializeVersion(void)
       default:
         break;
     }
-  }
+  }*/
 
+  version = scn_ver;
   serialize<std::string>(version, 4);
+  scn_ver = version;
 }
 
 //------------------------------------------------------------------------------
 void ScnPlayerData1::serializePlayerDataVersion(void)
 {
-  if (isOperation(OP_WRITE))
+  /*if (isOperation(OP_WRITE))
   {
     switch (getGameVersion())
     {
@@ -213,11 +226,13 @@ void ScnPlayerData1::serializePlayerDataVersion(void)
       default:
         break;
     }
-  }
+  }*/
 
+  playerDataVersion = scn_plr_data_ver;
   serialize<float>(playerDataVersion);
+  scn_plr_data_ver = playerDataVersion;
 
-  if (isOperation(OP_READ))
+  /*if (isOperation(OP_READ))
   {
     if (fabs(playerDataVersion - 1.18) < 0.01)
       setGameVersion(genie::GV_AoK);
@@ -227,7 +242,7 @@ void ScnPlayerData1::serializePlayerDataVersion(void)
       setGameVersion(genie::GV_SWGB);
     else
       setGameVersion(genie::GV_AoE);
-  }
+  }*/
 }
 
 }

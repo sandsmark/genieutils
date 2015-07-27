@@ -107,6 +107,21 @@ public:
   //
   friend class Compressor;
 
+  //----------------------------------------------------------------------------
+  /// Versions used to read/write/paste.
+
+  /// 6 to 12
+  static float dat_internal_ver;
+
+  /// "1.00" to "1.21"
+  static std::string scn_ver;
+
+  /// 1.0 to 1.30
+  static float scn_plr_data_ver, scn_internal_ver;
+
+  /// 1.0 to 1.6
+  static double scn_trigger_ver;
+
 protected:
 
   enum Operation

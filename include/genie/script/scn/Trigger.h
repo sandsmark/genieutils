@@ -40,20 +40,20 @@ public:
   virtual ~TriggerCondition();
 
   int32_t type;
-  int32_t check; //always = 0x10 (for internal use)
+  int32_t usedVariables; //always = 0x10 (for internal use)
   int32_t amount; //of objects, difficult level
   int32_t resource; //resource type (see constants below)
-  int32_t unitObject;
-  int32_t unitLocation;
-  int32_t unitType;
-  int32_t player;
+  int32_t setObject;
+  int32_t nextObject;
+  int32_t object;
+  int32_t sourcePlayer;
   int32_t technology;
   int32_t timer;
-  int32_t unknown;
-  MapPoint areaLL;
-  MapPoint areaUR;
-  int32_t unitGroup;
-  int32_t unitClass; //Civilian, Military, Building, Other
+  int32_t trigger;
+  MapPoint areaFrom;
+  MapPoint areaTo;
+  int32_t objectGroup;
+  int32_t objectType; //Civilian, Military, Building, Other
   int32_t aiSignal;
 
 private:
@@ -67,32 +67,32 @@ public:
   virtual ~TriggerEffect();
 
   int32_t type;
-  int32_t check;
+  int32_t usedVariables;
   int32_t aiGoal;
   int32_t amount;
   int32_t resource;
   int32_t diplomacy;
-  int32_t locationUnit;
-  int32_t unitType;
-  int32_t playerSource;
-  int32_t playerTarget;
+  int32_t nextObject;
+  int32_t object;
+  int32_t sourcePlayer;
+  int32_t targetPlayer;
   int32_t technology;
-  int32_t stringID;
-  int32_t unknown;
-  int32_t displayTime;
-  int32_t triggerID;
+  int32_t stringTableID;
+  int32_t soundResourceID;
+  int32_t timer;
+  int32_t trigger;
   MapPoint location;
-  MapPoint areaLL; //lower-left corner of area
-  MapPoint areaUR; //upper-right corner
-  int32_t unitGroup;
-  int32_t unitClass; //Civilian, Military, Building, Other
+  MapPoint areaFrom; //lower-left corner of area
+  MapPoint areaTo; //upper-right corner
+  int32_t objectGroup;
+  int32_t objectType; //Civilian, Military, Building, Other
   int32_t instructionPanel;
-  std::string text;	//Instructions/Chat
+  std::string message;	//Instructions/Chat
   std::string soundFile;
   std::vector<int32_t> selectedUnits;
 
 private:
-  int32_t numSelected_;
+  int32_t setObjects_;
   virtual void serializeObject(void);
 };
 
@@ -102,14 +102,14 @@ public:
   TriggerSub();
   virtual ~TriggerSub();
 
-  uint32_t enabled;
-  uint32_t looping;
-  uint8_t unknown1;
-  uint8_t isObjective;
-  uint32_t objectiveDescriptionOrder;
-  uint32_t unknown2;
-  std::string triggerDescription;
-  std::string triggerName;
+  int32_t startingState;
+  int8_t looping;
+  int32_t stringTableID;
+  int8_t isObjective;
+  int32_t descriptionOrder;
+  int32_t startingTime;
+  std::string description;
+  std::string name;
   std::vector<TriggerEffect> effects;
   std::vector<int32_t> effectDisplayOrder;
   std::vector<TriggerCondition> conditions;
@@ -128,9 +128,9 @@ public:
   virtual ~Trigger();
 
   double triggerVersion;
-  int8_t unknown;
+  int8_t objectivesStartingState;
   std::vector<TriggerSub> triggers;
-  std::vector<uint32_t> triggerDisplayOrder;
+  std::vector<int32_t> triggerDisplayOrder;
 
 private:
   int32_t numTriggers_;

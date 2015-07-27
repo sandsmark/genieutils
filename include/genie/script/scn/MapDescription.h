@@ -51,12 +51,6 @@ public:
   MapDescription();
   virtual ~MapDescription();
 
-  int32_t player1CameraX;
-  int32_t player1CameraY;
-
-  /// GV >= TC TODO enum
-  int32_t aiType;
-
   /// AoK caps at 256
   uint32_t width;
 
@@ -77,9 +71,9 @@ public:
   float positionX;
   float positionY;
   float positionZ;
-  uint32_t ID;
-  uint16_t unitID;
-  uint8_t unknown2;
+  uint32_t spawnID;
+  uint16_t objectID;
+  uint8_t state;
   float rotation;
   uint16_t initAnimationFrame;
   uint32_t garrisonedInID;
@@ -99,7 +93,7 @@ public:
   float gold;
   float stone;
   float ore;
-  float padding;
+  float goods;
   float popLimit;
 
 private:
