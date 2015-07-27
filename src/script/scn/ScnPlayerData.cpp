@@ -220,6 +220,24 @@ void ScnDiplomacy::serializeObject(void)
 {
   serialize<uint32_t>(stances, 16, 16); // Diplomacy (16*16*4)
   serialize<uint32_t>(individualVictory, 16, 180); // Individual Victory (12*60)
+/* Individual victory conditions were eventually reformed into triggers.
+00 +12 Quantity
+01 +16 Resource
+02 +20 Set Object
+03 +24 Next Object
+04 +28 Object Constant
+05 +32 Source Player
+06 +36 Technology
+07 +40 Timer
+08 +44 Trigger
+09 +48 Area X (FROM)
+10 +52 Area Y (FROM)
+11 +56 Area X (TO)
+12 +60 Area Y (TO)
+13 +64 Object Group
+14 +68 Object Type
+15 +72 AI Signal
+*/
 }
 
 ScnDisables::ScnDisables()

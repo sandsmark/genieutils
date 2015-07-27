@@ -39,7 +39,7 @@ void Trigger::serializeObject(void)
   serialize<int8_t>(unknown);
   serializeSize<int32_t>(numTriggers_, triggers.size());
   serializeSub<TriggerSub>(triggers, numTriggers_);
-  serialize<int32_t>(triggerDisplayOrder, numTriggers_);
+  serialize<uint32_t>(triggerDisplayOrder, numTriggers_);
 }
 
 TriggerSub::TriggerSub()
@@ -135,7 +135,8 @@ void TriggerEffect::serializeObject(void)
   serialize<int32_t>(instructionPanel);
   serializeSizedString<uint32_t>(text);
   serializeSizedString<uint32_t>(soundFile);
-  serialize<int32_t>(selectedUnits, numSelected_);
+  if(numSelected_ > 0) // It took hours to figure this out. -1 is same as 0.
+    serialize<int32_t>(selectedUnits, numSelected_);
 }
 
 }

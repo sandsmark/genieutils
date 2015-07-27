@@ -130,7 +130,7 @@ public:
   double triggerVersion;
   int8_t unknown;
   std::vector<TriggerSub> triggers;
-  std::vector<int32_t> triggerDisplayOrder;
+  std::vector<uint32_t> triggerDisplayOrder;
 
 private:
   int32_t numTriggers_;
