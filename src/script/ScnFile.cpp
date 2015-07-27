@@ -1,7 +1,9 @@
 /*
-    genieutils - <description>
-    Copyright (C) 2011 - 2013  Armin Preiml <email>
-    Copyright (C) 2015  Mikko "Tapsa" P <email>
+    genieutils - A library for reading and writing data files of genie
+               engine games.
+    Copyright (C) 2011 - 2013  Armin Preiml
+    Copyright (C) 2015  Mikko "Tapsa" P
+    Copyright (C) 2015  JustTesting1234
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by

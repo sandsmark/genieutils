@@ -1,7 +1,7 @@
 /*
     genie/dat - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2015  Mikko T P
+    Copyright (C) 2015  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
