@@ -254,9 +254,9 @@ protected:
   /// Writes an array to file.
   //
   template <typename T>
-  void write(T *data, size_t len)
+  void write(T **data, size_t len)
   {
-    ostr_->write(reinterpret_cast<char *>(data), sizeof(T) * len);
+    ostr_->write(reinterpret_cast<char *>(*data), sizeof(T) * len);
   }
 
   //----------------------------------------------------------------------------
@@ -328,7 +328,7 @@ protected:
     switch(getOperation())
     {
       case OP_WRITE:
-        write<T>(*data, len);
+        write<T>(data, len);
         break;
       case OP_READ:
         read<T>(data, len);

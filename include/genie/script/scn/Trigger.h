@@ -72,6 +72,7 @@ public:
   int32_t amount;
   int32_t resource;
   int32_t diplomacy;
+  int32_t setObjects;
   int32_t nextObject;
   int32_t object;
   int32_t sourcePlayer;
@@ -92,7 +93,6 @@ public:
   std::vector<int32_t> selectedUnits;
 
 private:
-  int32_t setObjects_;
   virtual void serializeObject(void);
 };
 
