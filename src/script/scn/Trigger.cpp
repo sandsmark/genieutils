@@ -35,28 +35,6 @@ Trigger::~Trigger()
 
 void Trigger::serializeObject(void)
 {
-  triggerVersion = scn_trigger_ver;
-  serialize<double>(triggerVersion);
-  scn_trigger_ver = triggerVersion;
-
-  if (scn_trigger_ver > 1.4)
-    serialize<int8_t>(objectivesStartingState);
-  serializeSize<int32_t>(numTriggers_, triggers.size());
-  serializeSub<TriggerSub>(triggers, numTriggers_);
-  if (scn_trigger_ver > 1.3)
-    serialize<int32_t>(triggerDisplayOrder, numTriggers_);
-}
-
-TriggerSub::TriggerSub()
-{
-}
-
-TriggerSub::~TriggerSub()
-{
-}
-
-void TriggerSub::serializeObject(void)
-{
   serialize<int32_t>(startingState);
   serialize<int8_t>(looping);
   serialize<int32_t>(stringTableID);

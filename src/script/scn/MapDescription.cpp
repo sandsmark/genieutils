@@ -25,17 +25,17 @@
 namespace genie
 {
 
-MapDescription::MapDescription()
+ScnMap::ScnMap()
 {
   width = 0;
   height = 0;
 }
 
-MapDescription::~MapDescription()
+ScnMap::~ScnMap()
 {
 }
 
-void MapDescription::serializeObject(void)
+void ScnMap::serializeObject(void)
 {
   serialize<uint32_t>(width);
   serialize<uint32_t>(height);
@@ -59,85 +59,6 @@ void MapTile::serializeObject(void)
   serialize<uint8_t>(terrainID);
   serialize<uint8_t>(elevation);
   serialize<uint8_t>(unused);
-}
-
-MapUnits::MapUnits()
-{
-}
-
-MapUnits::~MapUnits()
-{
-}
-
-void MapUnits::serializeObject(void)
-{
-  serializeSize<uint32_t>(playerCount_, playerUnits.size());
-  if (scn_internal_ver > 1.06)
-    serializeSub<ScnPlayerResources>(playerResources, 8);
-  serializeSub<ScnPlayerUnits>(playerUnits, playerCount_);
-}
-
-ScnPlayerResources::ScnPlayerResources()
-{
-  ore = 0;
-  goods = 0;
-  popLimit = 75;
-}
-
-ScnPlayerResources::~ScnPlayerResources()
-{
-}
-
-void ScnPlayerResources::serializeObject(void)
-{
-  serialize<float>(food);
-  serialize<float>(wood);
-  serialize<float>(gold);
-  serialize<float>(stone);
-  if (scn_internal_ver > 1.12)
-  {
-    serialize<float>(ore);
-    if (scn_internal_ver < 1.3)
-      serialize<float>(goods);
-  }
-  if (scn_internal_ver > 1.13)
-    serialize<float>(popLimit); // game forces range from 25 to 200, defaults to 75
-}
-
-ScnPlayerUnits::ScnPlayerUnits()
-{
-}
-
-ScnPlayerUnits::~ScnPlayerUnits()
-{
-}
-
-void ScnPlayerUnits::serializeObject(void)
-{
-  serializeSize<uint32_t>(unitCount_, units.size());
-  serializeSub<ScnUnit>(units, unitCount_);
-}
-
-ScnUnit::ScnUnit()
-{
-}
-
-ScnUnit::~ScnUnit()
-{
-}
-
-void ScnUnit::serializeObject(void)
-{
-  serialize<float>(positionX);
-  serialize<float>(positionY);
-  serialize<float>(positionZ);
-  serialize<uint32_t>(spawnID);
-  serialize<uint16_t>(objectID); // units with hardcoded behaviour 102, 66, 59, 768, 420, 770, 691
-  serialize<uint8_t>(state);
-  serialize<float>(rotation);
-  if (scn_ver != "1.14")
-    serialize<uint16_t>(initAnimationFrame);
-  serialize<uint32_t>(garrisonedInID);
 }
 
 }

@@ -105,7 +105,7 @@ void ScnFile::serializeObject(void)
 
   serialize<uint32_t>(nextUnitID);
 
-  serialize<ISerializable>(playerData1);
+  serialize<ISerializable>(playerData);
 
   serialize<ISerializable>(map);
 
@@ -113,9 +113,24 @@ void ScnFile::serializeObject(void)
   else if (scn_ver == "1.17" || scn_ver == "1.18" || scn_ver == "1.19") scn_internal_ver = 1.13;
   else if (scn_ver == "1.14" || scn_ver == "1.15" || scn_ver == "1.16") scn_internal_ver = 1.12;
 
-  serialize<ISerializable>(units);
-  serialize<ISerializable>(playerData3);
-  serialize<ISerializable>(triggers);
+  serializeSize<uint32_t>(playerCount1_, playerUnits.size());
+  if (scn_internal_ver > 1.06)
+    serializeSub<ScnPlayerResources>(playerResources, 8);
+  serializeSub<ScnPlayerUnits>(playerUnits, playerCount1_);
+
+  serialize<uint32_t>(playerCount2_);
+  serializeSub<ScnMorePlayerData>(players, 8);
+
+  triggerVersion = scn_trigger_ver;
+  serialize<double>(triggerVersion);
+  scn_trigger_ver = triggerVersion;
+
+  if (scn_trigger_ver > 1.4)
+    serialize<int8_t>(objectivesStartingState);
+  serializeSize<int32_t>(numTriggers_, triggers.size());
+  serializeSub<Trigger>(triggers, numTriggers_);
+  if (scn_trigger_ver > 1.3)
+    serialize<int32_t>(triggerDisplayOrder, numTriggers_);
 
   compressor_.endCompression();
 }
@@ -199,7 +214,7 @@ void ScnFile::serializeVersion(void)
 }
 
 //------------------------------------------------------------------------------
-void ScnPlayerData1::serializePlayerDataVersion(void)
+void ScnMainPlayerData::serializePlayerDataVersion(void)
 {
   /*if (isOperation(OP_WRITE))
   {

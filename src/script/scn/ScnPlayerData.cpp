@@ -27,16 +27,34 @@ namespace genie
 
 bool CombinedResources::playerInfo = false;
 
-ScnPlayerData1::ScnPlayerData1()
+ScnMainPlayerData::ScnMainPlayerData()
 {
   playerNames.resize(16);
+
+  instructionsStringTable = 0;
+  hintsStringTable = 0;
+  victoryStringTable = 0;
+  lossStringTable = 0;
+  historyStringTable = 0;
+  scoutsStringTable = 0;
+
+  bitmapIncluded = 0;
+  bitmapWidth = 0;
+  bitmapHeigth = 0;
+  unknown1 = 1;
+
+  bitmapByteSize = 0;
+  bmpHeader = 0;
+  bitmap = 0;
 }
 
-ScnPlayerData1::~ScnPlayerData1()
+ScnMainPlayerData::~ScnMainPlayerData()
 {
+  delete bitmap;
+  delete bmpHeader;
 }
 
-void ScnPlayerData1::serializeObject(void)
+void ScnMainPlayerData::serializeObject(void)
 {
   serializePlayerDataVersion();
   if (scn_plr_data_ver > 1.13)
@@ -53,8 +71,44 @@ void ScnPlayerData1::serializeObject(void)
   serialize<ISerializable>(unknownData);
   serializeSizedString<uint16_t>(originalFileName);
 
-  // Messages and cinematics, nonsense to have these in their own class
-  serialize<ISerializable>(messagesCinematics); // should be 100 % done for 1.13+
+  if (scn_plr_data_ver > 1.15)
+  {
+    serialize<uint32_t>(instructionsStringTable);
+    serialize<uint32_t>(hintsStringTable);
+    serialize<uint32_t>(victoryStringTable);
+    serialize<uint32_t>(lossStringTable);
+    serialize<uint32_t>(historyStringTable);
+
+    if (scn_plr_data_ver > 1.21)
+      serialize<uint32_t>(scoutsStringTable);
+  }
+
+  serializeSizedString<uint16_t>(instructions);
+  if (scn_plr_data_ver > 1.1)
+  {
+    serializeSizedString<uint16_t>(hints);
+    serializeSizedString<uint16_t>(victory);
+    serializeSizedString<uint16_t>(loss);
+    serializeSizedString<uint16_t>(history);
+
+    if (scn_plr_data_ver > 1.21)
+      serializeSizedString<uint16_t>(scouts);
+  }
+
+  if (scn_plr_data_ver < 1.03)
+  {
+    serializeSizedString<uint16_t>(oldFilename1);
+    serializeSizedString<uint16_t>(oldFilename2);
+    serializeSizedString<uint16_t>(oldFilename3);
+  }
+
+  serializeSizedString<uint16_t>(pregameCinematicFilename);
+  serializeSizedString<uint16_t>(victoryCinematicFilename);
+  serializeSizedString<uint16_t>(lossCinematicFilename);
+  if (scn_plr_data_ver > 1.08)
+    serializeSizedString<uint16_t>(backgroundFilename);
+  if (scn_plr_data_ver > 1.0)
+    serializeBitmap();
 
   serializeSizedStrings<uint16_t>(aiNames, 16);
   serializeSizedStrings<uint16_t>(cityNames, 16);
@@ -173,6 +227,37 @@ void UnknownData1::serializeObject(void)
   ReadData((HANDLE)_hScenFile, &v15, 2u);*/
 }
 
+void ScnMainPlayerData::serializeBitmap(void)
+{
+  serialize<uint32_t>(bitmapIncluded);
+
+  serialize<uint32_t>(bitmapWidth);
+  serialize<uint32_t>(bitmapHeigth);
+  serialize<int16_t>(unknown1);
+
+  if (bitmapIncluded == 0)
+    return;
+
+  serialize<char>(&bmpHeader, 0x28);
+  if (isOperation(OP_READ))
+  {
+    bitmapByteSize = *reinterpret_cast<uint32_t *>(bmpHeader + 20);
+
+    bitmap = new char[bitmapByteSize];
+
+    for (unsigned int i=0; i < 0x28; ++i)
+      bitmap[i] = bmpHeader[i];
+
+    char *bitmapStart = (bitmap + 0x28);
+
+    serialize<char>(&bitmapStart, bitmapByteSize - 0x28);
+  }
+  else if (isOperation(OP_WRITE))
+  {
+    serialize<char>(&bitmap, bitmapByteSize);
+  }
+}
+
 AiFile::AiFile()
 {
 }
@@ -276,29 +361,15 @@ void ScnDisables::serializeObject(void)
   }
 }
 
-ScnPlayerData3::ScnPlayerData3()
+ScnMorePlayerData::ScnMorePlayerData()
 {
 }
 
-ScnPlayerData3::~ScnPlayerData3()
+ScnMorePlayerData::~ScnMorePlayerData()
 {
 }
 
-void ScnPlayerData3::serializeObject(void)
-{
-  serialize<uint32_t>(playerCount_);
-  serializeSub<ScnPlayerData3Sub>(playerData, 8);
-}
-
-ScnPlayerData3Sub::ScnPlayerData3Sub()
-{
-}
-
-ScnPlayerData3Sub::~ScnPlayerData3Sub()
-{
-}
-
-void ScnPlayerData3Sub::serializeObject(void)
+void ScnMorePlayerData::serializeObject(void)
 {
   serializeSizedString<uint16_t>(playerName);
   serialize<float>(initCameraX);

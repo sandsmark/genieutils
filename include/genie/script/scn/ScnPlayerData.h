@@ -82,7 +82,6 @@ public:
 
 private:
   virtual void serializeObject(void);
-
 };
 
 class ScnVictory : public ISerializable
@@ -136,11 +135,11 @@ private:
   virtual void serializeObject(void);
 };
 
-class ScnPlayerData1 : public ISerializable
+class ScnMainPlayerData : public ISerializable
 {
 public:
-  ScnPlayerData1();
-  virtual ~ScnPlayerData1();
+  ScnMainPlayerData();
+  virtual ~ScnMainPlayerData();
 
   float playerDataVersion;
   static float version;
@@ -149,7 +148,68 @@ public:
   uint8_t conquestVictory;
   UnknownData1 unknownData;
   std::string originalFileName;
-  ScnMessagesCinematics messagesCinematics;
+
+  /// GV >= AoK
+  uint32_t instructionsStringTable;
+
+  /// GV >= AoK
+  uint32_t hintsStringTable;
+
+  /// GV >= AoK
+  uint32_t victoryStringTable;
+
+  /// GV >= AoK
+  uint32_t lossStringTable;
+
+  /// GV >= AoK
+  uint32_t historyStringTable;
+
+  /// GV >= TC
+  uint32_t scoutsStringTable;
+
+  // Messages
+
+  std::string instructions;
+
+  std::string hints;
+
+  std::string victory;
+
+  std::string loss;
+
+  std::string history;
+
+  /// GV >= TC
+  std::string scouts;
+
+  std::string oldFilename1;
+  std::string oldFilename2;
+  std::string oldFilename3;
+
+  std::string pregameCinematicFilename;
+
+  std::string victoryCinematicFilename;
+
+  std::string lossCinematicFilename;
+
+  std::string backgroundFilename;
+
+  // Bitmap
+
+  /// Boolean
+  uint32_t bitmapIncluded;
+
+  uint32_t bitmapWidth;
+
+  uint32_t bitmapHeigth;
+
+  /// -1 if there's a bitmap, 1 otherwise
+  int16_t unknown1;
+
+  uint16_t bitmapByteSize;
+
+  char* bmpHeader;
+  char* bitmap;
 
   std::vector<std::string> aiNames;
   std::vector<std::string> cityNames;
@@ -175,13 +235,14 @@ private:
   uint32_t separator_;
   void serializePlayerDataVersion(void);
   virtual void serializeObject(void);
+  void serializeBitmap(void);
 };
 
-class ScnPlayerData3Sub : public ISerializable
+class ScnMorePlayerData : public ISerializable
 {
 public:
-  ScnPlayerData3Sub();
-  virtual ~ScnPlayerData3Sub();
+  ScnMorePlayerData();
+  virtual ~ScnMorePlayerData();
 
   std::string playerName;
   float initCameraX;
@@ -201,19 +262,6 @@ public:
 private:
   uint16_t playerCount_;
   uint16_t unknownCount_;
-  virtual void serializeObject(void);
-};
-
-class ScnPlayerData3 : public ISerializable
-{
-public:
-  ScnPlayerData3();
-  virtual ~ScnPlayerData3();
-
-  std::vector<ScnPlayerData3Sub> playerData;
-
-private:
-  uint32_t playerCount_;
   virtual void serializeObject(void);
 };
 

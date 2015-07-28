@@ -51,6 +51,8 @@ public:
 
   static uint32_t getSeparator(void);
 
+  std::string version;
+
   // Uncompressed Header:
 
   int32_t saveType;
@@ -69,17 +71,25 @@ public:
   /// aokts description: "Next unit ID to place" ??
   uint32_t nextUnitID;
 
-  ScnPlayerData1 playerData1;
+  ScnMainPlayerData playerData;
 
-  MapDescription map;
-  MapUnits units;
-  ScnPlayerData3 playerData3;
-  Trigger triggers;
+  ScnMap map;
 
-  std::string version;
+  std::vector<ScnPlayerResources> playerResources;
+  std::vector<ScnPlayerUnits> playerUnits;
+
+  std::vector<ScnMorePlayerData> players;
+
+  double triggerVersion;
+  int8_t objectivesStartingState;
+  std::vector<Trigger> triggers;
+  std::vector<int32_t> triggerDisplayOrder;
 
 private:
   uint32_t headerLength_; //starting after this
+  uint32_t playerCount1_;
+  uint32_t playerCount2_;
+  int32_t numTriggers_;
 
   Compressor compressor_;
 

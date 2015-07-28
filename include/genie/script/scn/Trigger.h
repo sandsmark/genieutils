@@ -96,11 +96,11 @@ private:
   virtual void serializeObject(void);
 };
 
-class TriggerSub : public ISerializable
+class Trigger : public ISerializable
 {
 public:
-  TriggerSub();
-  virtual ~TriggerSub();
+  Trigger();
+  virtual ~Trigger();
 
   int32_t startingState;
   int8_t looping;
@@ -118,22 +118,6 @@ public:
 private:
   int32_t numEffects_;
   int32_t numConditions_;
-  virtual void serializeObject(void);
-};
-
-class Trigger : public ISerializable
-{
-public:
-  Trigger();
-  virtual ~Trigger();
-
-  double triggerVersion;
-  int8_t objectivesStartingState;
-  std::vector<TriggerSub> triggers;
-  std::vector<int32_t> triggerDisplayOrder;
-
-private:
-  int32_t numTriggers_;
   virtual void serializeObject(void);
 };
 

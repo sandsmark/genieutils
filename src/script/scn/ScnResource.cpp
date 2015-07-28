@@ -26,104 +26,67 @@
 namespace genie
 {
 
-ScnMessagesCinematics::ScnMessagesCinematics()
+ScnPlayerResources::ScnPlayerResources()
 {
-  instructionsStringTable = 0;
-  hintsStringTable = 0;
-  victoryStringTable = 0;
-  lossStringTable = 0;
-  historyStringTable = 0;
-  scoutsStringTable = 0;
-
-  bitmapIncluded = 0;
-  bitmapWidth = 0;
-  bitmapHeigth = 0;
-  unknown1 = 1;
-
-  bitmapByteSize = 0;
-  bmpHeader = 0;
-  bitmap = 0;
+  ore = 0;
+  goods = 0;
+  popLimit = 75;
 }
 
-ScnMessagesCinematics::~ScnMessagesCinematics()
+ScnPlayerResources::~ScnPlayerResources()
 {
-  delete bitmap;
-  delete bmpHeader;
 }
 
-void ScnMessagesCinematics::serializeObject(void)
+void ScnPlayerResources::serializeObject(void)
 {
-  std::cout << "Resource start pos: " << tellg() << std::endl;
-
-  if (scn_plr_data_ver > 1.15)
+  serialize<float>(food);
+  serialize<float>(wood);
+  serialize<float>(gold);
+  serialize<float>(stone);
+  if (scn_internal_ver > 1.12)
   {
-    serialize<uint32_t>(instructionsStringTable);
-    serialize<uint32_t>(hintsStringTable);
-    serialize<uint32_t>(victoryStringTable);
-    serialize<uint32_t>(lossStringTable);
-    serialize<uint32_t>(historyStringTable);
-
-    if (scn_plr_data_ver > 1.21)
-      serialize<uint32_t>(scoutsStringTable);
+    serialize<float>(ore);
+    if (scn_internal_ver < 1.3)
+      serialize<float>(goods);
   }
-
-  serializeSizedString<uint16_t>(instructions);
-  if (scn_plr_data_ver > 1.1)
-  {
-    serializeSizedString<uint16_t>(hints);
-    serializeSizedString<uint16_t>(victory);
-    serializeSizedString<uint16_t>(loss);
-    serializeSizedString<uint16_t>(history);
-
-    if (scn_plr_data_ver > 1.21)
-      serializeSizedString<uint16_t>(scouts);
-  }
-
-  if (scn_plr_data_ver < 1.03)
-  {
-    serializeSizedString<uint16_t>(oldFilename1);
-    serializeSizedString<uint16_t>(oldFilename2);
-    serializeSizedString<uint16_t>(oldFilename3);
-  }
-
-  serializeSizedString<uint16_t>(pregameCinematicFilename);
-  serializeSizedString<uint16_t>(victoryCinematicFilename);
-  serializeSizedString<uint16_t>(lossCinematicFilename);
-  if (scn_plr_data_ver > 1.08)
-    serializeSizedString<uint16_t>(backgroundFilename);
-  if (scn_plr_data_ver > 1.0)
-    serializeBitmap();
+  if (scn_internal_ver > 1.13)
+    serialize<float>(popLimit); // game forces range from 25 to 200, defaults to 75
 }
 
-void ScnMessagesCinematics::serializeBitmap(void)
+ScnPlayerUnits::ScnPlayerUnits()
 {
-  serialize<uint32_t>(bitmapIncluded);
+}
 
-  serialize<uint32_t>(bitmapWidth);
-  serialize<uint32_t>(bitmapHeigth);
-  serialize<int16_t>(unknown1);
+ScnPlayerUnits::~ScnPlayerUnits()
+{
+}
 
-  if (bitmapIncluded == 0)
-    return;
+void ScnPlayerUnits::serializeObject(void)
+{
+  serializeSize<uint32_t>(unitCount_, units.size());
+  serializeSub<ScnUnit>(units, unitCount_);
+}
 
-  serialize<char>(&bmpHeader, 0x28);
-  if (isOperation(OP_READ))
-  {
-    bitmapByteSize = *reinterpret_cast<uint32_t *>(bmpHeader + 20);
+ScnUnit::ScnUnit()
+{
+}
 
-    bitmap = new char[bitmapByteSize];
+ScnUnit::~ScnUnit()
+{
+}
 
-    for (unsigned int i=0; i < 0x28; ++i)
-      bitmap[i] = bmpHeader[i];
-
-    char *bitmapStart = (bitmap + 0x28);
-
-    serialize<char>(&bitmapStart, bitmapByteSize - 0x28);
-  }
-  else if (isOperation(OP_WRITE))
-  {
-    serialize<char>(&bitmap, bitmapByteSize);
-  }
+void ScnUnit::serializeObject(void)
+{
+  serialize<float>(positionX);
+  serialize<float>(positionY);
+  serialize<float>(positionZ);
+  serialize<uint32_t>(spawnID);
+  serialize<uint16_t>(objectID); // units with hardcoded behaviour 102, 66, 59, 768, 420, 770, 691
+  serialize<uint8_t>(state);
+  serialize<float>(rotation);
+  if (scn_ver != "1.14")
+    serialize<uint16_t>(initAnimationFrame);
+  serialize<uint32_t>(garrisonedInID);
 }
 
 }

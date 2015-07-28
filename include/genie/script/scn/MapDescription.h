@@ -44,12 +44,12 @@ private:
   virtual void serializeObject(void);
 };
 
-/// Naming it MapDescription because it may be used elsewhere
-class MapDescription : public ISerializable
+/// Naming it ScnMap because it may be used elsewhere
+class ScnMap : public ISerializable
 {
 public:
-  MapDescription();
-  virtual ~MapDescription();
+  ScnMap();
+  virtual ~ScnMap();
 
   /// AoK caps at 256
   uint32_t width;
@@ -59,71 +59,6 @@ public:
 
   std::vector<MapTile> tiles;
 
-  virtual void serializeObject(void);
-};
-
-class ScnUnit : public ISerializable
-{
-public:
-  ScnUnit();
-  virtual ~ScnUnit();
-
-  float positionX;
-  float positionY;
-  float positionZ;
-  uint32_t spawnID;
-  uint16_t objectID;
-  uint8_t state;
-  float rotation;
-  uint16_t initAnimationFrame;
-  uint32_t garrisonedInID;
-
-private:
-  virtual void serializeObject(void);
-};
-
-class ScnPlayerResources : public ISerializable
-{
-public:
-  ScnPlayerResources();
-  virtual ~ScnPlayerResources();
-
-  float food;
-  float wood;
-  float gold;
-  float stone;
-  float ore;
-  float goods;
-  float popLimit;
-
-private:
-  virtual void serializeObject(void);
-};
-
-class ScnPlayerUnits : public ISerializable
-{
-public:
-  ScnPlayerUnits();
-  virtual ~ScnPlayerUnits();
-
-  std::vector<ScnUnit> units;
-
-private:
-  uint32_t unitCount_;
-  virtual void serializeObject(void);
-};
-
-class MapUnits : public ISerializable
-{
-public:
-  MapUnits();
-  virtual ~MapUnits();
-
-  std::vector<ScnPlayerResources> playerResources;
-  std::vector<ScnPlayerUnits> playerUnits;
-
-private:
-  uint32_t playerCount_;
   virtual void serializeObject(void);
 };
 
