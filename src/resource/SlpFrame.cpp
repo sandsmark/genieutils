@@ -89,7 +89,7 @@ sf::Image* SlpFrame::getPlayerColorMask(uint8_t player) const
   cmask->Create(width_, height_, sf::Color(0,0,0,0));
   
   for (std::vector<PlayerColorElement>::const_iterator 
-       it = player_color_mask_.begin(); it != player_color_mask_.end(); it++)
+       it = player_color_mask_.begin(); it != player_color_mask_.end(); ++it)
   {
     cmask->SetPixel(it->x, it->y, (*palette_)[it->index + ((player + 1) * 16)].toSfColor());
   }
@@ -150,13 +150,13 @@ void SlpFrame::load(std::istream &istr)
   
   // Skipping command offsets. They are not needed now but
   // they can be used for checking file integrity.
-  for (uint32_t i=0; i < height_; i++)
+  for (uint32_t i=0; i < height_; ++i)
   {
     read<uint32_t>();
   }
   
   // Each row has it's commands, 0x0F signals the end of a rows commands.
-  for (uint32_t row = 0; row < height_; row++)
+  for (uint32_t row = 0; row < height_; ++row)
   {
     //std::cout << row << ": " << std::hex << (int)(tellg() - file_pos_) << std::endl;
     uint8_t data = 0;
@@ -292,7 +292,7 @@ void SlpFrame::readEdges()
     left_edges_[row_cnt] = read<int16_t>();
     right_edges_[row_cnt] = read<int16_t>();
     
-    row_cnt ++;
+    ++row_cnt;
   }
  
 }
@@ -318,7 +318,7 @@ void SlpFrame::readPixelsToImage(uint32_t row, uint32_t &col,
     }
     //  player_color_mask_->SetPixel(col, row, palette_->getColorAt(pixel_index));
     
-    col ++;
+    ++col;
   }
  
 }
@@ -330,6 +330,7 @@ void SlpFrame::setPixelsToColor(uint32_t row, uint32_t &col,
 {
   uint32_t to_pos = col + count;
   
+  //log.info("Setting pixels to color [%u] [%u] [%u] [%u] [%u]", row, col, count, color_index, player_col);
   while (col < to_pos)
   {
     image_pixel_indexes_[row * width_ + col] = color_index;
@@ -345,7 +346,7 @@ void SlpFrame::setPixelsToColor(uint32_t row, uint32_t &col,
       player_color_mask_.push_back(pce);
     }
     
-    col ++;
+    ++col;
   }
 }
 

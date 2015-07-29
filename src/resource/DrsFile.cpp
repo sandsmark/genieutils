@@ -50,6 +50,7 @@ SlpFilePtr DrsFile::getSlpFile(uint32_t id)
 {
   SlpMap::iterator i = slp_map_.find(id);
   
+  log.info("Searching for slp with id [%u]", id);
   if (i != slp_map_.end())
   {
     i->second->readObject(*getIStream());   
@@ -123,7 +124,7 @@ void DrsFile::loadHeader()
     header_offset_ = read<uint32_t>(); 
     
     // Load table data
-    for (uint32_t i = 0; i < num_of_tables_; i++)
+    for (uint32_t i = 0; i < num_of_tables_; ++i)
     {
       table_types_.push_back(readString(4));
       read<uint32_t>(); // TODO: Unknown
@@ -131,9 +132,9 @@ void DrsFile::loadHeader()
     }
    
     // Load file headers
-    for (uint32_t i = 0; i < num_of_tables_; i++)
+    for (uint32_t i = 0; i < num_of_tables_; ++i)
     {
-      for (uint32_t j = 0; j < table_num_of_files_[i]; j++)
+      for (uint32_t j = 0; j < table_num_of_files_[i]; ++j)
       {
         uint32_t id = read<uint32_t>();
         uint32_t pos = read<uint32_t>();

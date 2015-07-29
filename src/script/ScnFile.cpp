@@ -116,6 +116,10 @@ void ScnFile::serializeObject(void)
   serializeSize<uint32_t>(playerCount1_, playerUnits.size());
   if (scn_internal_ver > 1.06)
     serializeSub<ScnPlayerResources>(playerResources, 8);
+  else
+  {
+    // A lot of data is read here.
+  }
   serializeSub<ScnPlayerUnits>(playerUnits, playerCount1_);
 
   serialize<uint32_t>(playerCount2_);
