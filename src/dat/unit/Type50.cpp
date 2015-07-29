@@ -26,7 +26,7 @@ namespace genie
 namespace unit
 {
 
-Type50::Type50()
+Type50::Type50() : GraphicDisplacement(GRAPHICDISPLACEMENT_SIZE)
 {
   DefaultArmor = 1000;
   TerRestrictionForDmgMultiplying = -1;

@@ -26,6 +26,7 @@ namespace genie
 //------------------------------------------------------------------------------
 TerrainBorder::TerrainBorder()
 {
+  Colors.resize(3);
   Enabled = 0;
   Random = 0;
   Name = "";

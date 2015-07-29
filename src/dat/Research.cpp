@@ -24,7 +24,7 @@ namespace genie
 {
 
 //------------------------------------------------------------------------------
-Research::Research()
+Research::Research() : ResourceCosts(RESOURCECOSTS_SIZE)
 {
   RequiredTechCount = 0;
   Civ = -1;

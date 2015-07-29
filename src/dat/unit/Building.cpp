@@ -26,7 +26,8 @@ namespace genie
 namespace unit
 {
 
-Building::Building()
+Building::Building() : Annexes(BUILDING_ANNEXES_SIZE),
+  LootingTable(LOOTABLE_RES_COUNT)
 {
   ConstructionGraphicID = -1;
   SnowGraphicID = -1;

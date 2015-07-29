@@ -26,7 +26,7 @@
 namespace genie
 {
 
-Graphic::Graphic()
+Graphic::Graphic() : Coordinates(COORDINATES_SIZE)
 {
   Name = "";
   Name2 = "";

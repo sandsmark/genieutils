@@ -23,7 +23,7 @@
 namespace genie
 {
 
-Civ::Civ()
+Civ::Civ() : UniqueUnitsResearches(SWUNIQUE_SIZE)
 {
   One = 1;
   Name = "";

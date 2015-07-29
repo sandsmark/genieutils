@@ -25,8 +25,10 @@ namespace genie
 
 int Terrain::customTerrainAmount;
 //------------------------------------------------------------------------------
-Terrain::Terrain()
+Terrain::Terrain() : CliffColors(), TerrainUnitID(TERRAIN_UNITS_SIZE),
+  TerrainUnitDensity(TERRAIN_UNITS_SIZE), TerrainUnitPriority(TERRAIN_UNITS_SIZE)
 {
+  Colors.resize(3);
   Unknown1 = 0;
   Enabled = 0;
   Random = 0;

@@ -24,7 +24,7 @@ namespace genie
 {
 
 //------------------------------------------------------------------------------
-UnitCommand::UnitCommand()
+UnitCommand::UnitCommand() : Graphics(GRAPHICS_SIZE, -1)
 {
   One = 1;
   ID = -1;
@@ -49,7 +49,6 @@ UnitCommand::UnitCommand()
   SelectionMode = 5;
   Unknown11 = 0;
   Unknown12 = 0;
-  Graphics.resize(GRAPHICS_SIZE, -1);
 }
 
 //------------------------------------------------------------------------------

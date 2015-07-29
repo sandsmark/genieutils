@@ -24,7 +24,7 @@ namespace genie
 {
 
 //------------------------------------------------------------------------------
-Unit::Unit()
+Unit::Unit() : ResourceStorages(RESOURCE_STORAGE_CNT)
 {
 //    Type 10+
 

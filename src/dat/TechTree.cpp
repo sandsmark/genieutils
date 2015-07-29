@@ -157,7 +157,8 @@ void TechTreeAge::serializeObject(void)
 }
 
 //------------------------------------------------------------------------------
-BuildingConnection::BuildingConnection()
+BuildingConnection::BuildingConnection() : UnitsTechsTotal(AGES),
+  UnitsTechsFirst(AGES)
 {
   ID = 0;
   Unknown1 = 2;

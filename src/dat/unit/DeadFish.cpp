@@ -26,7 +26,7 @@ namespace genie
 namespace unit
 {
 
-DeadFish::DeadFish()
+DeadFish::DeadFish() : RotationAngles(U16B_SIZE)
 {
   WalkingGraphic.first = -1;
   WalkingGraphic.second = -1;

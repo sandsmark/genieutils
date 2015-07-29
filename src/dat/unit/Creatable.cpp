@@ -26,7 +26,8 @@ namespace genie
 namespace unit
 {
 
-Creatable::Creatable()
+Creatable::Creatable() : ResourceCosts(RESOURCECOSTS_SIZE),
+  MissileSpawningArea(AMDBUNKNOWN_SIZE)
 {
   TrainTime = 0;
   TrainLocationID = -1;

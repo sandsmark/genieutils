@@ -176,17 +176,15 @@ void Map::serializeObject(void)
 }
 
 //------------------------------------------------------------------------------
-BaseZone::BaseZone()
+BaseZone::BaseZone() : Unknown5(UNKNOWN5_SIZE), Unknown8(UNKNOWN8_SIZE)
 {
   Unknown1 = 1;
   BaseTerrain = 0;
   SpacingBetweenPlayers = 2;
   Unknown4 = 7;
-  Unknown5.resize(UNKNOWN5_SIZE);
   Unknown5[1] = 1;
   Unknown6 = 0;
   Unknown7 = 0;
-  Unknown8.resize(UNKNOWN8_SIZE);
   Unknown8[0] = 100;
   Unknown8[1] = 1;
   StartAreaRadius = 10;
@@ -255,7 +253,7 @@ void MapTerrain::serializeObject(void)
 }
 
 //------------------------------------------------------------------------------
-MapUnit::MapUnit()
+MapUnit::MapUnit() : Unknown3(UNKNOWN3_SIZE)
 {
   Unit = -1;
   HostTerrain = -1;
