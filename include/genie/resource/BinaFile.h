@@ -19,8 +19,6 @@
 #ifndef GENIE_BINAFILE_H
 #define GENIE_BINAFILE_H
 
-#include <boost/shared_ptr.hpp>
-
 #include "genie/file/ISerializable.h"
 #include "PalFile.h"
 

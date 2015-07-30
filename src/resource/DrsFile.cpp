@@ -64,24 +64,6 @@ SlpFilePtr DrsFile::getSlpFile(uint32_t id)
 }
 
 //------------------------------------------------------------------------------
-SlpFile* DrsFile::getSlp(uint32_t id)
-{
-  SlpMap::iterator i = slp_map_.find(id);
-
-  log.info("Searching for slp with id [%u]", id);
-  if (i != slp_map_.end())
-  {
-    i->second->readObject(*getIStream());
-    return (i->second).get();
-  }
-  else
-  {
-    log.warn("No slp file with id [%d] found!", id);
-    return new SlpFile();
-  }
-}
-
-//------------------------------------------------------------------------------
 PalFilePtr DrsFile::getPalFile(uint32_t id)
 {
   BinaMap::iterator i = bina_map_.find(id);

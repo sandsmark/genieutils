@@ -58,7 +58,6 @@ public:
   /// @return slp file pointer or "empty" shared pointer if not found
   //
   SlpFilePtr getSlpFile(uint32_t id);
-  SlpFile *getSlp(uint32_t id);
 
   //----------------------------------------------------------------------------
   /// Get a shared pointer to a color palette file.
