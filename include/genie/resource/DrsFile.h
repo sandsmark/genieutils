@@ -1,6 +1,7 @@
 /*
     <one line to give the program's name and a brief idea of what it does.>
     Copyright (C) 2011  Armin Preiml
+    Copyright (C) 2015  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -30,7 +31,7 @@
 
 namespace genie
 {
-  
+
 class Logger;
 
 //------------------------------------------------------------------------------
@@ -44,20 +45,21 @@ public:
   /// Default Constructor.
   //
   DrsFile();
-  
+
   //----------------------------------------------------------------------------
   /// Destructor
   //
   virtual ~DrsFile();
-    
+
   //----------------------------------------------------------------------------
   /// Get a shared pointer to a slp file.
   ///
   /// @param id resource id
   /// @return slp file pointer or "empty" shared pointer if not found
   //
-  SlpFilePtr getSlpFile(uint32_t id);  
-  
+  SlpFilePtr getSlpFile(uint32_t id);
+  SlpFile *getSlp(uint32_t id);
+
   //----------------------------------------------------------------------------
   /// Get a shared pointer to a color palette file.
   ///
@@ -65,36 +67,36 @@ public:
   /// @return bina file pointer or "empty" shared pointer if not found
   //
   PalFilePtr getPalFile(uint32_t id);
-  
+
 private:
   static Logger &log;
-  
+
   bool header_loaded_;
-  
+
   uint32_t num_of_tables_;
   uint32_t header_offset_;
-  
+
   std::vector<std::string> table_types_;
   std::vector<uint32_t> table_num_of_files_;
-  
+
   typedef std::map<uint32_t, SlpFilePtr> SlpMap;
   SlpMap slp_map_;
-  
+
   typedef std::map<uint32_t, BinaFilePtr> BinaMap;
   BinaMap bina_map_;
-  
+
   unsigned int getCopyRightHeaderSize(void) const;
-  
+
   std::string getSlpTableHeader(void) const;
   std::string getBinaryTableHeader(void) const;
-  
+
    //----------------------------------------------------------------------------
   /// Loads table and resource headers.
   //
   void loadHeader();
-  
+
   virtual void serializeObject(void);
-  
+
 };
 
 }

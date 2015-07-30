@@ -1,6 +1,7 @@
 /*
     <one line to give the program's name and a brief idea of what it does.>
     Copyright (C) 2011  Armin Preiml
+    Copyright (C) 2015  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -49,11 +50,10 @@ DrsFile::~DrsFile()
 SlpFilePtr DrsFile::getSlpFile(uint32_t id)
 {
   SlpMap::iterator i = slp_map_.find(id);
-  
-  log.info("Searching for slp with id [%u]", id);
+
   if (i != slp_map_.end())
   {
-    i->second->readObject(*getIStream());   
+    i->second->readObject(*getIStream());
     return i->second;
   }
   else
@@ -64,10 +64,28 @@ SlpFilePtr DrsFile::getSlpFile(uint32_t id)
 }
 
 //------------------------------------------------------------------------------
+SlpFile* DrsFile::getSlp(uint32_t id)
+{
+  SlpMap::iterator i = slp_map_.find(id);
+
+  log.info("Searching for slp with id [%u]", id);
+  if (i != slp_map_.end())
+  {
+    i->second->readObject(*getIStream());
+    return (i->second).get();
+  }
+  else
+  {
+    log.warn("No slp file with id [%d] found!", id);
+    return new SlpFile();
+  }
+}
+
+//------------------------------------------------------------------------------
 PalFilePtr DrsFile::getPalFile(uint32_t id)
 {
   BinaMap::iterator i = bina_map_.find(id);
-  
+
   if (i != bina_map_.end())
   {
     return i->second->readPalFile(getIStream());
@@ -78,7 +96,7 @@ PalFilePtr DrsFile::getPalFile(uint32_t id)
     return PalFilePtr();
   }
 }
- 
+
 //------------------------------------------------------------------------------
 void DrsFile::serializeObject(void)
 {
@@ -110,19 +128,19 @@ std::string DrsFile::getBinaryTableHeader(void) const
 void DrsFile::loadHeader()
 {
   if (header_loaded_)
-    log.warn("Trying to load header again!"); 
+    log.warn("Trying to load header again!");
   else
   {
     string copy_right = readString(getCopyRightHeaderSize());
-    
+
     string version = readString(4);
-    
+
     //File type
     string file_type = readString(12);
-    
+
     num_of_tables_ = read<uint32_t>();
-    header_offset_ = read<uint32_t>(); 
-    
+    header_offset_ = read<uint32_t>();
+
     // Load table data
     for (uint32_t i = 0; i < num_of_tables_; ++i)
     {
@@ -130,7 +148,7 @@ void DrsFile::loadHeader()
       read<uint32_t>(); // TODO: Unknown
       table_num_of_files_.push_back(read<uint32_t>());
     }
-   
+
     // Load file headers
     for (uint32_t i = 0; i < num_of_tables_; ++i)
     {
@@ -139,26 +157,26 @@ void DrsFile::loadHeader()
         uint32_t id = read<uint32_t>();
         uint32_t pos = read<uint32_t>();
         /*uint32_t len =*/ read<uint32_t>();
-                
+
         if (table_types_[i].compare(getSlpTableHeader()) == 0)
         {
           SlpFilePtr slp(new SlpFile());
           slp->setInitialReadPosition(pos);
-          
+
           slp_map_[id] = slp;
         }
         else if (table_types_[i].compare(getBinaryTableHeader()) == 0)
         {
           BinaFilePtr bina(new BinaFile());
           bina->setInitialReadPosition(pos);
-          
+
           bina_map_[id] = bina;
         }
         // else other TODO: Sounds
-        
+
       }
     }
-      
+
     header_loaded_ = true;
   }
 }

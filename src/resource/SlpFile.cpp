@@ -1,6 +1,7 @@
 /*
     <one line to give the program's name and a brief idea of what it does.>
     Copyright (C) 2011  Armin Preiml
+    Copyright (C) 2015  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -33,6 +34,7 @@ Logger& SlpFile::log = Logger::getLogger("genie.SlpFile");
 SlpFile::SlpFile() : IFile()
 {
   loaded_ = false;
+  num_frames_ = 0;
 }
 
 //------------------------------------------------------------------------------
@@ -53,9 +55,9 @@ void SlpFile::serializeObject(void)
 void SlpFile::loadFile()
 {
   readHeader();
-  
+
   frames_.resize(num_frames_);
-  
+
   // Load frame headers
   for (uint32_t i = 0; i < num_frames_; ++i)
   {
@@ -69,7 +71,7 @@ void SlpFile::loadFile()
   {
     (*it)->load(*getIStream());
   }
-  
+
   loaded_ = true;
 }
 
@@ -78,10 +80,10 @@ void SlpFile::unload(void )
 {
   if (!loaded_)
     log.warn("Trying to unload a not loaded slpfile!");
-  
+
   frames_.clear();
   num_frames_ = 0;
-  
+
   loaded_ = false;
 }
 
@@ -111,7 +113,7 @@ SlpFramePtr SlpFile::getFrame(uint32_t frame)
     log.error("Trying to get frame [%u] from index out of range!", frame);
     throw std::out_of_range("getFrame()");
   }
-  
+
   return frames_[frame];
 }
 
@@ -121,7 +123,7 @@ void SlpFile::readHeader()
 {
   std::string version = readString(4);
   num_frames_ = read<uint32_t>();
-  
+
   std::string comment = readString(24);
 }
 
