@@ -2,6 +2,7 @@
     genieutils - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
+    Copyright (C) 2015  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -33,43 +34,48 @@ IFile::~IFile()
 {
   fileIn_.close();
 }
-  
-//------------------------------------------------------------------------------
-void IFile::setFileName(const char *fileName)
-{
-  fileName_ = std::string(fileName);
-}
-  
-//------------------------------------------------------------------------------
-const char *IFile::getFileName(void) const
-{
-  return fileName_.c_str();
-}
-  
-//------------------------------------------------------------------------------
-void IFile::load() throw (std::ios_base::failure)
-{
-  if (fileName_.empty())
-    throw std::ios_base::failure("Load: File name not set");
-  
-  load(fileName_.c_str());
-}
 
 //------------------------------------------------------------------------------
-void IFile::load(const char *fileName) throw (std::ios_base::failure)
+void IFile::freelock(void)
 {
   if (loaded_)
   {
     unload();
     loaded_ = false;
   }
-  
+  fileIn_.close();
+}
+
+//------------------------------------------------------------------------------
+void IFile::setFileName(const char *fileName)
+{
   fileName_ = std::string(fileName);
-  
-  fileIn_.close(); //TODO: necessary?
-  
+}
+
+//------------------------------------------------------------------------------
+const char *IFile::getFileName(void) const
+{
+  return fileName_.c_str();
+}
+
+//------------------------------------------------------------------------------
+void IFile::load() throw (std::ios_base::failure)
+{
+  if (fileName_.empty())
+    throw std::ios_base::failure("Load: File name not set");
+
+  load(fileName_.c_str());
+}
+
+//------------------------------------------------------------------------------
+void IFile::load(const char *fileName) throw (std::ios_base::failure)
+{
+  freelock();
+
+  fileName_ = std::string(fileName);
+
   fileIn_.open(fileName, std::ios::binary | std::ios::in);
-  
+
   if (fileIn_.fail())
   {
     fileIn_.close();
@@ -87,7 +93,7 @@ void IFile::save(void ) throw (std::ios_base::failure)
 {
   if (fileName_.empty())
     throw std::ios_base::failure("Save: File name not set");
-  
+
   saveAs(fileName_.c_str());
 }
 
@@ -95,18 +101,18 @@ void IFile::save(void ) throw (std::ios_base::failure)
 void IFile::saveAs(const char *fileName) throw (std::ios_base::failure)
 {
   std::ofstream file;
-  
+
   file.open(fileName, std::ofstream::binary);
-  
+
   if (file.fail())
   {
     file.close();
-    throw std::ios_base::failure("Cant write to file: \"" + 
+    throw std::ios_base::failure("Cant write to file: \"" +
                                 std::string(fileName) + "\"");
   }
   else
     writeObject(file);
-  
+
   file.close();
 }
 
@@ -115,5 +121,5 @@ void IFile::saveAs(const char *fileName) throw (std::ios_base::failure)
 void IFile::unload(void)
 {
 }
-  
+
 }
