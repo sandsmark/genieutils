@@ -276,6 +276,18 @@ protected:
   }
 
   template <typename T>
+  void serializeForcedString(std::string &str)
+  {
+    T size;
+    if (isOperation(OP_WRITE))
+    {
+      size = str.size() + 1;
+    }
+    serialize<T>(size);
+    serialize<std::string>(str, size);
+  }
+
+  template <typename T>
   void serializeSizedStrings(std::vector<std::string> &vec, size_t size,
                              bool cString = true)
   {

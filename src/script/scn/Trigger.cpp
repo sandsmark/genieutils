@@ -42,8 +42,8 @@ void Trigger::serializeObject(void)
   serialize<int32_t>(descriptionOrder);
   if (scn_trigger_ver > 1.5)
     serialize<int32_t>(startingTime);
-  serializeSizedString<int32_t>(description, false);
-  serializeSizedString<int32_t>(name, false);
+  serializeForcedString<int32_t>(description);
+  serializeForcedString<int32_t>(name);
   serializeSize<int32_t>(numEffects_, effects.size());
   serializeSub<TriggerEffect>(effects, numEffects_);
   if (scn_trigger_ver > 1.2)
@@ -87,7 +87,7 @@ void TriggerCondition::serializeObject(void)
     serialize<int32_t>(usedVariables);
   else usedVariables = 13;
 
-  if (isOperation(OP_WRITE)) // Automatic compression.
+  if (false && isOperation(OP_WRITE)) // Automatic compression.
   {
     usedVariables = 16;
     int32_t *browser = &aiSignal;
@@ -145,7 +145,7 @@ void TriggerEffect::serializeObject(void)
     serialize<int32_t>(usedVariables);
   else usedVariables = 16;
 
-  if (isOperation(OP_WRITE)) // Automatic compression.
+  if (false && isOperation(OP_WRITE)) // Automatic compression.
   {
     usedVariables = 23;
     int32_t *browser = &instructionPanel;
@@ -159,8 +159,8 @@ void TriggerEffect::serializeObject(void)
 
   int32_t *start = &aiGoal;
   serialize<int32_t>(&start, usedVariables);
-  serializeSizedString<int32_t>(message, false);
-  serializeSizedString<int32_t>(soundFile, false);
+  serializeForcedString<int32_t>(message);
+  serializeForcedString<int32_t>(soundFile);
   if (scn_trigger_ver > 1.1 && usedVariables >= 5 && setObjects > 0)
     serialize<int32_t>(selectedUnits, setObjects);
 }

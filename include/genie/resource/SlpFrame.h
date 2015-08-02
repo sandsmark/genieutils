@@ -21,6 +21,7 @@
 #define GENIE_SLPFRAME_H
 
 #include "genie/file/ISerializable.h"
+#include "genie/util/Logger.h"
 
 #include <istream>
 #include <vector>
