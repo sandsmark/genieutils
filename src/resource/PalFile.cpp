@@ -58,6 +58,12 @@ Color& PalFile::operator[](uint16_t index)
 }
 
 //------------------------------------------------------------------------------
+std::vector<Color> PalFile::getColors(void) const
+{
+  return colors_;
+}
+
+//------------------------------------------------------------------------------
 size_t PalFile::size(void) const
 {
   return colors_.size();

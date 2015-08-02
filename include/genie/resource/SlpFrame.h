@@ -131,6 +131,7 @@ public:
   int32_t getHotspotY() const;
  
 private:
+  static Logger &log;
   
   std::streampos slp_file_pos_;
  

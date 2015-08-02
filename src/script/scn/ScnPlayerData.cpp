@@ -69,7 +69,7 @@ void ScnMainPlayerData::serializeObject(void)
   if (scn_plr_data_ver > 1.06)
     serialize<uint8_t>(conquestVictory);
   serialize<ISerializable>(unknownData);
-  serializeSizedString<uint16_t>(originalFileName);
+  serializeSizedString<uint16_t>(originalFileName, false);
 
   if (scn_plr_data_ver > 1.15)
   {
@@ -83,37 +83,37 @@ void ScnMainPlayerData::serializeObject(void)
       serialize<uint32_t>(scoutsStringTable);
   }
 
-  serializeSizedString<uint16_t>(instructions);
+  serializeSizedString<uint16_t>(instructions, false);
   if (scn_plr_data_ver > 1.1)
   {
-    serializeSizedString<uint16_t>(hints);
-    serializeSizedString<uint16_t>(victory);
-    serializeSizedString<uint16_t>(loss);
-    serializeSizedString<uint16_t>(history);
+    serializeSizedString<uint16_t>(hints, false);
+    serializeSizedString<uint16_t>(victory, false);
+    serializeSizedString<uint16_t>(loss, false);
+    serializeSizedString<uint16_t>(history, false);
 
     if (scn_plr_data_ver > 1.21)
-      serializeSizedString<uint16_t>(scouts);
+      serializeSizedString<uint16_t>(scouts, false);
   }
 
   if (scn_plr_data_ver < 1.03)
   {
-    serializeSizedString<uint16_t>(oldFilename1);
-    serializeSizedString<uint16_t>(oldFilename2);
-    serializeSizedString<uint16_t>(oldFilename3);
+    serializeSizedString<uint16_t>(oldFilename1, false);
+    serializeSizedString<uint16_t>(oldFilename2, false);
+    serializeSizedString<uint16_t>(oldFilename3, false);
   }
 
-  serializeSizedString<uint16_t>(pregameCinematicFilename);
-  serializeSizedString<uint16_t>(victoryCinematicFilename);
-  serializeSizedString<uint16_t>(lossCinematicFilename);
+  serializeSizedString<uint16_t>(pregameCinematicFilename, false);
+  serializeSizedString<uint16_t>(victoryCinematicFilename, false);
+  serializeSizedString<uint16_t>(lossCinematicFilename, false);
   if (scn_plr_data_ver > 1.08)
-    serializeSizedString<uint16_t>(backgroundFilename);
+    serializeSizedString<uint16_t>(backgroundFilename, false);
   if (scn_plr_data_ver > 1.0)
     serializeBitmap();
 
-  serializeSizedStrings<uint16_t>(aiNames, 16);
-  serializeSizedStrings<uint16_t>(cityNames, 16);
+  serializeSizedStrings<uint16_t>(aiNames, 16, false);
+  serializeSizedStrings<uint16_t>(cityNames, 16, false);
   if (scn_plr_data_ver > 1.07)
-    serializeSizedStrings<uint16_t>(personalityNames, 16);
+    serializeSizedStrings<uint16_t>(personalityNames, 16, false);
   serializeSub(aiFiles, 16);
   if (scn_plr_data_ver > 1.1)
     serialize<uint8_t>(aiTypes, 16);
@@ -371,7 +371,7 @@ ScnMorePlayerData::~ScnMorePlayerData()
 
 void ScnMorePlayerData::serializeObject(void)
 {
-  serializeSizedString<uint16_t>(playerName);
+  serializeSizedString<uint16_t>(playerName, false);
   serialize<float>(initCameraX);
   serialize<float>(initCameraY);
   serialize<int16_t>(initCameraX2);

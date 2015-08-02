@@ -59,6 +59,7 @@ public:
 
   std::vector<MapTile> tiles;
 
+private:
   virtual void serializeObject(void);
 };
 

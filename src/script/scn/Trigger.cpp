@@ -42,8 +42,8 @@ void Trigger::serializeObject(void)
   serialize<int32_t>(descriptionOrder);
   if (scn_trigger_ver > 1.5)
     serialize<int32_t>(startingTime);
-  serializeSizedString<int32_t>(description);
-  serializeSizedString<int32_t>(name);
+  serializeSizedString<int32_t>(description, false);
+  serializeSizedString<int32_t>(name, false);
   serializeSize<int32_t>(numEffects_, effects.size());
   serializeSub<TriggerEffect>(effects, numEffects_);
   if (scn_trigger_ver > 1.2)
@@ -159,8 +159,8 @@ void TriggerEffect::serializeObject(void)
 
   int32_t *start = &aiGoal;
   serialize<int32_t>(&start, usedVariables);
-  serializeSizedString<int32_t>(message);
-  serializeSizedString<int32_t>(soundFile);
+  serializeSizedString<int32_t>(message, false);
+  serializeSizedString<int32_t>(soundFile, false);
   if (scn_trigger_ver > 1.1 && usedVariables >= 5 && setObjects > 0)
     serialize<int32_t>(selectedUnits, setObjects);
 }

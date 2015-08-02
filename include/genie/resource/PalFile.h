@@ -57,6 +57,7 @@ public:
   /// @return color object
   //
   Color& operator[](uint16_t index);
+  std::vector<Color> getColors(void) const;
   
   //----------------------------------------------------------------------------
   /// Number of colors stored in this palette.

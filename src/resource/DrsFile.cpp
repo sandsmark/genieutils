@@ -53,6 +53,7 @@ SlpFilePtr DrsFile::getSlpFile(uint32_t id)
 
   if (i != slp_map_.end())
   {
+    log.info("Loading SLP file [%d]", id);
     i->second->readObject(*getIStream());
     return i->second;
   }

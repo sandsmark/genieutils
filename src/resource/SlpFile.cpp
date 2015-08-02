@@ -48,29 +48,39 @@ void SlpFile::serializeObject(void)
   if (isOperation(OP_READ) && !loaded_)
   {
     loadFile();
+    log.info("Loaded SLP file");
   }
 }
 
 //------------------------------------------------------------------------------
 void SlpFile::loadFile()
 {
+  log.info("Header beg");
   readHeader();
+  log.info("Header end");
 
   frames_.resize(num_frames_);
 
   // Load frame headers
   for (uint32_t i = 0; i < num_frames_; ++i)
   {
+    log.info("Frame [%d] info beg", i);
     frames_[i] = SlpFramePtr(new SlpFrame());
     frames_[i]->loadHeader(*getIStream());
     frames_[i]->setSlpFilePos(getInitialReadPosition());
   }
+  log.info("Frame info end");
 
   // Load frame content
-  for (FrameVector::iterator it = frames_.begin(); it != frames_.end(); ++it)
+  unsigned int fid = 0;
+  //for (FrameVector::iterator it = frames_.begin(); it != frames_.end(); ++it)
+  for (uint32_t i = 0; i < num_frames_; ++i)
   {
-    (*it)->load(*getIStream());
+    log.info("Frame [%d] content beg", fid++);
+    //(*it)->load(*getIStream());
+    frames_[i]->load(*getIStream());
   }
+  log.info("Frame content end");
 
   loaded_ = true;
 }

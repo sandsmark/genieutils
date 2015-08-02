@@ -29,6 +29,8 @@
 namespace genie
 {
 
+Logger& SlpFrame::log = Logger::getLogger("genie.SlpFrame");
+
 //------------------------------------------------------------------------------
 SlpFrame::SlpFrame()
 { 
@@ -146,18 +148,24 @@ void SlpFrame::load(std::istream &istr)
   image_pixel_indexes_ = new uint8_t[width_ * height_];
   std::fill_n(image_pixel_indexes_, width_ * height_, transparent_index_);
   
+  log.info("Edges beg [%d]", tellg() - slp_file_pos_);
   readEdges();
+  log.info("Edges end [%d]", tellg() - slp_file_pos_);
   
   // Skipping command offsets. They are not needed now but
   // they can be used for checking file integrity.
+  log.info("Command offsets beg [%d]", tellg() - slp_file_pos_);
   for (uint32_t i=0; i < height_; ++i)
   {
     read<uint32_t>();
   }
+  log.info("Command offsets end [%d]", tellg() - slp_file_pos_);
   
   // Each row has it's commands, 0x0F signals the end of a rows commands.
   for (uint32_t row = 0; row < height_; ++row)
   {
+    log.info("Handling row [%d] commands beg [%d]", row, tellg() - slp_file_pos_);
+    if (0x8000 == left_edges_[row] || 0x8000 == right_edges_[row]) continue;
     //std::cout << row << ": " << std::hex << (int)(tellg() - file_pos_) << std::endl;
     uint8_t data = 0;
     uint32_t pix_pos = left_edges_[row]; //pos where to start putting pixels
@@ -267,8 +275,8 @@ void SlpFrame::load(std::istream &istr)
 
         break;
         default:
-          std::cerr << "SlpFrame: Unknown cmd at " << std::hex << 
-                  (int)(tellg() - slp_file_pos_)<< ": " << (int) data << std::endl;
+          std::cerr << "SlpFrame: Unknown cmd at " << std::hex << std::endl;
+                  //(int)(tellg() - slp_file_pos_)<< ": " << (int) data << std::endl;
           break;
       }
       
@@ -280,14 +288,16 @@ void SlpFrame::load(std::istream &istr)
 //------------------------------------------------------------------------------
 void SlpFrame::readEdges()
 {
-  std::streampos cmd_table_pos = slp_file_pos_ + std::streampos(cmd_table_offset_);
+  //std::streampos cmd_table_pos = slp_file_pos_ + std::streampos(cmd_table_offset_);
   
+  log.info("Edges height [%d]", height_);
   left_edges_.resize(height_);
   right_edges_.resize(height_);
   
   uint32_t row_cnt = 0;
   
-  while (tellg() < cmd_table_pos)
+  //while (tellg() < cmd_table_pos)
+  while (row_cnt < height_)
   {
     left_edges_[row_cnt] = read<int16_t>();
     right_edges_[row_cnt] = read<int16_t>();

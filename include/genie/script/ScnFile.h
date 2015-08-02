@@ -34,6 +34,19 @@
 namespace genie
 {
 
+class ScnIncludedFile : public ISerializable
+{
+public:
+  ScnIncludedFile();
+  virtual ~ScnIncludedFile();
+
+  std::string perFileName;
+  std::string someString;
+
+private:
+  virtual void serializeObject(void);
+};
+
 //------------------------------------------------------------------------------
 /// Class to read and write scenario files (.scn and .scx). The version of the
 /// game will be auto-detected on read.
@@ -85,11 +98,17 @@ public:
   std::vector<Trigger> triggers;
   std::vector<int32_t> triggerDisplayOrder;
 
+  uint32_t includeFiles;
+  uint32_t perErrorIncluded;
+  std::vector<uint32_t> perError;
+  std::vector<ScnIncludedFile> includedFiles;
+
 private:
   uint32_t headerLength_; //starting after this
   uint32_t playerCount1_;
   uint32_t playerCount2_;
-  int32_t numTriggers_;
+  uint32_t numTriggers_;
+  uint32_t fileCount_;
 
   Compressor compressor_;
 

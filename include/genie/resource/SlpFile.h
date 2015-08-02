@@ -83,6 +83,7 @@ public:
   SlpFramePtr getFrame(uint32_t frame=0);
   
 private: 
+  static Logger &log;
   
   bool loaded_;
   
@@ -94,7 +95,6 @@ private:
   typedef std::vector<SlpFramePtr> FrameVector;
   FrameVector frames_;
   
-  static Logger &log;
   
   //----------------------------------------------------------------------------
   virtual void serializeObject(void);

@@ -131,12 +131,39 @@ void ScnFile::serializeObject(void)
 
   if (scn_trigger_ver > 1.4)
     serialize<int8_t>(objectivesStartingState);
-  serializeSize<int32_t>(numTriggers_, triggers.size());
+  serializeSize<uint32_t>(numTriggers_, triggers.size());
   serializeSub<Trigger>(triggers, numTriggers_);
   if (scn_trigger_ver > 1.3)
     serialize<int32_t>(triggerDisplayOrder, numTriggers_);
 
+  if (scn_ver == "1.21" || scn_ver == "1.20" || scn_ver == "1.19" || scn_ver == "1.18")
+  {
+    serialize<uint32_t>(includeFiles);
+    serialize<uint32_t>(perErrorIncluded);
+    if (perErrorIncluded)
+      serialize<uint32_t>(perError, 99);
+    if (includeFiles)
+    {
+      serializeSize<uint32_t>(fileCount_, includedFiles.size());
+      serializeSub<ScnIncludedFile>(includedFiles, fileCount_);
+    }
+  }
+
   compressor_.endCompression();
+}
+
+ScnIncludedFile::ScnIncludedFile()
+{
+}
+
+ScnIncludedFile::~ScnIncludedFile()
+{
+}
+
+void ScnIncludedFile::serializeObject(void)
+{
+    serializeSizedString<uint32_t>(perFileName, false);
+    serializeSizedString<uint32_t>(someString, false);
 }
 
 //------------------------------------------------------------------------------
