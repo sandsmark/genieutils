@@ -92,7 +92,7 @@ void ScnFile::serializeObject(void)
   {
     serialize<int32_t>(saveType);
     serialize<uint32_t>(lastSaveTime);
-    serializeSizedString<uint32_t>(scenarioInstructions);
+    serializeForcedString<uint32_t>(scenarioInstructions);
     serialize<uint32_t>(victoryType);
     serialize<uint32_t>(playerCount);
   }

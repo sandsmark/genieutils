@@ -371,7 +371,7 @@ ScnMorePlayerData::~ScnMorePlayerData()
 
 void ScnMorePlayerData::serializeObject(void)
 {
-  serializeSizedString<uint16_t>(playerName);
+  serializeForcedString<uint16_t>(playerName);
   serialize<float>(initCameraX);
   serialize<float>(initCameraY);
   serialize<int16_t>(initCameraX2);
