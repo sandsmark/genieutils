@@ -84,20 +84,21 @@ void TriggerCondition::serializeObject(void)
 {
   serialize<int32_t>(type);
   if (scn_trigger_ver > 1.0)
-    serialize<int32_t>(usedVariables);
-  else usedVariables = 13;
-
-  if (false && isOperation(OP_WRITE)) // Automatic compression.
   {
-    usedVariables = 16;
-    int32_t *browser = &aiSignal;
-    while (usedVariables > 0)
+    if (isOperation(OP_WRITE)) // Automatic compression.
     {
-      if (*browser != -1) break;
-      --usedVariables;
-      --browser;
+      usedVariables = 16;
+      int32_t *browser = &aiSignal;
+      while (usedVariables > 0)
+      {
+        if (*browser != -1) break;
+        --usedVariables;
+        --browser;
+      }
     }
+    serialize<int32_t>(usedVariables);
   }
+  else usedVariables = 13;
 
   int32_t *start = &amount;
   serialize<int32_t>(&start, usedVariables);
@@ -142,20 +143,21 @@ void TriggerEffect::serializeObject(void)
 {
   serialize<int32_t>(type);
   if (scn_trigger_ver > 1.0)
-    serialize<int32_t>(usedVariables);
-  else usedVariables = 16;
-
-  if (false && isOperation(OP_WRITE)) // Automatic compression.
   {
-    usedVariables = 23;
-    int32_t *browser = &instructionPanel;
-    while (usedVariables > 0)
+    if (isOperation(OP_WRITE)) // Automatic compression.
     {
-      if (*browser != -1) break;
-      --usedVariables;
-      --browser;
+      usedVariables = 23;
+      int32_t *browser = &instructionPanel;
+      while (usedVariables > 0)
+      {
+        if (*browser != -1) break;
+        --usedVariables;
+        --browser;
+      }
     }
+    serialize<int32_t>(usedVariables);
   }
+  else usedVariables = 16;
 
   int32_t *start = &aiGoal;
   serialize<int32_t>(&start, usedVariables);

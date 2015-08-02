@@ -88,6 +88,10 @@ uint32_t ScnFile::getSeparator(void)
 void ScnFile::serializeObject(void)
 {
   serializeVersion();
+  if (isOperation(OP_WRITE))
+  {
+    headerLength_ = 21 + scenarioInstructions.size();
+  }
   serialize<uint32_t>(headerLength_); // Used in AoE 1 lobby
   {
     serialize<int32_t>(saveType);
