@@ -145,6 +145,7 @@ void SlpFrame::load(std::istream &istr)
   img_data_.alpha_channel.resize(width_ * height_, 0);
 
   uint16_t integrity = 0;
+  istr.seekg(slp_file_pos_ + std::streampos(outline_table_offset_));
   //log.info("Edges beg [%u]", tellg() - slp_file_pos_);
   readEdges(integrity);
   //log.info("Edges end [%u]", tellg() - slp_file_pos_);
@@ -153,6 +154,7 @@ void SlpFrame::load(std::istream &istr)
   // they can be used for checking file integrity.
   //log.info("Command offsets beg [%u]", tellg() - slp_file_pos_);
   std::vector<uint32_t> cmd_offsets(height_);
+  istr.seekg(slp_file_pos_ + std::streampos(cmd_table_offset_));
   for (uint32_t i=0; i < height_; ++i)
   {
     uint32_t cmd_offset = read<uint32_t>();
@@ -348,7 +350,6 @@ void SlpFrame::setPixelsToShadow(uint32_t row, uint32_t &col, uint32_t count)
   uint32_t to_pos = col + count;
   while (col < to_pos)
   {
-    img_data_.alpha_channel[row * width_ + col] = 127;
     SlpFrameData::XY xy = {col, row};
     img_data_.shadow_mask.push_back(xy);
     ++col;
@@ -361,8 +362,6 @@ void SlpFrame::setPixelsToOutline(uint32_t row, uint32_t &col, uint32_t count)
   uint32_t to_pos = col + count;
   while (col < to_pos)
   {
-    img_data_.pixel_indexes[row * width_ + col] = 242;
-    img_data_.alpha_channel[row * width_ + col] = 127;
     SlpFrameData::XY xy = {col, row};
     img_data_.outline_mask.push_back(xy);
     ++col;
