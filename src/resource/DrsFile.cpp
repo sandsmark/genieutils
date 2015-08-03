@@ -53,13 +53,13 @@ SlpFilePtr DrsFile::getSlpFile(uint32_t id)
 
   if (i != slp_map_.end())
   {
-    //log.info("Loading SLP file [%d]", id);
+    //log.info("Loading SLP file [%u]", id);
     i->second->readObject(*getIStream());
     return i->second;
   }
   else
   {
-    log.warn("No slp file with id [%d] found!", id);
+    log.warn("No slp file with id [%u] found!", id);
     return SlpFilePtr();
   }
 }
@@ -75,7 +75,7 @@ PalFilePtr DrsFile::getPalFile(uint32_t id)
   }
   else
   {
-    log.warn("No bina file with id [%d] found!", id);
+    log.warn("No bina file with id [%u] found!", id);
     return PalFilePtr();
   }
 }

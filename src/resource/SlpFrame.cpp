@@ -139,6 +139,9 @@ void SlpFrame::loadHeader(std::istream &istr)
 
   hotspot_x_ = read<int32_t>();
   hotspot_y_ = read<int32_t>();
+  /*log.info("Frame header [%u], [%u], [%u], [%u], [%u], [%u], [%d], [%d], ",
+    cmd_table_offset_, outline_table_offset_, palette_offset_, properties_,
+    width_, height_, hotspot_x_, hotspot_y_);*/
 }
 
 //------------------------------------------------------------------------------
@@ -149,32 +152,45 @@ void SlpFrame::load(std::istream &istr)
   image_pixel_indexes_ = new uint8_t[width_ * height_];
   std::fill_n(image_pixel_indexes_, width_ * height_, transparent_index_);
 
-  //log.info("Edges beg [%d]", tellg() - slp_file_pos_);
-  readEdges();
-  //log.info("Edges end [%d]", tellg() - slp_file_pos_);
+  uint16_t integrity = 0;
+  //log.info("Edges beg [%u]", tellg() - slp_file_pos_);
+  readEdges(integrity);
+  //log.info("Edges end [%u]", tellg() - slp_file_pos_);
 
   // Skipping command offsets. They are not needed now but
   // they can be used for checking file integrity.
-  //log.info("Command offsets beg [%d]", tellg() - slp_file_pos_);
+  //log.info("Command offsets beg [%u]", tellg() - slp_file_pos_);
+  std::vector<uint32_t> cmd_offsets(height_);
   for (uint32_t i=0; i < height_; ++i)
   {
-    read<uint32_t>();
+    uint32_t cmd_offset = read<uint32_t>();
+    cmd_offsets[i] = cmd_offset;
+    //log.info("Command [%u] at [%u]", i, cmd_offset);
   }
-  //log.info("Command offsets end [%d]", tellg() - slp_file_pos_);
+  //log.info("Command offsets end [%u], integrity [%X]", tellg() - slp_file_pos_, integrity);
+  //log.info("IS TRANSPARENT FRAME [%X]", integrity == 0x8000);
 
+  if (integrity != 0x8000) // At least one visible row.
   // Each row has it's commands, 0x0F signals the end of a rows commands.
   for (uint32_t row = 0; row < height_; ++row)
   {
-    //log.info("Handling row [%d] commands beg [%d]", row, tellg() - slp_file_pos_);
-    if (-32768 == left_edges_[row] || -32768 == right_edges_[row]) // Remember signedness!
+    istr.seekg(slp_file_pos_ + std::streampos(cmd_offsets[row]));
+    if (istr.eof())
     {
-      //log.info("Reading useless [%d]", tellg() - slp_file_pos_);
-      continue;
+        log.error("Oops! End of stream.");
+        return;
     }
-    //std::cout << row << ": " << std::hex << (int)(tellg() - file_pos_) << std::endl;
-    uint8_t data = 0;
+    // Transparent rows apparently read one byte anyway. NO THEY DO NOT! Ignore and use seekg()
+    if (0x8000 == left_edges_[row] || 0x8000 == right_edges_[row]) // Remember signedness!
+    {
+      //log.info("Reading [%X][%X] transparent row [%u] at [%u]",
+        //left_edges_[row], right_edges_[row], row, tellg() - slp_file_pos_);
+      continue; // Pretend it does not exist.
+    }
+    //log.info("Handling row [%u] commands beg [%u]", row, tellg() - slp_file_pos_);
     uint32_t pix_pos = left_edges_[row]; //pos where to start putting pixels
 
+    uint8_t data = 0;
     while (true)
     {
       data = read<uint8_t>();
@@ -254,13 +270,13 @@ void SlpFrame::load(std::istream &istr)
           {
             case 0x0E: //xflip?? skip?? TODO
             case 0x1E:
-              log.error("Cmd [%d] not implemented", data);
+              log.error("Cmd [%X] not implemented", data);
               //row-= 1;
             break;
 
             case 0x2E:
             case 0x3E:
-              log.error("Cmd [%d] not implemented", data);
+              log.error("Cmd [%X] not implemented", data);
             break;
 
             case 0x4E: //Outline pixel TODO player color
@@ -282,23 +298,21 @@ void SlpFrame::load(std::istream &istr)
 
         break;
         default:
-          log.error("Unknown cmd [%d]", data);
+          log.error("Unknown cmd [%X]", data);
           std::cerr << "SlpFrame: Unknown cmd at " << std::hex << std::endl;
                   //(int)(tellg() - slp_file_pos_)<< ": " << (int) data << std::endl;
           break;
       }
-
     }
   }
-
 }
 
 //------------------------------------------------------------------------------
-void SlpFrame::readEdges()
+void SlpFrame::readEdges(uint16_t &integrity)
 {
   //std::streampos cmd_table_pos = slp_file_pos_ + std::streampos(cmd_table_offset_);
 
-  //log.info("Edges height [%d]", height_);
+  //log.info("Edges height [%u]", height_);
   left_edges_.resize(height_);
   right_edges_.resize(height_);
 
@@ -309,6 +323,7 @@ void SlpFrame::readEdges()
   {
     left_edges_[row_cnt] = read<int16_t>();
     right_edges_[row_cnt] = read<int16_t>();
+    integrity |= left_edges_[row_cnt];
 
     ++row_cnt;
   }
@@ -348,7 +363,7 @@ void SlpFrame::setPixelsToColor(uint32_t row, uint32_t &col,
 {
   uint32_t to_pos = col + count;
 
-  ////log.info("Setting pixels to color [%u] [%u] [%u] [%u] [%u]", row, col, count, color_index, player_col);
+  //log.info("Setting pixels to color [%u] [%u] [%u] [%u] [%u]", row, col, count, color_index, player_col);
   while (col < to_pos)
   {
     image_pixel_indexes_[row * width_ + col] = color_index;

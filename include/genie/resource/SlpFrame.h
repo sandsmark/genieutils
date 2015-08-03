@@ -146,8 +146,8 @@ private:
   int32_t hotspot_x_;
   int32_t hotspot_y_;
   
-  std::vector<int16_t> left_edges_;
-  std::vector<int16_t> right_edges_;
+  std::vector<uint16_t> left_edges_;
+  std::vector<uint16_t> right_edges_;
   
  
   uint8_t transparent_index_;
@@ -179,7 +179,7 @@ private:
   /// right side.
   /// Assuming stream pointer is at beginning of edges array.
   //
-  void readEdges();
+  void readEdges(uint16_t &integrity);
   
   //----------------------------------------------------------------------------
   /// Reads pixel indexes from file and sets the pixels according to the

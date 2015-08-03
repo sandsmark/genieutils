@@ -55,32 +55,31 @@ void SlpFile::serializeObject(void)
 //------------------------------------------------------------------------------
 void SlpFile::loadFile()
 {
-  //log.info("Header beg [%d]", tellg() - getInitialReadPosition());
+  //log.info("Header beg [%u]", tellg() - getInitialReadPosition());
   readHeader();
-  //log.info("Header end [%d]", tellg() - getInitialReadPosition());
+  //log.info("Header end [%u]", tellg() - getInitialReadPosition());
 
   frames_.resize(num_frames_);
 
   // Load frame headers
   for (uint32_t i = 0; i < num_frames_; ++i)
   {
-    //log.info("Frame [%d] info beg [%d]", i, tellg() - getInitialReadPosition());
+    //log.info("Frame [%u] info beg [%u]", i, tellg() - getInitialReadPosition());
     frames_[i] = SlpFramePtr(new SlpFrame());
     frames_[i]->loadHeader(*getIStream());
     frames_[i]->setSlpFilePos(getInitialReadPosition());
   }
-  //log.info("Frame info end [%d]", tellg() - getInitialReadPosition());
+  //log.info("Frame info end [%u]", tellg() - getInitialReadPosition());
 
   // Load frame content
-  unsigned int fid = 0;
   //for (FrameVector::iterator it = frames_.begin(); it != frames_.end(); ++it)
   for (uint32_t i = 0; i < num_frames_; ++i)
   {
-    //log.info("Frame [%d] content beg [%d]", fid++, tellg() - getInitialReadPosition());
+    //log.info("Frame [%u] content beg [%u]", i, tellg() - getInitialReadPosition());
     //(*it)->load(*getIStream());
     frames_[i]->load(*getIStream());
   }
-  //log.info("Frame content end [%d]", tellg() - getInitialReadPosition());
+  //log.info("Frame content end [%u]", tellg() - getInitialReadPosition());
 
   loaded_ = true;
 }
