@@ -22,11 +22,6 @@
 
 #include <stdint.h>
 
-namespace sf
-{
-  class Color;
-}
-
 namespace genie
 {
     
@@ -55,8 +50,6 @@ public:
   
   //Static members:
   static const Color Transparent;
-  
-  
 };
 
 }

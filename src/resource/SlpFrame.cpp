@@ -35,30 +35,17 @@ Logger& SlpFrame::log = Logger::getLogger("genie.SlpFrame");
 //------------------------------------------------------------------------------
 SlpFrame::SlpFrame()
 {
-  image_pixel_indexes_ = 0;
-
-  player_color_index_ = -1;
-
-  transparent_index_ = 255;
 }
 
 //------------------------------------------------------------------------------
 SlpFrame::~SlpFrame()
 {
-  delete image_pixel_indexes_;
-  image_pixel_indexes_ = 0;
 }
 
 //------------------------------------------------------------------------------
 void SlpFrame::setSlpFilePos(std::streampos pos)
 {
   slp_file_pos_ = pos;
-}
-
-//----------------------------------------------------------------------------
-uint8_t SlpFrame::getTransparentPixelIndex(void) const
-{
-  return transparent_index_;
 }
 
 uint32_t SlpFrame::getWidth(void) const
@@ -74,7 +61,12 @@ uint32_t SlpFrame::getHeight(void) const
 //----------------------------------------------------------------------------
 const uint8_t* SlpFrame::getPixelIndexes(void) const
 {
-  return image_pixel_indexes_;
+  return &img_data_.pixel_indexes[0];
+}
+
+SlpFrameData SlpFrame::getSlpFrameData(void) const
+{
+  return img_data_;
 }
 
 //------------------------------------------------------------------------------
@@ -92,7 +84,7 @@ sf::Image* SlpFrame::getPlayerColorMask(uint8_t player) const
   cmask->Create(width_, height_, sf::Color(0,0,0,0));
 
   for (std::vector<PlayerColorElement>::const_iterator
-       it = player_color_mask_.begin(); it != player_color_mask_.end(); ++it)
+       it = player_color_mask.begin(); it != player_color_mask.end(); ++it)
   {
     cmask->SetPixel(it->x, it->y, (*palette_)[it->index + ((player + 1) * 16)].toSfColor());
   }
@@ -149,8 +141,8 @@ void SlpFrame::load(std::istream &istr)
 {
   setIStream(istr);
 
-  image_pixel_indexes_ = new uint8_t[width_ * height_];
-  std::fill_n(image_pixel_indexes_, width_ * height_, transparent_index_);
+  img_data_.pixel_indexes.resize(width_ * height_);
+  img_data_.alpha_channel.resize(width_ * height_, 0);
 
   uint16_t integrity = 0;
   //log.info("Edges beg [%u]", tellg() - slp_file_pos_);
@@ -225,7 +217,6 @@ void SlpFrame::load(std::istream &istr)
 
         case 0x2: // greater block copy
           pix_cnt = (sub << 4) + read<uint8_t>();
-
           readPixelsToImage(row, pix_pos, pix_cnt);
           break;
 
@@ -236,71 +227,60 @@ void SlpFrame::load(std::istream &istr)
 
         case 0x6: // copy and transform (player color)
           pix_cnt = getPixelCountFromData(data);
-
-          // TODO: player color
           readPixelsToImage(row, pix_pos, pix_cnt, true);
-
           break;
 
         case 0x7: // Run of plain color
           pix_cnt = getPixelCountFromData(data);
-
           color_index = read<uint8_t>();
           setPixelsToColor(row, pix_pos, pix_cnt, color_index);
-        break;
+          break;
 
         case 0xA: // Transform block (player color)
           pix_cnt = getPixelCountFromData(data);
-
-          // TODO: file_.readuint8_t() | player_color
           color_index = read<uint8_t>();
           setPixelsToColor(row, pix_pos, pix_cnt, color_index, true);
-        break;
+          break;
 
         case 0xB: // Shadow pixels
-          //TODO: incomplete
           pix_cnt = getPixelCountFromData(data);
-          setPixelsToColor(row, pix_pos, pix_cnt, 56);
-
-        break;
+          setPixelsToShadow(row, pix_pos, pix_cnt);
+          break;
 
         case 0xE: // extended commands.. TODO
-
           switch (data)
           {
             case 0x0E: //xflip?? skip?? TODO
             case 0x1E:
               log.error("Cmd [%X] not implemented", data);
               //row-= 1;
-            break;
+              break;
 
             case 0x2E:
             case 0x3E:
               log.error("Cmd [%X] not implemented", data);
-            break;
+              break;
 
-            case 0x4E: //Outline pixel TODO player color
-              setPixelsToColor(row, pix_pos, 1, 242);
-            break;
+            case 0x4E:
+              setPixelsToOutline(row, pix_pos, 1);//, 242);
+              break;
             case 0x6E:
-              setPixelsToColor(row, pix_pos, 1, 0);
-            break;
+              setPixelsToOutline(row, pix_pos, 1);//, 0);
+              break;
 
-            case 0x5E: //Outline run TODO player color
+            case 0x5E:
               pix_cnt = read<uint8_t>();
-              setPixelsToColor(row, pix_pos, pix_cnt, 242);
-            break;
+              setPixelsToOutline(row, pix_pos, pix_cnt);//, 242);
+              break;
             case 0x7E:
               pix_cnt = read<uint8_t>();
-              setPixelsToColor(row, pix_pos, pix_cnt, 0);
-            break;
+              setPixelsToOutline(row, pix_pos, pix_cnt);//, 0);
+              break;
           }
-
-        break;
+          break;
         default:
           log.error("Unknown cmd [%X]", data);
           std::cerr << "SlpFrame: Unknown cmd at " << std::hex << std::endl;
-                  //(int)(tellg() - slp_file_pos_)<< ": " << (int) data << std::endl;
           break;
       }
     }
@@ -310,15 +290,11 @@ void SlpFrame::load(std::istream &istr)
 //------------------------------------------------------------------------------
 void SlpFrame::readEdges(uint16_t &integrity)
 {
-  //std::streampos cmd_table_pos = slp_file_pos_ + std::streampos(cmd_table_offset_);
-
-  //log.info("Edges height [%u]", height_);
   left_edges_.resize(height_);
   right_edges_.resize(height_);
 
   uint32_t row_cnt = 0;
 
-  //while (tellg() < cmd_table_pos)
   while (row_cnt < height_)
   {
     left_edges_[row_cnt] = read<int16_t>();
@@ -327,7 +303,6 @@ void SlpFrame::readEdges(uint16_t &integrity)
 
     ++row_cnt;
   }
-
 }
 
 //------------------------------------------------------------------------------
@@ -338,47 +313,58 @@ void SlpFrame::readPixelsToImage(uint32_t row, uint32_t &col,
   while (col < to_pos)
   {
     uint8_t color_index = read<uint8_t>();
-
-    image_pixel_indexes_[row * width_ + col] = color_index;
-
-    if (color_index == transparent_index_)
-      std::cout << "Color index == transparent index" << std::endl;
-
+    img_data_.pixel_indexes[row * width_ + col] = color_index;
+    img_data_.alpha_channel[row * width_ + col] = 255;
     if (player_col)
     {
-      PlayerColorElement pce = {col, row, color_index};
-      player_color_mask_.push_back(pce);
+      SlpFrameData::PlayerColorElement pce = {col, row, color_index};
+      img_data_.player_color_mask.push_back(pce);
     }
-    //  player_color_mask_->SetPixel(col, row, palette_->getColorAt(pixel_index));
-
     ++col;
   }
-
 }
 
 //------------------------------------------------------------------------------
-void SlpFrame::setPixelsToColor(uint32_t row, uint32_t &col,
-                                uint32_t count, uint8_t color_index,
-                                bool player_col)
+void SlpFrame::setPixelsToColor(uint32_t row, uint32_t &col, uint32_t count,
+                                uint8_t color_index, bool player_col)
 {
   uint32_t to_pos = col + count;
-
-  //log.info("Setting pixels to color [%u] [%u] [%u] [%u] [%u]", row, col, count, color_index, player_col);
   while (col < to_pos)
   {
-    image_pixel_indexes_[row * width_ + col] = color_index;
-
-    if (color_index == transparent_index_)
-      std::cout << "Color index == transparent index" << std::endl;
-
-    //if (player_col)
-    //  player_color_mask_->SetPixel(col, row, color);
+    img_data_.pixel_indexes[row * width_ + col] = color_index;
+    img_data_.alpha_channel[row * width_ + col] = 255;
     if (player_col)
     {
-      PlayerColorElement pce = {col, row, color_index};
-      player_color_mask_.push_back(pce);
+      SlpFrameData::PlayerColorElement pce = {col, row, color_index};
+      img_data_.player_color_mask.push_back(pce);
     }
+    ++col;
+  }
+}
 
+//------------------------------------------------------------------------------
+void SlpFrame::setPixelsToShadow(uint32_t row, uint32_t &col, uint32_t count)
+{
+  uint32_t to_pos = col + count;
+  while (col < to_pos)
+  {
+    img_data_.alpha_channel[row * width_ + col] = 127;
+    SlpFrameData::XY xy = {col, row};
+    img_data_.shadow_mask.push_back(xy);
+    ++col;
+  }
+}
+
+//------------------------------------------------------------------------------
+void SlpFrame::setPixelsToOutline(uint32_t row, uint32_t &col, uint32_t count)
+{
+  uint32_t to_pos = col + count;
+  while (col < to_pos)
+  {
+    img_data_.pixel_indexes[row * width_ + col] = 242;
+    img_data_.alpha_channel[row * width_ + col] = 127;
+    SlpFrameData::XY xy = {col, row};
+    img_data_.outline_mask.push_back(xy);
     ++col;
   }
 }
