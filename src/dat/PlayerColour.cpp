@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2013  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2015  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -52,16 +52,25 @@ void PlayerColour::serializeObject(void)
   if (getGameVersion() < genie::GV_AoKA)
     serialize<std::string>(Name, NAME_SIZE);
 
-  serialize<int32_t>(ID); // int16 + int16 in RoR (2nd part being 0)
 
   if (getGameVersion() < genie::GV_AoKA)
   {
-    int16_t col_short = Colour;
-    serialize<int16_t>(col_short); // int8 + int8 (2nd part being 1 or 2)
-    Colour = col_short;
+    int16_t ID_short = ID;
+    serialize<int16_t>(ID_short);
+    ID = ID_short;
+    int16_t unk_short = Unknown1;
+    serialize<int16_t>(unk_short);
+    Unknown1 = unk_short;
+    uint8_t col_byte = Colour;
+    serialize<uint8_t>(col_byte);
+    Colour = col_byte;
+    uint8_t unk_byte = Unknown2;
+    serialize<uint8_t>(unk_byte);
+    Unknown2 = unk_byte;
   }
   else
   {
+    serialize<int32_t>(ID);
     serialize<int32_t>(Palette);
     serialize<int32_t>(Colour);
     serialize<int32_t>(Unknown1);

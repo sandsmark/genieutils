@@ -169,11 +169,7 @@ void SlpFrame::load(std::istream &istr)
   for (uint32_t row = 0; row < height_; ++row)
   {
     istr.seekg(slp_file_pos_ + std::streampos(cmd_offsets[row]));
-    if (istr.eof())
-    {
-        log.error("Oops! End of stream.");
-        return;
-    }
+    assert(!istr.eof());
     // Transparent rows apparently read one byte anyway. NO THEY DO NOT! Ignore and use seekg()
     if (0x8000 == left_edges_[row] || 0x8000 == right_edges_[row]) // Remember signedness!
     {
@@ -315,6 +311,7 @@ void SlpFrame::readPixelsToImage(uint32_t row, uint32_t &col,
   while (col < to_pos)
   {
     uint8_t color_index = read<uint8_t>();
+    assert(row * width_ + col < img_data_.pixel_indexes.size());
     img_data_.pixel_indexes[row * width_ + col] = color_index;
     img_data_.alpha_channel[row * width_ + col] = 255;
     if (player_col)
@@ -333,6 +330,7 @@ void SlpFrame::setPixelsToColor(uint32_t row, uint32_t &col, uint32_t count,
   uint32_t to_pos = col + count;
   while (col < to_pos)
   {
+    assert(row * width_ + col < img_data_.pixel_indexes.size());
     img_data_.pixel_indexes[row * width_ + col] = color_index;
     img_data_.alpha_channel[row * width_ + col] = 255;
     if (player_col)
