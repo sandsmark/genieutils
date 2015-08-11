@@ -57,21 +57,21 @@ ScnMainPlayerData::~ScnMainPlayerData()
 void ScnMainPlayerData::serializeObject(void)
 {
   serializePlayerDataVersion();
-  if (scn_plr_data_ver > 1.13)
+  if (scn_plr_data_ver > 1.13f)
   {
     for (unsigned int i=0; i<16; ++i)
       serialize<std::string>(playerNames[i], 256); // 1.14 <-- this is read much later in AoE 1
-    if (scn_plr_data_ver > 1.15)
+    if (scn_plr_data_ver > 1.15f)
       serialize<uint32_t>(playerNamesStringTable, 16);
     CombinedResources::playerInfo = true;
     serializeSub<CombinedResources>(resourcesPlusPlayerInfo, 16);
   }
-  if (scn_plr_data_ver > 1.06)
+  if (scn_plr_data_ver > 1.06f)
     serialize<uint8_t>(conquestVictory);
   serialize<ISerializable>(unknownData);
   serializeSizedString<uint16_t>(originalFileName, false);
 
-  if (scn_plr_data_ver > 1.15)
+  if (scn_plr_data_ver > 1.15f)
   {
     serialize<uint32_t>(instructionsStringTable);
     serialize<uint32_t>(hintsStringTable);
@@ -79,23 +79,23 @@ void ScnMainPlayerData::serializeObject(void)
     serialize<uint32_t>(lossStringTable);
     serialize<uint32_t>(historyStringTable);
 
-    if (scn_plr_data_ver > 1.21)
+    if (scn_plr_data_ver > 1.21f)
       serialize<uint32_t>(scoutsStringTable);
   }
 
   serializeSizedString<uint16_t>(instructions, false);
-  if (scn_plr_data_ver > 1.1)
+  if (scn_plr_data_ver > 1.1f)
   {
     serializeSizedString<uint16_t>(hints, false);
     serializeSizedString<uint16_t>(victory, false);
     serializeSizedString<uint16_t>(loss, false);
     serializeSizedString<uint16_t>(history, false);
 
-    if (scn_plr_data_ver > 1.21)
+    if (scn_plr_data_ver > 1.21f)
       serializeSizedString<uint16_t>(scouts, false);
   }
 
-  if (scn_plr_data_ver < 1.03)
+  if (scn_plr_data_ver < 1.03f)
   {
     serializeSizedString<uint16_t>(oldFilename1, false);
     serializeSizedString<uint16_t>(oldFilename2, false);
@@ -105,23 +105,23 @@ void ScnMainPlayerData::serializeObject(void)
   serializeSizedString<uint16_t>(pregameCinematicFilename, false);
   serializeSizedString<uint16_t>(victoryCinematicFilename, false);
   serializeSizedString<uint16_t>(lossCinematicFilename, false);
-  if (scn_plr_data_ver > 1.08)
+  if (scn_plr_data_ver > 1.08f)
     serializeSizedString<uint16_t>(backgroundFilename, false);
-  if (scn_plr_data_ver > 1.0)
+  if (scn_plr_data_ver > 1.0f)
     serializeBitmap();
 
   serializeSizedStrings<uint16_t>(aiNames, 16, false);
   serializeSizedStrings<uint16_t>(cityNames, 16, false);
-  if (scn_plr_data_ver > 1.07)
+  if (scn_plr_data_ver > 1.07f)
     serializeSizedStrings<uint16_t>(personalityNames, 16, false);
   serializeSub(aiFiles, 16);
-  if (scn_plr_data_ver > 1.1)
+  if (scn_plr_data_ver > 1.1f)
     serialize<uint8_t>(aiTypes, 16);
-  if (scn_plr_data_ver > 1.01)
+  if (scn_plr_data_ver > 1.01f)
     serialize<uint32_t>(separator_);
   // <- here actually switches the reading function in exe
 
-  if (scn_plr_data_ver < 1.14)
+  if (scn_plr_data_ver < 1.14f)
   {
     for (unsigned int i=0; i<16; ++i)
       serialize<std::string>(playerNames[i], 256);
@@ -132,36 +132,42 @@ void ScnMainPlayerData::serializeObject(void)
     CombinedResources::playerInfo = false;
     serializeSub<CombinedResources>(resourcesPlusPlayerInfo, 16);
   }
-  if (scn_plr_data_ver > 1.01)
+  if (scn_plr_data_ver > 1.01f)
     serialize<uint32_t>(separator_);
   serialize<ISerializable>(victoryConditions);
   serialize<ISerializable>(diplomacy);
-  if (scn_plr_data_ver > 1.01)
+  if (scn_plr_data_ver > 1.01f)
     serialize<uint32_t>(separator_);
-  serialize<uint32_t>(alliedVictory, scn_plr_data_ver < 1.02 ? 16*16 : 16);
-  if (scn_plr_data_ver > 1.03)
+  serialize<uint32_t>(alliedVictory, scn_plr_data_ver < 1.02f ? 16*16 : 16);
+  if (scn_plr_data_ver > 1.03f)
   {
+    if (scn_plr_data_ver > 1.22f)
+      serialize<uint32_t>(unused1);
     serialize<ISerializable>(disables);
-    if (scn_plr_data_ver > 1.04)
+    if (scn_plr_data_ver > 1.04f)
     {
       serialize<uint32_t>(unused1);
-      if (scn_plr_data_ver > 1.11)
+      if (scn_plr_data_ver > 1.11f)
       {
         serialize<uint32_t>(unused2);
         serialize<uint32_t>(allTechs);
       }
-      if (scn_plr_data_ver > 1.05)
+      if (scn_plr_data_ver > 1.05f)
         serialize<uint32_t>(startingAge, 16);
     }
   }
-  if (scn_plr_data_ver > 1.01)
+  if (scn_plr_data_ver > 1.01f)
     serialize<uint32_t>(separator_);
-  if (scn_plr_data_ver > 1.18)
+  if (scn_plr_data_ver > 1.18f)
   {
     serialize<int32_t>(player1CameraX);
     serialize<int32_t>(player1CameraY);
-    if (scn_plr_data_ver > 1.2)
+    if (scn_plr_data_ver > 1.2f)
+    {
       serialize<int32_t>(aiType);
+      if (scn_plr_data_ver > 1.23f)
+        serialize<uint8_t>(aiTypes, 16);
+    }
   }
   // <- here actually switches the reading function in exe
 }
@@ -176,25 +182,27 @@ CombinedResources::~CombinedResources()
 
 void CombinedResources::serializeObject(void)
 {
-  if (playerInfo || scn_plr_data_ver < 1.14)
+  if (playerInfo || scn_plr_data_ver < 1.14f)
     serialize<uint32_t>(state);
-  if (!playerInfo || scn_plr_data_ver < 1.14)
+  if (!playerInfo || scn_plr_data_ver < 1.14f)
   {
     serialize<uint32_t>(gold);
     serialize<uint32_t>(wood);
     serialize<uint32_t>(food);
     serialize<uint32_t>(stone);
   }
-  if (playerInfo || scn_plr_data_ver < 1.14)
+  if (playerInfo || scn_plr_data_ver < 1.14f)
   {
     serialize<uint32_t>(type);
     serialize<uint32_t>(civilizationID);
     serialize<uint32_t>(unknown1);
   }
-  if (!playerInfo && scn_plr_data_ver > 1.16)
+  if (!playerInfo && scn_plr_data_ver > 1.16f)
   {
     serialize<uint32_t>(ore);
     serialize<uint32_t>(goods);
+    if (scn_plr_data_ver > 1.23f)
+      serialize<uint32_t>(goods);
   }
 }
 
@@ -270,13 +278,13 @@ void AiFile::serializeObject(void)
 {
   serializeSize<uint32_t>(aiFilenameSize, aiFilename, true);
   serializeSize<uint32_t>(cityFileSize, cityFilename, true);
-  if (scn_plr_data_ver > 1.07)
+  if (scn_plr_data_ver > 1.07f)
     serializeSize<uint32_t>(perFileSize, perFilename, true);
 
   // crap in exe, says these are >= 1.15
   serialize<std::string>(aiFilename, aiFilenameSize);
   serialize<std::string>(cityFilename, cityFileSize);
-  if (scn_plr_data_ver > 1.07)
+  if (scn_plr_data_ver > 1.07f)
     serialize<std::string>(perFilename, perFileSize);
 }
 
@@ -299,7 +307,7 @@ void ScnVictory::serializeObject(void)
     serialize<uint32_t>(unused3);
   }
   serialize<uint32_t>(allConditionsRequired);
-  if (scn_plr_data_ver > 1.12)
+  if (scn_plr_data_ver > 1.12f)
   {
     serialize<uint32_t>(victoryMode);
     serialize<uint32_t>(scoreRequired);
@@ -349,15 +357,15 @@ ScnDisables::~ScnDisables()
 
 void ScnDisables::serializeObject(void)
 {
-  if (scn_plr_data_ver > 1.17)
+  if (scn_plr_data_ver > 1.17f)
     serialize<uint32_t>(numDisabledTechs, 16);
-  serialize<uint32_t>(disabledTechs, 16, scn_plr_data_ver < 1.04 ? 20 : scn_plr_data_ver < 1.3 ? 30 : 60);
-  if (scn_plr_data_ver > 1.17)
+  serialize<uint32_t>(disabledTechs, 16, scn_plr_data_ver < 1.04f ? 20 : scn_plr_data_ver < 1.3f ? 30 : 60);
+  if (scn_plr_data_ver > 1.17f)
   {
     serialize<uint32_t>(numDisabledUnits, 16);
-    serialize<uint32_t>(disabledUnits, 16, scn_plr_data_ver < 1.3 ? 30 : 60);
+    serialize<uint32_t>(disabledUnits, 16, scn_plr_data_ver < 1.3f ? 30 : 60);
     serialize<uint32_t>(numDisabledBuildings, 16);
-    serialize<uint32_t>(disabledBuildings, 16, scn_plr_data_ver < 1.3 ? 20 : 60);
+    serialize<uint32_t>(disabledBuildings, 16, scn_plr_data_ver < 1.3f ? 20 : 60);
   }
 }
 

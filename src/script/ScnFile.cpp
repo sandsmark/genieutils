@@ -35,7 +35,7 @@ double ISerializable::scn_trigger_ver = 0.0;
 //------------------------------------------------------------------------------
 ScnFile::ScnFile() : IFile(), compressor_(this)
 {
-  scn_internal_ver = 0;
+  scn_internal_ver = 0.f;
 }
 
 //------------------------------------------------------------------------------
@@ -113,12 +113,12 @@ void ScnFile::serializeObject(void)
 
   serialize<ISerializable>(map);
 
-  if (scn_ver == "1.20" || scn_ver == "1.21") scn_internal_ver = 1.14;
-  else if (scn_ver == "1.17" || scn_ver == "1.18" || scn_ver == "1.19") scn_internal_ver = 1.13;
-  else if (scn_ver == "1.14" || scn_ver == "1.15" || scn_ver == "1.16") scn_internal_ver = 1.12;
+  if (scn_ver == "1.20" || scn_ver == "1.21") scn_internal_ver = 1.14f;
+  else if (scn_ver == "1.17" || scn_ver == "1.18" || scn_ver == "1.19") scn_internal_ver = 1.13f;
+  else if (scn_ver == "1.14" || scn_ver == "1.15" || scn_ver == "1.16") scn_internal_ver = 1.12f;
 
   serializeSize<uint32_t>(playerCount1_, playerUnits.size());
-  if (scn_internal_ver > 1.06)
+  if (scn_internal_ver > 1.06f)
     serializeSub<ScnPlayerResources>(playerResources, 8);
   else
   {
@@ -133,11 +133,11 @@ void ScnFile::serializeObject(void)
   serialize<double>(triggerVersion);
   scn_trigger_ver = triggerVersion;
 
-  if (scn_trigger_ver > 1.4)
+  if (scn_trigger_ver > 1.4f)
     serialize<int8_t>(objectivesStartingState);
   serializeSize<uint32_t>(numTriggers_, triggers.size());
   serializeSub<Trigger>(triggers, numTriggers_);
-  if (scn_trigger_ver > 1.3)
+  if (scn_trigger_ver > 1.3f)
     serialize<int32_t>(triggerDisplayOrder, numTriggers_);
 
   if (scn_ver == "1.21" || scn_ver == "1.20" || scn_ver == "1.19" || scn_ver == "1.18")

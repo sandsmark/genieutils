@@ -43,13 +43,13 @@ void ScnPlayerResources::serializeObject(void)
   serialize<float>(wood);
   serialize<float>(gold);
   serialize<float>(stone);
-  if (scn_internal_ver > 1.12)
+  if (scn_internal_ver > 1.12f)
   {
     serialize<float>(ore);
-    if (scn_internal_ver < 1.3)
+    if (scn_internal_ver < 1.3f)
       serialize<float>(goods);
   }
-  if (scn_internal_ver > 1.13)
+  if (scn_internal_ver > 1.13f)
     serialize<float>(popLimit); // game forces range from 25 to 200, defaults to 75
 }
 
