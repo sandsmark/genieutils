@@ -69,30 +69,10 @@ SlpFrameData SlpFrame::getSlpFrameData(void) const
   return img_data_;
 }
 
-//------------------------------------------------------------------------------
-/*sf::Image* SlpFrame::getOutline() const
+uint32_t SlpFrame::getProperties(void) const
 {
-  return outline_;
+  return properties_;
 }
-*/
-
-//------------------------------------------------------------------------------
-/*
-sf::Image* SlpFrame::getPlayerColorMask(uint8_t player) const
-{
-  sf::Image *cmask = new sf::Image();
-  cmask->Create(width_, height_, sf::Color(0,0,0,0));
-
-  for (std::vector<PlayerColorElement>::const_iterator
-       it = player_color_mask.begin(); it != player_color_mask.end(); ++it)
-  {
-    cmask->SetPixel(it->x, it->y, (*palette_)[it->index + ((player + 1) * 16)].toSfColor());
-  }
-
-  return cmask; //TODO auto pointer (but doesn't work, maybe problem with
-                // images copy constructor, try again in sfml2.0
-}
-*/
 
 //------------------------------------------------------------------------------
 int32_t SlpFrame::getHotspotX() const

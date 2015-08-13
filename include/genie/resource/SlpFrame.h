@@ -120,6 +120,7 @@ public:
   //
   const uint8_t* getPixelIndexes(void) const;
   SlpFrameData getSlpFrameData(void) const;
+  uint32_t getProperties(void) const;
 
   //----------------------------------------------------------------------------
   /// Returns the outline created by loading the frame.
