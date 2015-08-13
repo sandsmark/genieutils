@@ -38,11 +38,6 @@ IFile::~IFile()
 //------------------------------------------------------------------------------
 void IFile::freelock(void)
 {
-  if (loaded_)
-  {
-    unload();
-    loaded_ = false;
-  }
   fileIn_.close();
 }
 
