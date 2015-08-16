@@ -37,7 +37,7 @@ namespace genie
 struct SlpFrameData
 {
   std::vector<uint8_t> pixel_indexes;
-  std::vector<uint32_t> rgba_channels;
+  std::vector<uint32_t> bgra_channels;
   std::vector<uint8_t> alpha_channel;
 
   struct XY

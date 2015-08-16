@@ -52,7 +52,7 @@ SlpFilePtr DrsFile::getSlpFile(uint32_t id)
 
   if (i != slp_map_.end())
   {
-    log.info("Loading SLP file [%u]", id);
+    //log.info("Loading SLP file [%u]", id);
     i->second->readObject(*getIStream());
     if (loaded_slp_ids_.size() > 100)
     {

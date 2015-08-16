@@ -136,28 +136,28 @@ void SlpFrame::load(std::istream &istr)
   setIStream(istr);
 
   if (is32bit())
-    img_data_.rgba_channels.resize(width_ * height_);
+    img_data_.bgra_channels.resize(width_ * height_);
   else
     img_data_.pixel_indexes.resize(width_ * height_);
   img_data_.alpha_channel.resize(width_ * height_, 0);
 
   uint16_t integrity = 0;
   istr.seekg(slp_file_pos_ + std::streampos(outline_table_offset_));
-  //log.info("Edges beg [%u]", tellg() - slp_file_pos_);
+  log.info("Edges beg [%u]", tellg() - slp_file_pos_);
   readEdges(integrity);
-  //log.info("Edges end [%u]", tellg() - slp_file_pos_);
+  log.info("Edges end [%u]", tellg() - slp_file_pos_);
 
-  //log.info("Command offsets beg [%u]", tellg() - slp_file_pos_);
+  log.info("Command offsets beg [%u]", tellg() - slp_file_pos_);
   std::vector<uint32_t> cmd_offsets(height_);
   istr.seekg(slp_file_pos_ + std::streampos(cmd_table_offset_));
   for (uint32_t i=0; i < height_; ++i)
   {
     uint32_t cmd_offset = read<uint32_t>();
     cmd_offsets[i] = cmd_offset;
-    //log.info("Command [%u] at [%u]", i, cmd_offset);
+    log.info("Command [%u] at [%u]", i, cmd_offset);
   }
-  //log.info("Command offsets end [%u], integrity [%X]", tellg() - slp_file_pos_, integrity);
-  //log.info("IS TRANSPARENT FRAME [%X]", integrity == 0x8000);
+  log.info("Command offsets end [%u], integrity [%X]", tellg() - slp_file_pos_, integrity);
+  log.info("IS TRANSPARENT FRAME [%X]", integrity == 0x8000);
 
   if (integrity != 0x8000) // At least one visible row.
   // Each row has it's commands, 0x0F signals the end of a rows commands.
@@ -170,7 +170,7 @@ void SlpFrame::load(std::istream &istr)
     {
       continue; // Pretend it does not exist.
     }
-    //log.info("Handling row [%u] commands beg [%u]", row, tellg() - slp_file_pos_);
+    log.info("Handling row [%u] commands beg [%u]", row, tellg() - slp_file_pos_);
     uint32_t pix_pos = left_edges_[row]; //pos where to start putting pixels
 
     uint8_t data = 0;
@@ -279,12 +279,15 @@ void SlpFrame::load(std::istream &istr)
               pix_cnt = read<uint8_t>();
               setPixelsToOutline(row, pix_pos, pix_cnt);//, 0);
               break;
+            default:
+              log.error("Cmd [%X] not implemented", data);
+              return;
           }
           break;
         default:
           log.error("Unknown cmd [%X]", data);
           std::cerr << "SlpFrame: Unknown cmd at " << std::hex << std::endl;
-          break;
+          return;
       }
     }
   }
@@ -335,9 +338,9 @@ void SlpFrame::readPixelsToImage32(uint32_t row, uint32_t &col,
   uint32_t to_pos = col + count;
   while (col < to_pos)
   {
-    uint32_t rgba = read<uint32_t>();
-    assert(row * width_ + col < img_data_.rgba_channels.size());
-    img_data_.rgba_channels[row * width_ + col] = rgba;
+    uint32_t bgra = read<uint32_t>();
+    assert(row * width_ + col < img_data_.bgra_channels.size());
+    img_data_.bgra_channels[row * width_ + col] = bgra;
     if (player_col)
     {
     }
@@ -369,12 +372,12 @@ void SlpFrame::setPixelsToColor(uint32_t row, uint32_t &col, uint32_t count,
 void SlpFrame::setPixelsToColor32(uint32_t row, uint32_t &col, uint32_t count,
                                 bool player_col)
 {
-  uint32_t rgba = read<uint32_t>();
+  uint32_t bgra = read<uint32_t>();
   uint32_t to_pos = col + count;
   while (col < to_pos)
   {
-    assert(row * width_ + col < img_data_.rgba_channels.size());
-    img_data_.rgba_channels[row * width_ + col] = rgba;
+    assert(row * width_ + col < img_data_.bgra_channels.size());
+    img_data_.bgra_channels[row * width_ + col] = bgra;
     if (player_col)
     {
     }
