@@ -17,7 +17,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include "genie/resource/DrsFile.h"
 
 #include <string>
@@ -53,8 +52,15 @@ SlpFilePtr DrsFile::getSlpFile(uint32_t id)
 
   if (i != slp_map_.end())
   {
-    //log.info("Loading SLP file [%u]", id);
+    log.info("Loading SLP file [%u]", id);
     i->second->readObject(*getIStream());
+    if (loaded_slp_ids_.size() > 100)
+    {
+      SlpMap::iterator old = slp_map_.find(loaded_slp_ids_.front());
+      old->second->unload();
+      loaded_slp_ids_.pop_front();
+    }
+    loaded_slp_ids_.push_back(id);
     return i->second;
   }
   else
@@ -147,6 +153,7 @@ void DrsFile::loadHeader()
           slp->setInitialReadPosition(pos);
 
           slp_map_[id] = slp;
+          slp_ids.push_back(id);
         }
         else if (table_types_[i].compare(getBinaryTableHeader()) == 0)
         {

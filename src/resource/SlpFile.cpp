@@ -17,7 +17,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include "genie/resource/SlpFile.h"
 
 #include <stdexcept>
@@ -48,38 +47,29 @@ void SlpFile::serializeObject(void)
   if (isOperation(OP_READ) && !loaded_)
   {
     loadFile();
-    //log.info("Loaded SLP file");
   }
 }
 
 //------------------------------------------------------------------------------
 void SlpFile::loadFile()
 {
-  //log.info("Header beg [%u]", tellg() - getInitialReadPosition());
   readHeader();
-  //log.info("Header end [%u]", tellg() - getInitialReadPosition());
 
   frames_.resize(num_frames_);
 
   // Load frame headers
   for (uint32_t i = 0; i < num_frames_; ++i)
   {
-    //log.info("Frame [%u] info beg [%u]", i, tellg() - getInitialReadPosition());
     frames_[i] = SlpFramePtr(new SlpFrame());
     frames_[i]->loadHeader(*getIStream());
     frames_[i]->setSlpFilePos(getInitialReadPosition());
   }
-  //log.info("Frame info end [%u]", tellg() - getInitialReadPosition());
 
   // Load frame content
-  //for (FrameVector::iterator it = frames_.begin(); it != frames_.end(); ++it)
   for (uint32_t i = 0; i < num_frames_; ++i)
   {
-    //log.info("Frame [%u] content beg [%u]", i, tellg() - getInitialReadPosition());
-    //(*it)->load(*getIStream());
     frames_[i]->load(*getIStream());
   }
-  //log.info("Frame content end [%u]", tellg() - getInitialReadPosition());
 
   loaded_ = true;
 }
@@ -109,12 +99,6 @@ uint32_t SlpFile::getFrameCount()
 }
 
 //------------------------------------------------------------------------------
-// int32_t SlpFile::getId()
-// {
-//   return id_;
-// }
-
-//------------------------------------------------------------------------------
 SlpFramePtr SlpFile::getFrame(uint32_t frame)
 {
   if (frame >= frames_.size())
@@ -125,7 +109,6 @@ SlpFramePtr SlpFile::getFrame(uint32_t frame)
 
   return frames_[frame];
 }
-
 
 //------------------------------------------------------------------------------
 void SlpFile::readHeader()

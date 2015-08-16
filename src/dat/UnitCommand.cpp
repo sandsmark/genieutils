@@ -47,7 +47,7 @@ UnitCommand::UnitCommand() : Graphics(GRAPHICS_SIZE, -1)
   Unknown8 = 1;
   Unknown9 = 0;
   SelectionMode = 5;
-  Unknown11 = 0;
+  RightClickMode = 0;
   Unknown12 = 0;
 }
 
@@ -86,7 +86,7 @@ void UnitCommand::serializeObject(void)
   serialize<int16_t>(Unknown8);
   serialize<int16_t>(Unknown9);
   serialize<int8_t>(SelectionMode);
-  serialize<int8_t>(Unknown11);
+  serialize<int8_t>(RightClickMode);
   serialize<int8_t>(Unknown12);
   serialize<int16_t>(Graphics, GRAPHICS_SIZE);
 }

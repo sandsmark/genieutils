@@ -17,11 +17,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef GENIE_DRSFILE_H
 #define GENIE_DRSFILE_H
 
 #include <vector>
+#include <list>
 #include <map>
 #include <stdint.h>
 
@@ -67,6 +67,7 @@ public:
   //
   PalFilePtr getPalFile(uint32_t id);
 
+  std::vector<uint32_t> slp_ids;
 private:
   static Logger &log;
 
@@ -77,6 +78,7 @@ private:
 
   std::vector<std::string> table_types_;
   std::vector<uint32_t> table_num_of_files_;
+  std::list<uint32_t> loaded_slp_ids_;
 
   typedef std::map<uint32_t, SlpFilePtr> SlpMap;
   SlpMap slp_map_;
@@ -95,7 +97,6 @@ private:
   void loadHeader();
 
   virtual void serializeObject(void);
-
 };
 
 }

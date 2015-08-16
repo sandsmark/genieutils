@@ -53,7 +53,7 @@ public:
   int16_t Unknown8;
   int16_t Unknown9;
   int8_t SelectionMode;
-  int8_t Unknown11;
+  int8_t RightClickMode;
   int8_t Unknown12;
 
   static const unsigned short GRAPHICS_SIZE = 6;

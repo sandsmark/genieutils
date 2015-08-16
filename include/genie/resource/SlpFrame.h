@@ -37,6 +37,7 @@ namespace genie
 struct SlpFrameData
 {
   std::vector<uint8_t> pixel_indexes;
+  std::vector<uint32_t> rgba_channels;
   std::vector<uint8_t> alpha_channel;
 
   struct XY
@@ -121,6 +122,8 @@ public:
   const uint8_t* getPixelIndexes(void) const;
   SlpFrameData getSlpFrameData(void) const;
   uint32_t getProperties(void) const;
+  uint32_t getPaletteOffset(void) const;
+  bool is32bit(void) const;
 
   //----------------------------------------------------------------------------
   /// Returns the outline created by loading the frame.
@@ -198,6 +201,8 @@ private:
   //
   void readPixelsToImage(uint32_t row, uint32_t &col, uint32_t count,
                          bool player_col = false);
+  void readPixelsToImage32(uint32_t row, uint32_t &col, uint32_t count,
+                         bool player_col = false);
 
   //----------------------------------------------------------------------------
   /// Sets the next count of pixels to given color without reading from stream.
@@ -209,7 +214,9 @@ private:
   /// @param player_col if true, pixel will be written to player color image
   //
   void setPixelsToColor(uint32_t row, uint32_t &col, uint32_t count,
-                        uint8_t color_index, bool player_col = false);
+                        bool player_col = false);
+  void setPixelsToColor32(uint32_t row, uint32_t &col, uint32_t count,
+                        bool player_col = false);
 
 
   //----------------------------------------------------------------------------
