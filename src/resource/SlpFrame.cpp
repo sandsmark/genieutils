@@ -125,9 +125,12 @@ void SlpFrame::loadHeader(std::istream &istr)
 
   hotspot_x_ = read<int32_t>();
   hotspot_y_ = read<int32_t>();
+
+#ifndef NDEBUG
   log.info("Frame header [%u], [%u], [%u], [%u], [%u], [%u], [%d], [%d], ",
     cmd_table_offset_, outline_table_offset_, palette_offset_, properties_,
     width_, height_, hotspot_x_, hotspot_y_);
+#endif
 }
 
 //------------------------------------------------------------------------------
@@ -143,21 +146,29 @@ void SlpFrame::load(std::istream &istr)
 
   uint16_t integrity = 0;
   istr.seekg(slp_file_pos_ + std::streampos(outline_table_offset_));
+#ifndef NDEBUG
   log.info("Edges beg [%u]", tellg() - slp_file_pos_);
+#endif
   readEdges(integrity);
+#ifndef NDEBUG
   log.info("Edges end [%u]", tellg() - slp_file_pos_);
 
   log.info("Command offsets beg [%u]", tellg() - slp_file_pos_);
+#endif
   std::vector<uint32_t> cmd_offsets(height_);
   istr.seekg(slp_file_pos_ + std::streampos(cmd_table_offset_));
   for (uint32_t i=0; i < height_; ++i)
   {
     uint32_t cmd_offset = read<uint32_t>();
     cmd_offsets[i] = cmd_offset;
+#ifndef NDEBUG
     log.info("Command [%u] at [%u]", i, cmd_offset);
+#endif
   }
+#ifndef NDEBUG
   log.info("Command offsets end [%u], integrity [%X]", tellg() - slp_file_pos_, integrity);
   log.info("IS TRANSPARENT FRAME [%X]", integrity == 0x8000);
+#endif
 
   if (integrity != 0x8000) // At least one visible row.
   // Each row has it's commands, 0x0F signals the end of a rows commands.
@@ -170,7 +181,9 @@ void SlpFrame::load(std::istream &istr)
     {
       continue; // Pretend it does not exist.
     }
+#ifndef NDEBUG
     log.info("Handling row [%u] commands beg [%u]", row, tellg() - slp_file_pos_);
+#endif
     uint32_t pix_pos = left_edges_[row]; //pos where to start putting pixels
 
     uint8_t data = 0;
@@ -279,6 +292,13 @@ void SlpFrame::load(std::istream &istr)
               pix_cnt = read<uint8_t>();
               setPixelsToOutline(row, pix_pos, pix_cnt);//, 0);
               break;
+            case 0x9E: // Apparently some kind of edge blending to background.
+              pix_cnt = read<uint8_t>();
+              if (is32bit())
+              {
+                readPixelsToImage32(row, pix_pos, pix_cnt);
+                break;
+              }
             default:
               log.error("Cmd [%X] not implemented", data);
               return;
