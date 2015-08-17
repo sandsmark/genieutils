@@ -69,6 +69,7 @@ public:
   //
   static void setLogLevel(LogLevel loglevel);
   
+  static std::ostream* getGlobalOutputStream(void);
   static void setGlobalOutputStream(std::ostream &ostream);
 
   //----------------------------------------------------------------------------

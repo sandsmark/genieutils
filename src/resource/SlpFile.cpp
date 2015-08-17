@@ -34,8 +34,6 @@ SlpFile::SlpFile() : IFile()
 {
   loaded_ = false;
   num_frames_ = 0;
-  version = "2.0N";
-  comment = "genieutils";
 }
 
 //------------------------------------------------------------------------------
@@ -84,6 +82,8 @@ void SlpFile::loadFile()
 //------------------------------------------------------------------------------
 void SlpFile::saveFile()
 {
+  version = "2.0N";
+  comment = "genieutils";
   serializeHeader();
 
   // Write frame headers
@@ -96,7 +96,7 @@ void SlpFile::saveFile()
   // Write frame content
   for (uint32_t i = 0; i < num_frames_; ++i)
   {
-    //frames_[i]->save(getOStream);
+    frames_[i]->save(*getOStream());
   }
 }
 

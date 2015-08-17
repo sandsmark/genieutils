@@ -52,6 +52,11 @@ void Logger::setGlobalOutputStream(std::ostream &ostream)
   global_out_ = &ostream;
 }
 
+std::ostream* Logger::getGlobalOutputStream(void)
+{
+  return global_out_;
+}
+
 //------------------------------------------------------------------------------
 Logger::Logger() 
 {

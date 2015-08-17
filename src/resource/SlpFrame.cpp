@@ -34,14 +34,6 @@ Logger& SlpFrame::log = Logger::getLogger("genie.SlpFrame");
 //------------------------------------------------------------------------------
 SlpFrame::SlpFrame()
 {
-  cmd_table_offset_ = 0;
-  outline_table_offset_ = 0;
-  palette_offset_ = 0;
-  properties_ = 0;
-  width_ = 0;
-  height_ = 0;
-  hotspot_x = 0;
-  hotspot_y = 0;
 }
 
 //------------------------------------------------------------------------------
@@ -105,6 +97,88 @@ void SlpFrame::setSaveParams(std::ostream &ostr)
 {
   setOStream(ostr);
   setOperation(OP_WRITE);
+
+  // TODO: Build integers from image data.
+  commands_.resize(height_);
+  for (uint32_t row = 0; row < height_; ++row)
+  {
+    uint32_t pixel_set_size = 1;
+    uint32_t last_bgra = 0x000000FF;
+    for (uint32_t col = 0; col < width_; ++col)
+    {
+      if (is32bit())
+      {
+        uint32_t bgra = img_data_.bgra_channels[row * col];
+        if (last_bgra == bgra)
+        {
+          ++pixel_set_size;
+          continue;
+        }
+        if (last_bgra == 0x000000FF) // Transparent pixel.
+        {
+          if (pixel_set_size == width_)
+          {
+            log.warn("Fully transparent row not implemented");
+          }
+          else if (pixel_set_size > 0xFFF)
+          {
+            log.error("Too big image");
+            return;
+          }
+          else if (pixel_set_size > 0x3F) // Greater skip.
+          {
+            commands_[row].push_back(0x3 | (pixel_set_size & 0xF00) >> 4);
+            commands_[row].push_back(pixel_set_size);
+          }
+          else // Lesser skip.
+          {
+            commands_[row].push_back(0x1 | pixel_set_size << 2);
+          }
+        }
+        else // Some colors.
+        {
+          if (pixel_set_size > 0xFFF)
+          {
+            log.error("Too big image");
+            return;
+          }
+          else if (pixel_set_size > 0x3F) // Greater copy.
+          {
+            commands_[row].push_back(0x3 | (pixel_set_size & 0xF00) >> 4);
+            commands_[row].push_back(pixel_set_size);
+            for (uint32_t pix = 0; pix < pixel_set_size; ++pix)
+            {
+              commands_[row].push_back(bgra);
+              commands_[row].push_back(bgra >> 8);
+              commands_[row].push_back(bgra >> 16);
+              commands_[row].push_back(bgra >> 24);
+            }
+          }
+          else // Lesser copy.
+          {
+            commands_[row].push_back(0x1 | pixel_set_size << 2);
+            for (uint32_t pix = 0; pix < pixel_set_size; ++pix)
+            {
+              commands_[row].push_back(bgra);
+              commands_[row].push_back(bgra >> 8);
+              commands_[row].push_back(bgra >> 16);
+              commands_[row].push_back(bgra >> 24);
+            }
+          }
+        }
+        pixel_set_size = 1;
+        last_bgra = bgra;
+      }
+    }
+    commands_[row].push_back(0x0F);
+#ifndef NDEBUG
+    log.debug("Row [%u] processed", row);
+#endif
+  }
+
+  // TODO: Produce edge data.
+
+  // TODO: Fix offsets.
 }
 
 //------------------------------------------------------------------------------
@@ -127,7 +201,7 @@ void SlpFrame::serializeHeader(void)
   serialize<int32_t>(hotspot_y);
 
 #ifndef NDEBUG
-  log.info("Frame header [%u], [%u], [%u], [%u], [%u], [%u], [%d], [%d], ",
+  log.debug("Frame header [%u], [%u], [%u], [%u], [%u], [%u], [%d], [%d], ",
     cmd_table_offset_, outline_table_offset_, palette_offset_, properties_,
     width_, height_, hotspot_x, hotspot_y);
 #endif
@@ -147,13 +221,13 @@ void SlpFrame::load(std::istream &istr)
   uint16_t integrity = 0;
   istr.seekg(slp_file_pos_ + std::streampos(outline_table_offset_));
 #ifndef NDEBUG
-  log.info("Edges beg [%u]", tellg() - slp_file_pos_);
+  //log.debug("Edges beg [%u]", tellg() - slp_file_pos_);
 #endif
   readEdges(integrity);
 #ifndef NDEBUG
-  log.info("Edges end [%u]", tellg() - slp_file_pos_);
+  //log.debug("Edges end [%u]", tellg() - slp_file_pos_);
 
-  log.info("Command offsets beg [%u]", tellg() - slp_file_pos_);
+  //log.debug("Command offsets beg [%u]", tellg() - slp_file_pos_);
 #endif
   std::vector<uint32_t> cmd_offsets(height_);
   istr.seekg(slp_file_pos_ + std::streampos(cmd_table_offset_));
@@ -162,12 +236,12 @@ void SlpFrame::load(std::istream &istr)
     uint32_t cmd_offset = read<uint32_t>();
     cmd_offsets[i] = cmd_offset;
 #ifndef NDEBUG
-    log.info("Command [%u] at [%u]", i, cmd_offset);
+    //log.debug("Command [%u] at [%u]", i, cmd_offset);
 #endif
   }
 #ifndef NDEBUG
-  log.info("Command offsets end [%u], integrity [%X]", tellg() - slp_file_pos_, integrity);
-  log.info("IS TRANSPARENT FRAME [%X]", integrity == 0x8000);
+  //log.debug("Command offsets end [%u], integrity [%X]", tellg() - slp_file_pos_, integrity);
+  //log.debug("IS TRANSPARENT FRAME [%X]", integrity == 0x8000);
 #endif
 
   if (integrity != 0x8000) // At least one visible row.
@@ -182,7 +256,7 @@ void SlpFrame::load(std::istream &istr)
       continue; // Pretend it does not exist.
     }
 #ifndef NDEBUG
-    log.info("Handling row [%u] commands beg [%u]", row, tellg() - slp_file_pos_);
+    //log.debug("Handling row [%u] commands beg [%u]", row, tellg() - slp_file_pos_);
 #endif
     uint32_t pix_pos = left_edges_[row]; //pos where to start putting pixels
 
@@ -442,6 +516,20 @@ uint8_t SlpFrame::getPixelCountFromData(uint8_t data)
     pix_cnt = data;
 
   return pix_cnt;
+}
+
+//------------------------------------------------------------------------------
+void SlpFrame::save(std::ostream &ostr)
+{
+  setOStream(ostr);
+
+  //TODO: Write edges
+
+  //TODO: Write cmd offsets
+
+  for (auto &commands: commands_)
+    for (auto &col: commands)
+      serialize<uint8_t>(col);
 }
 
 }

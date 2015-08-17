@@ -25,6 +25,7 @@
 
 #include <istream>
 #include <vector>
+#include <list>
 #include <stdint.h>
 
 #include "PalFile.h"
@@ -166,6 +167,7 @@ private:
   std::vector<uint16_t> right_edges_;
 
   SlpFrameData img_data_;
+  std::vector<std::list<uint8_t>> commands_;
 
   virtual void serializeObject(void);
 
