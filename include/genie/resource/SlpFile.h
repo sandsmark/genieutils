@@ -1,6 +1,7 @@
 /*
     <one line to give the program's name and a brief idea of what it does.>
     Copyright (C) 2011  Armin Preiml
+    Copyright (C) 2015  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -15,7 +16,6 @@
     You should have received a copy of the GNU Lesser General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 
 #ifndef GENIE_SLPFILE_H
 #define GENIE_SLPFILE_H
@@ -44,36 +44,36 @@ public:
   /// Constructor
   //
   SlpFile();
-  
+
   //----------------------------------------------------------------------------
   /// Destructor
   //
   virtual ~SlpFile();
-  
+
   //----------------------------------------------------------------------------
   /// Frees all content of a slp file.
   //
   void unload(void);
-  
+
   //----------------------------------------------------------------------------
   /// Check whether the files content is loaded or not.
   //
   bool isLoaded(void) const;
-  
+
   //----------------------------------------------------------------------------
   /// Return number of frames stored in the file. Available after load.
   ///
   /// @return number of frames
   //
   uint32_t getFrameCount();
-  
+
   //----------------------------------------------------------------------------
   /// Returns the internal slp id.
   ///
   /// @return id
   //
 //   int32_t getId();
-  
+
   //----------------------------------------------------------------------------
   /// Returns the slp frame at given frame index.
   ///
@@ -81,31 +81,35 @@ public:
   /// @return SlpFrame
   //
   SlpFramePtr getFrame(uint32_t frame=0);
-  
-private: 
+
+  std::string version;
+  std::string comment;
+
+private:
   static Logger &log;
-  
+
   bool loaded_;
-  
+
   uint32_t id_;
   uint32_t len_;
-  
+
   uint32_t num_frames_;
-  
+
   typedef std::vector<SlpFramePtr> FrameVector;
   FrameVector frames_;
-  
-  
+
+
   //----------------------------------------------------------------------------
   virtual void serializeObject(void);
-  
+
   //----------------------------------------------------------------------------
   /// Loads the file and its frames.
   //
   void loadFile(void);
-  
+  void saveFile(void);
+
   //----------------------------------------------------------------------------
-  void readHeader();
+  void serializeHeader(void);
 };
 
 typedef boost::shared_ptr<SlpFile> SlpFilePtr;

@@ -101,13 +101,13 @@ void Research::serializeObject(void)
 
   serializeSize<uint16_t>(NameLength, Name);
   if (NameLength > 0)
-    serialize<std::string>(Name, NameLength);
+    serialize(Name, NameLength);
 
   if (getGameVersion() >= genie::GV_SWGB)
   {
     serializeSize<uint16_t>(NameLength2, Name2);
     if (NameLength2 > 0)
-      serialize<std::string>(Name2, NameLength2);
+      serialize(Name2, NameLength2);
   }
 
 }

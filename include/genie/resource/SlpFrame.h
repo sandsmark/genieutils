@@ -17,7 +17,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef GENIE_SLPFRAME_H
 #define GENIE_SLPFRAME_H
 
@@ -83,8 +82,6 @@ public:
   //
   virtual ~SlpFrame();
 
-//   void serializeHeader(void);
-
   //----------------------------------------------------------------------------
   /// Set slp file position inside the stream. It's necesarry for calculating
   /// file offsets.
@@ -95,13 +92,16 @@ public:
   /// Loads header data. The headers of frames are stored after the header of
   /// the slp file.
   //
-  void loadHeader(std::istream &istr);
+  void serializeHeader(void);
+  void setLoadParams(std::istream &istr);
+  void setSaveParams(std::ostream &ostr);
 
   //----------------------------------------------------------------------------
   /// Loads frame data and creates an image. Frame data is located after all
   /// frame headers of the slp file.
   //
   void load(std::istream &istr);
+  void save(std::ostream &ostr);
 
   //----------------------------------------------------------------------------
   /// Get images width.
@@ -145,18 +145,9 @@ public:
   //----------------------------------------------------------------------------
   /// Get the hotspot of the frame. The Hotspot is the isometric center of
   /// the object presented by this frame.
-  ///
-  /// @return x coordinate of the hotspot
-  //
-  int32_t getHotspotX() const;
 
-  //----------------------------------------------------------------------------
-  /// Get the hotspot of the frame. The Hotspot is the isometric center of
-  /// the object presented by this frame.
-  ///
-  /// @return y coordinate of the hotspot
-  //
-  int32_t getHotspotY() const;
+  int32_t hotspot_x;
+  int32_t hotspot_y;
 
 private:
   static Logger &log;
@@ -170,8 +161,6 @@ private:
 
   uint32_t width_;
   uint32_t height_;
-  int32_t hotspot_x_;
-  int32_t hotspot_y_;
 
   std::vector<uint16_t> left_edges_;
   std::vector<uint16_t> right_edges_;

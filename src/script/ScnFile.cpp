@@ -244,7 +244,7 @@ void ScnFile::serializeVersion(void)
   }*/
 
   version = scn_ver;
-  serialize<std::string>(version, 4);
+  serialize(version, 4);
   scn_ver = version;
 }
 

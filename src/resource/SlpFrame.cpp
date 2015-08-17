@@ -34,6 +34,14 @@ Logger& SlpFrame::log = Logger::getLogger("genie.SlpFrame");
 //------------------------------------------------------------------------------
 SlpFrame::SlpFrame()
 {
+  cmd_table_offset_ = 0;
+  outline_table_offset_ = 0;
+  palette_offset_ = 0;
+  properties_ = 0;
+  width_ = 0;
+  height_ = 0;
+  hotspot_x = 0;
+  hotspot_y = 0;
 }
 
 //------------------------------------------------------------------------------
@@ -83,53 +91,45 @@ bool SlpFrame::is32bit(void) const
   return (properties_ & 7) == 7;
 }
 
-//------------------------------------------------------------------------------
-int32_t SlpFrame::getHotspotX() const
-{
-  return hotspot_x_;
-}
-
-//------------------------------------------------------------------------------
-int32_t SlpFrame::getHotspotY() const
-{
-  return hotspot_y_;
-}
-
-// void SlpFrame::serializeHeader(void)
-// {
-//
-// }
-
 void SlpFrame::serializeObject(void)
 {
 }
 
-//------------------------------------------------------------------------------
-void SlpFrame::loadHeader(std::istream &istr)
+void SlpFrame::setLoadParams(std::istream &istr)
 {
   setIStream(istr);
   setOperation(OP_READ);
+}
 
-  cmd_table_offset_     = read<uint32_t>();
-  outline_table_offset_ = read<uint32_t>();
-  palette_offset_       = read<uint32_t>();
+void SlpFrame::setSaveParams(std::ostream &ostr)
+{
+  setOStream(ostr);
+  setOperation(OP_WRITE);
+}
+
+//------------------------------------------------------------------------------
+void SlpFrame::serializeHeader(void)
+{
+  serialize<uint32_t>(cmd_table_offset_);
+  serialize<uint32_t>(outline_table_offset_);
+  serialize<uint32_t>(palette_offset_);
 
   // 0x00 = use default palette
   // 0x08 = only 1 pcs in TC, seems to be useless leftover from AoE 1, mostly containing player colors.
   // 0x10 = tree SLPs 147 and 152 in RoR have two shadows, mask and black pixels. Has pure black shadow? No
   // 0x18 = use default palette, 0x08 uses outline? No
-  properties_           = read<uint32_t>();
+  serialize<uint32_t>(properties_);
 
-  width_     = read<uint32_t>();
-  height_    = read<uint32_t>();
+  serialize<uint32_t>(width_);
+  serialize<uint32_t>(height_);
 
-  hotspot_x_ = read<int32_t>();
-  hotspot_y_ = read<int32_t>();
+  serialize<int32_t>(hotspot_x);
+  serialize<int32_t>(hotspot_y);
 
 #ifndef NDEBUG
   log.info("Frame header [%u], [%u], [%u], [%u], [%u], [%u], [%d], [%d], ",
     cmd_table_offset_, outline_table_offset_, palette_offset_, properties_,
-    width_, height_, hotspot_x_, hotspot_y_);
+    width_, height_, hotspot_x, hotspot_y);
 #endif
 }
 

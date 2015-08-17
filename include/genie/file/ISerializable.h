@@ -272,7 +272,7 @@ protected:
     T size;
 
     serializeSize<T>(size, str, cString);
-    serialize<std::string>(str, size);
+    serialize(str, size);
   }
 
   template <typename T>
@@ -284,7 +284,7 @@ protected:
       size = str.size() + 1;
     }
     serialize<T>(size);
-    serialize<std::string>(str, size);
+    serialize(str, size);
   }
 
   template <typename T>
@@ -354,7 +354,6 @@ protected:
   //----------------------------------------------------------------------------
   /// Spezialization of std::strings.
   //
-  template <typename T>
   void serialize(std::string &str, size_t len)
   {
     if (len > 0)

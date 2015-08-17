@@ -34,6 +34,8 @@ SlpFile::SlpFile() : IFile()
 {
   loaded_ = false;
   num_frames_ = 0;
+  version = "2.0N";
+  comment = "genieutils";
 }
 
 //------------------------------------------------------------------------------
@@ -48,12 +50,16 @@ void SlpFile::serializeObject(void)
   {
     loadFile();
   }
+  else if (isOperation(OP_WRITE) && loaded_)
+  {
+    saveFile();
+  }
 }
 
 //------------------------------------------------------------------------------
 void SlpFile::loadFile()
 {
-  readHeader();
+  serializeHeader();
 
   frames_.resize(num_frames_);
 
@@ -61,7 +67,8 @@ void SlpFile::loadFile()
   for (uint32_t i = 0; i < num_frames_; ++i)
   {
     frames_[i] = SlpFramePtr(new SlpFrame());
-    frames_[i]->loadHeader(*getIStream());
+    frames_[i]->setLoadParams(*getIStream());
+    frames_[i]->serializeHeader();
     frames_[i]->setSlpFilePos(getInitialReadPosition());
   }
 
@@ -72,6 +79,25 @@ void SlpFile::loadFile()
   }
 
   loaded_ = true;
+}
+
+//------------------------------------------------------------------------------
+void SlpFile::saveFile()
+{
+  serializeHeader();
+
+  // Write frame headers
+  for (uint32_t i = 0; i < num_frames_; ++i)
+  {
+    frames_[i]->setSaveParams(*getOStream());
+    frames_[i]->serializeHeader();
+  }
+
+  // Write frame content
+  for (uint32_t i = 0; i < num_frames_; ++i)
+  {
+    //frames_[i]->save(getOStream);
+  }
 }
 
 //------------------------------------------------------------------------------
@@ -111,12 +137,11 @@ SlpFramePtr SlpFile::getFrame(uint32_t frame)
 }
 
 //------------------------------------------------------------------------------
-void SlpFile::readHeader()
+void SlpFile::serializeHeader()
 {
-  std::string version = readString(4);
-  num_frames_ = read<uint32_t>();
-
-  std::string comment = readString(24);
+  serialize(version, 4);
+  serialize<uint32_t>(num_frames_);
+  serialize(comment, 24);
 }
 
 }

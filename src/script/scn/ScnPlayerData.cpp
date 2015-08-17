@@ -60,7 +60,7 @@ void ScnMainPlayerData::serializeObject(void)
   if (scn_plr_data_ver > 1.13f)
   {
     for (unsigned int i=0; i<16; ++i)
-      serialize<std::string>(playerNames[i], 256); // 1.14 <-- this is read much later in AoE 1
+      serialize(playerNames[i], 256); // 1.14 <-- this is read much later in AoE 1
     if (scn_plr_data_ver > 1.15f)
       serialize<uint32_t>(playerNamesStringTable, 16);
     CombinedResources::playerInfo = true;
@@ -124,7 +124,7 @@ void ScnMainPlayerData::serializeObject(void)
   if (scn_plr_data_ver < 1.14f)
   {
     for (unsigned int i=0; i<16; ++i)
-      serialize<std::string>(playerNames[i], 256);
+      serialize(playerNames[i], 256);
     serializeSub<CombinedResources>(resourcesPlusPlayerInfo, 16);
   }
   else
@@ -282,10 +282,10 @@ void AiFile::serializeObject(void)
     serializeSize<uint32_t>(perFileSize, perFilename, true);
 
   // crap in exe, says these are >= 1.15
-  serialize<std::string>(aiFilename, aiFilenameSize);
-  serialize<std::string>(cityFilename, cityFileSize);
+  serialize(aiFilename, aiFilenameSize);
+  serialize(cityFilename, cityFileSize);
   if (scn_plr_data_ver > 1.07f)
-    serialize<std::string>(perFilename, perFileSize);
+    serialize(perFilename, perFileSize);
 }
 
 ScnVictory::ScnVictory()

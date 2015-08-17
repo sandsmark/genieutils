@@ -98,8 +98,8 @@ void Terrain::serializeObject(void)
   serialize<int8_t>(Enabled);
   serialize<int8_t>(Random);
 
-  serialize<std::string>(Name, getNameSize());
-  serialize<std::string>(Name2, getNameSize());
+  serialize(Name, getNameSize());
+  serialize(Name2, getNameSize());
 
   if (getGameVersion() >= genie::GV_AoEB)
     serialize<int32_t>(SLP);

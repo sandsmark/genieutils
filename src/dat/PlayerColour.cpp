@@ -50,7 +50,7 @@ void PlayerColour::setGameVersion(GameVersion gv)
 void PlayerColour::serializeObject(void)
 {
   if (getGameVersion() < genie::GV_AoKA)
-    serialize<std::string>(Name, NAME_SIZE);
+    serialize(Name, NAME_SIZE);
 
 
   if (getGameVersion() < genie::GV_AoKA)

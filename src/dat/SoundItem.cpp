@@ -51,7 +51,7 @@ unsigned short SoundItem::getFileNameSize()
 
 void SoundItem::serializeObject(void)
 {
-  serialize<std::string>(FileName, getFileNameSize());
+  serialize(FileName, getFileNameSize());
 
   if (getGameVersion() < genie::GV_TEST)
   {

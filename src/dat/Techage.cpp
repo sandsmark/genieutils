@@ -50,7 +50,7 @@ short Techage::getNameSize(void)
 //------------------------------------------------------------------------------
 void Techage::serializeObject(void)
 {
-  serialize<std::string>(Name, getNameSize());
+  serialize(Name, getNameSize());
   serializeSize<uint16_t>(EffectCount, Effects.size());
   serializeSub<TechageEffect>(Effects, EffectCount);
 }

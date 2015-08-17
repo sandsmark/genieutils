@@ -100,7 +100,7 @@ void DatFile::serializeObject(void)
 {
   compressor_.beginCompression();
 
-  serialize<std::string>(FileVersion, FILE_VERSION_SIZE);
+  serialize(FileVersion, FILE_VERSION_SIZE);
 
   if (getGameVersion() >= genie::GV_SWGB)
   {

@@ -218,13 +218,13 @@ void Unit::serializeObject(void)
   serialize<int8_t>(AttackMode);
   serialize<int8_t>(EdibleMeat);
 
-  serialize<std::string>(Name, NameLength);
+  serialize(Name, NameLength);
 
   if (getGameVersion() >= genie::GV_SWGB)
   {
     //serializeSize<uint16_t>(NameLength2, Name2.size());
     serializeSize<uint16_t>(NameLength2, Name2);
-    serialize<std::string>(Name2, NameLength2);
+    serialize(Name2, NameLength2);
 
     serialize<int16_t>(Unitline);
     serialize<int8_t>(MinTechLevel);

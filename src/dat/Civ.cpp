@@ -52,7 +52,7 @@ unsigned short Civ::getNameSize(void)
 void Civ::serializeObject(void)
 {
   serialize<int8_t>(One); //TODO: enabled flag
-  serialize<std::string>(Name, getNameSize());
+  serialize(Name, getNameSize());
   serializeSize<uint16_t>(ResourceCount, Resources.size());
 
   if (getGameVersion() >= genie::GV_MIK)
@@ -64,7 +64,7 @@ void Civ::serializeObject(void)
 
       if (getGameVersion() >= genie::GV_SWGB)
       {
-        serialize<std::string>(Name2, getNameSize());
+        serialize(Name2, getNameSize());
         serialize<int16_t>(UniqueUnitsResearches, SWUNIQUE_SIZE);
       }
     }

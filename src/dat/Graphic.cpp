@@ -81,8 +81,8 @@ unsigned short Graphic::getName2Size()
 
 void Graphic::serializeObject(void)
 {
-  serialize<std::string>(Name, getNameSize());
-  serialize<std::string>(Name2, getName2Size());
+  serialize(Name, getNameSize());
+  serialize(Name2, getName2Size());
 
   if (getGameVersion() < genie::GV_TEST)
   {

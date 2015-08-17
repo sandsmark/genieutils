@@ -47,7 +47,7 @@ void UnitLine::serializeObject(void)
   serialize<int16_t>(ID);
 
   serializeSize<uint16_t>(name_len_, Name, false);
-  serialize<std::string>(Name, name_len_);
+  serialize(Name, name_len_);
 
   serializeSize<uint16_t>(unit_count_, UnitIDs.size());
   serialize<int16_t>(UnitIDs, unit_count_);
