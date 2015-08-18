@@ -86,6 +86,7 @@ void SlpFile::saveFile()
   std::chrono::time_point<std::chrono::system_clock> startTime = std::chrono::system_clock::now();
   version = "2.0N";
   comment = "genieutils";
+  num_frames_ = frames_.size();
   serializeHeader();
   slp_offset_ = 32 + 32 * num_frames_;
 
@@ -128,7 +129,7 @@ bool SlpFile::isLoaded(void ) const
 //------------------------------------------------------------------------------
 uint32_t SlpFile::getFrameCount()
 {
-  return num_frames_;
+  return frames_.size();
 }
 
 //------------------------------------------------------------------------------

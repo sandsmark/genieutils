@@ -221,6 +221,10 @@ private:
   /// @param data command byte
   //
   uint8_t getPixelCountFromData(uint8_t data);
+
+  enum cnt_type {CNT_SAME, CNT_DIFF, CNT_FEATHER, CNT_PLAYER, CNT_OUTLINE, CNT_SHADOW};
+  void handleColors(cnt_type count_type, uint32_t row, uint32_t col, uint32_t count, bool transparent = false);
+  void pushPixelsToBuffer32(uint32_t row, uint32_t col, uint32_t count);
 };
 
 typedef boost::shared_ptr<SlpFrame> SlpFramePtr;

@@ -100,96 +100,85 @@ void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
   setOperation(OP_WRITE);
   std::chrono::time_point<std::chrono::system_clock> startTime = std::chrono::system_clock::now();
 
+  assert(height_ < 4096);
   outline_table_offset_ = slp_offset_;
   cmd_table_offset_ = slp_offset_ + 4 * height_;
   slp_offset_ = cmd_table_offset_ + 4 * height_;
 
   // TODO: Build integers from image data.
+  left_edges_.resize(height_);
+  right_edges_.resize(height_);
   cmd_offsets_.resize(height_);
   commands_.resize(height_);
   for (uint32_t row = 0; row < height_; ++row)
   {
     cmd_offsets_[row] = slp_offset_;
-    uint32_t pixel_set_size = 1;
-    uint32_t last_bgra = 0x000000FF;
+    // Count left edge
+    left_edges_[row] = 0;
     for (uint32_t col = 0; col < width_; ++col)
     {
+      if (img_data_.bgra_channels[row * width_ + col] == 0x000000FF)
+        ++left_edges_[row];
+      else break;
+    }
+    // Fully transparent row
+    if (left_edges_[row] == width_)
+    {
+      left_edges_[row] = 0x8000;
+      continue;
+    }
+    // Read colors and count right edge
+    uint32_t bgra, last_bgra = 0x000000FF;
+    uint32_t pixel_set_size = 0;
+    cnt_type count_type = CNT_DIFF;
+    for (uint32_t col = left_edges_[row]; col < width_; ++col)
+    {
+      ++pixel_set_size;
       if (is32bit())
       {
-        uint32_t bgra = img_data_.bgra_channels[row * width_ + col];
-        if (false && last_bgra == bgra)
+        bgra = img_data_.bgra_channels[row * width_ + col];
+        // Same color as last one
+        if (last_bgra == bgra)
         {
-          ++pixel_set_size;
-          continue;
+          // Store set of different colors
+          if (count_type == CNT_DIFF)
+          {
+            handleColors(CNT_DIFF, row, col, pixel_set_size - 2);
+            pixel_set_size = 2;
+          }
+          count_type = CNT_SAME;
         }
-        if (bgra == 0x000000FF) // Transparent pixel.
+        else
         {
-          if (pixel_set_size == width_)
+          // Store set of same colors
+          if (count_type == CNT_SAME)
           {
-            log.warn("Fully transparent row not implemented");
+            handleColors(CNT_SAME, row, col, --pixel_set_size, bgra == 0x000000FF);
+            pixel_set_size = 1;
           }
-          else if (pixel_set_size > 0xFFF)
-          {
-            log.error("Too big image");
-            return;
-          }
-          else if (pixel_set_size > 0x3F) // Greater skip.
-          {
-            commands_[row].push_back(0x3 | (pixel_set_size & 0xF00) >> 4);
-            commands_[row].push_back(pixel_set_size);
-          }
-          else // Lesser skip.
-          {
-            commands_[row].push_back(0x1 | pixel_set_size << 2);
-          }
+          count_type = CNT_DIFF;
         }
-        else // Some colors.
-        {
-          if (pixel_set_size > 0xFFF)
-          {
-            log.error("Too big image");
-            return;
-          }
-          else if (pixel_set_size > 0x3F) // Greater copy.
-          {
-            commands_[row].push_back(0x2 | (pixel_set_size & 0xF00) >> 4);
-            commands_[row].push_back(pixel_set_size);
-            for (uint32_t pix = 0; pix < pixel_set_size; ++pix)
-            {
-              commands_[row].push_back(bgra);
-              commands_[row].push_back(bgra >> 8);
-              commands_[row].push_back(bgra >> 16);
-              commands_[row].push_back(bgra >> 24);
-            }
-          }
-          else // Lesser copy.
-          {
-            commands_[row].push_back(pixel_set_size << 2);
-            for (uint32_t pix = 0; pix < pixel_set_size; ++pix)
-            {
-              commands_[row].push_back(bgra);
-              commands_[row].push_back(bgra >> 8);
-              commands_[row].push_back(bgra >> 16);
-              commands_[row].push_back(bgra >> 24);
-            }
-          }
-        }
-        pixel_set_size = 1;
         last_bgra = bgra;
       }
     }
+    // Handle last colors
+    if (bgra == 0x000000FF)
+    {
+      right_edges_[row] = pixel_set_size;
+    }
+    else
+    {
+      right_edges_[row] = 0;
+      handleColors(count_type, row, count_type != CNT_DIFF ? width_ : width_ + 1, pixel_set_size);
+    }
+    // End of line
     commands_[row].push_back(0x0F);
-#ifndef NDEBUG
-    log.debug("Row [%u] processed at [%u]", row, slp_offset_);
-#endif
     slp_offset_ += commands_[row].size();
   }
 #ifndef NDEBUG
   std::chrono::time_point<std::chrono::system_clock> endTime = std::chrono::system_clock::now();
   log.debug("Frame (%u bytes) encoding took [%u] milliseconds", slp_offset_ - outline_table_offset_, std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count());
 #endif
-
-  // TODO: Produce edge data.
 }
 
 //------------------------------------------------------------------------------
@@ -211,11 +200,11 @@ void SlpFrame::serializeHeader(void)
   serialize<int32_t>(hotspot_x);
   serialize<int32_t>(hotspot_y);
 
-#ifndef NDEBUG
+/*#ifndef NDEBUG
   log.debug("Frame header [%u], [%u], [%u], [%u], [%u], [%u], [%d], [%d], ",
     cmd_table_offset_, outline_table_offset_, palette_offset_, properties_,
     width_, height_, hotspot_x, hotspot_y);
-#endif
+#endif*/
 }
 
 //------------------------------------------------------------------------------
@@ -232,23 +221,10 @@ void SlpFrame::load(std::istream &istr)
 
   uint16_t integrity = 0;
   istr.seekg(slp_file_pos_ + std::streampos(outline_table_offset_));
-#ifndef NDEBUG
-  //log.debug("Edges beg [%u]", tellg() - slp_file_pos_);
-#endif
   readEdges(integrity);
-#ifndef NDEBUG
-  //log.debug("Edges end [%u]", tellg() - slp_file_pos_);
 
-  //log.debug("Command offsets beg [%u]", tellg() - slp_file_pos_);
-#endif
   istr.seekg(slp_file_pos_ + std::streampos(cmd_table_offset_));
   serialize<uint32_t>(cmd_offsets_, height_);
-#ifndef NDEBUG
-    //log.debug("Command [%u] at [%u]", i, cmd_offset);
-
-  //log.debug("Command offsets end [%u], integrity [%X]", tellg() - slp_file_pos_, integrity);
-  //log.debug("IS TRANSPARENT FRAME [%X]", integrity == 0x8000);
-#endif
 
   if (integrity != 0x8000) // At least one visible row.
   // Each row has it's commands, 0x0F signals the end of a rows commands.
@@ -261,9 +237,6 @@ void SlpFrame::load(std::istream &istr)
     {
       continue; // Pretend it does not exist.
     }
-#ifndef NDEBUG
-    //log.debug("Handling row [%u] commands beg [%u]", row, tellg() - slp_file_pos_);
-#endif
     uint32_t pix_pos = left_edges_[row]; //pos where to start putting pixels
 
     uint8_t data = 0;
@@ -331,7 +304,7 @@ void SlpFrame::load(std::istream &istr)
         case 0xA: // Transform block (player color)
           pix_cnt = getPixelCountFromData(data);
           if (is32bit())
-            setPixelsToColor32(row, pix_pos, pix_cnt);
+            setPixelsToColor32(row, pix_pos, pix_cnt, true);
           else
             setPixelsToColor(row, pix_pos, pix_cnt, true);
           break;
@@ -525,9 +498,86 @@ uint8_t SlpFrame::getPixelCountFromData(uint8_t data)
 }
 
 //------------------------------------------------------------------------------
+void SlpFrame::handleColors(cnt_type count_type, uint32_t row, uint32_t col, uint32_t count, bool transparent)
+{
+  if (count == 0) return;
+  --col;
+  switch (count_type)
+  {
+    case CNT_SAME:
+      if (transparent) // Transparent pixel.
+      {
+        if (count > 0x3F) // Greater skip.
+        {
+          commands_[row].push_back(0x3 | (count & 0xF00) >> 4);
+          commands_[row].push_back(count);
+        }
+        else // Lesser skip.
+        {
+          commands_[row].push_back(0x1 | count << 2);
+        }
+      }
+      else
+      {
+        if (count > 0xFF)
+        {
+          log.error("Too long plain color");
+        }
+        else if (count > 0xF)
+        {
+          commands_[row].push_back(0x7);
+          commands_[row].push_back(count);
+          pushPixelsToBuffer32(row, col, 1);
+        }
+        else
+        {
+          commands_[row].push_back(0x7 | count << 4);
+          pushPixelsToBuffer32(row, col, 1);
+        }
+      }
+      break;
+    case CNT_DIFF:
+      if (count > 0x3F) // Greater copy.
+      {
+        commands_[row].push_back(0x2 | (count & 0xF00) >> 4);
+        commands_[row].push_back(count);
+        pushPixelsToBuffer32(row, col - count, count);
+      }
+      else // Lesser copy.
+      {
+        commands_[row].push_back(count << 2);
+        pushPixelsToBuffer32(row, col - count, count);
+      }
+      break;
+    case CNT_FEATHER:
+      break;
+    case CNT_PLAYER:
+      break;
+    case CNT_OUTLINE:
+      break;
+    case CNT_SHADOW:
+      break;
+  }
+}
+
+//------------------------------------------------------------------------------
+void SlpFrame::pushPixelsToBuffer32(uint32_t row, uint32_t col, uint32_t count)
+{
+  for (uint32_t pix = col; pix < count + col; ++pix)
+  {
+    uint32_t bgra = img_data_.bgra_channels[row * width_ + pix];
+    commands_[row].push_back(bgra);
+    commands_[row].push_back(bgra >> 8);
+    commands_[row].push_back(bgra >> 16);
+    commands_[row].push_back(bgra >> 24);
+  }
+}
+
+//------------------------------------------------------------------------------
 void SlpFrame::save(std::ostream &ostr)
 {
   setOStream(ostr);
+  std::chrono::time_point<std::chrono::system_clock> startTime = std::chrono::system_clock::now();
 
   //Write edges
   for (uint32_t row = 0; row < height_; ++row)
@@ -540,7 +590,6 @@ void SlpFrame::save(std::ostream &ostr)
   serialize<uint32_t>(cmd_offsets_, height_);
   cmd_offsets_.clear();
 
-  std::chrono::time_point<std::chrono::system_clock> startTime = std::chrono::system_clock::now();
   for (auto &commands: commands_)
     for (auto &col: commands)
       serialize<uint8_t>(col);
