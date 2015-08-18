@@ -25,11 +25,9 @@
 
 #include <istream>
 #include <vector>
-#include <list>
 #include <stdint.h>
 
 #include "PalFile.h"
-
 
 namespace genie
 {
@@ -95,7 +93,7 @@ public:
   //
   void serializeHeader(void);
   void setLoadParams(std::istream &istr);
-  void setSaveParams(std::ostream &ostr);
+  void setSaveParams(std::ostream &ostr, uint32_t &slp_offset_);
 
   //----------------------------------------------------------------------------
   /// Loads frame data and creates an image. Frame data is located after all
@@ -166,8 +164,9 @@ private:
   std::vector<uint16_t> left_edges_;
   std::vector<uint16_t> right_edges_;
 
+  std::vector<uint32_t> cmd_offsets_;
   SlpFrameData img_data_;
-  std::vector<std::list<uint8_t>> commands_;
+  std::vector<std::vector<uint8_t>> commands_; // Don't you dare use std::list here!
 
   virtual void serializeObject(void);
 

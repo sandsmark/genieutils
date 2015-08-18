@@ -20,6 +20,7 @@
 #include "genie/resource/SlpFile.h"
 
 #include <stdexcept>
+#include <chrono>
 
 #include "genie/resource/SlpFrame.h"
 #include "genie/resource/PalFile.h"
@@ -82,14 +83,16 @@ void SlpFile::loadFile()
 //------------------------------------------------------------------------------
 void SlpFile::saveFile()
 {
+  std::chrono::time_point<std::chrono::system_clock> startTime = std::chrono::system_clock::now();
   version = "2.0N";
   comment = "genieutils";
   serializeHeader();
+  slp_offset_ = 32 + 32 * num_frames_;
 
   // Write frame headers
   for (uint32_t i = 0; i < num_frames_; ++i)
   {
-    frames_[i]->setSaveParams(*getOStream());
+    frames_[i]->setSaveParams(*getOStream(), slp_offset_);
     frames_[i]->serializeHeader();
   }
 
@@ -98,6 +101,10 @@ void SlpFile::saveFile()
   {
     frames_[i]->save(*getOStream());
   }
+#ifndef NDEBUG
+  std::chrono::time_point<std::chrono::system_clock> endTime = std::chrono::system_clock::now();
+  log.debug("SLP (%u bytes) saving took [%u] milliseconds", slp_offset_, std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count());
+#endif
 }
 
 //------------------------------------------------------------------------------

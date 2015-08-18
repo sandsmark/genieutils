@@ -98,6 +98,8 @@ private:
   typedef std::vector<SlpFramePtr> FrameVector;
   FrameVector frames_;
 
+  // Used to calculate offsets when saving the SLP.
+  uint32_t slp_offset_;
 
   //----------------------------------------------------------------------------
   virtual void serializeObject(void);

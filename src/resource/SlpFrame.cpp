@@ -23,6 +23,7 @@
 //Debug
 #include <cassert>
 #include <stdexcept>
+#include <chrono>
 
 #include "genie/resource/Color.h"
 
@@ -93,28 +94,35 @@ void SlpFrame::setLoadParams(std::istream &istr)
   setOperation(OP_READ);
 }
 
-void SlpFrame::setSaveParams(std::ostream &ostr)
+void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
 {
   setOStream(ostr);
   setOperation(OP_WRITE);
+  std::chrono::time_point<std::chrono::system_clock> startTime = std::chrono::system_clock::now();
+
+  outline_table_offset_ = slp_offset_;
+  cmd_table_offset_ = slp_offset_ + 4 * height_;
+  slp_offset_ = cmd_table_offset_ + 4 * height_;
 
   // TODO: Build integers from image data.
+  cmd_offsets_.resize(height_);
   commands_.resize(height_);
   for (uint32_t row = 0; row < height_; ++row)
   {
+    cmd_offsets_[row] = slp_offset_;
     uint32_t pixel_set_size = 1;
     uint32_t last_bgra = 0x000000FF;
     for (uint32_t col = 0; col < width_; ++col)
     {
       if (is32bit())
       {
-        uint32_t bgra = img_data_.bgra_channels[row * col];
-        if (last_bgra == bgra)
+        uint32_t bgra = img_data_.bgra_channels[row * width_ + col];
+        if (false && last_bgra == bgra)
         {
           ++pixel_set_size;
           continue;
         }
-        if (last_bgra == 0x000000FF) // Transparent pixel.
+        if (bgra == 0x000000FF) // Transparent pixel.
         {
           if (pixel_set_size == width_)
           {
@@ -144,7 +152,7 @@ void SlpFrame::setSaveParams(std::ostream &ostr)
           }
           else if (pixel_set_size > 0x3F) // Greater copy.
           {
-            commands_[row].push_back(0x3 | (pixel_set_size & 0xF00) >> 4);
+            commands_[row].push_back(0x2 | (pixel_set_size & 0xF00) >> 4);
             commands_[row].push_back(pixel_set_size);
             for (uint32_t pix = 0; pix < pixel_set_size; ++pix)
             {
@@ -156,7 +164,7 @@ void SlpFrame::setSaveParams(std::ostream &ostr)
           }
           else // Lesser copy.
           {
-            commands_[row].push_back(0x1 | pixel_set_size << 2);
+            commands_[row].push_back(pixel_set_size << 2);
             for (uint32_t pix = 0; pix < pixel_set_size; ++pix)
             {
               commands_[row].push_back(bgra);
@@ -172,13 +180,16 @@ void SlpFrame::setSaveParams(std::ostream &ostr)
     }
     commands_[row].push_back(0x0F);
 #ifndef NDEBUG
-    log.debug("Row [%u] processed", row);
+    log.debug("Row [%u] processed at [%u]", row, slp_offset_);
 #endif
+    slp_offset_ += commands_[row].size();
   }
+#ifndef NDEBUG
+  std::chrono::time_point<std::chrono::system_clock> endTime = std::chrono::system_clock::now();
+  log.debug("Frame (%u bytes) encoding took [%u] milliseconds", slp_offset_ - outline_table_offset_, std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count());
+#endif
 
   // TODO: Produce edge data.
-
-  // TODO: Fix offsets.
 }
 
 //------------------------------------------------------------------------------
@@ -211,6 +222,7 @@ void SlpFrame::serializeHeader(void)
 void SlpFrame::load(std::istream &istr)
 {
   setIStream(istr);
+  std::chrono::time_point<std::chrono::system_clock> startTime = std::chrono::system_clock::now();
 
   if (is32bit())
     img_data_.bgra_channels.resize(width_ * height_);
@@ -229,17 +241,11 @@ void SlpFrame::load(std::istream &istr)
 
   //log.debug("Command offsets beg [%u]", tellg() - slp_file_pos_);
 #endif
-  std::vector<uint32_t> cmd_offsets(height_);
   istr.seekg(slp_file_pos_ + std::streampos(cmd_table_offset_));
-  for (uint32_t i=0; i < height_; ++i)
-  {
-    uint32_t cmd_offset = read<uint32_t>();
-    cmd_offsets[i] = cmd_offset;
+  serialize<uint32_t>(cmd_offsets_, height_);
 #ifndef NDEBUG
     //log.debug("Command [%u] at [%u]", i, cmd_offset);
-#endif
-  }
-#ifndef NDEBUG
+
   //log.debug("Command offsets end [%u], integrity [%X]", tellg() - slp_file_pos_, integrity);
   //log.debug("IS TRANSPARENT FRAME [%X]", integrity == 0x8000);
 #endif
@@ -248,7 +254,7 @@ void SlpFrame::load(std::istream &istr)
   // Each row has it's commands, 0x0F signals the end of a rows commands.
   for (uint32_t row = 0; row < height_; ++row)
   {
-    istr.seekg(slp_file_pos_ + std::streampos(cmd_offsets[row]));
+    istr.seekg(slp_file_pos_ + std::streampos(cmd_offsets_[row]));
     assert(!istr.eof());
     // Transparent rows apparently read one byte anyway. NO THEY DO NOT! Ignore and use seekg()
     if (0x8000 == left_edges_[row] || 0x8000 == right_edges_[row]) // Remember signedness!
@@ -385,6 +391,10 @@ void SlpFrame::load(std::istream &istr)
       }
     }
   }
+#ifndef NDEBUG
+  std::chrono::time_point<std::chrono::system_clock> endTime = std::chrono::system_clock::now();
+  log.debug("Frame at [%u], decoding took [%u] milliseconds", outline_table_offset_, std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count());
+#endif
 }
 
 //------------------------------------------------------------------------------
@@ -393,15 +403,11 @@ void SlpFrame::readEdges(uint16_t &integrity)
   left_edges_.resize(height_);
   right_edges_.resize(height_);
 
-  uint32_t row_cnt = 0;
-
-  while (row_cnt < height_)
+  for (uint32_t row = 0; row < height_; ++row)
   {
-    left_edges_[row_cnt] = read<int16_t>();
-    right_edges_[row_cnt] = read<int16_t>();
-    integrity |= left_edges_[row_cnt];
-
-    ++row_cnt;
+    serialize<uint16_t>(left_edges_[row]);
+    serialize<uint16_t>(right_edges_[row]);
+    integrity |= left_edges_[row];
   }
 }
 
@@ -523,13 +529,27 @@ void SlpFrame::save(std::ostream &ostr)
 {
   setOStream(ostr);
 
-  //TODO: Write edges
+  //Write edges
+  for (uint32_t row = 0; row < height_; ++row)
+  {
+    serialize<uint16_t>(left_edges_[row]);
+    serialize<uint16_t>(right_edges_[row]);
+  }
 
-  //TODO: Write cmd offsets
+  //Write cmd offsets
+  serialize<uint32_t>(cmd_offsets_, height_);
+  cmd_offsets_.clear();
 
+  std::chrono::time_point<std::chrono::system_clock> startTime = std::chrono::system_clock::now();
   for (auto &commands: commands_)
     for (auto &col: commands)
       serialize<uint8_t>(col);
+
+  commands_.clear();
+#ifndef NDEBUG
+  std::chrono::time_point<std::chrono::system_clock> endTime = std::chrono::system_clock::now();
+  log.debug("SLP frame data saving took [%u] milliseconds", std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count());
+#endif
 }
 
 }
