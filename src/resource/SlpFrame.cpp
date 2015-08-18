@@ -110,7 +110,7 @@ void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
   right_edges_.resize(height_);
   cmd_offsets_.resize(height_);
   commands_.resize(height_);
-  uint32_t feather_slot = 0;
+  uint32_t transparent_slot = 0;
   for (uint32_t row = 0; row < height_; ++row)
   {
     cmd_offsets_[row] = slp_offset_;
@@ -118,7 +118,7 @@ void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
     left_edges_[row] = 0;
     for (uint32_t col = 0; col < width_; ++col)
     {
-      if (img_data_.bgra_channels[row * width_ + col] == 0x000000FF)
+      if (img_data_.bgra_channels[row * width_ + col] == 0)
         ++left_edges_[row];
       else break;
     }
@@ -129,9 +129,9 @@ void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
       continue;
     }
     // Read colors and count right edge
-    uint32_t bgra = 0x000000FF;
+    uint32_t bgra = 0;
     uint32_t pixel_set_size = 0;
-    cnt_type count_type = CNT_DIFF;
+    cnt_type count_type = CNT_LEFT;
     for (uint32_t col = left_edges_[row]; col < width_; ++col)
     {
       ++pixel_set_size;
@@ -141,21 +141,33 @@ void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
         cnt_type old_count = count_type;
         bgra = img_data_.bgra_channels[row * width_ + col];
 
-        if (feather_slot < img_data_.feather_mask.size())
+        if (transparent_slot < img_data_.transparency_mask.size())
         {
-          if (img_data_.feather_mask[feather_slot].x == col
-            && img_data_.feather_mask[feather_slot].y == row)
+          if (img_data_.transparency_mask[transparent_slot].x == row
+            && img_data_.transparency_mask[transparent_slot].y == col)
           {
-            count_type = CNT_FEATHER;
-            ++feather_slot;
+            count_type = CNT_TRANSPARENT;
+            ++transparent_slot;
+            goto COUNT_SWITCH;
           }
         }
+        count_type = last_bgra == bgra ? CNT_SAME : CNT_DIFF;
+COUNT_SWITCH:
         if (old_count != count_type)
         {
           switch (old_count)
           {
-            case CNT_FEATHER:
-              handleColors(CNT_FEATHER, row, col, --pixel_set_size);
+            case CNT_DIFF:
+              handleColors(CNT_DIFF, row, col, pixel_set_size - 2);
+              pixel_set_size = count_type == CNT_SAME ? 2 : 1;
+              continue;
+            case CNT_SAME:
+              handleColors(CNT_SAME, row, col, --pixel_set_size, bgra == 0);
+              pixel_set_size = 1;
+              continue;
+            case CNT_TRANSPARENT:
+              log.debug("Save transparent [%u] [%u] [%d]", row, col, pixel_set_size);
+              handleColors(CNT_TRANSPARENT, row, col, --pixel_set_size);
               pixel_set_size = 1;
               continue;
             case CNT_PLAYER:
@@ -164,42 +176,20 @@ void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
               continue;
             case CNT_SHADOW:
               continue;
-            default: break;
+            default: continue;
           }
-        }
-
-        // Same color as last one
-        if (last_bgra == bgra)
-        {
-          // Store set of different colors
-          if (count_type == CNT_DIFF)
-          {
-            handleColors(CNT_DIFF, row, col, pixel_set_size - 2);
-            pixel_set_size = 2;
-          }
-          count_type = CNT_SAME;
-        }
-        else
-        {
-          // Store set of same colors
-          if (count_type == CNT_SAME)
-          {
-            handleColors(CNT_SAME, row, col, --pixel_set_size, bgra == 0x000000FF);
-            pixel_set_size = 1;
-          }
-          count_type = CNT_DIFF;
         }
       }
     }
     // Handle last colors
-    if (bgra == 0x000000FF)
+    if (bgra == 0)
     {
       right_edges_[row] = pixel_set_size;
     }
     else
     {
       right_edges_[row] = 0;
-      handleColors(count_type, row, count_type != CNT_DIFF ? width_ : width_ + 1, pixel_set_size);
+      handleColors(count_type, row, count_type == CNT_DIFF ? 1 + width_ : width_, pixel_set_size);
     }
     // End of line
     commands_[row].push_back(0x0F);
@@ -244,7 +234,7 @@ void SlpFrame::load(std::istream &istr)
   std::chrono::time_point<std::chrono::system_clock> startTime = std::chrono::system_clock::now();
 
   if (is32bit())
-    img_data_.bgra_channels.resize(width_ * height_);
+    img_data_.bgra_channels.resize(width_ * height_, 0);
   else
     img_data_.pixel_indexes.resize(width_ * height_);
   img_data_.alpha_channel.resize(width_ * height_, 0);
@@ -452,7 +442,7 @@ void SlpFrame::readPixelsToImage32(uint32_t row, uint32_t &col,
     else if (special == 2)
     {
       SlpFrameData::XY xy = {col, row};
-      img_data_.feather_mask.push_back(xy);
+      img_data_.transparency_mask.push_back(xy);
     }
     ++col;
   }
@@ -588,7 +578,8 @@ void SlpFrame::handleColors(cnt_type count_type, uint32_t row, uint32_t col, uin
         pushPixelsToBuffer32(row, col - count, count);
       }
       break;
-    case CNT_FEATHER:
+    case CNT_TRANSPARENT:
+      commands_[row].push_back(0x9E);
       commands_[row].push_back(count);
       pushPixelsToBuffer32(row, col - count, count);
       break;
@@ -598,6 +589,7 @@ void SlpFrame::handleColors(cnt_type count_type, uint32_t row, uint32_t col, uin
       break;
     case CNT_SHADOW:
       break;
+    default: break;
   }
 }
 

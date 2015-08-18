@@ -46,7 +46,7 @@ struct SlpFrameData
 
   std::vector<XY> shadow_mask;
   std::vector<XY> outline_mask;
-  std::vector<XY> feather_mask;
+  std::vector<XY> transparency_mask;
 
   // Element for player_color vector, the vector stores position (x, y) of
   // a player color pixel and the palette index for the color
@@ -223,7 +223,7 @@ private:
   //
   uint8_t getPixelCountFromData(uint8_t data);
 
-  enum cnt_type {CNT_SAME, CNT_DIFF, CNT_FEATHER, CNT_PLAYER, CNT_OUTLINE, CNT_SHADOW};
+  enum cnt_type {CNT_LEFT, CNT_SAME, CNT_DIFF, CNT_TRANSPARENT, CNT_PLAYER, CNT_OUTLINE, CNT_SHADOW};
   void handleColors(cnt_type count_type, uint32_t row, uint32_t col, uint32_t count, bool transparent = false);
   void pushPixelsToBuffer32(uint32_t row, uint32_t col, uint32_t count);
 };
