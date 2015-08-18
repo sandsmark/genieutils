@@ -110,6 +110,7 @@ void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
   right_edges_.resize(height_);
   cmd_offsets_.resize(height_);
   commands_.resize(height_);
+  uint32_t feather_slot = 0;
   for (uint32_t row = 0; row < height_; ++row)
   {
     cmd_offsets_[row] = slp_offset_;
@@ -128,7 +129,7 @@ void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
       continue;
     }
     // Read colors and count right edge
-    uint32_t bgra, last_bgra = 0x000000FF;
+    uint32_t bgra = 0x000000FF;
     uint32_t pixel_set_size = 0;
     cnt_type count_type = CNT_DIFF;
     for (uint32_t col = left_edges_[row]; col < width_; ++col)
@@ -136,7 +137,37 @@ void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
       ++pixel_set_size;
       if (is32bit())
       {
+        uint32_t last_bgra = bgra;
+        cnt_type old_count = count_type;
         bgra = img_data_.bgra_channels[row * width_ + col];
+
+        if (feather_slot < img_data_.feather_mask.size())
+        {
+          if (img_data_.feather_mask[feather_slot].x == col
+            && img_data_.feather_mask[feather_slot].y == row)
+          {
+            count_type = CNT_FEATHER;
+            ++feather_slot;
+          }
+        }
+        if (old_count != count_type)
+        {
+          switch (old_count)
+          {
+            case CNT_FEATHER:
+              handleColors(CNT_FEATHER, row, col, --pixel_set_size);
+              pixel_set_size = 1;
+              continue;
+            case CNT_PLAYER:
+              continue;
+            case CNT_OUTLINE:
+              continue;
+            case CNT_SHADOW:
+              continue;
+            default: break;
+          }
+        }
+
         // Same color as last one
         if (last_bgra == bgra)
         {
@@ -158,7 +189,6 @@ void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
           }
           count_type = CNT_DIFF;
         }
-        last_bgra = bgra;
       }
     }
     // Handle last colors
@@ -288,7 +318,7 @@ void SlpFrame::load(std::istream &istr)
         case 0x6: // copy and transform (player color)
           pix_cnt = getPixelCountFromData(data);
           if (is32bit())
-            readPixelsToImage32(row, pix_pos, pix_cnt, true);
+            readPixelsToImage32(row, pix_pos, pix_cnt, 1);
           else
             readPixelsToImage(row, pix_pos, pix_cnt, true);
           break;
@@ -349,7 +379,7 @@ void SlpFrame::load(std::istream &istr)
               pix_cnt = read<uint8_t>();
               if (is32bit())
               {
-                readPixelsToImage32(row, pix_pos, pix_cnt);
+                readPixelsToImage32(row, pix_pos, pix_cnt, 2);
                 break;
               }
             default:
@@ -406,7 +436,7 @@ void SlpFrame::readPixelsToImage(uint32_t row, uint32_t &col,
 
 //------------------------------------------------------------------------------
 void SlpFrame::readPixelsToImage32(uint32_t row, uint32_t &col,
-                                 uint32_t count, bool player_col)
+                                 uint32_t count, uint8_t special)
 {
   uint32_t to_pos = col + count;
   while (col < to_pos)
@@ -414,8 +444,15 @@ void SlpFrame::readPixelsToImage32(uint32_t row, uint32_t &col,
     uint32_t bgra = read<uint32_t>();
     assert(row * width_ + col < img_data_.bgra_channels.size());
     img_data_.bgra_channels[row * width_ + col] = bgra;
-    if (player_col)
+    if (special == 1)
     {
+      SlpFrameData::PlayerColorElement pce = {col, row, 0};
+      img_data_.player_color_mask.push_back(pce);
+    }
+    else if (special == 2)
+    {
+      SlpFrameData::XY xy = {col, row};
+      img_data_.feather_mask.push_back(xy);
     }
     ++col;
   }
@@ -453,6 +490,8 @@ void SlpFrame::setPixelsToColor32(uint32_t row, uint32_t &col, uint32_t count,
     img_data_.bgra_channels[row * width_ + col] = bgra;
     if (player_col)
     {
+      SlpFrameData::PlayerColorElement pce = {col, row, 0};
+      img_data_.player_color_mask.push_back(pce);
     }
     ++col;
   }
@@ -550,6 +589,8 @@ void SlpFrame::handleColors(cnt_type count_type, uint32_t row, uint32_t col, uin
       }
       break;
     case CNT_FEATHER:
+      commands_[row].push_back(count);
+      pushPixelsToBuffer32(row, col - count, count);
       break;
     case CNT_PLAYER:
       break;

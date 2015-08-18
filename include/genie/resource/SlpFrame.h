@@ -46,6 +46,7 @@ struct SlpFrameData
 
   std::vector<XY> shadow_mask;
   std::vector<XY> outline_mask;
+  std::vector<XY> feather_mask;
 
   // Element for player_color vector, the vector stores position (x, y) of
   // a player color pixel and the palette index for the color
@@ -192,7 +193,7 @@ private:
   void readPixelsToImage(uint32_t row, uint32_t &col, uint32_t count,
                          bool player_col = false);
   void readPixelsToImage32(uint32_t row, uint32_t &col, uint32_t count,
-                         bool player_col = false);
+                         uint8_t special = 0);
 
   //----------------------------------------------------------------------------
   /// Sets the next count of pixels to given color without reading from stream.
