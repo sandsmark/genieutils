@@ -119,8 +119,6 @@ public:
   ///
   /// @return pixel array size of (width * height)
   //
-  const uint8_t* getPixelIndexes(void) const;
-  SlpFrameData getSlpFrameData(void) const;
   uint32_t getProperties(void) const;
   uint32_t getPaletteOffset(void) const;
   bool is32bit(void) const;
@@ -148,6 +146,7 @@ public:
 
   int32_t hotspot_x;
   int32_t hotspot_y;
+  SlpFrameData img_data;
 
 private:
   static Logger &log;
@@ -166,7 +165,6 @@ private:
   std::vector<uint16_t> right_edges_;
 
   std::vector<uint32_t> cmd_offsets_;
-  SlpFrameData img_data_;
   std::vector<std::vector<uint8_t>> commands_; // Don't you dare use std::list here!
 
   virtual void serializeObject(void);

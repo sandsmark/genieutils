@@ -59,17 +59,6 @@ uint32_t SlpFrame::getHeight(void) const
   return height_;
 }
 
-//----------------------------------------------------------------------------
-const uint8_t* SlpFrame::getPixelIndexes(void) const
-{
-  return &img_data_.pixel_indexes[0];
-}
-
-SlpFrameData SlpFrame::getSlpFrameData(void) const
-{
-  return img_data_;
-}
-
 uint32_t SlpFrame::getPaletteOffset(void) const
 {
   return palette_offset_;
@@ -119,7 +108,7 @@ void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
     left_edges_[row] = 0;
     for (uint32_t col = 0; col < width_; ++col)
     {
-      if (img_data_.bgra_channels[row * width_ + col] == 0)
+      if (img_data.bgra_channels[row * width_ + col] == 0)
         ++left_edges_[row];
       else break;
     }
@@ -140,12 +129,12 @@ void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
       {
         uint32_t last_bgra = bgra;
         cnt_type old_count = count_type;
-        bgra = img_data_.bgra_channels[row * width_ + col];
+        bgra = img_data.bgra_channels[row * width_ + col];
 
-        if (transparent_slot < img_data_.transparency_mask.size())
+        if (transparent_slot < img_data.transparency_mask.size())
         {
-          if (img_data_.transparency_mask[transparent_slot].x == col
-            && img_data_.transparency_mask[transparent_slot].y == row)
+          if (img_data.transparency_mask[transparent_slot].x == col
+            && img_data.transparency_mask[transparent_slot].y == row)
           {
             count_type = CNT_TRANSPARENT;
             ++transparent_slot;
@@ -242,10 +231,10 @@ void SlpFrame::load(std::istream &istr)
   std::chrono::time_point<std::chrono::system_clock> startTime = std::chrono::system_clock::now();
 
   if (is32bit())
-    img_data_.bgra_channels.resize(width_ * height_, 0);
+    img_data.bgra_channels.resize(width_ * height_, 0);
   else
-    img_data_.pixel_indexes.resize(width_ * height_);
-  img_data_.alpha_channel.resize(width_ * height_, 0);
+    img_data.pixel_indexes.resize(width_ * height_);
+  img_data.alpha_channel.resize(width_ * height_, 0);
 
   uint16_t integrity = 0;
   istr.seekg(slp_file_pos_ + std::streampos(outline_table_offset_));
@@ -420,13 +409,13 @@ void SlpFrame::readPixelsToImage(uint32_t row, uint32_t &col,
   while (col < to_pos)
   {
     uint8_t color_index = read<uint8_t>();
-    assert(row * width_ + col < img_data_.pixel_indexes.size());
-    img_data_.pixel_indexes[row * width_ + col] = color_index;
-    img_data_.alpha_channel[row * width_ + col] = 255;
+    assert(row * width_ + col < img_data.pixel_indexes.size());
+    img_data.pixel_indexes[row * width_ + col] = color_index;
+    img_data.alpha_channel[row * width_ + col] = 255;
     if (player_col)
     {
       SlpFrameData::PlayerColorElement pce = {col, row, color_index};
-      img_data_.player_color_mask.push_back(pce);
+      img_data.player_color_mask.push_back(pce);
     }
     ++col;
   }
@@ -440,17 +429,17 @@ void SlpFrame::readPixelsToImage32(uint32_t row, uint32_t &col,
   while (col < to_pos)
   {
     uint32_t bgra = read<uint32_t>();
-    assert(row * width_ + col < img_data_.bgra_channels.size());
-    img_data_.bgra_channels[row * width_ + col] = bgra;
+    assert(row * width_ + col < img_data.bgra_channels.size());
+    img_data.bgra_channels[row * width_ + col] = bgra;
     if (special == 1)
     {
       SlpFrameData::PlayerColorElement pce = {col, row, 0};
-      img_data_.player_color_mask.push_back(pce);
+      img_data.player_color_mask.push_back(pce);
     }
     else if (special == 2)
     {
       SlpFrameData::XY xy = {col, row};
-      img_data_.transparency_mask.push_back(xy);
+      img_data.transparency_mask.push_back(xy);
     }
     ++col;
   }
@@ -464,13 +453,13 @@ void SlpFrame::setPixelsToColor(uint32_t row, uint32_t &col, uint32_t count,
   uint32_t to_pos = col + count;
   while (col < to_pos)
   {
-    assert(row * width_ + col < img_data_.pixel_indexes.size());
-    img_data_.pixel_indexes[row * width_ + col] = color_index;
-    img_data_.alpha_channel[row * width_ + col] = 255;
+    assert(row * width_ + col < img_data.pixel_indexes.size());
+    img_data.pixel_indexes[row * width_ + col] = color_index;
+    img_data.alpha_channel[row * width_ + col] = 255;
     if (player_col)
     {
       SlpFrameData::PlayerColorElement pce = {col, row, color_index};
-      img_data_.player_color_mask.push_back(pce);
+      img_data.player_color_mask.push_back(pce);
     }
     ++col;
   }
@@ -484,12 +473,12 @@ void SlpFrame::setPixelsToColor32(uint32_t row, uint32_t &col, uint32_t count,
   uint32_t to_pos = col + count;
   while (col < to_pos)
   {
-    assert(row * width_ + col < img_data_.bgra_channels.size());
-    img_data_.bgra_channels[row * width_ + col] = bgra;
+    assert(row * width_ + col < img_data.bgra_channels.size());
+    img_data.bgra_channels[row * width_ + col] = bgra;
     if (player_col)
     {
       SlpFrameData::PlayerColorElement pce = {col, row, 0};
-      img_data_.player_color_mask.push_back(pce);
+      img_data.player_color_mask.push_back(pce);
     }
     ++col;
   }
@@ -502,7 +491,7 @@ void SlpFrame::setPixelsToShadow(uint32_t row, uint32_t &col, uint32_t count)
   while (col < to_pos)
   {
     SlpFrameData::XY xy = {col, row};
-    img_data_.shadow_mask.push_back(xy);
+    img_data.shadow_mask.push_back(xy);
     ++col;
   }
 }
@@ -514,7 +503,7 @@ void SlpFrame::setPixelsToOutline(uint32_t row, uint32_t &col, uint32_t count)
   while (col < to_pos)
   {
     SlpFrameData::XY xy = {col, row};
-    img_data_.outline_mask.push_back(xy);
+    img_data.outline_mask.push_back(xy);
     ++col;
   }
 }
@@ -605,7 +594,7 @@ void SlpFrame::pushPixelsToBuffer32(uint32_t row, uint32_t col, uint32_t count)
 {
   for (uint32_t pix = col - count; pix < col; ++pix)
   {
-    uint32_t bgra = img_data_.bgra_channels[row * width_ + pix];
+    uint32_t bgra = img_data.bgra_channels[row * width_ + pix];
     commands_[row].push_back(bgra);
     commands_[row].push_back(bgra >> 8);
     commands_[row].push_back(bgra >> 16);
