@@ -83,7 +83,9 @@ void SlpFile::loadFile()
 //------------------------------------------------------------------------------
 void SlpFile::saveFile()
 {
+#ifndef NDEBUG
   std::chrono::time_point<std::chrono::system_clock> startTime = std::chrono::system_clock::now();
+#endif
   version = "2.0N";
   comment = "genieutils";
   num_frames_ = frames_.size();

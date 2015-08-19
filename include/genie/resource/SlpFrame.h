@@ -113,6 +113,7 @@ public:
   //
   uint32_t getHeight(void) const;
 
+  void setSize(const uint32_t width, const uint32_t height);
 
   //----------------------------------------------------------------------------
   /// Returns a pixel array containing the indexes of a color in a palette.

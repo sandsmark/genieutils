@@ -59,6 +59,24 @@ uint32_t SlpFrame::getHeight(void) const
   return height_;
 }
 
+void SlpFrame::setSize(const uint32_t width, const uint32_t height)
+{
+  width_ = width;
+  height_ = height;
+  if (is32bit())
+  {
+    img_data.bgra_channels.clear();
+    img_data.bgra_channels.resize(width * height, 0);
+  }
+  else
+  {
+    img_data.pixel_indexes.clear();
+    img_data.alpha_channel.clear();
+    img_data.pixel_indexes.resize(width * height, 0);
+    img_data.alpha_channel.resize(width * height, 0);
+  }
+}
+
 uint32_t SlpFrame::getPaletteOffset(void) const
 {
   return palette_offset_;
@@ -88,7 +106,9 @@ void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
 {
   setOStream(ostr);
   setOperation(OP_WRITE);
+#ifndef NDEBUG
   std::chrono::time_point<std::chrono::system_clock> startTime = std::chrono::system_clock::now();
+#endif
 
   assert(height_ < 4096);
   outline_table_offset_ = slp_offset_;
@@ -228,13 +248,16 @@ void SlpFrame::serializeHeader(void)
 void SlpFrame::load(std::istream &istr)
 {
   setIStream(istr);
-  std::chrono::time_point<std::chrono::system_clock> startTime = std::chrono::system_clock::now();
 
   if (is32bit())
+  {
     img_data.bgra_channels.resize(width_ * height_, 0);
+  }
   else
+  {
     img_data.pixel_indexes.resize(width_ * height_);
-  img_data.alpha_channel.resize(width_ * height_, 0);
+    img_data.alpha_channel.resize(width_ * height_, 0);
+  }
 
   uint16_t integrity = 0;
   istr.seekg(slp_file_pos_ + std::streampos(outline_table_offset_));
@@ -381,10 +404,6 @@ void SlpFrame::load(std::istream &istr)
       }
     }
   }
-#ifndef NDEBUG
-  std::chrono::time_point<std::chrono::system_clock> endTime = std::chrono::system_clock::now();
-  log.debug("Frame at [%u], decoding took [%u] milliseconds", outline_table_offset_, std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count());
-#endif
 }
 
 //------------------------------------------------------------------------------
@@ -544,11 +563,14 @@ void SlpFrame::handleColors(cnt_type count_type, uint32_t row, uint32_t col, uin
       }
       else
       {
-        if (count > 0xFF)
+        while (count > 0xFF)
         {
-          log.error("Too long plain color");
+          count -= 0xFF;
+          commands_[row].push_back(0x7);
+          commands_[row].push_back(0xFF);
+          pushPixelsToBuffer32(row, col, 1);
         }
-        else if (count > 0xF)
+        if (count > 0xF)
         {
           commands_[row].push_back(0x7);
           commands_[row].push_back(count);
@@ -606,7 +628,9 @@ void SlpFrame::pushPixelsToBuffer32(uint32_t row, uint32_t col, uint32_t count)
 void SlpFrame::save(std::ostream &ostr)
 {
   setOStream(ostr);
+#ifndef NDEBUG
   std::chrono::time_point<std::chrono::system_clock> startTime = std::chrono::system_clock::now();
+#endif
 
   //Write edges
   for (uint32_t row = 0; row < height_; ++row)
