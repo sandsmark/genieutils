@@ -126,11 +126,23 @@ void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
     cmd_offsets_[row] = slp_offset_;
     // Count left edge
     left_edges_[row] = 0;
-    for (uint32_t col = 0; col < width_; ++col)
+    if (is32bit())
     {
-      if (img_data.bgra_channels[row * width_ + col] == 0)
-        ++left_edges_[row];
-      else break;
+      for (uint32_t col = 0; col < width_; ++col)
+      {
+        if (img_data.bgra_channels[row * width_ + col] == 0)
+          ++left_edges_[row];
+        else break;
+      }
+    }
+    else
+    {
+      for (uint32_t col = 0; col < width_; ++col)
+      {
+        if (img_data.alpha_channel[row * width_ + col] == 0)
+          ++left_edges_[row];
+        else break;
+      }
     }
     // Fully transparent row
     if (left_edges_[row] == width_)
@@ -139,18 +151,21 @@ void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
       continue;
     }
     // Read colors and count right edge
+    bool not_transparent = true;
+    uint8_t color_index = 0;
     uint32_t bgra = 0;
     uint32_t pixel_set_size = 0;
     cnt_type count_type = CNT_LEFT;
     for (uint32_t col = left_edges_[row]; col < width_; ++col)
     {
       ++pixel_set_size;
+      uint8_t last_color = color_index;
+      uint32_t last_bgra = bgra;
+      cnt_type old_count = count_type;
+
       if (is32bit())
       {
-        uint32_t last_bgra = bgra;
-        cnt_type old_count = count_type;
         bgra = img_data.bgra_channels[row * width_ + col];
-
         if (transparent_slot < img_data.transparency_mask.size())
         {
           if (img_data.transparency_mask[transparent_slot].x == col
@@ -162,41 +177,50 @@ void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
           }
         }
         count_type = last_bgra == bgra ? CNT_SAME : CNT_DIFF;
+      }
+      else
+      {
+        color_index = img_data.pixel_indexes[row * width_ + col];
+        count_type = last_color == color_index ? CNT_SAME : CNT_DIFF;
+      }
+
 COUNT_SWITCH:
-        if (old_count != count_type)
+      if (old_count != count_type)
+      {
+        switch (old_count)
         {
-          switch (old_count)
-          {
-            case CNT_DIFF:
-              if (count_type == CNT_SAME)
-              {
-                handleColors(CNT_DIFF, row, col, pixel_set_size - 2);
-                pixel_set_size = 2;
-              }
-              else
-              {
-                handleColors(CNT_DIFF, row, col, --pixel_set_size);
-                pixel_set_size = 1;
-              }
-              continue;
-            case CNT_SAME:
-              handleColors(CNT_SAME, row, col, --pixel_set_size, !last_bgra);
+          case CNT_DIFF:
+            if (count_type == CNT_SAME)
+            {
+              handleColors(CNT_DIFF, row, col, pixel_set_size - 2);
+              pixel_set_size = 2;
+            }
+            else
+            {
+              handleColors(CNT_DIFF, row, col, --pixel_set_size);
               pixel_set_size = 1;
-              continue;
-            case CNT_TRANSPARENT:
-              handleColors(CNT_TRANSPARENT, row, col, --pixel_set_size);
-              pixel_set_size = 1;
-              continue;
-            case CNT_PLAYER:
-              continue;
-            case CNT_OUTLINE:
-              continue;
-            case CNT_SHADOW:
-              continue;
-            default: continue;
-          }
+            }
+            break;
+          case CNT_SAME:
+            handleColors(CNT_SAME, row, col, --pixel_set_size, is32bit() ? !last_bgra : !not_transparent);
+            pixel_set_size = 1;
+            break;
+          case CNT_TRANSPARENT:
+            handleColors(CNT_TRANSPARENT, row, col, --pixel_set_size);
+            pixel_set_size = 1;
+            break;
+          case CNT_PLAYER:
+            break;
+          case CNT_OUTLINE:
+            break;
+          case CNT_SHADOW:
+            break;
+          default: break;
         }
       }
+
+      if (!is32bit())
+        not_transparent = img_data.alpha_channel[row * width_ + col];
     }
     // Handle last colors
     if (bgra == 0)
@@ -568,18 +592,18 @@ void SlpFrame::handleColors(cnt_type count_type, uint32_t row, uint32_t col, uin
           count -= 0xFF;
           commands_[row].push_back(0x7);
           commands_[row].push_back(0xFF);
-          pushPixelsToBuffer32(row, col, 1);
+          pushPixelsToBuffer(row, col, 1);
         }
         if (count > 0xF)
         {
           commands_[row].push_back(0x7);
           commands_[row].push_back(count);
-          pushPixelsToBuffer32(row, col, 1);
+          pushPixelsToBuffer(row, col, 1);
         }
         else
         {
           commands_[row].push_back(0x7 | count << 4);
-          pushPixelsToBuffer32(row, col, 1);
+          pushPixelsToBuffer(row, col, 1);
         }
       }
       break;
@@ -588,18 +612,18 @@ void SlpFrame::handleColors(cnt_type count_type, uint32_t row, uint32_t col, uin
       {
         commands_[row].push_back(0x2 | (count & 0xF00) >> 4);
         commands_[row].push_back(count);
-        pushPixelsToBuffer32(row, col, count);
+        pushPixelsToBuffer(row, col, count);
       }
       else // Lesser copy.
       {
         commands_[row].push_back(count << 2);
-        pushPixelsToBuffer32(row, col, count);
+        pushPixelsToBuffer(row, col, count);
       }
       break;
     case CNT_TRANSPARENT:
       commands_[row].push_back(0x9E);
       commands_[row].push_back(count);
-      pushPixelsToBuffer32(row, col, count);
+      pushPixelsToBuffer(row, col, count);
       break;
     case CNT_PLAYER:
       break;
@@ -612,15 +636,25 @@ void SlpFrame::handleColors(cnt_type count_type, uint32_t row, uint32_t col, uin
 }
 
 //------------------------------------------------------------------------------
-void SlpFrame::pushPixelsToBuffer32(uint32_t row, uint32_t col, uint32_t count)
+void SlpFrame::pushPixelsToBuffer(uint32_t row, uint32_t col, uint32_t count)
 {
-  for (uint32_t pix = col - count; pix < col; ++pix)
+  if (is32bit())
   {
-    uint32_t bgra = img_data.bgra_channels[row * width_ + pix];
-    commands_[row].push_back(bgra);
-    commands_[row].push_back(bgra >> 8);
-    commands_[row].push_back(bgra >> 16);
-    commands_[row].push_back(bgra >> 24);
+    for (uint32_t pix = col - count; pix < col; ++pix)
+    {
+      uint32_t bgra = img_data.bgra_channels[row * width_ + pix];
+      commands_[row].push_back(bgra);
+      commands_[row].push_back(bgra >> 8);
+      commands_[row].push_back(bgra >> 16);
+      commands_[row].push_back(bgra >> 24);
+    }
+  }
+  else
+  {
+    for (uint32_t pix = col - count; pix < col; ++pix)
+    {
+      commands_[row].push_back(img_data.pixel_indexes[row * width_ + pix]);
+    }
   }
 }
 

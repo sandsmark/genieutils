@@ -224,7 +224,7 @@ private:
 
   enum cnt_type {CNT_LEFT, CNT_SAME, CNT_DIFF, CNT_TRANSPARENT, CNT_PLAYER, CNT_OUTLINE, CNT_SHADOW};
   void handleColors(cnt_type count_type, uint32_t row, uint32_t col, uint32_t count, bool transparent = false);
-  void pushPixelsToBuffer32(uint32_t row, uint32_t col, uint32_t count);
+  void pushPixelsToBuffer(uint32_t row, uint32_t col, uint32_t count);
 };
 
 typedef boost::shared_ptr<SlpFrame> SlpFramePtr;
