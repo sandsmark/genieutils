@@ -89,6 +89,35 @@ PalFilePtr DrsFile::getPalFile(uint32_t id)
 }
 
 //------------------------------------------------------------------------------
+unsigned char* DrsFile::getWavPtr(uint32_t id)
+{
+  auto i = wav_offsets_.find(id);
+
+  if (i != wav_offsets_.end())
+  {
+    wav_file_.clear();
+    getIStream()->seekg(std::streampos(i->second));
+    uint32_t type = read<uint32_t>();
+    uint32_t size = read<uint32_t>();
+#ifndef NDEBUG
+    log.debug("WAV [%u], type [%X], size [%u]", id, type, size);
+#endif
+    getIStream()->seekg(std::streampos(i->second));
+    wav_file_.resize(size + 8);
+    for (auto &pos: wav_file_)
+    {
+      pos = read<uint8_t>();
+    }
+    return wav_file_.data();
+  }
+  else
+  {
+    log.warn("No sound file with id [%u] found!", id);
+    return NULL;
+  }
+}
+
+//------------------------------------------------------------------------------
 void DrsFile::serializeObject(void)
 {
   loadHeader();
@@ -113,6 +142,12 @@ std::string DrsFile::getSlpTableHeader(void) const
 std::string DrsFile::getBinaryTableHeader(void) const
 {
   return "anib";
+}
+
+//------------------------------------------------------------------------------
+std::string DrsFile::getSoundTableHeader(void) const
+{
+  return " vaw";
 }
 
 //------------------------------------------------------------------------------
@@ -155,7 +190,6 @@ void DrsFile::loadHeader()
           slp->setInitialReadPosition(pos);
 
           slp_map_[id] = slp;
-          slp_ids.push_back(id);
         }
         else if (table_types_[i].compare(getBinaryTableHeader()) == 0)
         {
@@ -164,8 +198,10 @@ void DrsFile::loadHeader()
 
           bina_map_[id] = bina;
         }
-        // else other TODO: Sounds
-
+        else if (table_types_[i].compare(getSoundTableHeader()) == 0)
+        {
+          wav_offsets_[id] = pos;
+        }
       }
     }
 
@@ -174,4 +210,3 @@ void DrsFile::loadHeader()
 }
 
 }
-

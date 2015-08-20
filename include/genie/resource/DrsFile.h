@@ -67,7 +67,8 @@ public:
   //
   PalFilePtr getPalFile(uint32_t id);
 
-  std::vector<uint32_t> slp_ids;
+  unsigned char* getWavPtr(uint32_t id);
+
 private:
   static Logger &log;
 
@@ -79,6 +80,8 @@ private:
   std::vector<std::string> table_types_;
   std::vector<uint32_t> table_num_of_files_;
   std::list<uint32_t> loaded_slp_ids_;
+  std::map<uint32_t, uint32_t> wav_offsets_;
+  std::vector<uint8_t> wav_file_;
 
   typedef std::map<uint32_t, SlpFilePtr> SlpMap;
   SlpMap slp_map_;
@@ -90,6 +93,7 @@ private:
 
   std::string getSlpTableHeader(void) const;
   std::string getBinaryTableHeader(void) const;
+  std::string getSoundTableHeader(void) const;
 
    //----------------------------------------------------------------------------
   /// Loads table and resource headers.
