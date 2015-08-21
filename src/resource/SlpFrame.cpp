@@ -31,7 +31,7 @@ namespace genie
 {
 
 Logger& SlpFrame::log = Logger::getLogger("genie.SlpFrame");
-const char* CNT_SETS[] = {"CNT_LEFT", "CNT_SAME", "CNT_DIFF", "CNT_TRANSPARENT", "CNT_PLAYER", "CNT_OUTLINE", "CNT_SHADOW"};
+const char* CNT_SETS[] = {"CNT_LEFT", "CNT_SAME", "CNT_DIFF", "CNT_TRANSPARENT", "CNT_PLAYER", "CNT_OUTLINE", "CNT_PC_OUTLINE", "CNT_SHADOW"};
 
 //------------------------------------------------------------------------------
 SlpFrame::SlpFrame()
@@ -120,7 +120,12 @@ void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
   right_edges_.resize(height_);
   cmd_offsets_.resize(height_);
   commands_.resize(height_);
+  uint32_t player_color_slot = 0;
+  uint32_t shadow_slot = 0;
+  uint32_t outline_slot = 0;
+  uint32_t outline_pc_slot = 0;
   uint32_t transparent_slot = 0;
+
   for (uint32_t row = 0; row < height_; ++row)
   {
     cmd_offsets_[row] = slp_offset_;
@@ -163,6 +168,46 @@ void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
       uint32_t last_bgra = bgra;
       cnt_type old_count = count_type;
 
+      if (player_color_slot < img_data.player_color_mask.size())
+      {
+        if (img_data.player_color_mask[player_color_slot].x == col
+          && img_data.player_color_mask[player_color_slot].y == row)
+        {
+          count_type = CNT_PLAYER;
+          ++player_color_slot;
+          goto COUNT_SWITCH;
+        }
+      }
+      if (shadow_slot < img_data.shadow_mask.size())
+      {
+        if (img_data.shadow_mask[shadow_slot].x == col
+          && img_data.shadow_mask[shadow_slot].y == row)
+        {
+          count_type = CNT_SHADOW;
+          ++shadow_slot;
+          goto COUNT_SWITCH;
+        }
+      }
+      if (outline_pc_slot < img_data.outline_pc_mask.size())
+      {
+        if (img_data.outline_pc_mask[outline_pc_slot].x == col
+          && img_data.outline_pc_mask[outline_pc_slot].y == row)
+        {
+          count_type = CNT_PC_OUTLINE;
+          ++outline_pc_slot;
+          goto COUNT_SWITCH;
+        }
+      }
+      if (outline_slot < img_data.outline_mask.size())
+      {
+        if (img_data.outline_mask[outline_slot].x == col
+          && img_data.outline_mask[outline_slot].y == row)
+        {
+          count_type = CNT_OUTLINE;
+          ++outline_slot;
+          goto COUNT_SWITCH;
+        }
+      }
       if (is32bit())
       {
         bgra = img_data.bgra_channels[row * width_ + col];
@@ -189,6 +234,8 @@ COUNT_SWITCH:
       {
         switch (old_count)
         {
+          case CNT_LEFT:
+            break;
           case CNT_DIFF:
             if (count_type == CNT_SAME)
             {
@@ -205,17 +252,10 @@ COUNT_SWITCH:
             handleColors(CNT_SAME, row, col, --pixel_set_size, is32bit() ? !last_bgra : !not_transparent);
             pixel_set_size = 1;
             break;
-          case CNT_TRANSPARENT:
-            handleColors(CNT_TRANSPARENT, row, col, --pixel_set_size);
+          default:
+            handleColors(old_count, row, col, --pixel_set_size);
             pixel_set_size = 1;
             break;
-          case CNT_PLAYER:
-            break;
-          case CNT_OUTLINE:
-            break;
-          case CNT_SHADOW:
-            break;
-          default: break;
         }
       }
 
@@ -395,7 +435,7 @@ void SlpFrame::load(std::istream &istr)
               break;
 
             case 0x4E:
-              setPixelsToOutline(row, pix_pos, 1);//, 242);
+              setPixelsToPcOutline(row, pix_pos, 1);//, 242);
               break;
             case 0x6E:
               setPixelsToOutline(row, pix_pos, 1);//, 0);
@@ -403,7 +443,7 @@ void SlpFrame::load(std::istream &istr)
 
             case 0x5E:
               pix_cnt = read<uint8_t>();
-              setPixelsToOutline(row, pix_pos, pix_cnt);//, 242);
+              setPixelsToPcOutline(row, pix_pos, pix_cnt);//, 242);
               break;
             case 0x7E:
               pix_cnt = read<uint8_t>();
@@ -552,6 +592,18 @@ void SlpFrame::setPixelsToOutline(uint32_t row, uint32_t &col, uint32_t count)
 }
 
 //------------------------------------------------------------------------------
+void SlpFrame::setPixelsToPcOutline(uint32_t row, uint32_t &col, uint32_t count)
+{
+  uint32_t to_pos = col + count;
+  while (col < to_pos)
+  {
+    SlpFrameData::XY xy = {col, row};
+    img_data.outline_pc_mask.push_back(xy);
+    ++col;
+  }
+}
+
+//------------------------------------------------------------------------------
 uint8_t SlpFrame::getPixelCountFromData(uint8_t data)
 {
   uint8_t pix_cnt;
@@ -587,24 +639,7 @@ void SlpFrame::handleColors(cnt_type count_type, uint32_t row, uint32_t col, uin
       }
       else
       {
-        while (count > 0xFF)
-        {
-          count -= 0xFF;
-          commands_[row].push_back(0x7);
-          commands_[row].push_back(0xFF);
-          pushPixelsToBuffer(row, col, 1);
-        }
-        if (count > 0xF)
-        {
-          commands_[row].push_back(0x7);
-          commands_[row].push_back(count);
-          pushPixelsToBuffer(row, col, 1);
-        }
-        else
-        {
-          commands_[row].push_back(0x7 | count << 4);
-          pushPixelsToBuffer(row, col, 1);
-        }
+        handleSpecial(0x7, row, col, count, 1);
       }
       break;
     case CNT_DIFF:
@@ -626,12 +661,57 @@ void SlpFrame::handleColors(cnt_type count_type, uint32_t row, uint32_t col, uin
       pushPixelsToBuffer(row, col, count);
       break;
     case CNT_PLAYER:
+      handleSpecial(0x6, row, col, count, count);
       break;
     case CNT_OUTLINE:
+      if (count == 1)
+      {
+        commands_[row].push_back(0x6E);
+      }
+      else
+      {
+        commands_[row].push_back(0x7E);
+        commands_[row].push_back(count);
+      }
+      break;
+    case CNT_PC_OUTLINE:
+      if (count == 1)
+      {
+        commands_[row].push_back(0x4E);
+      }
+      else
+      {
+        commands_[row].push_back(0x5E);
+        commands_[row].push_back(count);
+      }
       break;
     case CNT_SHADOW:
+      handleSpecial(0xB, row, col, count, 0);
       break;
     default: break;
+  }
+}
+
+//------------------------------------------------------------------------------
+void SlpFrame::handleSpecial(uint8_t cmd, uint32_t row, uint32_t col, uint32_t count, uint32_t pixs)
+{
+  while (count > 0xFF)
+  {
+    count -= 0xFF;
+    commands_[row].push_back(cmd);
+    commands_[row].push_back(0xFF);
+    pushPixelsToBuffer(row, col, pixs);
+  }
+  if (count > 0xF)
+  {
+    commands_[row].push_back(cmd);
+    commands_[row].push_back(count);
+    pushPixelsToBuffer(row, col, pixs);
+  }
+  else
+  {
+    commands_[row].push_back(cmd | count << 4);
+    pushPixelsToBuffer(row, col, pixs);
   }
 }
 

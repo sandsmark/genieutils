@@ -46,6 +46,7 @@ struct SlpFrameData
 
   std::vector<XY> shadow_mask;
   std::vector<XY> outline_mask;
+  std::vector<XY> outline_pc_mask;
   std::vector<XY> transparency_mask;
 
   // Element for player_color vector, the vector stores position (x, y) of
@@ -213,6 +214,7 @@ private:
   /// Sets the next count of pixels to shadow without reading from stream.
   void setPixelsToShadow(uint32_t row, uint32_t &col, uint32_t count);
   void setPixelsToOutline(uint32_t row, uint32_t &col, uint32_t count);
+  void setPixelsToPcOutline(uint32_t row, uint32_t &col, uint32_t count);
 
   //----------------------------------------------------------------------------
   /// This method returns either the count stored in command byte or (if not
@@ -222,8 +224,9 @@ private:
   //
   uint8_t getPixelCountFromData(uint8_t data);
 
-  enum cnt_type {CNT_LEFT, CNT_SAME, CNT_DIFF, CNT_TRANSPARENT, CNT_PLAYER, CNT_OUTLINE, CNT_SHADOW};
+  enum cnt_type {CNT_LEFT, CNT_SAME, CNT_DIFF, CNT_TRANSPARENT, CNT_PLAYER, CNT_OUTLINE, CNT_PC_OUTLINE, CNT_SHADOW};
   void handleColors(cnt_type count_type, uint32_t row, uint32_t col, uint32_t count, bool transparent = false);
+  void handleSpecial(uint8_t cmd, uint32_t row, uint32_t col, uint32_t count, uint32_t pixs);
   void pushPixelsToBuffer(uint32_t row, uint32_t col, uint32_t count);
 };
 
