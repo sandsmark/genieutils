@@ -31,7 +31,7 @@ namespace genie
 {
 
 Logger& SlpFrame::log = Logger::getLogger("genie.SlpFrame");
-const char* CNT_SETS[] = {"CNT_LEFT", "CNT_SAME", "CNT_DIFF", "CNT_TRANSPARENT", "CNT_PLAYER", "CNT_OUTLINE", "CNT_PC_OUTLINE", "CNT_SHADOW"};
+const char* CNT_SETS[] = {"CNT_LEFT", "CNT_SAME", "CNT_DIFF", "CNT_TRANSPARENT", "CNT_PLAYER", "CNT_SHIELD", "CNT_PC_OUTLINE", "CNT_SHADOW"};
 
 //------------------------------------------------------------------------------
 SlpFrame::SlpFrame()
@@ -122,7 +122,7 @@ void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
   commands_.resize(height_);
   uint32_t player_color_slot = 0;
   uint32_t shadow_slot = 0;
-  uint32_t outline_slot = 0;
+  uint32_t shield_slot = 0;
   uint32_t outline_pc_slot = 0;
   uint32_t transparent_slot = 0;
 
@@ -198,13 +198,13 @@ void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
           goto COUNT_SWITCH;
         }
       }
-      if (outline_slot < img_data.outline_mask.size())
+      if (shield_slot < img_data.shield_mask.size())
       {
-        if (img_data.outline_mask[outline_slot].x == col
-          && img_data.outline_mask[outline_slot].y == row)
+        if (img_data.shield_mask[shield_slot].x == col
+          && img_data.shield_mask[shield_slot].y == row)
         {
-          count_type = CNT_OUTLINE;
-          ++outline_slot;
+          count_type = CNT_SHIELD;
+          ++shield_slot;
           goto COUNT_SWITCH;
         }
       }
@@ -293,6 +293,7 @@ void SlpFrame::serializeHeader(void)
   // 0x08 = only 1 pcs in TC, seems to be useless leftover from AoE 1, mostly containing player colors.
   // 0x10 = tree SLPs 147 and 152 in RoR have two shadows, mask and black pixels. Has pure black shadow? No
   // 0x18 = use default palette, 0x08 uses outline? No
+  // 0x78 = has embedded palette at palette offset: 4 bytes tell RGB count, then 3 bytes per each RGB
   serialize<uint32_t>(properties_);
 
   serialize<uint32_t>(width_);
@@ -329,6 +330,19 @@ void SlpFrame::load(std::istream &istr)
 
   istr.seekg(slp_file_pos_ + std::streampos(cmd_table_offset_));
   serialize<uint32_t>(cmd_offsets_, height_);
+
+  // Read embedded palette
+  if (properties_ == 0x78)
+  {
+    istr.seekg(slp_file_pos_ + std::streampos(palette_offset_));
+    img_data.palette.resize(read<uint32_t>());
+    for (auto &rgba: img_data.palette)
+    {
+      rgba.r = read<uint8_t>();
+      rgba.g = read<uint8_t>();
+      rgba.b = read<uint8_t>();
+    }
+  }
 
   if (integrity != 0x8000) // At least one visible row.
   // Each row has it's commands, 0x0F signals the end of a rows commands.
@@ -438,7 +452,7 @@ void SlpFrame::load(std::istream &istr)
               setPixelsToPcOutline(row, pix_pos, 1);//, 242);
               break;
             case 0x6E:
-              setPixelsToOutline(row, pix_pos, 1);//, 0);
+              setPixelsToShield(row, pix_pos, 1);//, 0);
               break;
 
             case 0x5E:
@@ -447,7 +461,7 @@ void SlpFrame::load(std::istream &istr)
               break;
             case 0x7E:
               pix_cnt = read<uint8_t>();
-              setPixelsToOutline(row, pix_pos, pix_cnt);//, 0);
+              setPixelsToShield(row, pix_pos, pix_cnt);//, 0);
               break;
             case 0x9E: // Apparently some kind of edge blending to background.
               pix_cnt = read<uint8_t>();
@@ -580,13 +594,13 @@ void SlpFrame::setPixelsToShadow(uint32_t row, uint32_t &col, uint32_t count)
 }
 
 //------------------------------------------------------------------------------
-void SlpFrame::setPixelsToOutline(uint32_t row, uint32_t &col, uint32_t count)
+void SlpFrame::setPixelsToShield(uint32_t row, uint32_t &col, uint32_t count)
 {
   uint32_t to_pos = col + count;
   while (col < to_pos)
   {
     SlpFrameData::XY xy = {col, row};
-    img_data.outline_mask.push_back(xy);
+    img_data.shield_mask.push_back(xy);
     ++col;
   }
 }
@@ -663,7 +677,7 @@ void SlpFrame::handleColors(cnt_type count_type, uint32_t row, uint32_t col, uin
     case CNT_PLAYER:
       handleSpecial(0x6, row, col, count, count);
       break;
-    case CNT_OUTLINE:
+    case CNT_SHIELD:
       if (count == 1)
       {
         commands_[row].push_back(0x6E);
