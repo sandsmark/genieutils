@@ -139,6 +139,14 @@ SlpFramePtr SlpFile::getFrame(uint32_t frame)
 {
   if (frame >= frames_.size())
   {
+    if (!loaded_)
+    {
+#ifndef NDEBUG
+      log.debug("Reloading SLP, seeking frame [%u]", frame);
+#endif
+      readObject(*getIStream());
+      return getFrame(frame);
+    }
     log.error("Trying to get frame [%u] from index out of range!", frame);
     throw std::out_of_range("getFrame()");
   }

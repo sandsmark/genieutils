@@ -56,12 +56,13 @@ SlpFilePtr DrsFile::getSlpFile(uint32_t id)
     log.debug("Loading SLP file [%u]", id);
 #endif
     i->second->readObject(*getIStream());
-    if (loaded_slp_ids_.size() > 100)
+    if (loaded_slp_ids_.size() > 42)
     {
       SlpMap::iterator old = slp_map_.find(loaded_slp_ids_.front());
       old->second->unload();
       loaded_slp_ids_.pop_front();
     }
+    loaded_slp_ids_.remove(id);
     loaded_slp_ids_.push_back(id);
     return i->second;
   }
