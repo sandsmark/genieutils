@@ -28,8 +28,8 @@ SoundItem::SoundItem()
 {
   ResourceID = -1;
   Probability = 100;
-  Civ = -1;
-  Unknown1 = -1;
+  Culture = -1;
+  PlayerID = -1;
 }
 
 SoundItem::~SoundItem()
@@ -67,8 +67,8 @@ void SoundItem::serializeObject(void)
 
   if (getGameVersion() >= genie::GV_AoKA)
   {
-    serialize<int16_t>(Civ);
-    serialize<int16_t>(Unknown1);
+    serialize<int16_t>(Culture);
+    serialize<int16_t>(PlayerID);
   }
 }
 

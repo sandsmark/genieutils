@@ -36,8 +36,8 @@ public:
   virtual void setGameVersion(GameVersion gv);
 
   int16_t ID;
-  int16_t Unknown1;
-  int32_t Unknown2;      // This is always equal to 300000
+  int16_t PlayAtUpdateCount;
+  int32_t CacheTime;      // This is always equal to 300000
   std::vector<SoundItem> Items;
 
 private:

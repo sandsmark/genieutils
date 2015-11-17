@@ -44,8 +44,8 @@ public:
 
   /// Probability out of 100 that this item will be played
   int16_t Probability;
-  int16_t Civ;//not in aoe/ror
-  int16_t Unknown1;//not in aoe/ror; seems to be unused in tc
+  int16_t Culture;//not in aoe/ror
+  int16_t PlayerID;//not in aoe/ror; seems to be unused in tc
 
 private:
   virtual void serializeObject(void);
