@@ -125,6 +125,13 @@ void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
   uint32_t shield_slot = 0;
   uint32_t outline_pc_slot = 0;
   uint32_t transparent_slot = 0;
+  // Ensure that all 8-bit masks get saved.
+  for(auto const &pixel: img_data.shadow_mask)
+    img_data.alpha_channel[pixel.y * width_ + pixel.x] = 255;
+  for(auto const &pixel: img_data.outline_pc_mask)
+    img_data.alpha_channel[pixel.y * width_ + pixel.x] = 255;
+  for(auto const &pixel: img_data.shield_mask)
+    img_data.alpha_channel[pixel.y * width_ + pixel.x] = 255;
 
   for (uint32_t row = 0; row < height_; ++row)
   {
@@ -178,16 +185,6 @@ void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
           goto COUNT_SWITCH;
         }
       }
-      if (shadow_slot < img_data.shadow_mask.size())
-      {
-        if (img_data.shadow_mask[shadow_slot].x == col
-          && img_data.shadow_mask[shadow_slot].y == row)
-        {
-          count_type = CNT_SHADOW;
-          ++shadow_slot;
-          goto COUNT_SWITCH;
-        }
-      }
       if (outline_pc_slot < img_data.outline_pc_mask.size())
       {
         if (img_data.outline_pc_mask[outline_pc_slot].x == col
@@ -205,6 +202,16 @@ void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
         {
           count_type = CNT_SHIELD;
           ++shield_slot;
+          goto COUNT_SWITCH;
+        }
+      }
+      if (shadow_slot < img_data.shadow_mask.size())
+      {
+        if (img_data.shadow_mask[shadow_slot].x == col
+          && img_data.shadow_mask[shadow_slot].y == row)
+        {
+          count_type = CNT_SHADOW;
+          ++shadow_slot;
           goto COUNT_SWITCH;
         }
       }
