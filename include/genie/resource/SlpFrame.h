@@ -225,8 +225,8 @@ private:
   //
   uint8_t getPixelCountFromData(uint8_t data);
 
-  enum cnt_type {CNT_LEFT, CNT_SAME, CNT_DIFF, CNT_TRANSPARENT, CNT_PLAYER, CNT_SHIELD, CNT_PC_OUTLINE, CNT_SHADOW};
-  void handleColors(cnt_type count_type, uint32_t row, uint32_t col, uint32_t count, bool transparent = false);
+  enum cnt_type {CNT_LEFT, CNT_SAME, CNT_DIFF, CNT_TRANSPARENT, CNT_FEATHERING, CNT_PLAYER, CNT_SHIELD, CNT_PC_OUTLINE, CNT_SHADOW};
+  void handleColors(cnt_type count_type, uint32_t row, uint32_t col, uint32_t count);
   void handleSpecial(uint8_t cmd, uint32_t row, uint32_t col, uint32_t count, uint32_t pixs);
   void pushPixelsToBuffer(uint32_t row, uint32_t col, uint32_t count);
 };
