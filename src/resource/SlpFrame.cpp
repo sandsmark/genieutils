@@ -77,6 +77,94 @@ void SlpFrame::setSize(const uint32_t width, const uint32_t height)
   }
 }
 
+void SlpFrame::enlarge(const uint32_t width, const uint32_t height, const int32_t offset_x, const int32_t offset_y)
+{
+  if(width_ > width && height_ > height) return;
+
+  if (is32bit())
+  {
+    //std::vector<uint32_t> new_bgra_channels(width * height, 0);
+    //img_data.transparency_mask;
+  }
+  else
+  {
+    std::vector<uint8_t> new_pixel_indexes(width * height, 0);
+    std::vector<uint8_t> new_alpha_channel(width * height, 0);
+    // If offsets are negative, the old pixels are lost. Care to fix?
+    for(size_t r = 0, row = offset_y; r < height_ && row < height; ++r, ++row)
+    {
+      for(size_t c = 0, col = offset_x; c < width_ && col < width; ++c, ++col)
+      {
+        new_pixel_indexes[row * width + col] = img_data.pixel_indexes[r * width_ + c];
+        new_alpha_channel[row * width + col] = img_data.alpha_channel[r * width_ + c];
+      }
+    }
+    img_data.pixel_indexes = new_pixel_indexes;
+    img_data.alpha_channel = new_alpha_channel;
+  }
+
+  // You better not crop the frame.
+  for(auto &xy: img_data.shadow_mask)
+  {
+    xy.x += offset_x;
+    xy.y += offset_y;
+  }
+  for(auto &xy: img_data.shield_mask)
+  {
+    xy.x += offset_x;
+    xy.y += offset_y;
+  }
+  for(auto &xy: img_data.outline_pc_mask)
+  {
+    xy.x += offset_x;
+    xy.y += offset_y;
+  }
+  for(auto &xy: img_data.player_color_mask)
+  {
+    xy.x += offset_x;
+    xy.y += offset_y;
+  }
+
+  hotspot_x += offset_x;
+  hotspot_y += offset_y;
+  width_ = width;
+  height_ = height;
+}
+
+void SlpFrame::enlargeForMerge(const SlpFrame &frame, int32_t &os_x, int32_t &os_y)
+{
+  const int32_t hsdx = frame.hotspot_x - hotspot_x, hsdy = frame.hotspot_y - hotspot_y,
+    hsrdx = int32_t(frame.getWidth()) - frame.hotspot_x - (int32_t(width_) - hotspot_x),
+    hsrdy = int32_t(frame.getHeight()) - frame.hotspot_y - (int32_t(height_) - hotspot_y);
+  uint32_t width = width_, height = height_;
+  int32_t offset_x = 0, offset_y = 0;
+  if(uint32_t(hsdx) < width_)
+  {
+    // Add space to left side.
+    offset_x = hsdx;
+    width += hsdx;
+  }
+  if(uint32_t(hsdy) < height_)
+  {
+    // Add space to top side.
+    offset_y = hsdy;
+    height += hsdy;
+  }
+  if(uint32_t(hsrdx) < width_)
+  {
+    // Add space to right side.
+    width += hsrdx;
+  }
+  if(uint32_t(hsrdy) < height_)
+  {
+    // Add space to bottom side.
+    height += hsrdy;
+  }
+  os_x = -hsdx + offset_x;
+  os_y = -hsdy + offset_y;
+  enlarge(width, height, offset_x, offset_y);
+}
+
 uint32_t SlpFrame::getPaletteOffset(void) const
 {
   return palette_offset_;
