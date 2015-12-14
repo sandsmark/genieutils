@@ -230,8 +230,7 @@ void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
         img_data.alpha_channel[loc] = 255;
       }
     }
-    new_shadow_mask.shrink_to_fit();
-    img_data.shadow_mask = new_shadow_mask;
+    img_data.shadow_mask = std::move(new_shadow_mask);
   }
 
   for (uint32_t row = 0; row < height_; ++row)
