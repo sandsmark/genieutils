@@ -214,12 +214,25 @@ void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
   uint32_t outline_pc_slot = 0;
   uint32_t transparent_slot = 0;
   // Ensure that all 8-bit masks get saved.
-  for(auto const &pixel: img_data.shadow_mask)
-    img_data.alpha_channel[pixel.y * width_ + pixel.x] = 255;
   for(auto const &pixel: img_data.outline_pc_mask)
     img_data.alpha_channel[pixel.y * width_ + pixel.x] = 255;
   for(auto const &pixel: img_data.shield_mask)
     img_data.alpha_channel[pixel.y * width_ + pixel.x] = 255;
+  {
+    std::vector<XY> new_shadow_mask;
+    new_shadow_mask.reserve(img_data.shadow_mask.size());
+    for(auto const &pixel: img_data.shadow_mask)
+    {
+      auto loc = pixel.y * width_ + pixel.x;
+      if(img_data.alpha_channel[loc] == 0)
+      {
+        new_shadow_mask.emplace_back(pixel);
+        img_data.alpha_channel[loc] = 255;
+      }
+    }
+    new_shadow_mask.shrink_to_fit();
+    img_data.shadow_mask = new_shadow_mask;
+  }
 
   for (uint32_t row = 0; row < height_; ++row)
   {

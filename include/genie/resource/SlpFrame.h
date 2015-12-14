@@ -32,17 +32,18 @@
 namespace genie
 {
 
+struct XY
+{
+  uint32_t x;
+  uint32_t y;
+};
+
 struct SlpFrameData
 {
   std::vector<uint8_t> pixel_indexes;
   std::vector<uint32_t> bgra_channels;
   std::vector<uint8_t> alpha_channel;
 
-  struct XY
-  {
-    uint32_t x;
-    uint32_t y;
-  };
 
   std::vector<XY> shadow_mask;
   std::vector<XY> shield_mask;
