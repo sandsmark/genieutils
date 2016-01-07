@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2014  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -118,11 +118,9 @@ public:
   /// Maximum number of units that can be garrisonned at the same time.
   int8_t GarrisonCapacity;
 
-  /// Area taken by the unit. No other unit can move into this area except
-  /// flying units.
-  std::pair<float, float> SizeRadius;
-
-  float HPBarHeight1;
+  /// Collision detection area taken by the unit.
+  /// No other unit can move into this area except flying units.
+  XYZF CollisionSize;
 
   /// Sound played when the unit is created
   std::pair<int16_t, int16_t> TrainSound;
@@ -148,9 +146,9 @@ public:
   /// TODO
   int8_t Enabled;
   int8_t Disabled;
-  std::pair<int16_t, int16_t> PlacementBypassTerrain;
+  std::pair<int16_t, int16_t> PlacementSideTerrain;
   std::pair<int16_t, int16_t> PlacementTerrain;
-  std::pair<float, float> EditorRadius;
+  std::pair<float, float> ClearanceSize;
   int8_t HillMode;
   int8_t VisibleInFog;
 
@@ -165,8 +163,8 @@ public:
 
   // TODO
   float ResourceDecay;
-  int8_t BlastArmorLevel;
-  int8_t TriggerType;
+  int8_t BlastDefenseLevel;
+  int8_t SubType;
   int8_t InteractionMode;
 
   /**
@@ -204,7 +202,7 @@ public:
   int32_t HotKey;
   int8_t Unselectable;
   int8_t Unknown6;
-  int8_t UnknownSelectionMode;
+  int8_t Unknown7;
   int8_t Unknown8;
   int8_t SelectionMask;
 
@@ -232,8 +230,7 @@ public:
    */
   int8_t SelectionEffect;
   uint8_t EditorSelectionColour;
-  std::pair<float, float> SelectionRadius;
-  float HPBarHeight2;
+  XYZF SelectionShapeSize;
 
   static const unsigned short RESOURCE_STORAGE_CNT = 3;
 
@@ -248,7 +245,7 @@ public:
   int16_t SelectionSound;
   int16_t DyingSound;
   int8_t AttackMode;
-  int8_t EdibleMeat;
+  int8_t Unknown10;
   std::string Name;
   uint16_t NameLength2;
   std::string Name2;

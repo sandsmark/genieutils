@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2015  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -42,9 +42,9 @@ Unit::Unit() : ResourceStorages(RESOURCE_STORAGE_CNT)
   HitPoints = 1;
   LineOfSight = 2;
   GarrisonCapacity = 0;
-  SizeRadius.first = 0;
-  SizeRadius.second = 0;
-  HPBarHeight1 = 0;
+  CollisionSize.x = 0;
+  CollisionSize.y = 0;
+  CollisionSize.z = 0;
   TrainSound.first = -1;
   TrainSound.second = -1;
   DeadUnitID = -1;
@@ -55,20 +55,20 @@ Unit::Unit() : ResourceStorages(RESOURCE_STORAGE_CNT)
   Unknown1 = -1;
   Enabled = 1;
   Disabled = 0;
-  PlacementBypassTerrain.first = -1;
-  PlacementBypassTerrain.second = -1;
+  PlacementSideTerrain.first = -1;
+  PlacementSideTerrain.second = -1;
   PlacementTerrain.first = -1;
   PlacementTerrain.second = -1;
-  EditorRadius.first = 0;
-  EditorRadius.second = 0;
+  ClearanceSize.first = 0;
+  ClearanceSize.second = 0;
   HillMode = 0;
   VisibleInFog = 0;
   TerrainRestriction = 0;
   FlyMode = 0;
   ResourceCapacity = 0;
   ResourceDecay = 0;
-  BlastArmorLevel = 0;
-  TriggerType = 0;
+  BlastDefenseLevel = 0;
+  SubType = 0;
   InteractionMode = 0;
   MinimapMode = 0;
   CommandAttribute = 0;
@@ -79,7 +79,7 @@ Unit::Unit() : ResourceStorages(RESOURCE_STORAGE_CNT)
   HotKey = 16000;
   Unselectable = 0;
   Unknown6 = 0;
-  UnknownSelectionMode = 0;
+  Unknown7 = 0;
   Unknown8 = 0;
   SelectionMask = 0;
   SelectionShapeType = 0;
@@ -89,13 +89,13 @@ Unit::Unit() : ResourceStorages(RESOURCE_STORAGE_CNT)
   Nothing = 0;
   SelectionEffect = 1;
   EditorSelectionColour = 52;
-  SelectionRadius.first = 0;
-  SelectionRadius.second = 0;
-  HPBarHeight2 = 0;
+  SelectionShapeSize.x = 0;
+  SelectionShapeSize.y = 0;
+  SelectionShapeSize.z = 0;
   SelectionSound = -1;
   DyingSound = -1;
   AttackMode = 0;
-  EdibleMeat = 0;
+  Unknown10 = 0;
   Name = "";
   NameLength2 = 9;
   Name2 = "";
@@ -148,8 +148,9 @@ void Unit::serializeObject(void)
   serialize<int16_t>(HitPoints);
   serialize<float>(LineOfSight);
   serialize<int8_t>(GarrisonCapacity);
-  serializePair<float>(SizeRadius);
-  serialize<float>(HPBarHeight1);
+  serialize<float>(CollisionSize.x);
+  serialize<float>(CollisionSize.y);
+  serialize<float>(CollisionSize.z);
   serializePair<int16_t>(TrainSound, (getGameVersion() >= genie::GV_AoKA) ? false : true);
   serialize<int16_t>(DeadUnitID);
   serialize<int8_t>(PlacementMode);
@@ -163,17 +164,17 @@ void Unit::serializeObject(void)
     serialize<int8_t>(Disabled);
 
   if (getGameVersion() >= genie::GV_MIK)
-    serializePair<int16_t>(PlacementBypassTerrain);
+    serializePair<int16_t>(PlacementSideTerrain);
   serializePair<int16_t>(PlacementTerrain); // Before AoE, this also contains side terrain.
-  serializePair<float>(EditorRadius);
+  serializePair<float>(ClearanceSize);
   serialize<int8_t>(HillMode);
   serialize<int8_t>(VisibleInFog);
   serialize<int16_t>(TerrainRestriction);
   serialize<int8_t>(FlyMode);
   serialize<int16_t>(ResourceCapacity);
   serialize<float>(ResourceDecay);
-  serialize<int8_t>(BlastArmorLevel);
-  serialize<int8_t>(TriggerType);
+  serialize<int8_t>(BlastDefenseLevel);
+  serialize<int8_t>(SubType);
   serialize<int8_t>(InteractionMode);
   serialize<int8_t>(MinimapMode);
   serialize<int8_t>(CommandAttribute);
@@ -186,7 +187,7 @@ void Unit::serializeObject(void)
     serialize<int32_t>(HotKey);
     serialize<int8_t>(Unselectable);
     serialize<int8_t>(Unknown6);
-    serialize<int8_t>(UnknownSelectionMode);
+    serialize<int8_t>(Unknown7);
     serialize<int8_t>(Unknown8);
 
     if (getGameVersion() >= genie::GV_AoKA)
@@ -204,8 +205,9 @@ void Unit::serializeObject(void)
 
     serialize<int8_t>(SelectionEffect);
     serialize<uint8_t>(EditorSelectionColour);
-    serializePair<float>(SelectionRadius);
-    serialize<float>(HPBarHeight2);
+    serialize<float>(SelectionShapeSize.x);
+    serialize<float>(SelectionShapeSize.y);
+    serialize<float>(SelectionShapeSize.z);
   }
 
   serializeSub<ResourceStorage>(ResourceStorages, RESOURCE_STORAGE_CNT);
@@ -216,7 +218,7 @@ void Unit::serializeObject(void)
   serialize<int16_t>(SelectionSound);
   serialize<int16_t>(DyingSound);
   serialize<int8_t>(AttackMode);
-  serialize<int8_t>(EdibleMeat);
+  serialize<int8_t>(Unknown10);
 
   serialize(Name, NameLength);
 

@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2015  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -34,7 +34,7 @@ Creatable::Creatable() : ResourceCosts(RESOURCECOSTS_SIZE),
   ButtonID = 0;
   Unknown26 = 0;
   Unknown27 = 0;
-  Unknown28 = 0;
+  UnknownType = 0;
   HeroMode = 0;
   GarrisonGraphic = -1;
   TotalMissiles = 1;
@@ -73,7 +73,7 @@ void Creatable::serializeObject(void)
     {
       serialize<float>(Unknown26);
       serialize<float>(Unknown27);
-      serialize<int8_t>(Unknown28);
+      serialize<int8_t>(UnknownType);
 
       if (getGameVersion() >= genie::GV_AoKB)
       {

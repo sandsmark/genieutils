@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2015  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -31,7 +31,7 @@ Type50::Type50() : GraphicDisplacement(GRAPHICDISPLACEMENT_SIZE)
   DefaultArmor = 1000;
   TerRestrictionForDmgMultiplying = -1;
   MaxRange = 0;
-  BlastRadius = 0;
+  BlastWidth = 0;
   ReloadTime = 0;
   ProjectileUnitID = -1;
   AccuracyPercent = 0;
@@ -39,7 +39,7 @@ Type50::Type50() : GraphicDisplacement(GRAPHICDISPLACEMENT_SIZE)
   FrameDelay = 0;
   BlastAttackLevel = 0;
   MinRange = 0;
-  AccuracyErrorRadius = 0;
+  AccuracyDispersion = 0;
   AttackGraphic = -1;
   DisplayedMeleeArmour = 0;
   DisplayedAttack = 0;
@@ -81,7 +81,7 @@ void Type50::serializeObject(void)
 
   serialize<int16_t>(TerRestrictionForDmgMultiplying);
   serialize<float>(MaxRange);
-  serialize<float>(BlastRadius);
+  serialize<float>(BlastWidth);
   serialize<float>(ReloadTime);
   serialize<int16_t>(ProjectileUnitID);
   serialize<int16_t>(AccuracyPercent);
@@ -92,7 +92,7 @@ void Type50::serializeObject(void)
   serialize<float>(MinRange);
 
   if (getGameVersion() >= genie::GV_AoKB) // 10.36
-    serialize<float>(AccuracyErrorRadius);
+    serialize<float>(AccuracyDispersion);
 
   serialize<int16_t>(AttackGraphic);
   if (getGameVersion() >= genie::GV_AoEB) // 7.01

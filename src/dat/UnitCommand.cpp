@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2013  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -24,9 +24,9 @@ namespace genie
 {
 
 //------------------------------------------------------------------------------
-UnitCommand::UnitCommand() : Graphics(GRAPHICS_SIZE, -1)
+UnitCommand::UnitCommand()
 {
-  One = 1;
+  Enabled = 1;
   ID = -1;
   Unknown1 = 0;
   Type = 7;
@@ -44,11 +44,17 @@ UnitCommand::UnitCommand() : Graphics(GRAPHICS_SIZE, -1)
   Unknown5 = 3;
   SelectionEnabler = 1;
   Unknown7 = 1;
-  Unknown8 = 1;
+  PlunderSource = 1;
   Unknown9 = 0;
   SelectionMode = 5;
   RightClickMode = 0;
   Unknown12 = 0;
+  ToolGraphicID = -1;
+  ProceedingGraphicID = -1;
+  ActionGraphicID = -1;
+  CarryingGraphicID = -1;
+  ExecutionSoundID = -1;
+  ResourceDepositSoundID = -1;
 }
 
 //------------------------------------------------------------------------------
@@ -65,7 +71,7 @@ void UnitCommand::setGameVersion(GameVersion gv)
 //------------------------------------------------------------------------------
 void UnitCommand::serializeObject(void)
 {
-  serialize<int16_t>(One);
+  serialize<int16_t>(Enabled);
   serialize<int16_t>(ID);
   serialize<int8_t>(Unknown1);
   serialize<int16_t>(Type);
@@ -83,12 +89,17 @@ void UnitCommand::serializeObject(void)
   serialize<float>(Unknown5);
   serialize<int8_t>(SelectionEnabler);
   serialize<int8_t>(Unknown7);
-  serialize<int16_t>(Unknown8);
+  serialize<int16_t>(PlunderSource);
   serialize<int16_t>(Unknown9);
   serialize<int8_t>(SelectionMode);
   serialize<int8_t>(RightClickMode);
   serialize<int8_t>(Unknown12);
-  serialize<int16_t>(Graphics, GRAPHICS_SIZE);
+  serialize<int16_t>(ToolGraphicID);
+  serialize<int16_t>(ProceedingGraphicID);
+  serialize<int16_t>(ActionGraphicID);
+  serialize<int16_t>(CarryingGraphicID);
+  serialize<int16_t>(ExecutionSoundID);
+  serialize<int16_t>(ResourceDepositSoundID);
 }
 
 }

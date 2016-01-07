@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2015  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -28,12 +28,12 @@ namespace unit
 
 Bird::Bird()
 {
-  SheepConversion = -1;
+  ActionWhenDiscoveredID = -1;
   SearchRadius = 0;
   WorkRate = 0;
   DropSite.first = -1;
   DropSite.second = -1;
-  VillagerMode = 0;
+  TaskSwapID = 0;
   AttackSound = -1;
   MoveSound = -1;
   AnimalMode = 0;
@@ -53,11 +53,11 @@ void Bird::setGameVersion(GameVersion gv)
 
 void Bird::serializeObject(void)
 {
-  serialize<int16_t>(SheepConversion);
+  serialize<int16_t>(ActionWhenDiscoveredID);
   serialize<float>(SearchRadius);
   serialize<float>(WorkRate);
   serializePair<int16_t>(DropSite, (getGameVersion() < genie::GV_TEST) ? true : false);
-  serialize<int8_t>(VillagerMode);
+  serialize<int8_t>(TaskSwapID);
   serialize<int16_t>(AttackSound);
   if (getGameVersion() >= genie::GV_AoEB)
     serialize<int16_t>(MoveSound); // 6.92
