@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2015  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -23,7 +23,7 @@
 namespace genie
 {
 
-int Terrain::customTerrainAmount;
+unsigned short Terrain::terrain_count;
 //------------------------------------------------------------------------------
 Terrain::Terrain() : CliffColors(), TerrainUnitID(TERRAIN_UNITS_SIZE),
   TerrainUnitDensity(TERRAIN_UNITS_SIZE), TerrainUnitPriority(TERRAIN_UNITS_SIZE)
@@ -72,8 +72,16 @@ void Terrain::setGameVersion(GameVersion gv)
 }
 
 //------------------------------------------------------------------------------
+void Terrain::setTerrainsSize(unsigned short cnt)
+{
+  terrain_count = cnt;
+}
+
+//------------------------------------------------------------------------------
 unsigned short Terrain::getTerrainsSize(GameVersion gv)
 {
+  if (terrain_count)
+    return terrain_count;
   if (gv >= genie::GV_SWGB)
     return 55;
   if (gv == genie::GV_Cysion)
