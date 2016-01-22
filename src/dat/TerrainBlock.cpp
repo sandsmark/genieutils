@@ -102,7 +102,7 @@ unsigned short TerrainBlock::getSomethingSize(void)
     return 6;
   if (getGameVersion() >= genie::GV_AoEB)
     return 5;
-  return 2625;
+  return 68;
 }
 
 //------------------------------------------------------------------------------

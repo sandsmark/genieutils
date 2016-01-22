@@ -1,7 +1,7 @@
 /*
     genie/dat - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2011 - 2013  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -45,12 +45,24 @@ void RandomMaps::setGameVersion(GameVersion gv)
 //------------------------------------------------------------------------------
 void RandomMaps::serializeObject()
 {
-  serializeSize<uint32_t>(total_randommaps_count, Maps.size());
+  if (getGameVersion() < genie::GV_AoEB)
+  {
+    serializeSize<uint32_t>(total_randommaps_count, OldMaps.size());
 
-  serialize<int32_t>(RandomMapPointer);
+    if (isOperation(OP_READ))
+      OldMaps.resize(total_randommaps_count);
+    for (auto &sub: OldMaps)
+      serialize<int32_t>(sub, 852);
+  }
+  else
+  {
+    serializeSize<uint32_t>(total_randommaps_count, Maps.size());
 
-  serializeSub<MapHeader>(MapHeaders, total_randommaps_count);
-  serializeSub<Map>(Maps, total_randommaps_count);
+    serialize<int32_t>(RandomMapPointer);
+
+    serializeSub<MapHeader>(MapHeaders, total_randommaps_count);
+    serializeSub<Map>(Maps, total_randommaps_count);
+  }
 }
 
 //------------------------------------------------------------------------------

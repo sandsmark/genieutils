@@ -96,13 +96,13 @@ void TerrainBorder::serializeObject(void)
   serialize<int8_t>(FrameChanged);
   serialize<int8_t>(Drawn);
 
-  for(auto &sub: Borders)
+  for (auto &sub: Borders)
     serializeSub<FrameData>(sub, getGameVersion() == genie::GV_MIK ? 13 : 12);
 
   serialize<int16_t>(DrawTile);
   serialize<int16_t>(UnderlayTerrain);
 
-  if(getGameVersion() != genie::GV_MIK)
+  if (getGameVersion() != genie::GV_MIK)
     serialize<int16_t>(BorderStyle);
 }
 
