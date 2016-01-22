@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2015  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -45,6 +45,8 @@ TerrainBorder::TerrainBorder()
   AnimateLast = 0;
   FrameChanged = 0;
   Drawn = 0;
+
+  Borders.resize(TILE_TYPE_COUNT);
 
   DrawTile = 0;
   UnderlayTerrain = -1;
@@ -94,18 +96,14 @@ void TerrainBorder::serializeObject(void)
   serialize<int8_t>(FrameChanged);
   serialize<int8_t>(Drawn);
 
-  if (getGameVersion() == genie::GV_MIK) // Just a hack to make it read
-    serializeSub<FrameData>(Frames, TILE_TYPE_COUNT * 12 + 18);
-  else
-    serializeSub<FrameData>(Frames, TILE_TYPE_COUNT * 12);
+  for(auto &sub: Borders)
+    serializeSub<FrameData>(sub, getGameVersion() == genie::GV_MIK ? 13 : 12);
 
   serialize<int16_t>(DrawTile);
   serialize<int16_t>(UnderlayTerrain);
-  serialize<int16_t>(BorderStyle);
 
-  float hack;
-  if (getGameVersion() == genie::GV_MIK)
-    serialize<float>(hack);
+  if(getGameVersion() != genie::GV_MIK)
+    serialize<int16_t>(BorderStyle);
 }
 
 }

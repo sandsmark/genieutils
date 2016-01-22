@@ -102,7 +102,7 @@ unsigned short TerrainBlock::getSomethingSize(void)
     return 6;
   if (getGameVersion() >= genie::GV_AoEB)
     return 5;
-  return 157;//return 2625; // Temporary skip for random maps
+  return 2625;
 }
 
 //------------------------------------------------------------------------------
@@ -115,8 +115,6 @@ unsigned short TerrainBlock::getSomethingSize(void)
 /// SWGB & CC       49640
 void TerrainBlock::serializeObject(void)
 {
-  float hack; // pls remove
-
   serialize<int32_t>(MapPointer);
   serialize<int32_t>(Unknown1); // <-- this could be here or just before tile sizes
   serialize<int32_t>(MapWidth);
@@ -183,9 +181,6 @@ void TerrainBlock::serializeObject(void)
 
   // Few pointers and small numbers.
   serialize<int32_t>(SomeInt32, getSomethingSize());
-  if (getGameVersion() < genie::GV_AoEB)
-  for (int i=0; i < 2468; i++)
-  serialize<float>(hack);
 }
 
 //------------------------------------------------------------------------------

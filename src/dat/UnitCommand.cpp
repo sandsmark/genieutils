@@ -37,7 +37,7 @@ UnitCommand::UnitCommand()
   ResourceProductivityMultiplier = -1;
   ResourceOut = -1;
   Resource = -1;
-  WorkRateMultiplier = 0;
+  Quantity = 0;
   ExecutionRadius = 0;
   ExtraRange = 0;
   Unknown4 = 1;
@@ -82,7 +82,7 @@ void UnitCommand::serializeObject(void)
   serialize<int16_t>(ResourceProductivityMultiplier);
   serialize<int16_t>(ResourceOut);
   serialize<int16_t>(Resource);
-  serialize<float>(WorkRateMultiplier);
+  serialize<float>(Quantity);
   serialize<float>(ExecutionRadius);
   serialize<float>(ExtraRange);
   serialize<int8_t>(Unknown4);

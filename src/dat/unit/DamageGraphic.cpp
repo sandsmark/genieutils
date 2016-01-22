@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2013  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -30,8 +30,8 @@ DamageGraphic::DamageGraphic()
 {
   GraphicID = -1;
   DamagePercent = 0;
+  OldApplyMode = 0;
   ApplyMode = 0;
-  Unknown2 = 0;
 }
 
 DamageGraphic::~DamageGraphic()
@@ -48,8 +48,8 @@ void DamageGraphic::serializeObject(void)
 {
   serialize<int16_t>(GraphicID);
   serialize<int8_t>(DamagePercent);
+  serialize<int8_t>(OldApplyMode);
   serialize<int8_t>(ApplyMode);
-  serialize<int8_t>(Unknown2);
 }
 
 }

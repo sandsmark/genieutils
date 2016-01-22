@@ -43,7 +43,7 @@ public:
   int16_t ResourceProductivityMultiplier;
   int16_t ResourceOut;
   int16_t Resource;
-  float WorkRateMultiplier;
+  float Quantity;
   float ExecutionRadius;
   float ExtraRange;
   int8_t Unknown4;
