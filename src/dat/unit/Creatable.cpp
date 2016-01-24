@@ -27,21 +27,21 @@ namespace unit
 {
 
 Creatable::Creatable() : ResourceCosts(RESOURCECOSTS_SIZE),
-  MissileSpawningArea(AMDBUNKNOWN_SIZE)
+  ProjectileSpawningArea(AMDBUNKNOWN_SIZE)
 {
   TrainTime = 0;
   TrainLocationID = -1;
   ButtonID = 0;
   Unknown26 = 0;
   Unknown27 = 0;
-  UnknownType = 0;
+  CreatableType = 0;
   HeroMode = 0;
   GarrisonGraphic = -1;
-  TotalMissiles = 1;
-  TotalMissilesMax = 1;
-  AlternativeProjectileUnit = -1;
-  ChargingGraphic = -1;
-  ChargingMode = 0;
+  TotalProjectiles = 1;
+  MaxTotalProjectiles = 1;
+  SecondaryProjectileUnit = -1;
+  SpecialGraphic = -1;
+  SpecialAbility = 0;
   DisplayedPierceArmour = 0;
 }
 
@@ -73,7 +73,7 @@ void Creatable::serializeObject(void)
     {
       serialize<float>(Unknown26);
       serialize<float>(Unknown27);
-      serialize<int8_t>(UnknownType);
+      serialize<int8_t>(CreatableType);
 
       if (getGameVersion() >= genie::GV_AoKB)
       {
@@ -81,14 +81,14 @@ void Creatable::serializeObject(void)
         serialize<int32_t>(GarrisonGraphic); // 10.73
       }
 
-      serialize<float>(TotalMissiles);
-      serialize<int8_t>(TotalMissilesMax);
-      serialize<float>(MissileSpawningArea, AMDBUNKNOWN_SIZE);
-      serialize<int32_t>(AlternativeProjectileUnit); // 9.08
+      serialize<float>(TotalProjectiles);
+      serialize<int8_t>(MaxTotalProjectiles);
+      serialize<float>(ProjectileSpawningArea, AMDBUNKNOWN_SIZE);
+      serialize<int32_t>(SecondaryProjectileUnit); // 9.08
       // 9.2
       {
-        serialize<int32_t>(ChargingGraphic);
-        serialize<int8_t>(ChargingMode);
+        serialize<int32_t>(SpecialGraphic);
+        serialize<int8_t>(SpecialAbility);
       }
     }
     serialize<int16_t>(DisplayedPierceArmour);

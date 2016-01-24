@@ -48,18 +48,18 @@ public:
   int8_t ButtonID;
   float Unknown26;
   float Unknown27;
-  int8_t UnknownType;
+  int8_t CreatableType;
   int8_t HeroMode;
   int32_t GarrisonGraphic; 
-  float TotalMissiles;
-  int8_t TotalMissilesMax;
+  float TotalProjectiles;
+  int8_t MaxTotalProjectiles;
 
   static const unsigned short AMDBUNKNOWN_SIZE = 3;
   /// The area from which projectiles spawn. Size and randomness.
-  std::vector<float> MissileSpawningArea;
+  std::vector<float> ProjectileSpawningArea;
 
-  int32_t AlternativeProjectileUnit;
-  int32_t ChargingGraphic;
+  int32_t SecondaryProjectileUnit;
+  int32_t SpecialGraphic;
 
   //TODO:
   /*
@@ -70,7 +70,7 @@ public:
     wall end piece, but if a wall is placed between two other walls, it will
     have a different graphic.
    */
-  int8_t ChargingMode;
+  int8_t SpecialAbility;
   int16_t DisplayedPierceArmour;
 
 private:

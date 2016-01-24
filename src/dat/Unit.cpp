@@ -224,7 +224,6 @@ void Unit::serializeObject(void)
 
   if (getGameVersion() >= genie::GV_SWGB)
   {
-    //serializeSize<uint16_t>(NameLength2, Name2.size());
     serializeSize<uint16_t>(NameLength2, Name2);
     serialize(Name2, NameLength2);
 
