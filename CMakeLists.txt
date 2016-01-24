@@ -16,21 +16,7 @@ set(Boost_USE_STATIC_LIBS        ON)
 set(Boost_USE_MULTITHREADED      ON)
 set(Boost_USE_STATIC_RUNTIME     ON)
 
-# These paths should be in batch files, but Qt NEEDS them here.
-set(ZLIB_INCLUDE_DIR "C:/Cpp/zlib")
-set(ZLIB_LIBRARY "C:/Cpp/zlib/libz.a")
-
-set(GDAT_TOOLS FALSE)
-set(GDAT_STATIC TRUE)
-set(GUTILS_TOOLS FALSE)
-set(GUTILS_TEST FALSE)
-
-if (WIN32)
-	set(ICONV_LIBRARIES "C:/Cpp/MinGW/lib/libiconv.a")
-	set(ICONV_INCLUDE_DIR "C:/Cpp/MinGW")
-else()
-	find_library(iconv REQUIRED)
-endif()
+find_library(iconv REQUIRED)
 
 # dependencies:
 
@@ -79,7 +65,6 @@ set(FILE_SRC
     src/file/ISerializable.cpp
     src/file/IFile.cpp
     src/file/Compressor.cpp
-	zlib.cpp
     )
 
 if (${GU_LANG_SUPPORT})
