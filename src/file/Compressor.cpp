@@ -142,7 +142,7 @@ void Compressor::startDecompression(void)
     
     copy(in, b_ins);
     
-    uncompressedIstream_ = shared_ptr<std::istream>(new v_stream(file_buf)); 
+    uncompressedIstream_ = std::shared_ptr<std::istream>(new v_stream(file_buf)); 
   }
   catch ( const zlib_error &z_err)
   {
@@ -167,7 +167,7 @@ void Compressor::startCompression(void)
   // create buffer
   std::vector<char> file_buf;
   
-  bufferedStream_ = boost::shared_ptr<std::iostream> (new v_stream(file_buf));
+  bufferedStream_ = std::shared_ptr<std::iostream>(new v_stream(file_buf));
 
   ostream_ = obj_->getOStream();
   

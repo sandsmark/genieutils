@@ -23,7 +23,7 @@
 #include <string>
 #include <vector>
 #include <stdint.h>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "genie/file/IFile.h"
 
@@ -94,7 +94,7 @@ private:
   size_t numOfChars(uint8_t number);
 };
 
-typedef boost::shared_ptr<PalFile> PalFilePtr;
+typedef std::shared_ptr<PalFile> PalFilePtr;
 
 }
 

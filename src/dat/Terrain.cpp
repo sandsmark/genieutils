@@ -68,17 +68,17 @@ void Terrain::setGameVersion(GameVersion gv)
   ISerializable::setGameVersion(gv);
 
   ElevationGraphics.resize(TILE_TYPE_COUNT);
-  Borders.resize(getTerrainsSize(gv), 0);
+  Borders.resize(getTerrainCount(gv), 0);
 }
 
 //------------------------------------------------------------------------------
-void Terrain::setTerrainsSize(unsigned short cnt)
+void Terrain::setTerrainCount(unsigned short cnt)
 {
   terrain_count = cnt;
 }
 
 //------------------------------------------------------------------------------
-unsigned short Terrain::getTerrainsSize(GameVersion gv)
+unsigned short Terrain::getTerrainCount(GameVersion gv)
 {
   if (terrain_count)
     return terrain_count;
@@ -140,7 +140,7 @@ void Terrain::serializeObject(void)
   serialize<int16_t>(TerrainToDraw);
   serializePair<int16_t>(TerrainDimensions);
   if (isOperation(OP_READ))
-    serialize<int16_t>(Borders, getTerrainsSize(getGameVersion()));
+    serialize<int16_t>(Borders, getTerrainCount(getGameVersion()));
   else
     serialize<int16_t>(Borders, Borders.size());
   serialize<int16_t>(TerrainUnitID, TERRAIN_UNITS_SIZE);

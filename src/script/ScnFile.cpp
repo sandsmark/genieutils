@@ -67,7 +67,7 @@ void ScnFile::extractRaw(const char *from, const char *to)
 
   Compressor::decompress(ifs, ofs);
 
-//   boost::shared_ptr<std::istream> dec = compressor_.startDecompression(&ifs);
+//   std::shared_ptr<std::istream> dec = compressor_.startDecompression(&ifs);
 
 //   boost::iostreams::copy((*dec), ofs);
 

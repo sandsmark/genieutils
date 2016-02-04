@@ -163,26 +163,29 @@ void DatFile::serializeObject(void)
     serializeSubWithPointers<Graphic>(Graphics, graphic_count_, GraphicPointers);
   }
 
+  auto pos_cnt = tellg();
   if (verbose_)
   {
     std::cout << "Graphics: " << Graphics.size() << std::endl;
-
-    std::cout << "Terrain block " << "(0x" << std::hex << tellg();
   }
   serialize<ISerializable>(TerrainBlock);
+
+  if (verbose_)
+  {
+    pos_cnt = tellg() - pos_cnt;
+    std::cout << "Terrain block " << "(0x" << std::hex << pos_cnt;
+    std::cout << " to 0x" << tellg() << std::dec << ") size " << pos_cnt << std::endl;
+  }
 
   // This data seems to be needed only in AoE and RoR.
   // In later games it is removable.
   // It exists in Star Wars games too, but is not used.
   serialize<ISerializable>(RandomMaps);
 
-  if (verbose_)
-    std::cout << " to 0x" <<std::hex << tellg() << std::dec << ")" << std::endl;
-
   serializeSize<uint32_t>(techage_count_, Techages.size());
 
   if (verbose_)
-    std::cout << "Techage: " << techage_count_ << std::endl;
+    std::cout << "Techs: " << techage_count_ << std::endl;
 
   serializeSub<Techage>(Techages, techage_count_);
 
@@ -197,7 +200,7 @@ void DatFile::serializeObject(void)
     serializeSize<uint32_t>(unit_count_, UnitHeaders.size());
 
     if (verbose_)
-      std::cout << "Unitcount: " << unit_count_ << std::endl;
+      std::cout << "Units: " << unit_count_ << std::endl;
 
     serializeSub<UnitHeader>(UnitHeaders, unit_count_);
   }
@@ -205,7 +208,7 @@ void DatFile::serializeObject(void)
   serializeSize<uint16_t>(civ_count_, Civs.size());
 
   if (verbose_)
-    std::cout << "Civcount: " << civ_count_ << std::endl;
+    std::cout << "Civs: " << civ_count_ << std::endl;
 
   serializeSub<Civ>(Civs, civ_count_);
 
@@ -215,12 +218,15 @@ void DatFile::serializeObject(void)
   serializeSize<uint16_t>(research_count_, Researchs.size());
 
   if (verbose_)
-    std::cout << "Researchcount: " << research_count_ << std::endl;
+    std::cout << "Researches: " << research_count_ << std::endl;
 
   serializeSub<Research>(Researchs, research_count_);
 
   if (verbose_)
-    std::cout << "TechTrees (before eof) (0x" << std::hex << tellg();
+  {
+    pos_cnt = tellg();
+    std::cout << "TechTrees (before eof) (0x" << std::hex << pos_cnt;
+  }
 
   if (getGameVersion() >= genie::GV_SWGB)
     serialize<int8_t>(SUnknown8);
@@ -232,7 +238,10 @@ void DatFile::serializeObject(void)
   }
 
   if (verbose_)
-    std::cout << "to 0x" <<std::hex << tellg() << std::dec << ")" << std::endl;
+  {
+    pos_cnt = tellg() - pos_cnt;
+    std::cout << " to 0x" << tellg() << std::dec << ") size " << pos_cnt << std::endl;
+  }
 
   compressor_.endCompression();
 }

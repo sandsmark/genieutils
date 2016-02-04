@@ -234,7 +234,7 @@ private:
   void pushPixelsToBuffer(uint32_t row, uint32_t col, uint32_t count);
 };
 
-typedef boost::shared_ptr<SlpFrame> SlpFramePtr;
+typedef std::shared_ptr<SlpFrame> SlpFramePtr;
 
 }
 

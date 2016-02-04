@@ -114,7 +114,7 @@ private:
   void serializeHeader(void);
 };
 
-typedef boost::shared_ptr<SlpFile> SlpFilePtr;
+typedef std::shared_ptr<SlpFile> SlpFilePtr;
 
 }
 

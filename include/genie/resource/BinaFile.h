@@ -40,7 +40,7 @@ private:
   virtual void serializeObject(void);
 };
 
-typedef boost::shared_ptr<BinaFile> BinaFilePtr;
+typedef std::shared_ptr<BinaFile> BinaFilePtr;
 
 }
 

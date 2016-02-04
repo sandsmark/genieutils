@@ -21,8 +21,8 @@
 #define GENIE_COMPRESSOR_H
 
 #include <boost/noncopyable.hpp>
-#include <boost/shared_ptr.hpp>
 #include <iostream>
+#include <memory>
 #include "ISerializable.h"
 
 namespace boost {
@@ -65,10 +65,10 @@ private:
   ISerializable *obj_; 
   
   std::istream *istream_;
-  boost::shared_ptr<std::istream> uncompressedIstream_;
+  std::shared_ptr<std::istream> uncompressedIstream_;
   
   std::ostream *ostream_;
-  boost::shared_ptr<std::iostream> bufferedStream_;
+  std::shared_ptr<std::iostream> bufferedStream_;
   
   Compressor();
   

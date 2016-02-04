@@ -123,7 +123,7 @@ void Graphic::serializeObject(void)
   if (AttackSoundUsed != 0)
   {
     if (isOperation(OP_WRITE) && AttackSounds.size() > AngleCount)
-      std::cerr << "Warning: There'are more GraphicAttackSounds than angles!"
+      std::cerr << "Warning: There are more GraphicAttackSounds than angles!"
                 << std::endl;
 
     serializeSub<GraphicAttackSound>(AttackSounds, AngleCount);

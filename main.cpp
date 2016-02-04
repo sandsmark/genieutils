@@ -15,7 +15,6 @@
 #include <genie/file/Compressor.h>
 #include <genie/lang/LangFile.h>
 #include <boost/iostreams/copy.hpp>
-#include <boost/smart_ptr.hpp>
 
 /*sf::Image createSfImage(uint32_t width, uint32_t height, const uint8_t* pixels,
                         genie::PalFilePtr palette, uint8_t transparent_pixel)
@@ -221,7 +220,7 @@ int main(int argc, char **argv) {
  
   genie::Compressor c;
   
-  boost::shared_ptr<std::istream> unc = c.startDecompression(&ifs);
+  std::shared_ptr<std::istream> unc = c.startDecompression(&ifs);
   
   boost::iostreams::copy((*unc), ofs);
   

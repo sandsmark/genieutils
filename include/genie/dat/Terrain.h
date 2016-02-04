@@ -32,8 +32,8 @@ public:
   Terrain();
   virtual ~Terrain();
   virtual void setGameVersion(GameVersion gv);
-  static unsigned short getTerrainsSize(GameVersion gv);
-  static void setTerrainsSize(unsigned short cnt);
+  static unsigned short getTerrainCount(GameVersion gv);
+  static void setTerrainCount(unsigned short cnt);
 
   int16_t Unknown1;
 
