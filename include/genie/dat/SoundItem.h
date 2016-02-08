@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2013  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -36,16 +36,16 @@ public:
 
   /// File name of the resource
   /// 13 in games <= TC and 27 in games >= SWGB
-  std::string FileName;
+  std::string FileName = "";
 
   /// ID of the resource in the drs file, if -1 the sound file may be stored
   /// in the Sound directory.
-  int32_t ResourceID;
+  int32_t ResourceID = -1;
 
   /// Probability out of 100 that this item will be played
-  int16_t Probability;
-  int16_t Culture;//not in aoe/ror
-  int16_t PlayerID;//not in aoe/ror; seems to be unused in tc
+  int16_t Probability = 100;
+  int16_t Culture = -1;//not in aoe/ror
+  int16_t PlayerID = -1;//not in aoe/ror; seems to be unused in tc
 
 private:
   virtual void serializeObject(void);

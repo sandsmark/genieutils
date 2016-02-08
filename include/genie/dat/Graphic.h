@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2014  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -41,20 +41,20 @@ public:
   /// second one's use is unknown. Like the genie unit's internal name value,
   /// they are heavily abbreviated, such as "ARRG2NNE" meaning "Archery
   /// Range Fuedal Age (orth) European"
-  std::string Name;
+  std::string Name = "";
 
   /// Returns the size of Name2
   unsigned short getName2Size(void);
 
   /// See Name
-  std::string Name2;
+  std::string Name2 = "";
 
   /// SLP resource id
-  int32_t SLP;
+  int32_t SLP = -1;
 
   //TODO
-  int8_t Unknown1;
-  int8_t Unknown2;
+  int8_t Unknown1 = 0;
+  int8_t Unknown2 = 0;
 
   /// The layer describes order of graphics being rendered.
   /// Possible values: 0 (lowest layer) to 40 (highest layer)
@@ -62,44 +62,43 @@ public:
   /// layer. If graphics share the same layer, graphics will be displayed
   /// dependend on their map positions.
   ///
-  int8_t Layer;
+  int8_t Layer = 0;
 
   /// Setting this to 0 forces the player color to be blue.
-  int8_t PlayerColor;
-  int8_t Rainbow;
+  int8_t PlayerColor = -1;
+  int8_t Rainbow = -1;
 
   /// Will the graphic be looped.
-  int8_t Replay;
+  int8_t Replay = 0;
 
-  static const unsigned short COORDINATES_SIZE = 4;
   /// TODO: What kind of coordinates?
-  std::vector<int16_t> Coordinates;
+  std::vector<int16_t> Coordinates = {0, 0, 0, 0};
 
-  int16_t SoundID;
-  int8_t AttackSoundUsed;
+  int16_t SoundID = -1;
+  int8_t AttackSoundUsed = 0;
 
   /// Number of frames per angle animation
-  uint16_t FrameCount;
+  uint16_t FrameCount = 0;
 
   /// Number of angles tored in slp and also the number of extra structures.
   /// If there are more than 1 angle, AngleCount/2 - 1 frames will be
   /// mirrored. That means angles starting from south going clockwise to
   /// north are stored and the others will be mirrored.
-  uint16_t AngleCount;
+  uint16_t AngleCount = 0;
 
   /// If this is over 0, the speed of the unit will be replaced with this.
-  float NewSpeed;
+  float NewSpeed = 0;
 
   /// Frame rate in seconds. (Delay between frames)
-  float FrameRate;
+  float FrameRate = 0;
 
   /// Time to wait until the animation sequence is started again.
-  float ReplayDelay;
+  float ReplayDelay = 0;
 
-  int8_t SequenceType;
-  int16_t ID;
-  int8_t MirroringMode;
-  int8_t Unknown3;
+  int8_t SequenceType = 0;
+  int16_t ID = -1;
+  int8_t MirroringMode = 0;
+  int8_t Unknown3 = 0;
 
   std::vector<GraphicDelta> Deltas;
   std::vector<GraphicAttackSound> AttackSounds;

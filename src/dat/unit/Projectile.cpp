@@ -26,14 +26,8 @@ namespace genie
 namespace unit
 {
 
-Projectile::Projectile()
+Projectile::Projectile() //: Type50()
 {
-  StretchMode = 0;
-  SmartMode = 0;
-  DropAnimationMode = 0;
-  PenetrationMode = 0;
-  Unknown24 = 0;
-  ProjectileArc = 0;
 }
 
 Projectile::~Projectile()

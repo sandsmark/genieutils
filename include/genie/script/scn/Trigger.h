@@ -1,7 +1,7 @@
 /*
     genieutils - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2015  Mikko "Tapsa" P
+    Copyright (C) 2015 - 2016  Mikko "Tapsa" P
     Copyright (C) 2015  JustTesting1234
 
     This program is free software: you can redistribute it and/or modify
@@ -39,22 +39,22 @@ public:
   TriggerCondition();
   virtual ~TriggerCondition();
 
-  int32_t type;
-  int32_t usedVariables; //always = 0x10 (for internal use)
-  int32_t amount; //of objects, difficult level
-  int32_t resource; //resource type (see constants below)
-  int32_t setObject;
-  int32_t nextObject;
-  int32_t object;
-  int32_t sourcePlayer;
-  int32_t technology;
-  int32_t timer;
-  int32_t trigger;
-  MapPoint areaFrom;
-  MapPoint areaTo;
-  int32_t objectGroup;
-  int32_t objectType; //Civilian, Military, Building, Other
-  int32_t aiSignal;
+  int32_t type = 0;
+  int32_t usedVariables = 0; //always = 0x10 (for internal use)
+  int32_t amount = -1; //of objects, difficult level
+  int32_t resource = -1; //resource type (see constants below)
+  int32_t setObject = -1;
+  int32_t nextObject = -1;
+  int32_t object = -1;
+  int32_t sourcePlayer = -1;
+  int32_t technology = -1;
+  int32_t timer = -1;
+  int32_t trigger = -1;
+  MapPoint areaFrom = {-1, -1};
+  MapPoint areaTo = {-1, -1};
+  int32_t objectGroup = -1;
+  int32_t objectType = -1; //Civilian, Military, Building, Other
+  int32_t aiSignal = -1;
 
 private:
   virtual void serializeObject(void);
@@ -66,30 +66,30 @@ public:
   TriggerEffect();
   virtual ~TriggerEffect();
 
-  int32_t type;
-  int32_t usedVariables;
-  int32_t aiGoal;
-  int32_t amount;
-  int32_t resource;
-  int32_t diplomacy;
-  int32_t setObjects;
-  int32_t nextObject;
-  int32_t object;
-  int32_t sourcePlayer;
-  int32_t targetPlayer;
-  int32_t technology;
-  int32_t stringTableID;
-  int32_t soundResourceID;
-  int32_t timer;
-  int32_t trigger;
-  MapPoint location;
-  MapPoint areaFrom; //lower-left corner of area
-  MapPoint areaTo; //upper-right corner
-  int32_t objectGroup;
-  int32_t objectType; //Civilian, Military, Building, Other
-  int32_t instructionPanel;
-  std::string message;	//Instructions/Chat
-  std::string soundFile;
+  int32_t type = 0;
+  int32_t usedVariables = 0;
+  int32_t aiGoal = -1;
+  int32_t amount = -1;
+  int32_t resource = -1;
+  int32_t diplomacy = -1;
+  int32_t setObjects = -1;
+  int32_t nextObject = -1;
+  int32_t object = -1;
+  int32_t sourcePlayer = -1;
+  int32_t targetPlayer = -1;
+  int32_t technology = -1;
+  int32_t stringTableID = -1;
+  int32_t soundResourceID = -1;
+  int32_t timer = -1;
+  int32_t trigger = -1;
+  MapPoint location = {-1, -1};
+  MapPoint areaFrom = {-1, -1}; //lower-left corner of area
+  MapPoint areaTo = {-1, -1}; //upper-right corner
+  int32_t objectGroup = -1;
+  int32_t objectType = -1; //Civilian, Military, Building, Other
+  int32_t instructionPanel = -1;
+  std::string message = "";	//Instructions/Chat
+  std::string soundFile = "";
   std::vector<int32_t> selectedUnits;
 
 private:

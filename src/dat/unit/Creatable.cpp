@@ -26,23 +26,9 @@ namespace genie
 namespace unit
 {
 
-Creatable::Creatable() : ResourceCosts(RESOURCECOSTS_SIZE),
-  ProjectileSpawningArea(AMDBUNKNOWN_SIZE)
+Creatable::Creatable() : //Type50(),
+  ResourceCosts(3)
 {
-  TrainTime = 0;
-  TrainLocationID = -1;
-  ButtonID = 0;
-  Unknown26 = 0;
-  Unknown27 = 0;
-  CreatableType = 0;
-  HeroMode = 0;
-  GarrisonGraphic = -1;
-  TotalProjectiles = 1;
-  MaxTotalProjectiles = 1;
-  SecondaryProjectileUnit = -1;
-  SpecialGraphic = -1;
-  SpecialAbility = 0;
-  DisplayedPierceArmour = 0;
 }
 
 Creatable::~Creatable()
@@ -62,7 +48,7 @@ short Creatable::getResourceCostsSize()
 
 void Creatable::serializeObject(void)
 {
-  serializeSub<ResourceCost>(ResourceCosts, RESOURCECOSTS_SIZE);
+  serializeSub<ResourceCost>(ResourceCosts, 3);
   serialize<int16_t>(TrainTime);
   serialize<int16_t>(TrainLocationID);
   serialize<int8_t>(ButtonID);
@@ -83,7 +69,7 @@ void Creatable::serializeObject(void)
 
       serialize<float>(TotalProjectiles);
       serialize<int8_t>(MaxTotalProjectiles);
-      serialize<float>(ProjectileSpawningArea, AMDBUNKNOWN_SIZE);
+      serialize<float>(ProjectileSpawningArea, 3);
       serialize<int32_t>(SecondaryProjectileUnit); // 9.08
       // 9.2
       {

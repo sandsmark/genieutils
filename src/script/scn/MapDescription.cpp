@@ -2,7 +2,7 @@
     genieutils - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2015  Mikko "Tapsa" P
+    Copyright (C) 2015 - 2016  Mikko "Tapsa" P
     Copyright (C) 2015  JustTesting1234
 
     This program is free software: you can redistribute it and/or modify
@@ -27,8 +27,6 @@ namespace genie
 
 ScnMap::ScnMap()
 {
-  width = 0;
-  height = 0;
 }
 
 ScnMap::~ScnMap()
@@ -45,9 +43,6 @@ void ScnMap::serializeObject(void)
 
 MapTile::MapTile()
 {
-  terrainID = 0;
-  elevation = 0;
-  unused = 0;
 }
 
 MapTile::~MapTile()

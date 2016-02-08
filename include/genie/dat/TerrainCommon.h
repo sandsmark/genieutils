@@ -1,7 +1,7 @@
 /*
     geniedat - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2015  Mikko "Tapsa" P
+    Copyright (C) 2015 - 2016  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -31,9 +31,9 @@ public:
   virtual ~FrameData();
   virtual void setGameVersion(GameVersion gv);
 
-  int16_t FrameCount;
-  int16_t AngleCount;
-  int16_t ShapeID;
+  int16_t FrameCount = 0;
+  int16_t AngleCount = 0;
+  int16_t ShapeID = 0;
 
 private:
   virtual void serializeObject(void);
@@ -44,31 +44,31 @@ class SharedTerrain : public ISerializable
 public:
   static const unsigned short TILE_TYPE_COUNT = 19;
 
-  int8_t Enabled; //must be one or the game will crash
-  int8_t Random;
+  int8_t Enabled = 0; //must be one or the game will crash
+  int8_t Random = 0;
 
   virtual unsigned short getNameSize(void)=0;
 
   /// Internal long name
-  std::string Name;
+  std::string Name = "";
   /// Internal SLP name
-  std::string Name2;
-  int32_t SLP;
-  int32_t Unknown3;
-  int32_t SoundID;
+  std::string Name2 = "";
+  int32_t SLP = -1;
+  int32_t Unknown3 = 0;
+  int32_t SoundID = -1;
 
-  std::vector<uint8_t> Colors;
+  std::vector<uint8_t> Colors = {0, 0, 0};
 
-  int8_t IsAnimated;
-  int16_t AnimationFrames; // # of frames to animate through
-  int16_t PauseFames; // # of frames to pause animation after last frame is drawn
-  float Interval; // time between frames
-  float PauseBetweenLoops; // time to pause after last frame
-  int16_t Frame; // the current frame (includes animation & pause frames)
-  int16_t DrawFrame; // the current frame to draw
-  float AnimateLast; // last time animation frame was changed
-  int8_t FrameChanged; // has the DrawFrame changed since terrain was drawn?
-  int8_t Drawn;
+  int8_t IsAnimated = 0;
+  int16_t AnimationFrames = 0; // # of frames to animate through
+  int16_t PauseFames = 0; // # of frames to pause animation after last frame is drawn
+  float Interval = 0; // time between frames
+  float PauseBetweenLoops = 0; // time to pause after last frame
+  int16_t Frame = 0; // the current frame (includes animation & pause frames)
+  int16_t DrawFrame = 0; // the current frame to draw
+  float AnimateLast = 0; // last time animation frame was changed
+  int8_t FrameChanged = 0; // has the DrawFrame changed since terrain was drawn?
+  int8_t Drawn = 0;
 };
 
 }

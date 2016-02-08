@@ -35,21 +35,21 @@ public:
   static unsigned short getTerrainCount(GameVersion gv);
   static void setTerrainCount(unsigned short cnt);
 
-  int16_t Unknown1;
+  int16_t Unknown1 = 0;
 
   unsigned short getNameSize(void);
 
-  int32_t BlendPriority;//not in aoe/ror
-  int32_t BlendType; //not in aoe/ror
+  int32_t BlendPriority = -1;//not in aoe/ror
+  int32_t BlendType = -1; //not in aoe/ror
 
-  std::pair<uint8_t, uint8_t> CliffColors;
-  int8_t PassableTerrain;
-  int8_t ImpassableTerrain;
+  std::pair<uint8_t, uint8_t> CliffColors = {0, 0};
+  int8_t PassableTerrain = -1;
+  int8_t ImpassableTerrain = -1;
 
   std::vector<FrameData> ElevationGraphics;
 
-  int16_t TerrainToDraw;
-  std::pair<int16_t, int16_t> TerrainDimensions; // rows + cols
+  int16_t TerrainToDraw = 0;
+  std::pair<int16_t, int16_t> TerrainDimensions = {0, 0}; // rows + cols
 
   /// These refer to terrain borders, which are actually used only in AoE and RoR.
   std::vector<int16_t> Borders;
@@ -62,7 +62,7 @@ public:
   /// 1 = prevails, others don't.
   std::vector<int8_t> TerrainUnitPriority;
 
-  int16_t NumberOfTerrainUnitsUsed;
+  int16_t NumberOfTerrainUnitsUsed = 0;
 
 private:
   virtual void serializeObject(void);

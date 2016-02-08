@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2014  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -26,7 +26,6 @@ namespace genie
 //------------------------------------------------------------------------------
 TechTree::TechTree()
 {
-  Unknown2 = -1;
 }
 
 //------------------------------------------------------------------------------
@@ -83,11 +82,6 @@ void TechTree::serializeObject(void)
 //------------------------------------------------------------------------------
 TechTreeAge::TechTreeAge()
 {
-  ID = 0;
-  Unknown2 = 2;
-  SlotsUsed = 0;
-  Unknown6 = 0;
-  LineMode = 0;
 }
 
 //------------------------------------------------------------------------------
@@ -160,11 +154,6 @@ void TechTreeAge::serializeObject(void)
 BuildingConnection::BuildingConnection() : UnitsTechsTotal(AGES),
   UnitsTechsFirst(AGES)
 {
-  ID = 0;
-  Unknown1 = 2;
-  LocationInAge = 0;
-  LineMode = 0;
-  EnablingResearch = -1;
 }
 
 //------------------------------------------------------------------------------
@@ -222,14 +211,6 @@ void BuildingConnection::serializeObject(void)
 //------------------------------------------------------------------------------
 UnitConnection::UnitConnection()
 {
-  ID = 0;
-  Unknown1 = 2;
-  UpperBuilding = -1;
-  VerticalLine = 0;
-  LocationInAge = 0;
-  RequiredResearch = -1;
-  LineMode = 0;
-  EnablingResearch = -1;
 }
 
 //------------------------------------------------------------------------------
@@ -277,12 +258,6 @@ void UnitConnection::serializeObject(void)
 //------------------------------------------------------------------------------
 ResearchConnection::ResearchConnection()
 {
-  ID = 0;
-  Unknown1 = 2;
-  UpperBuilding = -1;
-  VerticalLine = 0;
-  LocationInAge = 0;
-  LineMode = 0;
 }
 
 //------------------------------------------------------------------------------

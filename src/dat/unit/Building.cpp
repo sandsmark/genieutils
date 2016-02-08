@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2014  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -26,27 +26,10 @@ namespace genie
 namespace unit
 {
 
-Building::Building() : Annexes(BUILDING_ANNEXES_SIZE),
+Building::Building() : //Creatable(),
+  Annexes(BUILDING_ANNEXES_SIZE),
   LootingTable(LOOTABLE_RES_COUNT)
 {
-  ConstructionGraphicID = -1;
-  SnowGraphicID = -1;
-  AdjacentMode = 0;
-  GraphicsAngle = 0;
-  DisappearsWhenBuilt = 0;
-  StackUnitID = -1;
-  FoundationTerrainID = -1;
-  OldTerrainLikeID = -1;
-  ResearchID = -1;
-  Unknown33 = 0;
-  HeadUnit = -1;
-  TransformUnit = -1;
-  UnknownSound = -1;
-  ConstructionSound = -1;
-  GarrisonType = 0;
-  GarrisonHealRate = 0;
-  Unknown35 = 0;
-  PileUnit = -1;
 }
 
 Building::~Building()

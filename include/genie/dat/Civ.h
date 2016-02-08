@@ -35,35 +35,34 @@ public:
   virtual void setGameVersion(GameVersion gv);
 
   /// Always one
-  int8_t Enabled;
+  int8_t Enabled = 1;
 
   /// Returns size for both names
   static unsigned short getNameSize();
 
   /// Internal name
-  std::string Name;
+  std::string Name = "";
 
   /// MinGameVersion: SWGB
-  std::string Name2;
+  std::string Name2 = "";
 
   /// ID of the technology tree for a civ.
-  int16_t TechTreeID;
+  int16_t TechTreeID = -1;
 
   /// ID of the team bonus
-  int16_t TeamBonusID; // not in aoe/ror
+  int16_t TeamBonusID = -1; // not in aoe/ror
 
   /// Resources can easily added and removed using this vector.
   std::vector<float> Resources;
 
-  int8_t IconSet;
+  int8_t IconSet = 0;
 
   std::vector<int32_t> UnitPointers;
 
   /// Units defined for this civ.
   std::vector<Unit> Units;
 
-  static const unsigned short SWUNIQUE_SIZE = 4;
-  std::vector<int16_t> UniqueUnitsResearches; // Unknown in >=SWGB (cnt=4)
+  std::vector<int16_t> UniqueUnitsResearches = {-1, -1, -1, -1}; // Unknown in >=SWGB (cnt=4)
 
 private:
   /// Number of resources defined for this civilization

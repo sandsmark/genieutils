@@ -72,7 +72,7 @@ public:
 private:
   static Logger &log;
 
-  bool header_loaded_;
+  bool header_loaded_ = false;
 
   uint32_t num_of_tables_;
   uint32_t header_offset_;

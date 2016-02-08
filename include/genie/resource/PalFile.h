@@ -76,7 +76,7 @@ private:
   
   std::vector<Color> colors_;
   
-  uint32_t num_colors_;
+  uint32_t num_colors_ = 0;
   
   std::string type_;
   std::string unknown_;

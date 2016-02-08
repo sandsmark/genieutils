@@ -26,17 +26,8 @@ namespace genie
 namespace unit
 {
 
-Bird::Bird()
+Bird::Bird() //: DeadFish()
 {
-  ActionWhenDiscoveredID = -1;
-  SearchRadius = 0;
-  WorkRate = 0;
-  DropSite.first = -1;
-  DropSite.second = -1;
-  TaskSwapID = 0;
-  AttackSound = -1;
-  MoveSound = -1;
-  AnimalMode = 0;
 }
 
 Bird::~Bird()

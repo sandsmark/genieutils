@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2014  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -37,7 +37,7 @@ public:
   virtual ~TechTree();
   virtual void setGameVersion(GameVersion gv);
 
-  int32_t Unknown2; //1
+  int32_t Unknown2 = 1; //1
 
   std::vector<TechTreeAge> TechTreeAges;
 
@@ -65,10 +65,7 @@ namespace techtree
 class Common : public ISerializable
 {
 public:
-  Common()
-  {
-    SlotsUsed = 0;
-  }
+  Common() {}
 
   virtual ~Common() {}
 
@@ -79,7 +76,7 @@ public:
     Mode.resize(getSlots());
   }
 
-  int32_t SlotsUsed;
+  int32_t SlotsUsed = 0;
 
   /// Connection lines when selected
   std::vector<int32_t> UnitResearch;
@@ -116,19 +113,19 @@ public:
   virtual ~TechTreeAge();
   virtual void setGameVersion(GameVersion gv);
 
-  int32_t ID; //Age ID?
-  int8_t Unknown2; //Always 2
+  int32_t ID = -1; //Age ID?
+  int8_t Unknown2 = 2; //Always 2
 
   std::vector<int32_t> Buildings;
   std::vector<int32_t> Units;
   std::vector<int32_t> Researches;
 
   techtree::Common Common;
-  int8_t SlotsUsed;
+  int8_t SlotsUsed = 0;
   std::vector<int8_t> Unknown4;
   std::vector<int8_t> Unknown5;
-  int8_t Unknown6;
-  int32_t LineMode;
+  int8_t Unknown6 = 0;
+  int32_t LineMode = 0;
 
   unsigned short getU4Size();
 
@@ -147,8 +144,8 @@ public:
   virtual ~BuildingConnection();
   virtual void setGameVersion(GameVersion gv);
 
-  int32_t ID;
-  int8_t Unknown1; //always 2
+  int32_t ID = -1;
+  int8_t Unknown1 = 2; //always 2
 
   std::vector<int32_t> Buildings;
   std::vector<int32_t> Units;
@@ -157,14 +154,14 @@ public:
   techtree::Common Common;
 
   static const unsigned short AGES = 5;
-  int8_t LocationInAge;
+  int8_t LocationInAge = 0;
   std::vector<int8_t> UnitsTechsTotal;
   std::vector<int8_t> UnitsTechsFirst;
 
   /// 5 One or more connections, 6 No connections.
-  int32_t LineMode;
+  int32_t LineMode = 0;
   /// Makes available. Used by buildings, which need a research to be available.
-  int32_t EnablingResearch;
+  int32_t EnablingResearch = 0;
 
 private:
   uint8_t building_count_;
@@ -181,24 +178,24 @@ public:
   virtual ~UnitConnection();
   virtual void setGameVersion(GameVersion gv);
 
-  int32_t ID;
-  int8_t Unknown1; //always 2
-  int32_t UpperBuilding;
+  int32_t ID = -1;
+  int8_t Unknown1 = 2; //always 2
+  int32_t UpperBuilding = -1;
 
   techtree::Common Common;
 
-  int32_t VerticalLine;
+  int32_t VerticalLine = -1;
 
   std::vector<int32_t> Units;
 
   /// 1 First, 2 Second.
-  int32_t LocationInAge;
+  int32_t LocationInAge = 0;
   /// Upgrades unit. Used by units, which aren't first in upgrade line.
-  int32_t RequiredResearch;
+  int32_t RequiredResearch = -1;
   /// 2 First in vertical line. 3 Not first.
-  int32_t LineMode;
+  int32_t LineMode = 0;
   /// Makes available. Used by units, which need a research to be available.
-  int32_t EnablingResearch;
+  int32_t EnablingResearch = -1;
 
 private:
   uint8_t unit_count_;
@@ -214,9 +211,9 @@ public:
   virtual ~ResearchConnection();
   virtual void setGameVersion(GameVersion gv);
 
-  int32_t ID;
-  int8_t Unknown1; //always 2
-  int32_t UpperBuilding;
+  int32_t ID = -1;
+  int8_t Unknown1 = 2; //always 2
+  int32_t UpperBuilding = -1;
 
   std::vector<int32_t> Buildings;
   std::vector<int32_t> Units;
@@ -224,11 +221,11 @@ public:
 
   techtree::Common Common;
 
-  int32_t VerticalLine;
+  int32_t VerticalLine = 0;
   /// 0 Hidden, 1 First, 2 Second.
-  int32_t LocationInAge;
+  int32_t LocationInAge = 0;
   /// 0 First Age. Others.
-  int32_t LineMode;
+  int32_t LineMode = 0;
 
 private:
   uint8_t building_count_;

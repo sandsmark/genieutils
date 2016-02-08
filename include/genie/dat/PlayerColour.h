@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2013  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -33,17 +33,17 @@ public:
   virtual void setGameVersion(GameVersion gv);
 
   static const unsigned short NAME_SIZE = 30;
-  std::string Name;
-  int32_t ID;
+  std::string Name = "";
+  int32_t ID = -1;
 
-  int32_t Palette;
-  int32_t Colour;
-  int32_t Unknown1;
-  int32_t Unknown2;
-  int32_t MinimapColour;
-  int32_t Unknown3;
-  int32_t Unknown4;
-  int32_t StatisticsText;
+  int32_t Palette = 0;
+  int32_t Colour = 0;
+  int32_t Unknown1 = 0;
+  int32_t Unknown2 = 0;
+  int32_t MinimapColour = 0;
+  int32_t Unknown3 = 0;
+  int32_t Unknown4 = 0;
+  int32_t StatisticsText = 0;
 
 private:
   virtual void serializeObject(void);

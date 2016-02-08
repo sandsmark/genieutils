@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2014  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -26,28 +26,8 @@
 namespace genie
 {
 
-Graphic::Graphic() : Coordinates(COORDINATES_SIZE)
+Graphic::Graphic()
 {
-  Name = "";
-  Name2 = "";
-  SLP = -1;
-  Unknown1 = 0;
-  Unknown2 = 0;
-  Layer = 0;
-  PlayerColor = -1;
-  Rainbow = -1;
-  Replay = 0;
-  SoundID = -1;
-  AttackSoundUsed = 0;
-  FrameCount = 0;
-  AngleCount = 0;
-  NewSpeed = 0;
-  FrameRate = 0;
-  ReplayDelay = 0;
-  SequenceType = 0;
-  ID = -1;
-  MirroringMode = 0;
-  Unknown3 = 0;
 }
 
 Graphic::~Graphic()
@@ -101,7 +81,7 @@ void Graphic::serializeObject(void)
   serialize<int8_t>(Rainbow); // 2nd half of player color
   serialize<int8_t>(Replay);
 
-  serialize<int16_t>(Coordinates, COORDINATES_SIZE);
+  serialize<int16_t>(Coordinates, 4);
 
   serializeSize<uint16_t>(DeltaCount, Deltas.size());
   serialize<int16_t>(SoundID);

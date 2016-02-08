@@ -40,10 +40,8 @@ Compressor::Compressor()
 }
 
 //------------------------------------------------------------------------------
-Compressor::Compressor(ISerializable *obj)
+Compressor::Compressor(ISerializable *obj) : obj_(obj)
 {
-  obj_ = obj;
-  istream_ = 0;
 }
 
 //------------------------------------------------------------------------------

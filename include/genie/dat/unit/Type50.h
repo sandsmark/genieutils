@@ -37,38 +37,38 @@ public:
   virtual ~Type50();
   virtual void setGameVersion(GameVersion gv);
 
-  int16_t DefaultArmor; // uint8_t below TC
+  int16_t DefaultArmor = 1000; // uint8_t below TC
   std::vector<unit::AttackOrArmor> Attacks;
   std::vector<unit::AttackOrArmor> Armours;
-  int16_t TerRestrictionForDmgMultiplying;
-  float MaxRange;
-  float BlastWidth;
-  float ReloadTime;
-  int16_t ProjectileUnitID;
+  int16_t TerRestrictionForDmgMultiplying = -1;
+  float MaxRange = 0;
+  float BlastWidth = 0;
+  float ReloadTime = 0;
+  int16_t ProjectileUnitID = -1;
 
   /// Percentage value determining the probability of an attack hiting
-  int16_t AccuracyPercent;
+  int16_t AccuracyPercent = 0;
 
   /// Used in AoE/RoR for towers.
-  int8_t TowerMode;
-  int16_t FrameDelay;
+  int8_t TowerMode = 0;
+  int16_t FrameDelay = 0;
 
-  static const unsigned short GRAPHICDISPLACEMENT_SIZE = 3;
-  std::vector<float> GraphicDisplacement;
+  std::vector<float> GraphicDisplacement = {0, 0, 0};
 
-  int8_t BlastAttackLevel;
-  float MinRange;
-  float AccuracyDispersion;
-  int16_t AttackGraphic;
-  int16_t DisplayedMeleeArmour;
-  int16_t DisplayedAttack;
-  float DisplayedRange;
-  float DisplayedReloadTime;
+  int8_t BlastAttackLevel = 0;
+  float MinRange = 0;
+  float AccuracyDispersion = 0;
+  int16_t AttackGraphic = -1;
+  int16_t DisplayedMeleeArmour = 0;
+  int16_t DisplayedAttack = 0;
+  float DisplayedRange = 0;
+  float DisplayedReloadTime = 0;
 
 private:
   uint16_t AttackCount;
   uint16_t ArmourCount;
 
+protected:
   virtual void serializeObject(void);
 };
 

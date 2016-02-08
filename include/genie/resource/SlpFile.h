@@ -88,12 +88,12 @@ public:
 private:
   static Logger &log;
 
-  bool loaded_;
+  bool loaded_ = false;
 
   uint32_t id_;
   uint32_t len_;
 
-  uint32_t num_frames_;
+  uint32_t num_frames_ = 0;
 
   typedef std::vector<SlpFramePtr> FrameVector;
   FrameVector frames_;

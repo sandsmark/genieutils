@@ -36,25 +36,25 @@ public:
   virtual ~Projectile();
   virtual void setGameVersion(GameVersion gv);
 
-  int8_t StretchMode;
-  int8_t SmartMode;
-  int8_t DropAnimationMode;
+  int8_t StretchMode = 0;
+  int8_t SmartMode = 0;
+  int8_t DropAnimationMode = 0;
 
   /// Affects the graphics so that they pass through the target instead of stopping
   /// 1 allows the projectile to pass through, a value of 0 stops the projectile.
   /// Only affects graphic not pass through damage.
-  int8_t PenetrationMode;
+  int8_t PenetrationMode = 0;
 
-  int8_t Unknown24;
+  int8_t Unknown24 = 0;
 
   /// Determines the arc a projectile follows.
   /// Enter a non-negative value.
   /// The higher the value, the higher the arc will be that the projectile travels.
   /// The graphics do not change, so a scorpion bolt will still always point forwards,
   /// even if it has a very high arc.
-  float ProjectileArc;
+  float ProjectileArc = 0;
 
-private:
+protected:
   virtual void serializeObject(void);
 };
 

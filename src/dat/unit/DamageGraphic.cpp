@@ -28,10 +28,6 @@ namespace unit
 
 DamageGraphic::DamageGraphic()
 {
-  GraphicID = -1;
-  DamagePercent = 0;
-  OldApplyMode = 0;
-  ApplyMode = 0;
 }
 
 DamageGraphic::~DamageGraphic()

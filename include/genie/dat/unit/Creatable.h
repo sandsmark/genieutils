@@ -41,25 +41,23 @@ public:
 
   typedef ResourceUsage<int16_t, int16_t, int16_t> ResourceCost;
 
-  static const unsigned short RESOURCECOSTS_SIZE = 3;
   std::vector<ResourceCost> ResourceCosts;
-  int16_t TrainTime;
-  int16_t TrainLocationID;
-  int8_t ButtonID;
-  float Unknown26;
-  float Unknown27;
-  int8_t CreatableType;
-  int8_t HeroMode;
-  int32_t GarrisonGraphic; 
-  float TotalProjectiles;
-  int8_t MaxTotalProjectiles;
+  int16_t TrainTime = 0;
+  int16_t TrainLocationID = -1;
+  int8_t ButtonID = 0;
+  float Unknown26 = 0;
+  float Unknown27 = 0;
+  int8_t CreatableType = 0;
+  int8_t HeroMode = 0;
+  int32_t GarrisonGraphic = -1; 
+  float TotalProjectiles = 0;
+  int8_t MaxTotalProjectiles = 0;
 
-  static const unsigned short AMDBUNKNOWN_SIZE = 3;
   /// The area from which projectiles spawn. Size and randomness.
-  std::vector<float> ProjectileSpawningArea;
+  std::vector<float> ProjectileSpawningArea = {0, 0, 0};
 
-  int32_t SecondaryProjectileUnit;
-  int32_t SpecialGraphic;
+  int32_t SecondaryProjectileUnit = -1;
+  int32_t SpecialGraphic = -1;
 
   //TODO:
   /*
@@ -70,10 +68,10 @@ public:
     wall end piece, but if a wall is placed between two other walls, it will
     have a different graphic.
    */
-  int8_t SpecialAbility;
-  int16_t DisplayedPierceArmour;
+  int8_t SpecialAbility = 0;
+  int16_t DisplayedPierceArmour = 0;
 
-private:
+protected:
   virtual void serializeObject(void);
 
 };

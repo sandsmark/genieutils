@@ -25,7 +25,6 @@ namespace genie
 //------------------------------------------------------------------------------
 RandomMaps::RandomMaps()
 {
-  RandomMapPointer = 0;
 }
 
 //------------------------------------------------------------------------------
@@ -68,25 +67,6 @@ void RandomMaps::serializeObject()
 //------------------------------------------------------------------------------
 MapHeader::MapHeader()
 {
-  ScriptNumber = 0;
-  BorderSouthWest = 0;
-  BorderNorthWest = 0;
-  BorderNorthEast = 0;
-  BorderSouthEast = 0;
-  BorderUsage = 0;
-  WaterShape = 10;
-  NonBaseTerrain = 1;
-  BaseZoneCoverage = 80;
-  Unknown9 = 0;
-  BaseZonePointer = 0;
-  MapTerrainPointer = 0;
-  MapUnitPointer = 0;
-  MapUnknownPointer = 0;
-  // Remove these after you have made them automatic.
-  BaseZoneCount = 0;
-  MapTerrainCount = 0;
-  MapUnitCount = 0;
-  MapUnknownCount = 0;
 }
 
 //------------------------------------------------------------------------------
@@ -126,19 +106,6 @@ void MapHeader::serializeObject(void)
 //------------------------------------------------------------------------------
 Map::Map()
 {
-  BorderSouthWest = 0;
-  BorderNorthWest = 0;
-  BorderNorthEast = 0;
-  BorderSouthEast = 0;
-  BorderUsage = 0;
-  WaterShape = 10;
-  NonBaseTerrain = 1;
-  BaseZoneCoverage = 80;
-  Unknown9 = 0;
-  BaseZonePointer = 0;
-  MapTerrainPointer = 0;
-  MapUnitPointer = 0;
-  MapUnknownPointer = 0;
 }
 
 //------------------------------------------------------------------------------
@@ -188,20 +155,8 @@ void Map::serializeObject(void)
 }
 
 //------------------------------------------------------------------------------
-BaseZone::BaseZone() : Unknown5(UNKNOWN5_SIZE), Unknown8(UNKNOWN8_SIZE)
+BaseZone::BaseZone()
 {
-  Unknown1 = 1;
-  BaseTerrain = 0;
-  SpacingBetweenPlayers = 2;
-  Unknown4 = 7;
-  Unknown5[1] = 1;
-  Unknown6 = 0;
-  Unknown7 = 0;
-  Unknown8[0] = 100;
-  Unknown8[1] = 1;
-  StartAreaRadius = 10;
-  Unknown10 = 25;
-  Unknown11 = 8;
 }
 
 //------------------------------------------------------------------------------
@@ -222,10 +177,10 @@ void BaseZone::serializeObject(void)
   serialize<int32_t>(BaseTerrain);
   serialize<int32_t>(SpacingBetweenPlayers);
   serialize<int32_t>(Unknown4);
-  serialize<int8_t>(Unknown5, UNKNOWN5_SIZE);
+  serialize<int8_t>(Unknown5, 4);
   serialize<int32_t>(Unknown6);
   serialize<int32_t>(Unknown7);
-  serialize<int8_t>(Unknown8, UNKNOWN8_SIZE);
+  serialize<int8_t>(Unknown8, 4);
   serialize<int32_t>(StartAreaRadius);
   serialize<int32_t>(Unknown10);
   serialize<int32_t>(Unknown11);
@@ -265,18 +220,8 @@ void MapTerrain::serializeObject(void)
 }
 
 //------------------------------------------------------------------------------
-MapUnit::MapUnit() : Unknown3(UNKNOWN3_SIZE)
+MapUnit::MapUnit()
 {
-  Unit = -1;
-  HostTerrain = -1;
-  ObjectsPerGroup = 1;
-  Fluctuation = 0;
-  GroupsPerPlayer = 1;
-  GroupRadius = 1;
-  OwnAtStart = 0;
-  SetPlaceForAllPlayers = 1;
-  MinDistanceToPlayers = 2;
-  MaxDistanceToPlayers = 6;
 }
 
 //------------------------------------------------------------------------------
@@ -295,7 +240,7 @@ void MapUnit::serializeObject(void)
 {
   serialize<int32_t>(Unit);
   serialize<int32_t>(HostTerrain);
-  serialize<int8_t>(Unknown3, UNKNOWN3_SIZE);
+  serialize<int8_t>(Unknown3, 4);
   serialize<int32_t>(ObjectsPerGroup);
   serialize<int32_t>(Fluctuation);
   serialize<int32_t>(GroupsPerPlayer);
@@ -309,12 +254,6 @@ void MapUnit::serializeObject(void)
 //------------------------------------------------------------------------------
 MapUnknown::MapUnknown()
 {
-  Unknown1 = 0;
-  Unknown2 = 0;
-  Unknown3 = 0;
-  Unknown4 = 0;
-  Unknown5 = 0;
-  Unknown6 = 0;
 }
 
 //------------------------------------------------------------------------------

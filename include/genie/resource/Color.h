@@ -43,10 +43,10 @@ public:
   
   virtual ~Color();
   
-  uint8_t r; /// Red
-  uint8_t g; /// Green
-  uint8_t b; /// Blue
-  uint8_t a; /// Alpha
+  uint8_t r = 0; /// Red
+  uint8_t g = 0; /// Green
+  uint8_t b = 0; /// Blue
+  uint8_t a = 255; /// Alpha
   
   //Static members:
   static const Color Transparent;

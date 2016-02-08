@@ -2,7 +2,7 @@
     genieutils - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2015  Mikko "Tapsa" P
+    Copyright (C) 2015 - 2016  Mikko "Tapsa" P
     Copyright (C) 2015  JustTesting1234
 
     This program is free software: you can redistribute it and/or modify
@@ -55,13 +55,13 @@ public:
   ScnPlayerResources();
   virtual ~ScnPlayerResources();
 
-  float food;
-  float wood;
-  float gold;
-  float stone;
-  float ore;
-  float goods;
-  float popLimit;
+  float food = 0;
+  float wood = 0;
+  float gold = 0;
+  float stone = 0;
+  float ore = 0;
+  float goods = 0;
+  float popLimit = 75;
 
 private:
   virtual void serializeObject(void);

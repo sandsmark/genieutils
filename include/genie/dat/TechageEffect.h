@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2013  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -35,12 +35,11 @@ public:
   virtual ~TechageEffect();
   virtual void setGameVersion(GameVersion gv);
 
-  //  DO NOT ALTER THESE! Unless you test that the game won't crash.
-  int8_t Type;
-  int16_t A;
-  int16_t B;
-  int16_t C;
-  float D;
+  int8_t Type = -1;
+  int16_t A = -1;
+  int16_t B = -1;
+  int16_t C = -1;
+  float D = 0;
 
 private:
   virtual void serializeObject(void);

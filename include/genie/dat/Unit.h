@@ -44,7 +44,7 @@ enum UnitType
   /// Trees, used to be 90?
   UT_Trees = 15,
 
-  /// With Speed but mostly flags. Purpose of speed is unknown
+  /// With Speed but mostly flags.
   UT_Flag = 20,
 
   /// Only one unit has this type. AOK, DOPL (id 243) same properties as UT_Flag
@@ -84,88 +84,85 @@ public:
   virtual void setGameVersion(GameVersion gv);
 
   /// See enum UnitType
-  int8_t Type;
+  int8_t Type = 10;
 
-  /// Length of the internal name
-  uint16_t NameLength;
-
-  int16_t ID1;
+  int16_t ID1 = -1;
 
   /// ID of the name string stored in the language.dll file
-  uint16_t LanguageDLLName;
+  uint16_t LanguageDLLName = 5000;
 
   /// ID of the name string stored in the language.dll file
-  uint16_t LanguageDLLCreation;
+  uint16_t LanguageDLLCreation = 6000;
 
   /// Class that gives certain properties
-  int16_t Class;
+  int16_t Class = -1;
 
   /// Default standing graphic
-  std::pair<int16_t, int16_t> StandingGraphic;
+  std::pair<int16_t, int16_t> StandingGraphic = {-1, -1};
 
   /// Graphic shown while the units is dying.
-  std::pair<int16_t, int16_t> DyingGraphic;
+  std::pair<int16_t, int16_t> DyingGraphic = {-1, -1};
 
   /// TODO
-  int8_t DeathMode;
+  int8_t DeathMode = 0;
 
   /// Unit's hit points
-  int16_t HitPoints;
+  int16_t HitPoints = 1;
 
   /// Default line of sight measured in tiles
-  float LineOfSight;
+  float LineOfSight = 2;
 
   /// Maximum number of units that can be garrisonned at the same time.
-  int8_t GarrisonCapacity;
+  int8_t GarrisonCapacity = 0;
 
   /// Collision detection area taken by the unit.
   /// No other unit can move into this area except flying units.
-  XYZF CollisionSize;
+  XYZF CollisionSize = {0, 0, 0};
 
   /// Sound played when the unit is created
-  std::pair<int16_t, int16_t> TrainSound;
+  std::pair<int16_t, int16_t> TrainSound = {-1, -1};
 
   /// ID of the unit to change to when this one dies.
-  int16_t DeadUnitID;
+  int16_t DeadUnitID = -1;
 
   /// TODO
-  int8_t PlacementMode;
+  int8_t PlacementMode = 0;
 
   /// TODO
-  int8_t AirMode;
+  int8_t AirMode = 0;
 
   /// ID of the icon shown at the bottom when selected or when building
-  int16_t IconID;
+  int16_t IconID = -1;
 
   /// If true, unit can not be placed in the editor
-  int8_t HideInEditor;
+  int8_t HideInEditor = 0;
 
   /// TODO Unknown
-  int16_t Unknown1;         // Always -1
+  int16_t Unknown1 = -1;         // Always -1
 
   /// TODO
-  int8_t Enabled;
-  int8_t Disabled;
-  std::pair<int16_t, int16_t> PlacementSideTerrain;
-  std::pair<int16_t, int16_t> PlacementTerrain;
-  std::pair<float, float> ClearanceSize;
-  int8_t HillMode;
-  int8_t VisibleInFog;
+  int8_t Enabled = 1;
+  int8_t Disabled = 0;
+  std::pair<int16_t, int16_t> PlacementSideTerrain = {-1, -1};
+  std::pair<int16_t, int16_t> PlacementTerrain = {-1, -1};
+  std::pair<float, float> ClearanceSize = {0, 0};
+  int8_t HillMode = 0;
+  int8_t VisibleInFog = 0;
 
   /// ID of terrain restrictions that are imposed on the unit.
-  int16_t TerrainRestriction;
+  int16_t TerrainRestriction = -1;
 
   /// Bool which determines wheter the unit can fly.
-  int8_t FlyMode;
+  int8_t FlyMode = 0;
 
   /// How much resources this unit is able to carry
-  int16_t ResourceCapacity;
+  int16_t ResourceCapacity = 0;
 
   // TODO
-  float ResourceDecay;
-  int8_t BlastDefenseLevel;
-  int8_t SubType;
-  int8_t InteractionMode;
+  float ResourceDecay = 0;
+  int8_t BlastDefenseLevel = 0;
+  int8_t SubType = 0;
+  int8_t InteractionMode = 0;
 
   /**
    * \brief Defines if and how a unit is shown on the minimap.
@@ -192,19 +189,19 @@ public:
    * - 10 does the same thing as “6”. Hawks, macaws, and flying dogs have
    *      this value.
    */
-  int8_t MinimapMode;
+  int8_t MinimapMode = 0;
 
-  int8_t CommandAttribute;// Page for Build button: 2 = Page 1, 10 = Page 2, ?11 = Page 3?
-  float Unknown3A;
-  uint8_t MinimapColor;
-  int32_t LanguageDLLHelp;
-  int32_t LanguageDLLHotKeyText;
-  int32_t HotKey;
-  int8_t Unselectable;
-  int8_t Unknown6;
-  int8_t Unknown7;
-  int8_t Unknown8;
-  int8_t SelectionMask;
+  int8_t CommandAttribute = 0;// Page for Build button: 2 = Page 1, 10 = Page 2, ?11 = Page 3?
+  float Unknown3A = 0;
+  uint8_t MinimapColor = 0;
+  int32_t LanguageDLLHelp = 105000;
+  int32_t LanguageDLLHotKeyText = 155000;
+  int32_t HotKey = 16000;
+  int8_t Unselectable = 0;
+  int8_t Unknown6 = 0;
+  int8_t Unknown7 = 0;
+  int8_t Unknown8 = 0;
+  int8_t SelectionMask = 0;
 
   /// values for SelectionShapeType
   /// 0 farm, gate, dead bodies, town center
@@ -212,14 +209,14 @@ public:
   /// 3 berserk, flag x
   /// 5 units
   /// 10 mountain(matches selction mask)
-  int8_t SelectionShapeType;
+  int8_t SelectionShapeType = 0;
 
   /// 0 square, 1+ circle
-  int8_t SelectionShape;
-  uint8_t Attribute;
+  int8_t SelectionShape = 0;
+  uint8_t Attribute = 0;
   /// Seems to be used only in SWGB/CC
-  int8_t Civilization;
-  int16_t Nothing;
+  int8_t Civilization = 0;
+  int16_t Nothing = 0;
 
   /**
    * 1.HP Bar on, selection shadow (permanent darker outline in editor only, disappears in game)
@@ -228,11 +225,9 @@ public:
    * 4.HP Bar off, normal outline
    * Note: this doe not work with all units
    */
-  int8_t SelectionEffect;
-  uint8_t EditorSelectionColour;
-  XYZF SelectionShapeSize;
-
-  static const unsigned short RESOURCE_STORAGE_CNT = 3;
+  int8_t SelectionEffect = 1;
+  uint8_t EditorSelectionColour = 52;
+  XYZF SelectionShapeSize = {0, 0, 0};
 
   typedef ResourceUsage<int16_t, float, int8_t> ResourceStorage;
 
@@ -242,26 +237,25 @@ public:
   std::vector<unit::DamageGraphic> DamageGraphics;
 
   /// Sound that is played when this unit is selected
-  int16_t SelectionSound;
-  int16_t DyingSound;
-  int8_t AttackMode;
-  int8_t Unknown10;
-  std::string Name;
-  uint16_t NameLength2;
-  std::string Name2;
+  int16_t SelectionSound = -1;
+  int16_t DyingSound = -1;
+  int8_t AttackMode = 0;
+  int8_t Unknown10 = 0;
+  std::string Name = "";
+  std::string Name2 = "";
 
   /// MinGameVersion: SWGB
-  int16_t Unitline;
+  int16_t Unitline = -1;
 
   /// MinGameVersion: SWGB
-  int8_t MinTechLevel;
+  int8_t MinTechLevel = -1;
 
-  int16_t ID2;
-  int16_t ID3;//not in aoe/ror
+  int16_t ID2 = -1;
+  int16_t ID3 = -1;//not in aoe/ror
 
 //      Type 20+
 
-  float Speed;
+  float Speed = 0;
 
   unit::DeadFish DeadFish;
 
@@ -276,8 +270,12 @@ public:
   unit::Building Building;
 
 private:
+  /// Length of the internal name
+  uint16_t NameLength;
+  uint16_t NameLength2;
   uint8_t DamageGraphicCount;
 
+protected:
   virtual void serializeObject(void);
 };
 

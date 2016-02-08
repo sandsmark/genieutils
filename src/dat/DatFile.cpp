@@ -23,30 +23,16 @@
 #include <fstream>
 #include <vector>
 
-#include <boost/interprocess/streams/vectorstream.hpp>
-#include <boost/iostreams/filtering_streambuf.hpp>
-#include <boost/iostreams/device/file.hpp>
-#include <boost/iostreams/filter/zlib.hpp>
-#include <boost/iostreams/device/back_inserter.hpp>
-#include <boost/iostreams/copy.hpp>
-
 #include "genie/Types.h"
 
 namespace genie
 {
 
 float ISerializable::dat_internal_ver = 0.f;
-typedef boost::interprocess::basic_vectorstream<std::vector<char>> v_stream;
 
 //------------------------------------------------------------------------------
-DatFile::DatFile() : verbose_(false), file_name_(""), file_(0), compressor_(this)
+DatFile::DatFile() : compressor_(this)
 {
-  SUnknown2 = -1;
-  SUnknown3 = -1;
-  SUnknown4 = -1;
-  SUnknown5 = -1;
-  SUnknown7 = -1;
-  SUnknown8 = -1;
 }
 
 //------------------------------------------------------------------------------

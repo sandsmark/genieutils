@@ -24,33 +24,8 @@ namespace genie
 {
 
 //------------------------------------------------------------------------------
-TerrainBorder::TerrainBorder()
+TerrainBorder::TerrainBorder() : Borders(TILE_TYPE_COUNT)
 {
-  Colors.resize(3);
-  Enabled = 0;
-  Random = 0;
-  Name = "";
-  Name2 = "";
-  SLP = -1;
-  Unknown3 = 0;
-  SoundID = -1;
-
-  IsAnimated = 0;
-  AnimationFrames = 0;
-  PauseFames = 0;
-  Interval = 0;
-  PauseBetweenLoops = 0;
-  Frame = 0;
-  DrawFrame = 0;
-  AnimateLast = 0;
-  FrameChanged = 0;
-  Drawn = 0;
-
-  Borders.resize(TILE_TYPE_COUNT);
-
-  DrawTile = 0;
-  UnderlayTerrain = -1;
-  BorderStyle = 0;
 }
 
 //------------------------------------------------------------------------------

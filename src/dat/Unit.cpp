@@ -24,89 +24,8 @@ namespace genie
 {
 
 //------------------------------------------------------------------------------
-Unit::Unit() : ResourceStorages(RESOURCE_STORAGE_CNT)
+Unit::Unit() : ResourceStorages(3)
 {
-//    Type 10+
-
-  Type = UT_EyeCandy;
-  NameLength = 9;
-  ID1 = -1;
-  LanguageDLLName = 5000;
-  LanguageDLLCreation = 6000;
-  Class = -1;
-  StandingGraphic.first = -1;
-  StandingGraphic.second = -1;
-  DyingGraphic.first = -1;
-  DyingGraphic.second = -1;
-  DeathMode = 0;
-  HitPoints = 1;
-  LineOfSight = 2;
-  GarrisonCapacity = 0;
-  CollisionSize.x = 0;
-  CollisionSize.y = 0;
-  CollisionSize.z = 0;
-  TrainSound.first = -1;
-  TrainSound.second = -1;
-  DeadUnitID = -1;
-  PlacementMode = 0;
-  AirMode = 0;
-  IconID = -1;
-  HideInEditor = 0;
-  Unknown1 = -1;
-  Enabled = 1;
-  Disabled = 0;
-  PlacementSideTerrain.first = -1;
-  PlacementSideTerrain.second = -1;
-  PlacementTerrain.first = -1;
-  PlacementTerrain.second = -1;
-  ClearanceSize.first = 0;
-  ClearanceSize.second = 0;
-  HillMode = 0;
-  VisibleInFog = 0;
-  TerrainRestriction = 0;
-  FlyMode = 0;
-  ResourceCapacity = 0;
-  ResourceDecay = 0;
-  BlastDefenseLevel = 0;
-  SubType = 0;
-  InteractionMode = 0;
-  MinimapMode = 0;
-  CommandAttribute = 0;
-  Unknown3A = 0;
-  MinimapColor = 0;
-  LanguageDLLHelp = 105000;
-  LanguageDLLHotKeyText = 155000;
-  HotKey = 16000;
-  Unselectable = 0;
-  Unknown6 = 0;
-  Unknown7 = 0;
-  Unknown8 = 0;
-  SelectionMask = 0;
-  SelectionShapeType = 0;
-  SelectionShape = 0;
-  Attribute = 0;
-  Civilization = 0;
-  Nothing = 0;
-  SelectionEffect = 1;
-  EditorSelectionColour = 52;
-  SelectionShapeSize.x = 0;
-  SelectionShapeSize.y = 0;
-  SelectionShapeSize.z = 0;
-  SelectionSound = -1;
-  DyingSound = -1;
-  AttackMode = 0;
-  Unknown10 = 0;
-  Name = "";
-  NameLength2 = 9;
-  Name2 = "";
-  Unitline = -1;
-  MinTechLevel = -1;
-  ID2 = -1;
-  ID3 = -1;
-
-//  Type 20+
-
-  Speed = 1;
 }
 
 //------------------------------------------------------------------------------
@@ -210,7 +129,7 @@ void Unit::serializeObject(void)
     serialize<float>(SelectionShapeSize.z);
   }
 
-  serializeSub<ResourceStorage>(ResourceStorages, RESOURCE_STORAGE_CNT);
+  serializeSub<ResourceStorage>(ResourceStorages, 3);
 
   serializeSize<uint8_t>(DamageGraphicCount, DamageGraphics.size());
   serializeSub<unit::DamageGraphic>(DamageGraphics, DamageGraphicCount);

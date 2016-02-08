@@ -22,7 +22,7 @@
 #include "genie/script/ScnFile.h"
 
 #include <math.h>
-#include <boost/iostreams/copy.hpp>
+//#include <boost/iostreams/copy.hpp>
 
 namespace genie
 {

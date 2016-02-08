@@ -36,9 +36,7 @@ Logger& DrsFile::log = Logger::getLogger("freeaoe.DrsFile");
 //------------------------------------------------------------------------------
 DrsFile::DrsFile()
 {
-  header_loaded_ = false;
 }
-
 
 //------------------------------------------------------------------------------
 DrsFile::~DrsFile()

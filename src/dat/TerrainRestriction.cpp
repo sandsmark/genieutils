@@ -28,8 +28,9 @@ namespace genie
 short TerrainRestriction::Terrain_Count_ = 0;
 
 //------------------------------------------------------------------------------
-TerrainRestriction::TerrainRestriction() : PassableBuildableDmgMultiplier(Terrain_Count_),
-                                           TerrainPassGraphics(Terrain_Count_)
+TerrainRestriction::TerrainRestriction() :
+  PassableBuildableDmgMultiplier(Terrain_Count_),
+  TerrainPassGraphics(Terrain_Count_)
 {
 }
 

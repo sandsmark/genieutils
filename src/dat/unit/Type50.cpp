@@ -26,25 +26,8 @@ namespace genie
 namespace unit
 {
 
-Type50::Type50() : GraphicDisplacement(GRAPHICDISPLACEMENT_SIZE)
+Type50::Type50() //: Bird()
 {
-  DefaultArmor = 1000;
-  TerRestrictionForDmgMultiplying = -1;
-  MaxRange = 0;
-  BlastWidth = 0;
-  ReloadTime = 0;
-  ProjectileUnitID = -1;
-  AccuracyPercent = 0;
-  TowerMode = 0;
-  FrameDelay = 0;
-  BlastAttackLevel = 0;
-  MinRange = 0;
-  AccuracyDispersion = 0;
-  AttackGraphic = -1;
-  DisplayedMeleeArmour = 0;
-  DisplayedAttack = 0;
-  DisplayedRange = 0;
-  DisplayedReloadTime = 0;
 }
 
 Type50::~Type50()
@@ -87,7 +70,7 @@ void Type50::serializeObject(void)
   serialize<int16_t>(AccuracyPercent);
   serialize<int8_t>(TowerMode);
   serialize<int16_t>(FrameDelay);
-  serialize<float>(GraphicDisplacement, GRAPHICDISPLACEMENT_SIZE);
+  serialize<float>(GraphicDisplacement, 3);
   serialize<int8_t>(BlastAttackLevel);
   serialize<float>(MinRange);
 

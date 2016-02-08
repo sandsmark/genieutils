@@ -2,7 +2,7 @@
     genieutils - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2013 - 2015  Mikko "Tapsa" P
+    Copyright (C) 2013 - 2016  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -95,9 +95,9 @@ public:
   template <typename T>
   static void updateGameVersion(GameVersion gv, std::vector<T> &vec)
   {
-    for (unsigned int i=0; i<vec.size(); ++i)
+    for (auto &it: vec)
     {
-      ISerializable *item = dynamic_cast<ISerializable *>(&vec[i]);
+      ISerializable *item = dynamic_cast<ISerializable *>(&it);
       item->setGameVersion(gv);
     }
   }
@@ -523,10 +523,9 @@ protected:
     {
       for (size_t i=0; i < size; ++i)
       {
-        if (pointers[i] != 0)
+        if (pointers[i])
         {
           ISerializable *data = dynamic_cast<ISerializable *>(&vec[i]);
-
           data->serializeSubObject(this);
 
           if (isOperation(OP_CALC_SIZE))
@@ -537,14 +536,11 @@ protected:
     else
     {
       vec.resize(size);
-
       for (size_t i=0; i < size; ++i)
       {
-        T *obj = &vec[i];
-
-        if (pointers[i] != 0)
+        if (pointers[i])
         {
-          ISerializable *cast_obj = dynamic_cast<ISerializable *>(obj);
+          ISerializable *cast_obj = dynamic_cast<ISerializable *>(&vec[i]);
           cast_obj->serializeSubObject(this);
         }
       }
@@ -586,14 +582,14 @@ protected:
   }
 
 private:
-  std::istream *istr_;
-  std::ostream *ostr_;
+  std::istream *istr_ = 0;
+  std::ostream *ostr_ = 0;
 
-  std::streampos init_read_pos_;
+  std::streampos init_read_pos_ = 0;
 
   Operation operation_;
 
-  GameVersion gameVersion_;
+  GameVersion gameVersion_ = GV_None;
 
   static GameVersion defaultGameVersion;
 

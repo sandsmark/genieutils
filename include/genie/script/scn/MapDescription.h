@@ -2,7 +2,7 @@
     genieutils - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2015  Mikko "Tapsa" P
+    Copyright (C) 2015 - 2016  Mikko "Tapsa" P
     Copyright (C) 2015  JustTesting1234
 
     This program is free software: you can redistribute it and/or modify
@@ -34,11 +34,11 @@ public:
   MapTile();
   virtual ~MapTile();
 
-  uint8_t terrainID;
-  uint8_t elevation;
+  uint8_t terrainID = 0;
+  uint8_t elevation = 0;
 
   /// always 0
-  uint8_t unused;
+  uint8_t unused = 0;
 
 private:
   virtual void serializeObject(void);
@@ -52,10 +52,10 @@ public:
   virtual ~ScnMap();
 
   /// AoK caps at 256
-  uint32_t width;
+  uint32_t width = 0;
 
   /// AoK caps at 256
-  uint32_t height;
+  uint32_t height = 0;
 
   std::vector<MapTile> tiles;
 

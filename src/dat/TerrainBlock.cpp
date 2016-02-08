@@ -25,40 +25,6 @@ namespace genie
 //------------------------------------------------------------------------------
 TerrainBlock::TerrainBlock()
 {
-  MapPointer = 0;
-  Unknown1 = 0;
-  MapWidth = 0;
-  MapHeight = 0;
-  WorldWidth = 0;
-  WorldHeight = 0;
-  Unknown2 = 0;
-  UnknownPointer1 = 0;
-  MapMinX = 0;
-  MapMinY = 0;
-  MapMaxX = 0;
-  MapMaxY = 0;
-  MapMaxXplus1 = 0;
-  MapMaxYplus1 = 0;
-  TerrainsUsed2 = 0;
-  RemovedBlocksUsed = 0;
-  BordersUsed = 0;
-  MaxTerrain = 0;
-  TileWidth = 0;
-  TileHeight = 0;
-  TileHalfHeight = 0;
-  TileHalfWidth = 0;
-  ElevHeight = 0;
-  CurRow = 0;
-  CurCol = 0;
-  BlockBegRow = 0;
-  BlockEndRow = 0;
-  BlockBegCol = 0;
-  BlockEndCol = 0;
-  UnknownPointer2 = 0;
-  UnknownPointer3 = 0;
-  AnyFrameChange = 0;
-  MapVisibleFlag = 0;
-  FogFlag = 1;
 }
 
 //------------------------------------------------------------------------------

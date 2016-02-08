@@ -2,7 +2,7 @@
     genieutils - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2015  Mikko "Tapsa" P
+    Copyright (C) 2015 - 2016  Mikko "Tapsa" P
     Copyright (C) 2015  JustTesting1234
 
     This program is free software: you can redistribute it and/or modify
@@ -27,25 +27,8 @@ namespace genie
 
 bool CombinedResources::playerInfo = false;
 
-ScnMainPlayerData::ScnMainPlayerData()
+ScnMainPlayerData::ScnMainPlayerData() : playerNames(16)
 {
-  playerNames.resize(16);
-
-  instructionsStringTable = 0;
-  hintsStringTable = 0;
-  victoryStringTable = 0;
-  lossStringTable = 0;
-  historyStringTable = 0;
-  scoutsStringTable = 0;
-
-  bitmapIncluded = 0;
-  bitmapWidth = 0;
-  bitmapHeigth = 0;
-  unknown1 = 1;
-
-  bitmapByteSize = 0;
-  bmpHeader = 0;
-  bitmap = 0;
 }
 
 ScnMainPlayerData::~ScnMainPlayerData()

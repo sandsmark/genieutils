@@ -23,14 +23,8 @@
 namespace genie
 {
 
-Civ::Civ() : UniqueUnitsResearches(SWUNIQUE_SIZE)
+Civ::Civ()
 {
-  Enabled = 1;
-  Name = "";
-  Name2 = "";
-  TechTreeID = -1;
-  TeamBonusID = -1;
-  IconSet = 0;
 }
 
 Civ::~Civ()
@@ -65,7 +59,7 @@ void Civ::serializeObject(void)
       if (getGameVersion() >= genie::GV_SWGB)
       {
         serialize(Name2, getNameSize());
-        serialize<int16_t>(UniqueUnitsResearches, SWUNIQUE_SIZE);
+        serialize<int16_t>(UniqueUnitsResearches, 4);
       }
     }
   }

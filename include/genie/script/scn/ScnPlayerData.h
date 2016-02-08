@@ -2,7 +2,7 @@
     genieutils - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2015  Mikko "Tapsa" P
+    Copyright (C) 2015 - 2016  Mikko "Tapsa" P
     Copyright (C) 2015  JustTesting1234
 
     This program is free software: you can redistribute it and/or modify
@@ -147,69 +147,69 @@ public:
   std::vector<uint32_t> playerNamesStringTable;
   uint8_t conquestVictory;
   UnknownData1 unknownData;
-  std::string originalFileName;
+  std::string originalFileName = "";
 
   /// GV >= AoK
-  uint32_t instructionsStringTable;
+  uint32_t instructionsStringTable = -1;
 
   /// GV >= AoK
-  uint32_t hintsStringTable;
+  uint32_t hintsStringTable = -1;
 
   /// GV >= AoK
-  uint32_t victoryStringTable;
+  uint32_t victoryStringTable = -1;
 
   /// GV >= AoK
-  uint32_t lossStringTable;
+  uint32_t lossStringTable = -1;
 
   /// GV >= AoK
-  uint32_t historyStringTable;
+  uint32_t historyStringTable = -1;
 
   /// GV >= TC
-  uint32_t scoutsStringTable;
+  uint32_t scoutsStringTable = -1;
 
   // Messages
 
-  std::string instructions;
+  std::string instructions = "";
 
-  std::string hints;
+  std::string hints = "";
 
-  std::string victory;
+  std::string victory = "";
 
-  std::string loss;
+  std::string loss = "";
 
-  std::string history;
+  std::string history = "";
 
   /// GV >= TC
-  std::string scouts;
+  std::string scouts = "";
 
-  std::string oldFilename1;
-  std::string oldFilename2;
-  std::string oldFilename3;
+  std::string oldFilename1 = "";
+  std::string oldFilename2 = "";
+  std::string oldFilename3 = "";
 
-  std::string pregameCinematicFilename;
+  std::string pregameCinematicFilename = "";
 
-  std::string victoryCinematicFilename;
+  std::string victoryCinematicFilename = "";
 
-  std::string lossCinematicFilename;
+  std::string lossCinematicFilename = "";
 
-  std::string backgroundFilename;
+  std::string backgroundFilename = "";
 
   // Bitmap
 
   /// Boolean
-  uint32_t bitmapIncluded;
+  uint32_t bitmapIncluded = 0;
 
-  uint32_t bitmapWidth;
+  uint32_t bitmapWidth = 0;
 
-  uint32_t bitmapHeigth;
+  uint32_t bitmapHeigth = 0;
 
   /// -1 if there's a bitmap, 1 otherwise
-  int16_t unknown1;
+  int16_t unknown1 = 1;
 
-  uint16_t bitmapByteSize;
+  uint16_t bitmapByteSize = 0;
 
-  char* bmpHeader;
-  char* bitmap;
+  char* bmpHeader = 0;
+  char* bitmap = 0;
 
   std::vector<std::string> aiNames;
   std::vector<std::string> cityNames;

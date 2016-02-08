@@ -24,26 +24,8 @@ namespace genie
 {
 
 //------------------------------------------------------------------------------
-Research::Research() : ResourceCosts(RESOURCECOSTS_SIZE)
+Research::Research() : ResourceCosts(3)
 {
-  RequiredTechCount = 0;
-  Civ = -1;
-  FullTechMode = 0;
-  ResearchLocation = -1;
-  LanguageDLLName = 7000;
-  LanguageDLLDescription = 8000;
-  ResearchTime = 0;
-  TechageID = -1;
-  Type = 0;
-  IconID = -1;
-  ButtonID = 0;
-  LanguageDLLHelp = 107000;
-  LanguageDLLTechTree = 157000;
-  Unknown1 = -1;
-  NameLength = 0;
-  Name = "";
-  NameLength2 = 0;
-  Name2 = "";
 }
 
 //------------------------------------------------------------------------------
@@ -72,7 +54,7 @@ void Research::serializeObject(void)
 {
   serialize<int16_t>(RequiredTechs, getRequiredTechsSize());
 
-  serializeSub<ResearchResourceCost>(ResourceCosts, RESOURCECOSTS_SIZE);
+  serializeSub<ResearchResourceCost>(ResourceCosts, 3);
   serialize<int16_t>(RequiredTechCount);
 
   if (getGameVersion() >= genie::GV_AoKB)

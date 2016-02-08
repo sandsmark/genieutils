@@ -25,37 +25,10 @@ namespace genie
 
 unsigned short Terrain::terrain_count;
 //------------------------------------------------------------------------------
-Terrain::Terrain() : CliffColors(), TerrainUnitID(TERRAIN_UNITS_SIZE),
-  TerrainUnitDensity(TERRAIN_UNITS_SIZE), TerrainUnitPriority(TERRAIN_UNITS_SIZE)
+Terrain::Terrain() : ElevationGraphics(TILE_TYPE_COUNT),
+  TerrainUnitID(TERRAIN_UNITS_SIZE), TerrainUnitDensity(TERRAIN_UNITS_SIZE),
+  TerrainUnitPriority(TERRAIN_UNITS_SIZE)
 {
-  Colors.resize(3);
-  Unknown1 = 0;
-  Enabled = 0;
-  Random = 0;
-  Name = "";
-  Name2 = "";
-  SLP = -1;
-  Unknown3 = 0;
-  SoundID = -1;
-  BlendPriority = -1;
-  BlendType = -1;
-  PassableTerrain = -1;
-  ImpassableTerrain = -1;
-
-  IsAnimated = 0;
-  AnimationFrames = 0;
-  PauseFames = 0;
-  Interval = 0;
-  PauseBetweenLoops = 0;
-  Frame = 0;
-  DrawFrame = 0;
-  AnimateLast = 0;
-  FrameChanged = 0;
-  Drawn = 0;
-
-  TerrainToDraw = 0;
-  NumberOfTerrainUnitsUsed = 0;
-  TerrainDimensions.first = TerrainDimensions.second = -1;
 }
 
 //------------------------------------------------------------------------------
@@ -67,7 +40,6 @@ void Terrain::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
 
-  ElevationGraphics.resize(TILE_TYPE_COUNT);
   Borders.resize(getTerrainCount(gv), 0);
 }
 

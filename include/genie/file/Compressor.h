@@ -64,7 +64,7 @@ private:
   
   ISerializable *obj_; 
   
-  std::istream *istream_;
+  std::istream *istream_ = 0;
   std::shared_ptr<std::istream> uncompressedIstream_;
   
   std::ostream *ostream_;

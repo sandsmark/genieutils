@@ -35,10 +35,10 @@ public:
   virtual ~DamageGraphic();
   virtual void setGameVersion(GameVersion gv);
 
-  int16_t GraphicID;
-  int8_t DamagePercent;
-  int8_t OldApplyMode;
-  int8_t ApplyMode;
+  int16_t GraphicID = -1;
+  int8_t DamagePercent = 0;
+  int8_t OldApplyMode = 0;
+  int8_t ApplyMode = 0;
 
 private:
   virtual void serializeObject(void);

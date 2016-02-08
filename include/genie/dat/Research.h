@@ -44,57 +44,56 @@ public:
   typedef ResourceUsage<int16_t, int16_t, int8_t> ResearchResourceCost;
 
   /// Resource cost in a list of max 3
-  static const unsigned short RESOURCECOSTS_SIZE = 3;
   std::vector<ResearchResourceCost> ResourceCosts;
 
   /// Holds the number of how much of the required technologies you need.
-  int16_t RequiredTechCount;
+  int16_t RequiredTechCount = 0;
 
   /// ID of the civilization that gets this technologie. -1 if unused
   /// MinGameVersion: aok
-  int16_t Civ;
+  int16_t Civ = -1;
 
   /// Set to 1 if this tech is enabled in full tech mode or 0 if not.
   /// MinGameVersion: aok
-  int16_t FullTechMode;
+  int16_t FullTechMode = 0;
 
   /// ID of the unit where this research is available to buy.
-  int16_t ResearchLocation;
+  int16_t ResearchLocation = -1;
 
   /// Index of the name in language.dll
-  uint16_t LanguageDLLName;
+  uint16_t LanguageDLLName = 7000;
 
   /// Index of the description in language.dll
-  uint16_t LanguageDLLDescription;
+  uint16_t LanguageDLLDescription = 8000;
 
   /// Number of seconds it takes to research
-  int16_t ResearchTime;
+  int16_t ResearchTime = 0;
 
   /// Holds the techage id that corresponds to this data
-  int16_t TechageID;
+  int16_t TechageID = -1;
 
   /// Age tech or not: 0 for regular and 2 for age.
-  int16_t Type;
+  int16_t Type = 0;
 
   /// ID of the research's icon in icon.slp (frame number - 1)
-  int16_t IconID;
+  int16_t IconID = -1;
 
   /// ID of the button
-  int8_t ButtonID;
+  int8_t ButtonID = 0;
 
   /// The first number is 100 000 plus the Language FIle ID for the name/description.
-  int32_t LanguageDLLHelp;
+  int32_t LanguageDLLHelp = 107000;
   /// The second number is 150 000 plus the Language File ID for TheSecondName.
-  int32_t LanguageDLLTechTree;
+  int32_t LanguageDLLTechTree = 150000;
   /// The third number has been -1 in every technology so far.
-  int32_t Unknown1;
+  int32_t Unknown1 = -1;
 
   /// Internal name
-  std::string Name;
+  std::string Name = "";
 
   /// Second internal name
   /// MinGameVersion: SWGB
-  std::string Name2;
+  std::string Name2 = "";
 
 private:
   uint16_t NameLength;

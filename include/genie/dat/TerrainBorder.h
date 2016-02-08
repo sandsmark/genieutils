@@ -38,9 +38,9 @@ public:
 
   std::vector<std::vector<FrameData>> Borders;
 
-  int16_t DrawTile; // always 0
-  int16_t UnderlayTerrain;
-  int16_t BorderStyle;
+  int16_t DrawTile = 0; // always 0
+  int16_t UnderlayTerrain = -1;
+  int16_t BorderStyle = 0;
 
 private:
   virtual void serializeObject(void);

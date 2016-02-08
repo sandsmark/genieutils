@@ -1,7 +1,7 @@
 /*
     genieutils - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2015  Mikko "Tapsa" P
+    Copyright (C) 2015 - 2016  Mikko "Tapsa" P
     Copyright (C) 2015  JustTesting1234
 
     This program is free software: you can redistribute it and/or modify
@@ -56,24 +56,6 @@ void Trigger::serializeObject(void)
 
 TriggerCondition::TriggerCondition()
 {
-  type = 0;
-  usedVariables = 0;
-  amount = -1;
-  resource = -1;
-  setObject = -1;
-  nextObject = -1;
-  object = -1;
-  sourcePlayer = -1;
-  technology = -1;
-  timer = -1;
-  trigger = -1;
-  areaFrom.x = -1;
-  areaFrom.y = -1;
-  areaTo.x = -1;
-  areaTo.y = -1;
-  objectGroup = -1;
-  objectType = -1;
-  aiSignal = -1;
 }
 
 TriggerCondition::~TriggerCondition()
@@ -106,33 +88,6 @@ void TriggerCondition::serializeObject(void)
 
 TriggerEffect::TriggerEffect()
 {
-  setObjects = -1;
-  type = 0;
-  usedVariables = 0;
-  aiGoal = -1;
-  amount = -1;
-  resource = -1;
-  diplomacy = -1;
-  nextObject = -1;
-  object = -1;
-  sourcePlayer = -1;
-  targetPlayer = -1;
-  technology = -1;
-  stringTableID = -1;
-  soundResourceID = -1;
-  timer = -1;
-  trigger = -1;
-  location.x = -1;
-  location.y = -1;
-  areaFrom.x = -1;
-  areaFrom.y = -1;
-  areaTo.x = -1;
-  areaTo.y = -1;
-  objectGroup = -1;
-  objectType = -1;
-  instructionPanel = -1;
-  message = "";
-  soundFile = "";
 }
 
 TriggerEffect::~TriggerEffect()

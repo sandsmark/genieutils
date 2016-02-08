@@ -26,35 +26,6 @@ namespace genie
 //------------------------------------------------------------------------------
 UnitCommand::UnitCommand()
 {
-  Enabled = 1;
-  ID = -1;
-  Unknown1 = 0;
-  Type = 7;
-  ClassID = -1;
-  UnitID = -1;
-  TerrainID = -1;
-  ResourceIn = -1;
-  ResourceProductivityMultiplier = -1;
-  ResourceOut = -1;
-  Resource = -1;
-  Quantity = 0;
-  ExecutionRadius = 0;
-  ExtraRange = 0;
-  Unknown4 = 1;
-  Unknown5 = 3;
-  SelectionEnabler = 1;
-  Unknown7 = 1;
-  PlunderSource = 1;
-  Unknown9 = 0;
-  SelectionMode = 5;
-  RightClickMode = 0;
-  Unknown12 = 0;
-  ToolGraphicID = -1;
-  ProceedingGraphicID = -1;
-  ActionGraphicID = -1;
-  CarryingGraphicID = -1;
-  ExecutionSoundID = -1;
-  ResourceDepositSoundID = -1;
 }
 
 //------------------------------------------------------------------------------
