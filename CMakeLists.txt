@@ -12,9 +12,9 @@ project(genieutils)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake/)
 set(CMAKE_CXX_FLAGS "-std=gnu++0x")
 
-set(Boost_USE_STATIC_LIBS        ON)
+#set(Boost_USE_STATIC_LIBS        ON)
+#set(Boost_USE_STATIC_RUNTIME     ON)
 set(Boost_USE_MULTITHREADED      ON)
-set(Boost_USE_STATIC_RUNTIME     ON)
 
 find_library(iconv REQUIRED)
 
@@ -156,7 +156,7 @@ set(BINCOMP_SRC src/tools/bincompare/bincomp.cpp
 # Executeable:
 #------------------------------------------------------------------------------#
 
-add_library(${Genieutils_LIBRARY} STATIC ${FILE_SRC} ${LANG_SRC} ${DAT_SRC} 
+add_library(${Genieutils_LIBRARY} SHARED ${FILE_SRC} ${LANG_SRC} ${DAT_SRC} 
                                   ${RESOURCE_SRC} ${UTIL_SRC} ${SCRIPT_SRC} )
 target_link_libraries(${Genieutils_LIBRARY} ${ZLIB_LIBRARIES} ${Boost_LIBRARIES} ${ICONV_LIBRARIES})
 
