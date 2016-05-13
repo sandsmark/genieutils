@@ -40,11 +40,11 @@ void PlayerColour::setGameVersion(GameVersion gv)
 
 void PlayerColour::serializeObject(void)
 {
-  if (getGameVersion() < genie::GV_AoKA)
+  if (getGameVersion() < genie::GV_AoKE3)
     serialize(Name, NAME_SIZE);
 
 
-  if (getGameVersion() < genie::GV_AoKA)
+  if (getGameVersion() < genie::GV_AoKE3)
   {
     int16_t ID_short = ID;
     serialize<int16_t>(ID_short);

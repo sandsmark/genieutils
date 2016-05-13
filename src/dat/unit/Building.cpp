@@ -57,18 +57,19 @@ void Building::serializeObject(void)
   serialize<int16_t>(OldTerrainLikeID); // Resource?
   serialize<int16_t>(ResearchID);
 
-  if (getGameVersion() >= genie::GV_AoKA)
+  if (getGameVersion() >= genie::GV_AoKE3)
   {
     serialize<int8_t>(Unknown33);
     serializeSub<unit::BuildingAnnex>(Annexes, BUILDING_ANNEXES_SIZE); // 40 bytes
-    serialize<int16_t>(HeadUnit); // 9.89
+    if (getGameVersion() >= genie::GV_AoKA)
+      serialize<int16_t>(HeadUnit); // 9.89
     serialize<int16_t>(TransformUnit);
     serialize<int16_t>(UnknownSound);
   }
 
   serialize<int16_t>(ConstructionSound);
 
-  if (getGameVersion() >= genie::GV_AoKA)
+  if (getGameVersion() >= genie::GV_AoKE3)
   {
     serialize<int8_t>(GarrisonType);
     serialize<float>(GarrisonHealRate);

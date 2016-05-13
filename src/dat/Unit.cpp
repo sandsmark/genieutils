@@ -70,7 +70,7 @@ void Unit::serializeObject(void)
   serialize<float>(CollisionSize.x);
   serialize<float>(CollisionSize.y);
   serialize<float>(CollisionSize.z);
-  serializePair<int16_t>(TrainSound, (getGameVersion() >= genie::GV_AoKA) ? false : true);
+  serializePair<int16_t>(TrainSound, (getGameVersion() >= genie::GV_AoKE3) ? false : true);
   serialize<int16_t>(DeadUnitID);
   serialize<int8_t>(PlacementMode);
   serialize<int8_t>(AirMode);
@@ -105,20 +105,23 @@ void Unit::serializeObject(void)
     serialize<int32_t>(LanguageDLLHotKeyText);
     serialize<int32_t>(HotKey);
     serialize<int8_t>(Unselectable);
-    serialize<int8_t>(Unknown6);
-    serialize<int8_t>(Unknown7);
-    serialize<int8_t>(Unknown8);
+    serialize<int8_t>(EnableAutoGather);
+    serialize<int8_t>(AutoGatherMode);
+    serialize<int8_t>(AutoGatherID);
 
-    if (getGameVersion() >= genie::GV_AoKA)
+    if (getGameVersion() >= genie::GV_AoKE3)
     {
       serialize<int8_t>(SelectionMask);
-      serialize<int8_t>(SelectionShapeType);
-      serialize<int8_t>(SelectionShape);
-      if (getGameVersion() >= genie::GV_TC)
+      if (getGameVersion() >= genie::GV_AoKA)
       {
-        serialize<uint8_t>(Attribute);
-        serialize<int8_t>(Civilization);
-        serialize<int16_t>(Nothing);
+        serialize<int8_t>(SelectionShapeType);
+        serialize<int8_t>(SelectionShape);
+        if (getGameVersion() >= genie::GV_TC)
+        {
+          serialize<uint8_t>(Attribute);
+          serialize<int8_t>(Civilization);
+          serialize<int16_t>(Nothing);
+        }
       }
     }
 

@@ -52,6 +52,8 @@ unsigned short TerrainBlock::getBytesSize(void)
     return 25;
   if (getGameVersion() >= genie::GV_AoKA)
     return 21;
+  if (getGameVersion() >= genie::GV_AoKE3)
+    return 17;
   if (getGameVersion() >= genie::GV_AoEB)
     return 5;
   return 2;
@@ -64,7 +66,7 @@ unsigned short TerrainBlock::getSomethingSize(void)
     return 157;
   if (getGameVersion() >= genie::GV_AoKB)
     return 84;
-  if (getGameVersion() >= genie::GV_AoKA)
+  if (getGameVersion() >= genie::GV_AoKE3)
     return 6;
   if (getGameVersion() >= genie::GV_AoEB)
     return 5;

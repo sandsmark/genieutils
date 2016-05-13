@@ -198,9 +198,9 @@ public:
   int32_t LanguageDLLHotKeyText = 155000;
   int32_t HotKey = 16000;
   int8_t Unselectable = 0;
-  int8_t Unknown6 = 0;
-  int8_t Unknown7 = 0;
-  int8_t Unknown8 = 0;
+  int8_t EnableAutoGather = 0;
+  int8_t AutoGatherMode = 0;
+  int8_t AutoGatherID = 0;
   int8_t SelectionMask = 0;
 
   /// values for SelectionShapeType
