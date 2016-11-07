@@ -60,7 +60,7 @@ unsigned short Terrain::getTerrainCount(GameVersion gv)
     return 100;
   if (gv == genie::GV_TC)
     return 42;
-    return 32;
+  return 32;
 }
 
 //------------------------------------------------------------------------------

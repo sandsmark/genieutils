@@ -3,14 +3,14 @@
 # GUTILS_TOOLS:BOOL     if true to enable compilation of gutils tools
 # GUTILS_TEST:BOOL      if true some debug/test classes will be compiled
 
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.7)
 
 set(Genieutils_LIBRARY genieutils)
 
 project(genieutils)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake/)
-set(CMAKE_CXX_FLAGS "-std=gnu++0x")
+#set(CMAKE_CXX_FLAGS "-std=gnu++0x")
 
 #set(Boost_USE_STATIC_LIBS        ON)
 #set(Boost_USE_STATIC_RUNTIME     ON)
