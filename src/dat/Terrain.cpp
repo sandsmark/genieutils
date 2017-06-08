@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -23,11 +23,11 @@
 namespace genie
 {
 
-unsigned short Terrain::terrain_count;
+unsigned short Terrain::terrain_count_ = 0;;
 //------------------------------------------------------------------------------
 Terrain::Terrain() : ElevationGraphics(TILE_TYPE_COUNT),
   TerrainUnitID(TERRAIN_UNITS_SIZE), TerrainUnitDensity(TERRAIN_UNITS_SIZE),
-  TerrainUnitPriority(TERRAIN_UNITS_SIZE)
+  TerrainUnitCentering(TERRAIN_UNITS_SIZE)
 {
 }
 
@@ -46,19 +46,19 @@ void Terrain::setGameVersion(GameVersion gv)
 //------------------------------------------------------------------------------
 void Terrain::setTerrainCount(unsigned short cnt)
 {
-  terrain_count = cnt;
+  terrain_count_ = cnt;
 }
 
 //------------------------------------------------------------------------------
 unsigned short Terrain::getTerrainCount(GameVersion gv)
 {
-  if (terrain_count)
-    return terrain_count;
-  if (gv >= genie::GV_SWGB)
+  if (terrain_count_)
+    return terrain_count_;
+  if (gv >= GV_SWGB)
     return 55;
-  if (gv == genie::GV_Cysion)
+  if (gv == GV_Cysion)
     return 100;
-  if (gv == genie::GV_TC)
+  if (gv == GV_TC)
     return 42;
   return 32;
 }
@@ -66,7 +66,7 @@ unsigned short Terrain::getTerrainCount(GameVersion gv)
 //------------------------------------------------------------------------------
 unsigned short Terrain::getNameSize()
 {
-  if (getGameVersion() >= genie::GV_SWGB)
+  if (getGameVersion() >= GV_SWGB)
     return 17;
   else
     return 13;
@@ -75,18 +75,20 @@ unsigned short Terrain::getNameSize()
 //------------------------------------------------------------------------------
 void Terrain::serializeObject(void)
 {
+  GameVersion gv = getGameVersion();
+
   serialize<int8_t>(Enabled);
   serialize<int8_t>(Random);
 
   serialize(Name, getNameSize());
   serialize(Name2, getNameSize());
 
-  if (getGameVersion() >= genie::GV_AoEB)
+  if (gv >= GV_AoEB)
     serialize<int32_t>(SLP);
-  serialize<int32_t>(Unknown3);
+  serialize<int32_t>(ShapePtr);
   serialize<int32_t>(SoundID);
 
-  if (getGameVersion() >= genie::GV_AoKB)
+  if (gv >= GV_AoKB)
   {
     serialize<int32_t>(BlendPriority);
     serialize<int32_t>(BlendType);
@@ -112,16 +114,16 @@ void Terrain::serializeObject(void)
   serialize<int16_t>(TerrainToDraw);
   serializePair<int16_t>(TerrainDimensions);
   if (isOperation(OP_READ))
-    serialize<int16_t>(Borders, getTerrainCount(getGameVersion()));
+    serialize<int16_t>(Borders, getTerrainCount(gv));
   else
     serialize<int16_t>(Borders, Borders.size());
   serialize<int16_t>(TerrainUnitID, TERRAIN_UNITS_SIZE);
   serialize<int16_t>(TerrainUnitDensity, TERRAIN_UNITS_SIZE);
-  serialize<int8_t>(TerrainUnitPriority, TERRAIN_UNITS_SIZE);
+  serialize<int8_t>(TerrainUnitCentering, TERRAIN_UNITS_SIZE);
   serialize<int16_t>(NumberOfTerrainUnitsUsed);
 
-  if (getGameVersion() < genie::GV_SWGB)
-    serialize<int16_t>(Unknown1);
+  if (gv < GV_SWGB)
+    serialize<int16_t>(Phantom);
 }
 
 }

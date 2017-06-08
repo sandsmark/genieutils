@@ -1,7 +1,7 @@
 /*
     genie/dat - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2014 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2014 - 2017  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -37,6 +37,7 @@ void TerrainBlock::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
 
+  Terrains.resize(Terrain::getTerrainCount(gv));
   updateGameVersion(Terrains);
   updateGameVersion(TerrainBorders);
 
@@ -48,29 +49,31 @@ void TerrainBlock::setGameVersion(GameVersion gv)
 //------------------------------------------------------------------------------
 unsigned short TerrainBlock::getBytesSize(void)
 {
-  if (getGameVersion() >= genie::GV_SWGB)
+  GameVersion gv = getGameVersion();
+  if (gv >= GV_SWGB)
     return 25;
-  if (getGameVersion() >= genie::GV_AoKA)
+  if (gv >= GV_AoKA)
     return 21;
-  if (getGameVersion() >= genie::GV_AoKE3)
+  if (gv >= GV_AoKE3)
     return 17;
-  if (getGameVersion() >= genie::GV_AoEB)
-    return 5;
-  return 2;
+  if (gv >= GV_AoEB)
+    return 2;// Padding
+  return 0;
 }
 
 //------------------------------------------------------------------------------
 unsigned short TerrainBlock::getSomethingSize(void)
 {
-  if (getGameVersion() >= genie::GV_AoK)
+  GameVersion gv = getGameVersion();
+  if (gv >= GV_AoK)
     return 157;
-  if (getGameVersion() >= genie::GV_AoKB)
+  if (gv >= GV_AoKB)
     return 84;
-  if (getGameVersion() >= genie::GV_AoKE3)
+  if (gv >= GV_AoKE3)
     return 6;
-  if (getGameVersion() >= genie::GV_AoEB)
-    return 5;
-  return 68;
+  if (gv >= GV_AoEB)
+    return 5;// 5 pointers
+  return 65;
 }
 
 //------------------------------------------------------------------------------
@@ -83,38 +86,40 @@ unsigned short TerrainBlock::getSomethingSize(void)
 /// SWGB & CC       49640
 void TerrainBlock::serializeObject(void)
 {
+  GameVersion gv = getGameVersion();
+
+  serialize<int32_t>(VirtualFunctionPtr);
   serialize<int32_t>(MapPointer);
-  serialize<int32_t>(Unknown1); // <-- this could be here or just before tile sizes
   serialize<int32_t>(MapWidth);
   serialize<int32_t>(MapHeight);
   serialize<int32_t>(WorldWidth);
   serialize<int32_t>(WorldHeight);
 
   serializeSub<TileSize>(TileSizes, SharedTerrain::TILE_TYPE_COUNT);
-  if (getGameVersion() >= genie::GV_AoE)
-    serialize<int16_t>(Unknown2);
+  if (gv >= GV_AoE)
+    serialize<int16_t>(PaddingTS);// Padding for TileSizes (32-bit aligned)
 
   if (isOperation(OP_READ))
-    serializeSub<Terrain>(Terrains, Terrain::getTerrainCount(getGameVersion()));
+    serializeSub<Terrain>(Terrains, Terrain::getTerrainCount(gv));
   else
     serializeSub<Terrain>(Terrains, Terrains.size());
 
   std::cout << "Terrains: " << Terrains.size() << std::endl;
 
-  if (getGameVersion() < genie::GV_AoEB)
+  if (gv < GV_AoEB)
     serialize<int16_t>(AoEAlphaUnknown, (16 * 1888) / 2);
   // TerrainBorders seem to be unused (are empty) in GV > AoK Alpha
   serializeSub<TerrainBorder>(TerrainBorders, 16); //TODO: fixed size?
 
   // Probably filled after loading map in game.
-  serialize<int32_t>(UnknownPointer1);
-  if (getGameVersion() >= genie::GV_AoKA)
+  serialize<int32_t>(MapRowOffset);
+  if (gv >= GV_AoKA)
   {
     serialize<float>(MapMinX);
     serialize<float>(MapMinY);
     serialize<float>(MapMaxX);
     serialize<float>(MapMaxY);
-    if (getGameVersion() >= genie::GV_AoK)
+    if (gv >= GV_AoK)
     {
       serialize<float>(MapMaxXplus1);
       serialize<float>(MapMaxYplus1);
@@ -122,7 +127,7 @@ void TerrainBlock::serializeObject(void)
   }
 
   serialize<uint16_t>(TerrainsUsed2);
-  if (getGameVersion() < genie::GV_AoEB)
+  if (gv < GV_AoEB)
     serialize<uint16_t>(RemovedBlocksUsed);
   serialize<uint16_t>(BordersUsed);
   serialize<int16_t>(MaxTerrain);
@@ -138,15 +143,27 @@ void TerrainBlock::serializeObject(void)
   serialize<int16_t>(BlockBegCol);
   serialize<int16_t>(BlockEndCol);
 
-  if (getGameVersion() >= genie::GV_AoEB) // Maybe?
+  if (gv >= GV_AoKE3)
   {
-    serialize<int32_t>(UnknownPointer2);
-	serialize<int32_t>(UnknownPointer3);
+    serialize<int32_t>(SearchMapPtr);
+    serialize<int32_t>(SearchMapRowsPtr);
     serialize<int8_t>(AnyFrameChange);
-    serialize<int8_t>(MapVisibleFlag);
-    serialize<int8_t>(FogFlag);
   }
+  else
+  {
+    // Padding fix
+    int32_t any = AnyFrameChange;
+    serialize<int32_t>(any);
+    AnyFrameChange = any;
 
+    serialize<int32_t>(SearchMapPtr);
+    serialize<int32_t>(SearchMapRowsPtr);
+  }
+  serialize<int8_t>(MapVisibleFlag);
+  serialize<int8_t>(FogFlag); // Always 1
+
+//From here on data is filled in game anyway.
+//There are two 32-bit pointers random map and game world, rest should be all 0.
   serialize<int8_t>(SomeBytes, getBytesSize());
 
   // Few pointers and small numbers.
@@ -156,9 +173,6 @@ void TerrainBlock::serializeObject(void)
 //------------------------------------------------------------------------------
 TileSize::TileSize()
 {
-  Width = 0;
-  Height = 0;
-  DeltaY = 0;
 }
 
 //------------------------------------------------------------------------------
@@ -177,7 +191,7 @@ void TileSize::serializeObject(void)
 {
   serialize<int16_t>(Width);
   serialize<int16_t>(Height);
-  if (getGameVersion() >= genie::GV_AoE)
+  if (getGameVersion() >= GV_AoE)
     serialize<int16_t>(DeltaY);
 }
 

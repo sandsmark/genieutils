@@ -43,21 +43,21 @@ public:
     ISerializable::setGameVersion(gv);
   }
 
-  /// Resource ID TODO add resource ids
+  /// Resource ID
   T Type = -1;
 
   /// Amount of the resource available/required/used
   A Amount = 0;
 
-  /// Bool that determines wheter it is used or not
-  E Enabled = 0;
+  /// Bool that determines whether it is paid or only needed.
+  E Flag = 0;
 
 private:
   virtual void serializeObject(void)
   {
     serialize<T>(Type);
     serialize<A>(Amount);
-    serialize<E>(Enabled);
+    serialize<E>(Flag);
   }
 };
 

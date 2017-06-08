@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -37,15 +37,21 @@ public:
   virtual ~DeadFish();
   virtual void setGameVersion(GameVersion gv);
 
-  std::pair<int16_t, int16_t> WalkingGraphic = {-1, -1};
+  int16_t WalkingGraphic = -1;
+  int16_t RunningGraphic = -1;
   float RotationSpeed = 0;
-  int8_t Unknown11 = 0;
+  int8_t OldSizeClass = 0;
   int16_t TrackingUnit = -1;
-  int8_t TrackingUnitUsed = 0;
+  int8_t TrackingUnitMode = 0;
   float TrackingUnitDensity = 0;
-  int8_t Unknown16 = 0;
+  int8_t OldMoveAlgorithm = 0;
 
-  std::vector<float> RotationAngles = {0, 3.40282347e+38, 3.40282347e+38, 0, 3.40282347e+38};
+  // All can change while playing
+  float TurnRadius = 0;
+  float TurnRadiusSpeed = 3.40282347e+38f;
+  float MaxYawPerSecondMoving = 3.40282347e+38f;
+  float StationaryYawRevolutionTime = 0;
+  float MaxYawPerSecondStationary = 3.40282347e+38f;
 
 protected:
   virtual void serializeObject(void);

@@ -49,13 +49,13 @@ public:
   virtual ~TerrainBlock();
   virtual void setGameVersion(GameVersion gv);
 
+  int32_t VirtualFunctionPtr;
   int32_t MapPointer;
-  int32_t Unknown1;
   int32_t MapWidth;
   int32_t MapHeight;
   int32_t WorldWidth;
   int32_t WorldHeight;
-  int16_t Unknown2;
+  int16_t PaddingTS;
 
   std::vector<TileSize> TileSizes;
   std::vector<Terrain> Terrains;
@@ -63,7 +63,7 @@ public:
   std::vector<int16_t> AoEAlphaUnknown; // These are very similar to borders
   std::vector<TerrainBorder> TerrainBorders;
 
-  int32_t UnknownPointer1;
+  int32_t MapRowOffset;
   float MapMinX;
   float MapMinY;
   float MapMaxX;
@@ -87,8 +87,8 @@ public:
   int16_t BlockBegCol;
   int16_t BlockEndCol;
 
-  int32_t UnknownPointer2;
-  int32_t UnknownPointer3;
+  int32_t SearchMapPtr;
+  int32_t SearchMapRowsPtr;
   int8_t AnyFrameChange;
 
   int8_t MapVisibleFlag;

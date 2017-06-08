@@ -1,7 +1,7 @@
 /*
     genie/dat - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -37,164 +37,139 @@ void RandomMaps::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
 
-  updateGameVersion(MapHeaders);
   updateGameVersion(Maps);
 }
 
 //------------------------------------------------------------------------------
 void RandomMaps::serializeObject()
 {
-  if (getGameVersion() < genie::GV_AoEB)
+  uint32_t random_map_count;
+  if (getGameVersion() < GV_AoEB)
   {
-    serializeSize<uint32_t>(total_randommaps_count, OldMaps.size());
+    serializeSize<uint32_t>(random_map_count, OldMaps.size());
 
     if (isOperation(OP_READ))
-      OldMaps.resize(total_randommaps_count);
+      OldMaps.resize(random_map_count);
     for (auto &sub: OldMaps)
       serialize<int32_t>(sub, 852);
   }
   else
   {
-    serializeSize<uint32_t>(total_randommaps_count, Maps.size());
+    serializeSize<uint32_t>(random_map_count, Maps.size());
 
-    serialize<int32_t>(RandomMapPointer);
+    serialize<int32_t>(RandomMapsPtr);
 
-    serializeSub<MapHeader>(MapHeaders, total_randommaps_count);
-    serializeSub<Map>(Maps, total_randommaps_count);
+    serializeSub<MapInfo>(Maps, random_map_count);
+    serializeSub<MapInfo>(Maps, random_map_count);
   }
 }
 
 //------------------------------------------------------------------------------
-MapHeader::MapHeader()
+MapInfo::MapInfo()
 {
 }
 
 //------------------------------------------------------------------------------
-MapHeader::~MapHeader()
+MapInfo::~MapInfo()
 {
 }
 
 //------------------------------------------------------------------------------
-void MapHeader::setGameVersion(GameVersion gv)
-{
-  ISerializable::setGameVersion(gv);
-}
-
-//------------------------------------------------------------------------------
-void MapHeader::serializeObject(void)
-{
-  serialize<int32_t>(ScriptNumber);
-  serialize<int32_t>(BorderSouthWest);
-  serialize<int32_t>(BorderNorthWest);
-  serialize<int32_t>(BorderNorthEast);
-  serialize<int32_t>(BorderSouthEast);
-  serialize<int32_t>(BorderUsage);
-  serialize<int32_t>(WaterShape);
-  serialize<int32_t>(NonBaseTerrain);
-  serialize<int32_t>(BaseZoneCoverage);
-  serialize<int32_t>(Unknown9);
-  serialize<uint32_t>(BaseZoneCount);
-  serialize<int32_t>(BaseZonePointer);
-  serialize<uint32_t>(MapTerrainCount);
-  serialize<int32_t>(MapTerrainPointer);
-  serialize<uint32_t>(MapUnitCount);
-  serialize<int32_t>(MapUnitPointer);
-  serialize<uint32_t>(MapUnknownCount);
-  serialize<int32_t>(MapUnknownPointer);
-}
-
-//------------------------------------------------------------------------------
-Map::Map()
-{
-}
-
-//------------------------------------------------------------------------------
-Map::~Map()
-{
-}
-
-//------------------------------------------------------------------------------
-void Map::setGameVersion(GameVersion gv)
+void MapInfo::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
 
-  updateGameVersion(BaseZones);
+  updateGameVersion(MapLands);
   updateGameVersion(MapTerrains);
   updateGameVersion(MapUnits);
-  updateGameVersion(MapUnknowns);
+  updateGameVersion(MapElevations);
 }
 
 //------------------------------------------------------------------------------
-void Map::serializeObject(void)
+void MapInfo::serializeObject(void)
 {
+  if (!io_all_)
+    serialize<int32_t>(MapID);
+
+// Yes. These are read and written twice.
+
   serialize<int32_t>(BorderSouthWest);
   serialize<int32_t>(BorderNorthWest);
   serialize<int32_t>(BorderNorthEast);
   serialize<int32_t>(BorderSouthEast);
   serialize<int32_t>(BorderUsage);
   serialize<int32_t>(WaterShape);
-  serialize<int32_t>(NonBaseTerrain);
-  serialize<int32_t>(BaseZoneCoverage);
-  serialize<int32_t>(Unknown9);
+  serialize<int32_t>(BaseTerrain);
+  serialize<int32_t>(LandCoverage);
+  serialize<int32_t>(UnusedID);
 
-  serializeSize<uint32_t>(BaseZoneCount, BaseZones.size());
-  serialize<int32_t>(BaseZonePointer);
-  serializeSub<BaseZone>(BaseZones, BaseZoneCount);
+  uint32_t count;
+  serializeSize<uint32_t>(count, MapLands.size());
+  serialize<int32_t>(MapLandsPtr);
 
-  serializeSize<uint32_t>(MapTerrainCount, MapTerrains.size());
-  serialize<int32_t>(MapTerrainPointer);
-  serializeSub<MapTerrain>(MapTerrains, MapTerrainCount);
+  if (io_all_)
+    serializeSub<MapLand>(MapLands, count);
 
-  serializeSize<uint32_t>(MapUnitCount, MapUnits.size());
-  serialize<int32_t>(MapUnitPointer);
-  serializeSub<MapUnit>(MapUnits, MapUnitCount);
+  serializeSize<uint32_t>(count, MapTerrains.size());
+  serialize<int32_t>(MapTerrainsPtr);
 
-  serializeSize<uint32_t>(MapUnknownCount, MapUnknowns.size());
-  serialize<int32_t>(MapUnknownPointer);
-  serializeSub<MapUnknown>(MapUnknowns, MapUnknownCount);
+  if (io_all_)
+    serializeSub<MapTerrain>(MapTerrains, count);
+
+  serializeSize<uint32_t>(count, MapUnits.size());
+  serialize<int32_t>(MapUnitsPtr);
+
+  if (io_all_)
+    serializeSub<MapUnit>(MapUnits, count);
+
+  serializeSize<uint32_t>(count, MapElevations.size());
+  serialize<int32_t>(MapElevationsPtr);
+
+  if (io_all_)
+    serializeSub<MapElevation>(MapElevations, count);
+
+  io_all_ = !io_all_;
 }
 
 //------------------------------------------------------------------------------
-BaseZone::BaseZone()
+MapLand::MapLand()
 {
 }
 
 //------------------------------------------------------------------------------
-BaseZone::~BaseZone()
+MapLand::~MapLand()
 {
 }
 
 //------------------------------------------------------------------------------
-void BaseZone::setGameVersion(GameVersion gv)
+void MapLand::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
 }
 
 //------------------------------------------------------------------------------
-void BaseZone::serializeObject(void)
+void MapLand::serializeObject(void)
 {
-  serialize<int32_t>(Unknown1);
-  serialize<int32_t>(BaseTerrain);
-  serialize<int32_t>(SpacingBetweenPlayers);
-  serialize<int32_t>(Unknown4);
-  serialize<int8_t>(Unknown5, 4);
-  serialize<int32_t>(Unknown6);
-  serialize<int32_t>(Unknown7);
-  serialize<int8_t>(Unknown8, 4);
+  serialize<int32_t>(LandID);
+  serialize<int32_t>(Terrain);//int8_t
+  serialize<int32_t>(LandSpacing);
+  serialize<int32_t>(BaseSize);
+  serialize<int8_t>(Zone);
+  serialize<int8_t>(PlacementType);
+  serialize<int16_t>(Padding1);
+  serialize<int32_t>(BaseX);
+  serialize<int32_t>(BaseY);
+  serialize<int8_t>(LandProportion);
+  serialize<int8_t>(ByPlayerFlag);
+  serialize<int16_t>(Padding2);
   serialize<int32_t>(StartAreaRadius);
-  serialize<int32_t>(Unknown10);
-  serialize<int32_t>(Unknown11);
+  serialize<int32_t>(TerrainEdgeFade);
+  serialize<int32_t>(Clumpiness);
 }
 
 //------------------------------------------------------------------------------
 MapTerrain::MapTerrain()
 {
-  Proportion = 0;
-  Terrain = -1;
-  NumberOfClumps = 1;
-  SpacingToOtherTerrains = 1;
-  PlacementZone = 0;
-  Unknown6 = 20;
 }
 
 //------------------------------------------------------------------------------
@@ -213,10 +188,10 @@ void MapTerrain::serializeObject(void)
 {
   serialize<int32_t>(Proportion);
   serialize<int32_t>(Terrain);
-  serialize<int32_t>(NumberOfClumps);
-  serialize<int32_t>(SpacingToOtherTerrains);
-  serialize<int32_t>(PlacementZone);
-  serialize<int32_t>(Unknown6);
+  serialize<int32_t>(ClumpCount);
+  serialize<int32_t>(EdgeSpacing);
+  serialize<int32_t>(PlacementTerrain);
+  serialize<int32_t>(Clumpiness);
 }
 
 //------------------------------------------------------------------------------
@@ -240,42 +215,44 @@ void MapUnit::serializeObject(void)
 {
   serialize<int32_t>(Unit);
   serialize<int32_t>(HostTerrain);
-  serialize<int8_t>(Unknown3, 4);
+  serialize<int8_t>(GroupPlacing);
+  serialize<int8_t>(ScaleFlag);
+  serialize<int16_t>(Padding1);
   serialize<int32_t>(ObjectsPerGroup);
   serialize<int32_t>(Fluctuation);
   serialize<int32_t>(GroupsPerPlayer);
-  serialize<int32_t>(GroupRadius);
-  serialize<int32_t>(OwnAtStart);
+  serialize<int32_t>(GroupArea);
+  serialize<int32_t>(PlayerID);
   serialize<int32_t>(SetPlaceForAllPlayers);
   serialize<int32_t>(MinDistanceToPlayers);
   serialize<int32_t>(MaxDistanceToPlayers);
 }
 
 //------------------------------------------------------------------------------
-MapUnknown::MapUnknown()
+MapElevation::MapElevation()
 {
 }
 
 //------------------------------------------------------------------------------
-MapUnknown::~MapUnknown()
+MapElevation::~MapElevation()
 {
 }
 
 //------------------------------------------------------------------------------
-void MapUnknown::setGameVersion(GameVersion gv)
+void MapElevation::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
 }
 
 //------------------------------------------------------------------------------
-void MapUnknown::serializeObject(void)
+void MapElevation::serializeObject(void)
 {
-  serialize<int32_t>(Unknown1);
-  serialize<int32_t>(Unknown2);
-  serialize<int32_t>(Unknown3);
-  serialize<int32_t>(Unknown4);
-  serialize<int32_t>(Unknown5);
-  serialize<int32_t>(Unknown6);
+  serialize<int32_t>(Proportion);
+  serialize<int32_t>(Terrain);
+  serialize<int32_t>(ClumpCount);
+  serialize<int32_t>(BaseTerrain);
+  serialize<int32_t>(BaseElevation);
+  serialize<int32_t>(TileSpacing);
 }
 
 }

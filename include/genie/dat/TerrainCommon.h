@@ -1,7 +1,7 @@
 /*
     geniedat - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2015 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2015 - 2017  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -42,6 +42,7 @@ private:
 class SharedTerrain : public ISerializable
 {
 public:
+  // Was 17 before increased to 19.
   static const unsigned short TILE_TYPE_COUNT = 19;
 
   int8_t Enabled = 0; //must be one or the game will crash
@@ -54,7 +55,7 @@ public:
   /// Internal SLP name
   std::string Name2 = "";
   int32_t SLP = -1;
-  int32_t Unknown3 = 0;
+  int32_t ShapePtr = 0;
   int32_t SoundID = -1;
 
   std::vector<uint8_t> Colors = {0, 0, 0};

@@ -28,11 +28,11 @@ namespace genie
 /// Stores the effect type and its parameters
 /// See http://www.digitization.org/wiki/index.php/Genie_technologies#Effects
 /// for more details
-class TechageEffect : public ISerializable
+class EffectCommand : public ISerializable
 {
 public:
-  TechageEffect();
-  virtual ~TechageEffect();
+  EffectCommand();
+  virtual ~EffectCommand();
   virtual void setGameVersion(GameVersion gv);
 
   int8_t Type = -1;

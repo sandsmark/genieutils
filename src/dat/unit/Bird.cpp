@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -39,25 +39,28 @@ void Bird::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
 
-  updateGameVersion(Commands);
+  updateGameVersion(TaskList);
 }
 
 void Bird::serializeObject(void)
 {
-  serialize<int16_t>(ActionWhenDiscoveredID);
+  GameVersion gv = getGameVersion();
+
+  serialize<int16_t>(DefaultTaskID);
   serialize<float>(SearchRadius);
   serialize<float>(WorkRate);
-  serializePair<int16_t>(DropSite, (getGameVersion() < genie::GV_TEST) ? true : false);
-  serialize<int8_t>(TaskSwapID);
+  serializePair<int16_t>(DropSite, (gv < GV_TEST) ? true : false);
+  serialize<int8_t>(TaskSwapGroup);
   serialize<int16_t>(AttackSound);
-  if (getGameVersion() >= genie::GV_AoEB)
+  if (gv >= GV_AoEB)
     serialize<int16_t>(MoveSound); // 6.92
-  serialize<int8_t>(AnimalMode);
+  serialize<int8_t>(RunPattern);
 
-  if (getGameVersion() < genie::GV_AoK) // 11.24
+  if (gv < GV_AoK) // 11.24
   {
-    serializeSize<uint16_t>(CommandCount, Commands.size());
-    serializeSub<UnitCommand>(Commands, CommandCount);
+    uint16_t task_count;
+    serializeSize<uint16_t>(task_count, TaskList.size());
+    serializeSub<Task>(TaskList, task_count);
   }
 }
 

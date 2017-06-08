@@ -1,7 +1,7 @@
 /*
     <one line to give the program's name and a brief idea of what it does.>
     Copyright (C) 2011  Armin Preiml
-    Copyright (C) 2015  Mikko "Tapsa" P
+    Copyright (C) 2015 - 2017  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -25,6 +25,7 @@
 
 #include <istream>
 #include <vector>
+#include <set>
 #include <stdint.h>
 
 #include "PalFile.h"
@@ -38,6 +39,25 @@ struct XY
   uint32_t y;
 };
 
+inline bool operator<(const XY &l, const XY &r)
+{
+  return l.y == r.y ? l.x < r.x : l.y < r.y;
+}
+
+// Element for player_color vector, the vector stores position (x, y) of
+// a player color pixel and the palette index for the color
+struct PlayerColorXY
+{
+  uint32_t x;
+  uint32_t y;
+  uint8_t index;
+};
+
+inline bool operator<(const PlayerColorXY &l, const PlayerColorXY &r)
+{
+  return l.y == r.y ? l.x < r.x : l.y < r.y;
+}
+
 struct SlpFrameData
 {
   std::vector<uint8_t> pixel_indexes;
@@ -50,16 +70,7 @@ struct SlpFrameData
   std::vector<XY> outline_pc_mask;
   std::vector<XY> transparency_mask;
 
-  // Element for player_color vector, the vector stores position (x, y) of
-  // a player color pixel and the palette index for the color
-  struct PlayerColorElement
-  {
-    uint32_t x;
-    uint32_t y;
-    uint8_t index;
-  };
-
-  std::vector<PlayerColorElement> player_color_mask;
+  std::vector<PlayerColorXY> player_color_mask;
   std::vector<genie::Color> palette;
 };
 
@@ -153,6 +164,8 @@ public:
   int32_t hotspot_x;
   int32_t hotspot_y;
   SlpFrameData img_data;
+
+  std::shared_ptr<SlpFrame> mirrorX(void);
 
 private:
   static Logger &log;

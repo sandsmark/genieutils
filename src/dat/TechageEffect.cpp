@@ -24,23 +24,23 @@ namespace genie
 {
 
 //------------------------------------------------------------------------------
-TechageEffect::TechageEffect()
+EffectCommand::EffectCommand()
 {
 }
 
 //------------------------------------------------------------------------------
-TechageEffect::~TechageEffect()
+EffectCommand::~EffectCommand()
 {
 }
 
 //------------------------------------------------------------------------------
-void TechageEffect::setGameVersion(GameVersion gv)
+void EffectCommand::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
 }
 
 //------------------------------------------------------------------------------
-void TechageEffect::serializeObject(void)
+void EffectCommand::serializeObject(void)
 {
   serialize<int8_t>(Type);
   serialize<int16_t>(A);

@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -37,10 +37,10 @@ public:
   virtual ~Type50();
   virtual void setGameVersion(GameVersion gv);
 
-  int16_t DefaultArmor = 1000; // uint8_t below TC
+  int16_t BaseArmor = 1000; // uint8_t below TC
   std::vector<unit::AttackOrArmor> Attacks;
   std::vector<unit::AttackOrArmor> Armours;
-  int16_t TerRestrictionForDmgMultiplying = -1;
+  int16_t DefenseTerrainBonus = -1;
   float MaxRange = 0;
   float BlastWidth = 0;
   float ReloadTime = 0;
@@ -50,7 +50,7 @@ public:
   int16_t AccuracyPercent = 0;
 
   /// Used in AoE/RoR for towers.
-  int8_t TowerMode = 0;
+  int8_t BreakOffCombat = 0;
   int16_t FrameDelay = 0;
 
   std::vector<float> GraphicDisplacement = {0, 0, 0};
@@ -63,10 +63,6 @@ public:
   int16_t DisplayedAttack = 0;
   float DisplayedRange = 0;
   float DisplayedReloadTime = 0;
-
-private:
-  uint16_t AttackCount;
-  uint16_t ArmourCount;
 
 protected:
   virtual void serializeObject(void);

@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -25,41 +25,41 @@
 namespace genie
 {
 
-class UnitCommand : public ISerializable
+class Task : public ISerializable
 {
 public:
-  UnitCommand();
-  virtual ~UnitCommand();
+  Task();
+  virtual ~Task();
   virtual void setGameVersion(GameVersion gv);
 
-  int16_t Enabled = 1;
+  int16_t TaskType = 1;
   int16_t ID = -1;
-  int8_t Unknown1 = 0;
-  int16_t Type = -1;
+  int8_t IsDefault = false;
+  int16_t ActionType = 0;
   int16_t ClassID = -1;
   int16_t UnitID = -1;
   int16_t TerrainID = -1;
   int16_t ResourceIn = -1;
-  int16_t ResourceProductivityMultiplier = -1;
+  int16_t ResourceMultiplier = -1;
   int16_t ResourceOut = -1;
-  int16_t Resource = -1;
-  float Quantity = 0;
-  float ExecutionRadius = 0;
-  float ExtraRange = 0;
-  int8_t Unknown4 = 1;
-  float Unknown5 = 3;
-  int8_t SelectionEnabler = 1;
-  int8_t Unknown7 = 1;
-  int16_t PlunderSource = 1;
-  int16_t Unknown9 = 0;
-  int8_t SelectionMode = 5;
-  int8_t RightClickMode = 0;
-  int8_t Unknown12 = 0;
-  int16_t ToolGraphicID = -1;
+  int16_t UnusedResource = -1;
+  float WorkValue1 = 0;
+  float WorkValue2 = 0;
+  float WorkRange = 0;
+  int8_t AutoSearchTargets = 0;
+  float SearchWaitTime = 0;
+  int8_t EnableTargeting = 0;
+  int8_t CombatLevelFlag = false;
+  int16_t GatherType = 0;
+  int16_t WorkFlag2 = 0;
+  int8_t TargetDiplomacy = 0;
+  int8_t CarryCheck = false;
+  int8_t PickForConstruction = false;
+  int16_t MovingGraphicID = -1;
   int16_t ProceedingGraphicID = -1;
-  int16_t ActionGraphicID = -1;
+  int16_t WorkingGraphicID = -1;
   int16_t CarryingGraphicID = -1;
-  int16_t ExecutionSoundID = -1;
+  int16_t ResourceGatheringSoundID = -1;
   int16_t ResourceDepositSoundID = -1;
 
 private:

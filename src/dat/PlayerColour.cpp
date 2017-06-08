@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -40,35 +40,32 @@ void PlayerColour::setGameVersion(GameVersion gv)
 
 void PlayerColour::serializeObject(void)
 {
-  if (getGameVersion() < genie::GV_AoKE3)
+  if (getGameVersion() < GV_AoKE3)
+  {
     serialize(Name, NAME_SIZE);
 
-
-  if (getGameVersion() < genie::GV_AoKE3)
-  {
     int16_t ID_short = ID;
     serialize<int16_t>(ID_short);
     ID = ID_short;
-    int16_t unk_short = Unknown1;
-    serialize<int16_t>(unk_short);
-    Unknown1 = unk_short;
-    uint8_t col_byte = Colour;
+
+    serialize<int16_t>(ResourceID);
+
+    uint8_t col_byte = MinimapColour;
     serialize<uint8_t>(col_byte);
-    Colour = col_byte;
-    uint8_t unk_byte = Unknown2;
-    serialize<uint8_t>(unk_byte);
-    Unknown2 = unk_byte;
+    MinimapColour = col_byte;
+
+    serialize<uint8_t>(Type);
   }
   else
   {
     serialize<int32_t>(ID);
-    serialize<int32_t>(Palette);
-    serialize<int32_t>(Colour);
-    serialize<int32_t>(Unknown1);
-    serialize<int32_t>(Unknown2);
+    serialize<int32_t>(PlayerColorBase);
+    serialize<int32_t>(UnitOutlineColor);
+    serialize<int32_t>(UnitSelectionColor1);
+    serialize<int32_t>(UnitSelectionColor2);
     serialize<int32_t>(MinimapColour);
-    serialize<int32_t>(Unknown3);
-    serialize<int32_t>(Unknown4);
+    serialize<int32_t>(MinimapColor2);
+    serialize<int32_t>(MinimapColor3);
     serialize<int32_t>(StatisticsText);
   }
 }

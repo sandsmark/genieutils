@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -37,7 +37,7 @@ public:
   virtual ~Creatable();
   virtual void setGameVersion(GameVersion gv);
 
-  static short getResourceCostsSize();
+  static unsigned short getResourceCostsSize();
 
   typedef ResourceUsage<int16_t, int16_t, int16_t> ResourceCost;
 
@@ -45,8 +45,8 @@ public:
   int16_t TrainTime = 0;
   int16_t TrainLocationID = -1;
   int8_t ButtonID = 0;
-  float Unknown26 = 0;
-  float Unknown27 = 0;
+  float RearAttackModifier = 0;
+  float FlankAttackModifier = 0;
   int8_t CreatableType = 0;
   int8_t HeroMode = 0;
   int32_t GarrisonGraphic = -1; 

@@ -2,7 +2,7 @@
     genieutils - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2013 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2013 - 2017  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -40,18 +40,24 @@ class ISerializable
 
 public:
   //----------------------------------------------------------------------------
-  ISerializable();
+  ISerializable() {}
 
   //----------------------------------------------------------------------------
-  virtual ~ISerializable();
+  virtual ~ISerializable() {}
 
   //----------------------------------------------------------------------------
   /// Set position to start reading the object from stream
   //
-  void setInitialReadPosition(std::streampos pos);
+  inline void setInitialReadPosition(std::streampos pos)
+  {
+    init_read_pos_ = pos;
+  }
 
   //----------------------------------------------------------------------------
-  std::streampos getInitialReadPosition(void) const;
+  inline std::streampos getInitialReadPosition(void) const
+  {
+    return init_read_pos_;
+  }
 
   //----------------------------------------------------------------------------
   /// Read object from istream.
@@ -82,13 +88,16 @@ public:
   //----------------------------------------------------------------------------
   ///
   //
-  virtual void setGameVersion(GameVersion gv);
+  virtual inline void setGameVersion(GameVersion gv)
+  {
+    gameVersion_ = gv;
+  }
 
   //----------------------------------------------------------------------------
-  GameVersion getGameVersion(void) const;
-
-  static void setDefaultGameVersion(GameVersion gv);
-  static GameVersion getDefaultGameVersion(void);
+  inline GameVersion getGameVersion(void) const
+  {
+    return gameVersion_;
+  }
 
   /// Updates the game version of all objects in vec
   //
@@ -144,33 +153,54 @@ protected:
   ///
   /// @param op operation
   //
-  void setOperation(Operation op);
+  inline void setOperation(Operation op)
+  {
+    operation_ = op;
+  }
 
   //----------------------------------------------------------------------------
   /// Get current operation
   ///
   /// @return operation
   //
-  Operation getOperation(void) const;
+  inline Operation getOperation(void) const
+  {
+    return operation_;
+  }
 
   //----------------------------------------------------------------------------
   /// Check if given operation is active.
   ///
   /// @param op operation to check
   //
-  bool isOperation(Operation op) const;
+  inline bool isOperation(Operation op) const
+  {
+    return (op == operation_);
+  }
 
   //----------------------------------------------------------------------------
-  void setIStream(std::istream &istr);
+  inline void setIStream(std::istream &istr)
+  {
+    istr_ = &istr;
+  }
 
   //----------------------------------------------------------------------------
-  std::istream * getIStream(void);
+  inline std::istream * getIStream(void)
+  {
+    return istr_;
+  }
 
   //----------------------------------------------------------------------------
-  void setOStream(std::ostream &ostr);
+  inline void setOStream(std::ostream &ostr)
+  {
+    ostr_ = &ostr;
+  }
 
   //----------------------------------------------------------------------------
-  std::ostream * getOStream(void);
+  inline std::ostream * getOStream(void)
+  {
+    return ostr_;
+  }
 
   //----------------------------------------------------------------------------
   /// @return position of the istreams get pointer.
@@ -260,7 +290,7 @@ protected:
   }
 
   //----------------------------------------------------------------------------
-  /// Serializes a string with preceeding size. Template argument is the data
+  /// Serializes a string with preceding size. Template argument is the data
   /// type of the size.
   ///
   /// @param str string to serialize
@@ -275,6 +305,7 @@ protected:
     serialize(str, size);
   }
 
+  // What abomination is this?
   template <typename T>
   void serializeForcedString(std::string &str)
   {
@@ -590,8 +621,6 @@ private:
   Operation operation_;
 
   GameVersion gameVersion_ = GV_None;
-
-  static GameVersion defaultGameVersion;
 
   size_t size_;
 };

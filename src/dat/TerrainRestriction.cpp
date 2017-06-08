@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2015  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -25,12 +25,12 @@
 namespace genie
 {
 
-short TerrainRestriction::Terrain_Count_ = 0;
+unsigned short TerrainRestriction::terrain_count_ = 0;
 
 //------------------------------------------------------------------------------
 TerrainRestriction::TerrainRestriction() :
-  PassableBuildableDmgMultiplier(Terrain_Count_),
-  TerrainPassGraphics(Terrain_Count_)
+  PassableBuildableDmgMultiplier(terrain_count_),
+  TerrainPassGraphics(terrain_count_)
 {
 }
 
@@ -48,19 +48,19 @@ void TerrainRestriction::setGameVersion(GameVersion gv)
 }
 
 //------------------------------------------------------------------------------
-void TerrainRestriction::setTerrainCount(short Terrain_Count)
+void TerrainRestriction::setTerrainCount(unsigned short cnt)
 {
-  Terrain_Count_ = Terrain_Count;
+  terrain_count_ = cnt;
 }
 
 //------------------------------------------------------------------------------
 void TerrainRestriction::serializeObject(void)
 {
-  serialize<float>(PassableBuildableDmgMultiplier, Terrain_Count_);
+  serialize<float>(PassableBuildableDmgMultiplier, terrain_count_);
 
-  if (getGameVersion() >= genie::GV_AoKA)
+  if (getGameVersion() >= GV_AoKA)
   {
-    serializeSub<TerrainPassGraphic>(TerrainPassGraphics, Terrain_Count_);
+    serializeSub<TerrainPassGraphic>(TerrainPassGraphics, terrain_count_);
   }
 }
 

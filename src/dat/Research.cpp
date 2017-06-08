@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -24,16 +24,16 @@ namespace genie
 {
 
 //------------------------------------------------------------------------------
-Research::Research() : ResourceCosts(3)
+Tech::Tech() : ResourceCosts(3)
 {
 }
 
 //------------------------------------------------------------------------------
-Research::~Research()
+Tech::~Tech()
 {
 }
 
-void Research::setGameVersion(GameVersion gv)
+void Tech::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
 
@@ -41,55 +41,56 @@ void Research::setGameVersion(GameVersion gv)
 }
 
 //------------------------------------------------------------------------------
-unsigned short Research::getRequiredTechsSize()
+unsigned short Tech::getRequiredTechsSize()
 {
-  if (getGameVersion() >= genie::GV_AoKA)
+  if (getGameVersion() >= GV_AoKA)
     return 6;
   else
     return 4;
 }
 
 //------------------------------------------------------------------------------
-void Research::serializeObject(void)
+void Tech::serializeObject(void)
 {
+  GameVersion gv = getGameVersion();
+
   serialize<int16_t>(RequiredTechs, getRequiredTechsSize());
 
   serializeSub<ResearchResourceCost>(ResourceCosts, 3);
   serialize<int16_t>(RequiredTechCount);
 
-  if (getGameVersion() >= genie::GV_AoKB)
+  if (gv >= GV_AoKB)
   {
     serialize<int16_t>(Civ);// 10.22
     serialize<int16_t>(FullTechMode); // 10.77
   }
 
   serialize<int16_t>(ResearchLocation);
-  if (getGameVersion() >= genie::GV_MATT)
+  if (gv >= GV_MATT)
   {
     serialize<uint16_t>(LanguageDLLName);
     serialize<uint16_t>(LanguageDLLDescription);
   }
   serialize<int16_t>(ResearchTime);
-  serialize<int16_t>(TechageID);
+  serialize<int16_t>(EffectID);
   serialize<int16_t>(Type);
   serialize<int16_t>(IconID);
   serialize<int8_t>(ButtonID);
-  if (getGameVersion() >= genie::GV_AoEB)
+  if (gv >= GV_AoEB)
   {
     serialize<int32_t>(LanguageDLLHelp);
     serialize<int32_t>(LanguageDLLTechTree);
-    serialize<int32_t>(Unknown1);
+    serialize<int32_t>(HotKey);
   }
 
-  serializeSize<uint16_t>(NameLength, Name);
-  if (NameLength > 0)
-    serialize(Name, NameLength);
+  uint16_t name_len;
+  serializeSize<uint16_t>(name_len, Name);
+  serialize(Name, name_len);
 
-  if (getGameVersion() >= genie::GV_SWGB)
+  if (gv >= GV_SWGB)
   {
-    serializeSize<uint16_t>(NameLength2, Name2);
-    if (NameLength2 > 0)
-      serialize(Name2, NameLength2);
+    serializeSize<uint16_t>(name_len, Name2);
+    serialize(Name2, name_len);
   }
 
 }

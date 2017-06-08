@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -45,40 +45,42 @@ void Type50::setGameVersion(GameVersion gv)
 
 void Type50::serializeObject(void)
 {
-  if (getGameVersion() < genie::GV_TC) // 11.52
+  GameVersion gv = getGameVersion();
+  if (gv < GV_TC) // 11.52
   {
-    uint8_t defarmor_byte = DefaultArmor;
+    uint8_t defarmor_byte = BaseArmor;
     serialize<uint8_t>(defarmor_byte);
-    DefaultArmor = defarmor_byte;
+    BaseArmor = defarmor_byte;
   }
   else
   {
-    serialize<int16_t>(DefaultArmor);
+    serialize<int16_t>(BaseArmor);
   }
 
-  serializeSize<uint16_t>(AttackCount, Attacks.size());
-  serializeSub<unit::AttackOrArmor>(Attacks, AttackCount);
+  uint16_t attack_count;
+  serializeSize<uint16_t>(attack_count, Attacks.size());
+  serializeSub<unit::AttackOrArmor>(Attacks, attack_count);
 
-  serializeSize<uint16_t>(ArmourCount, Armours.size());
-  serializeSub<unit::AttackOrArmor>(Armours, ArmourCount);
+  serializeSize<uint16_t>(attack_count, Armours.size());
+  serializeSub<unit::AttackOrArmor>(Armours, attack_count);
 
-  serialize<int16_t>(TerRestrictionForDmgMultiplying);
+  serialize<int16_t>(DefenseTerrainBonus);
   serialize<float>(MaxRange);
   serialize<float>(BlastWidth);
   serialize<float>(ReloadTime);
   serialize<int16_t>(ProjectileUnitID);
   serialize<int16_t>(AccuracyPercent);
-  serialize<int8_t>(TowerMode);
+  serialize<int8_t>(BreakOffCombat); // Not used anymore
   serialize<int16_t>(FrameDelay);
   serialize<float>(GraphicDisplacement, 3);
   serialize<int8_t>(BlastAttackLevel);
   serialize<float>(MinRange);
 
-  if (getGameVersion() >= genie::GV_AoKB) // 10.36
+  if (gv >= GV_AoKB) // 10.36
     serialize<float>(AccuracyDispersion);
 
   serialize<int16_t>(AttackGraphic);
-  if (getGameVersion() >= genie::GV_AoEB) // 7.01
+  if (gv >= GV_AoEB) // 7.01
   {
     serialize<int16_t>(DisplayedMeleeArmour);
     serialize<int16_t>(DisplayedAttack);

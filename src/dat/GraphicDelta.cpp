@@ -40,13 +40,12 @@ void GraphicDelta::setGameVersion(GameVersion gv)
 void GraphicDelta::serializeObject(void)
 {
   serialize<int16_t>(GraphicID);
-  serialize<int16_t>(Unknown1);
-  serialize<int16_t>(Unknown2);
-  serialize<int16_t>(Unknown3);
-  serialize<int16_t>(DirectionX);
-  serialize<int16_t>(DirectionY);
+  serialize<int16_t>(Padding1);
+  serialize<int32_t>(SpritePtr);
+  serialize<int16_t>(OffsetX);
+  serialize<int16_t>(OffsetY);
   serialize<int16_t>(DisplayAngle);
-  serialize<int16_t>(Unknown5);
+  serialize<int16_t>(Padding2);
 }
 
 }

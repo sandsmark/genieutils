@@ -1,7 +1,7 @@
 /*
     <one line to give the program's name and a brief idea of what it does.>
     Copyright (C) 2011  Armin Preiml
-    Copyright (C) 2015  Mikko "Tapsa" P
+    Copyright (C) 2015 - 2016  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -47,7 +47,7 @@ void SlpFile::serializeObject(void)
   {
     loadFile();
   }
-  else if (isOperation(OP_WRITE) && loaded_)
+  else if (isOperation(OP_WRITE))// && loaded_)
   {
     saveFile();
   }
@@ -84,9 +84,6 @@ void SlpFile::saveFile()
 #ifndef NDEBUG
   std::chrono::time_point<std::chrono::system_clock> startTime = std::chrono::system_clock::now();
 #endif
-  version = "2.0N";
-  comment = "genieutils";
-  num_frames_ = frames_.size();
   serializeHeader();
   slp_offset_ = 32 + 32 * num_frames_;
 
@@ -109,7 +106,7 @@ void SlpFile::saveFile()
 }
 
 //------------------------------------------------------------------------------
-void SlpFile::unload(void )
+void SlpFile::unload(void)
 {
   if (!loaded_)
     log.warn("Trying to unload a not loaded slpfile!");
@@ -121,15 +118,22 @@ void SlpFile::unload(void )
 }
 
 //------------------------------------------------------------------------------
-bool SlpFile::isLoaded(void ) const
+bool SlpFile::isLoaded(void) const
 {
   return loaded_;
 }
 
 //------------------------------------------------------------------------------
-uint32_t SlpFile::getFrameCount()
+uint32_t SlpFile::getFrameCount(void)
 {
   return frames_.size();
+}
+
+//------------------------------------------------------------------------------
+void SlpFile::setFrameCount(uint32_t count)
+{
+  frames_.resize(count);
+  num_frames_ = count;
 }
 
 //------------------------------------------------------------------------------
@@ -153,10 +157,19 @@ SlpFramePtr SlpFile::getFrame(uint32_t frame)
 }
 
 //------------------------------------------------------------------------------
+void SlpFile::setFrame(uint32_t frame, SlpFramePtr data)
+{
+  if (frame < frames_.size())
+  {
+    frames_[frame] = data;
+  }
+}
+
+//------------------------------------------------------------------------------
 void SlpFile::serializeHeader()
 {
   serialize(version, 4);
-  serialize<uint32_t>(num_frames_);
+  serializeSize<uint32_t>(num_frames_, frames_.size());
   serialize(comment, 24);
 }
 

@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -27,11 +27,11 @@ namespace genie
 {
 
 //TODO description. Just adding to vector in file works?
-class Research : public ISerializable
+class Tech : public ISerializable
 {
 public:
-  Research();
-  virtual ~Research();
+  Tech();
+  virtual ~Tech();
   virtual void setGameVersion(GameVersion gv);
 
   /// Size of RequiredTechs vector (4 in aoe/ror and 6 in games >= aok)
@@ -70,7 +70,7 @@ public:
   int16_t ResearchTime = 0;
 
   /// Holds the techage id that corresponds to this data
-  int16_t TechageID = -1;
+  int16_t EffectID = -1;
 
   /// Age tech or not: 0 for regular and 2 for age.
   int16_t Type = 0;
@@ -86,7 +86,7 @@ public:
   /// The second number is 150 000 plus the Language File ID for TheSecondName.
   int32_t LanguageDLLTechTree = 150000;
   /// The third number has been -1 in every technology so far.
-  int32_t Unknown1 = -1;
+  int32_t HotKey = -1;
 
   /// Internal name
   std::string Name = "";
@@ -96,11 +96,6 @@ public:
   std::string Name2 = "";
 
 private:
-  uint16_t NameLength;
-
-  /// MinGameVersion: SWGB
-  uint16_t NameLength2;
-
   virtual void serializeObject(void);
 };
 

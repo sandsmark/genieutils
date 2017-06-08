@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -37,7 +37,8 @@ public:
   virtual ~TechTree();
   virtual void setGameVersion(GameVersion gv);
 
-  int32_t Unknown2 = 1; //1
+  /// Number of total unit/tech groups
+  int32_t TotalUnitTechGroups = 1; //1
 
   std::vector<TechTreeAge> TechTreeAges;
 
@@ -47,14 +48,9 @@ public:
 
   std::vector<ResearchConnection> ResearchConnections;
 
-  static unsigned short getCount();
+  static unsigned short getCount();//GameVersion gv);
 
 private:
-  uint8_t age_count_;
-  uint8_t total_building_count_;
-  uint16_t total_unit_count_; // int16_t in >= swgb
-  uint8_t total_research_count_;
-
   virtual void serializeObject(void);
 
 };
@@ -81,7 +77,7 @@ public:
   /// Connection lines when selected
   std::vector<int32_t> UnitResearch;
 
-  /// 0 Age/Tech-level, 1 Building, 2 Unit, 3 Research.
+  /// 0 Age/Tech-level, 1 Building, 2 Unit, 3 Tech.
   std::vector<int32_t> Mode;
 
   unsigned short getSlots()
@@ -113,27 +109,23 @@ public:
   virtual ~TechTreeAge();
   virtual void setGameVersion(GameVersion gv);
 
-  int32_t ID = -1; //Age ID?
-  int8_t Unknown2 = 2; //Always 2
+  int32_t ID = -1; //Age ID
+  int8_t Status = 2; //Always 2
 
   std::vector<int32_t> Buildings;
   std::vector<int32_t> Units;
-  std::vector<int32_t> Researches;
+  std::vector<int32_t> Techs;
 
   techtree::Common Common;
-  int8_t SlotsUsed = 0;
-  std::vector<int8_t> Unknown4;
-  std::vector<int8_t> Unknown5;
-  int8_t Unknown6 = 0;
+  int8_t NumBuildingLevels = 0;
+  std::vector<int8_t> BuildingsPerZone;
+  std::vector<int8_t> GroupLengthPerZone;
+  int8_t MaxAgeLength = 0;
   int32_t LineMode = 0;
 
-  unsigned short getU4Size();
+  unsigned short getZoneCount();
 
 private:
-  uint8_t building_count_;
-  uint8_t unit_count_;
-  uint8_t research_count_;
-
   virtual void serializeObject(void);
 };
 
@@ -145,11 +137,11 @@ public:
   virtual void setGameVersion(GameVersion gv);
 
   int32_t ID = -1;
-  int8_t Unknown1 = 2; //always 2
+  int8_t Status = 2; //always 2
 
   std::vector<int32_t> Buildings;
   std::vector<int32_t> Units;
-  std::vector<int32_t> Researches;
+  std::vector<int32_t> Techs;
 
   techtree::Common Common;
 
@@ -164,10 +156,6 @@ public:
   int32_t EnablingResearch = 0;
 
 private:
-  uint8_t building_count_;
-  uint8_t unit_count_;
-  uint8_t research_count_;
-
   virtual void serializeObject(void);
 };
 
@@ -179,7 +167,7 @@ public:
   virtual void setGameVersion(GameVersion gv);
 
   int32_t ID = -1;
-  int8_t Unknown1 = 2; //always 2
+  int8_t Status = 2; //always 2
   int32_t UpperBuilding = -1;
 
   techtree::Common Common;
@@ -198,8 +186,6 @@ public:
   int32_t EnablingResearch = -1;
 
 private:
-  uint8_t unit_count_;
-
   virtual void serializeObject(void);
 
 };
@@ -212,12 +198,12 @@ public:
   virtual void setGameVersion(GameVersion gv);
 
   int32_t ID = -1;
-  int8_t Unknown1 = 2; //always 2
+  int8_t Status = 2; //always 2
   int32_t UpperBuilding = -1;
 
   std::vector<int32_t> Buildings;
   std::vector<int32_t> Units;
-  std::vector<int32_t> Researches;
+  std::vector<int32_t> Techs;
 
   techtree::Common Common;
 
@@ -228,10 +214,6 @@ public:
   int32_t LineMode = 0;
 
 private:
-  uint8_t building_count_;
-  uint8_t unit_count_;
-  uint8_t research_count_;
-
   virtual void serializeObject(void);
 };
 

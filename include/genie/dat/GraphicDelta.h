@@ -33,13 +33,12 @@ public:
   virtual void setGameVersion(GameVersion gv);
 
   int16_t GraphicID = -1;
-  int16_t Unknown1 = 0;
-  int16_t Unknown2 = 0;
-  int16_t Unknown3 = 0;
-  int16_t DirectionX = 0; //In Pixels
-  int16_t DirectionY = 0; //In Pixels
+  int16_t Padding1 = 0;
+  int32_t SpritePtr = 0;
+  int16_t OffsetX = 0; //In Pixels
+  int16_t OffsetY = 0; //In Pixels
   int16_t DisplayAngle = -1;
-  int16_t Unknown5 = 0;
+  int16_t Padding2 = 0;
 
 private:
   virtual void serializeObject(void);

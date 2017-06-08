@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -37,21 +37,18 @@ public:
   virtual ~Bird();
   virtual void setGameVersion(GameVersion gv);
 
-  int16_t ActionWhenDiscoveredID = -1;
+  int16_t DefaultTaskID = -1;
   float SearchRadius = 0;
   float WorkRate = 0;
   std::pair<int16_t, int16_t> DropSite = {-1, -1};
 
   /// If activated unit switches villager types
-  int8_t TaskSwapID = 0;
+  int8_t TaskSwapGroup = 0;
   int16_t AttackSound = -1;
   int16_t MoveSound = -1;
   /// Some animals have this.
-  int8_t AnimalMode = 0;
-  std::vector<UnitCommand> Commands;//only in aoe/ror
-
-private:
-  uint16_t CommandCount;//only in aoe/ror
+  int8_t RunPattern = 0;
+  std::vector<Task> TaskList;//only in aoe/ror
 
 protected:
   virtual void serializeObject(void);

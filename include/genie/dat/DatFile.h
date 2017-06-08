@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -42,11 +42,7 @@
 #include "TechTree.h"
 #include "RandomMap.h"
 
-namespace boost {
-namespace iostreams {
-struct zlib_params;
-}
-}
+namespace boost { namespace iostreams { struct zlib_params; } }
 
 namespace genie
 {
@@ -83,8 +79,8 @@ public:
   static const unsigned short FILE_VERSION_SIZE = 8;
   std::string FileVersion;
 
-  std::vector<int32_t> TerrainRestrictionPointers1;
-  std::vector<int32_t> TerrainRestrictionPointers2;
+  std::vector<int32_t> FloatPtrTerrainTables;
+  std::vector<int32_t> TerrainPassGraphicPointers;
   std::vector<TerrainRestriction> TerrainRestrictions;
 
   std::vector<PlayerColour> PlayerColours;
@@ -97,20 +93,27 @@ public:
   genie::TerrainBlock TerrainBlock;
   genie::RandomMaps RandomMaps;
 
-  std::vector<Techage> Techages;
+  std::vector<Effect> Effects;
 
   std::vector<UnitHeader> UnitHeaders;
 
   std::vector<Civ> Civs;
 
-  std::vector<Research> Researchs;
+  std::vector<Tech> Techs;
 
   /// Only present in gv >= SWGB
   std::vector<UnitLine> UnitLines;
 
   genie::TechTree TechTree;
 
-  std::vector<int32_t> UnknownPreTechTree;
+  /// History totals
+  int32_t TimeSlice;
+  int32_t UnitKillRate;
+  int32_t UnitKillTotal;
+  int32_t UnitHitPointRate;
+  int32_t UnitHitPointTotal;
+  int32_t RazingKillRate;
+  int32_t RazingKillTotal;
 
   uint16_t TerrainsUsed1;
 
@@ -131,19 +134,6 @@ private:
   std::fstream *file_ = 0;
 
   Compressor compressor_;
-
-  uint16_t terrain_restriction_count_;
-
-  uint16_t player_color_count_;
-  uint16_t sound_count_;
-  uint16_t graphic_count_;
-  uint32_t techage_count_;
-  uint32_t unit_count_;
-  uint16_t civ_countSW_;
-  uint16_t civ_count_;
-  uint16_t research_count_;
-
-  uint16_t unit_line_count_;
 
   DatFile(const DatFile &other);
   DatFile &operator=(const DatFile &other);

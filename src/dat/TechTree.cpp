@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -45,9 +45,9 @@ void TechTree::setGameVersion(GameVersion gv)
 }
 
 //------------------------------------------------------------------------------
-unsigned short TechTree::getCount() // used before 10.84 (GV_AoKB)
+unsigned short TechTree::getCount()//GameVersion gv) // used before 10.84 (GV_AoKB)
 {
-  if (false) // 10.38 - 10.84
+  if (false) // 10.38 - <10.84
     return 100;
   else
     return 40;
@@ -56,27 +56,32 @@ unsigned short TechTree::getCount() // used before 10.84 (GV_AoKB)
 //------------------------------------------------------------------------------
 void TechTree::serializeObject(void)
 {
-  serializeSize<uint8_t>(age_count_, TechTreeAges.size());
+  uint8_t age_count;
+  uint8_t building_count;
+  uint8_t research_count;
+  uint16_t unit_count;
 
-  serializeSize<uint8_t>(total_building_count_, BuildingConnections.size());
+  serializeSize<uint8_t>(age_count, TechTreeAges.size());
 
-  if (getGameVersion() >= genie::GV_SWGB)
-   serializeSize<uint16_t>(total_unit_count_, UnitConnections.size());
+  serializeSize<uint8_t>(building_count, BuildingConnections.size());
+
+  if (getGameVersion() >= GV_SWGB)
+   serializeSize<uint16_t>(unit_count, UnitConnections.size());
   else
   {
-    uint8_t tbc = total_unit_count_;
+    uint8_t tbc = unit_count;
     serializeSize<uint8_t>(tbc, UnitConnections.size());
-    total_unit_count_ = tbc;
+    unit_count = tbc;
   }
 
-  serializeSize<uint8_t>(total_research_count_, ResearchConnections.size());
+  serializeSize<uint8_t>(research_count, ResearchConnections.size());
 
-  serialize<int32_t>(Unknown2); // 9.39
+  serialize<int32_t>(TotalUnitTechGroups); // 9.39
 
-  serializeSub<TechTreeAge>(TechTreeAges, age_count_);
-  serializeSub<BuildingConnection>(BuildingConnections, total_building_count_);
-  serializeSub<UnitConnection>(UnitConnections, total_unit_count_);
-  serializeSub<ResearchConnection>(ResearchConnections, total_research_count_);
+  serializeSub<TechTreeAge>(TechTreeAges, age_count);
+  serializeSub<BuildingConnection>(BuildingConnections, building_count);
+  serializeSub<UnitConnection>(UnitConnections, unit_count);
+  serializeSub<ResearchConnection>(ResearchConnections, research_count);
 }
 
 //------------------------------------------------------------------------------
@@ -94,16 +99,16 @@ void TechTreeAge::setGameVersion(GameVersion gv)
   ISerializable::setGameVersion(gv);
 
   Common.setGameVersion(gv);
-  Unknown4.resize(getU4Size());
-  Unknown5.resize(getU4Size());
+  BuildingsPerZone.resize(getZoneCount());
+  GroupLengthPerZone.resize(getZoneCount());
 }
 
 //------------------------------------------------------------------------------
-unsigned short TechTreeAge::getU4Size()
+unsigned short TechTreeAge::getZoneCount()
 {
-  if (getGameVersion() >= genie::GV_SWGB)
+  if (getGameVersion() >= GV_SWGB)
     return 20;
-  else if (getGameVersion() >= genie::GV_AoKB) // 10.38
+  else if (getGameVersion() >= GV_AoKB) // 10.38
     return 10;
   else
     return 3;
@@ -113,39 +118,41 @@ unsigned short TechTreeAge::getU4Size()
 void TechTreeAge::serializeObject(void)
 {
   serialize<int32_t>(ID);
-  serialize<int8_t>(Unknown2);
+  serialize<int8_t>(Status);
 
-  if (getGameVersion() < genie::GV_AoKB)// < 10.84
+  // All of these need rework. Used + actual? Fix actual!
+  uint8_t count;
+  if (getGameVersion() < GV_AoKB)// < 10.84
   {
-    serialize<uint8_t>(building_count_);
+    serialize<uint8_t>(count);
     serialize<int32_t>(Buildings, TechTree::getCount());
 
-    serialize<uint8_t>(unit_count_);
+    serialize<uint8_t>(count);
     serialize<int32_t>(Units, TechTree::getCount());
 
-    serialize<uint8_t>(research_count_);
-    serialize<int32_t>(Researches, TechTree::getCount());
+    serialize<uint8_t>(count);
+    serialize<int32_t>(Techs, TechTree::getCount());
   }
   else
   {
-    serializeSize<uint8_t>(building_count_, Buildings.size());
-    serialize<int32_t>(Buildings, building_count_);
+    serializeSize<uint8_t>(count, Buildings.size());
+    serialize<int32_t>(Buildings, count);
 
-    serializeSize<uint8_t>(unit_count_, Units.size());
-    serialize<int32_t>(Units, unit_count_);
+    serializeSize<uint8_t>(count, Units.size());
+    serialize<int32_t>(Units, count);
 
-    serializeSize<uint8_t>(research_count_, Researches.size());
-    serialize<int32_t>(Researches, research_count_);
+    serializeSize<uint8_t>(count, Techs.size());
+    serialize<int32_t>(Techs, count);
   }
 
   serialize<ISerializable>(Common);
 
   // 9.39
   {
-    serialize<int8_t>(SlotsUsed);
-    serialize<int8_t>(Unknown4, getU4Size());
-    serialize<int8_t>(Unknown5, getU4Size());
-    serialize<int8_t>(Unknown6);
+    serialize<int8_t>(NumBuildingLevels);
+    serialize<int8_t>(BuildingsPerZone, getZoneCount());
+    serialize<int8_t>(GroupLengthPerZone, getZoneCount());
+    serialize<int8_t>(MaxAgeLength);
     serialize<int32_t>(LineMode); // 9.51
   }
 }
@@ -171,29 +178,30 @@ void BuildingConnection::setGameVersion(GameVersion gv)
 void BuildingConnection::serializeObject(void)
 {
   serialize<int32_t>(ID);
-  serialize<int8_t>(Unknown1);
+  serialize<int8_t>(Status);
 
-  if (getGameVersion() < genie::GV_AoKB)// < 10.84
+  uint8_t count;
+  if (getGameVersion() < GV_AoKB)// < 10.84
   {
-    serialize<uint8_t>(building_count_);
+    serialize<uint8_t>(count);
     serialize<int32_t>(Buildings, TechTree::getCount());
 
-    serialize<uint8_t>(unit_count_);
+    serialize<uint8_t>(count);
     serialize<int32_t>(Units, TechTree::getCount());
 
-    serialize<uint8_t>(research_count_);
-    serialize<int32_t>(Researches, TechTree::getCount());
+    serialize<uint8_t>(count);
+    serialize<int32_t>(Techs, TechTree::getCount());
   }
   else
   {
-    serializeSize<uint8_t>(building_count_, Buildings.size());
-    serialize<int32_t>(Buildings, building_count_);
+    serializeSize<uint8_t>(count, Buildings.size());
+    serialize<int32_t>(Buildings, count);
 
-    serializeSize<uint8_t>(unit_count_, Units.size());
-    serialize<int32_t>(Units, unit_count_);
+    serializeSize<uint8_t>(count, Units.size());
+    serialize<int32_t>(Units, count);
 
-    serializeSize<uint8_t>(research_count_, Researches.size());
-    serialize<int32_t>(Researches, research_count_);
+    serializeSize<uint8_t>(count, Techs.size());
+    serialize<int32_t>(Techs, count);
   }
 
   serialize<ISerializable>(Common);
@@ -228,7 +236,7 @@ void UnitConnection::setGameVersion(GameVersion gv)
 void UnitConnection::serializeObject(void)
 {
   serialize<int32_t>(ID);
-  serialize<int8_t>(Unknown1);
+  serialize<int8_t>(Status);
   serialize<int32_t>(UpperBuilding);
 
   serialize<ISerializable>(Common);
@@ -237,15 +245,16 @@ void UnitConnection::serializeObject(void)
   {
     serialize<int32_t>(VerticalLine);
 
-    if (getGameVersion() < genie::GV_AoKB)// < 10.84
+    uint8_t count;
+    if (getGameVersion() < GV_AoKB)// < 10.84
     {
-      serialize<uint8_t>(unit_count_);
+      serialize<uint8_t>(count);
       serialize<int32_t>(Units, TechTree::getCount());
     }
     else
     {
-      serializeSize<uint8_t>(unit_count_, Units.size());
-      serialize<int32_t>(Units, unit_count_);
+      serializeSize<uint8_t>(count, Units.size());
+      serialize<int32_t>(Units, count);
     }
 
     serialize<int32_t>(LocationInAge); // 9.46
@@ -275,30 +284,31 @@ void ResearchConnection::setGameVersion(GameVersion gv)
 void ResearchConnection::serializeObject(void)
 {
   serialize<int32_t>(ID);
-  serialize<int8_t>(Unknown1);
+  serialize<int8_t>(Status);
   serialize<int32_t>(UpperBuilding);
 
-  if (getGameVersion() < genie::GV_AoKB)// < 10.84
+  uint8_t count;
+  if (getGameVersion() < GV_AoKB)// < 10.84
   {
-    serialize<uint8_t>(building_count_);
+    serialize<uint8_t>(count);
     serialize<int32_t>(Buildings, TechTree::getCount());
 
-    serialize<uint8_t>(unit_count_);
+    serialize<uint8_t>(count);
     serialize<int32_t>(Units, TechTree::getCount());
 
-    serialize<uint8_t>(research_count_);
-    serialize<int32_t>(Researches, TechTree::getCount());
+    serialize<uint8_t>(count);
+    serialize<int32_t>(Techs, TechTree::getCount());
   }
   else
   {
-    serializeSize<uint8_t>(building_count_, Buildings.size());
-    serialize<int32_t>(Buildings, building_count_);
+    serializeSize<uint8_t>(count, Buildings.size());
+    serialize<int32_t>(Buildings, count);
 
-    serializeSize<uint8_t>(unit_count_, Units.size());
-    serialize<int32_t>(Units, unit_count_);
+    serializeSize<uint8_t>(count, Units.size());
+    serialize<int32_t>(Units, count);
 
-    serializeSize<uint8_t>(research_count_, Researches.size());
-    serialize<int32_t>(Researches, research_count_);
+    serializeSize<uint8_t>(count, Techs.size());
+    serialize<int32_t>(Techs, count);
   }
 
   serialize<ISerializable>(Common);

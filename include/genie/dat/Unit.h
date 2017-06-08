@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -57,8 +57,8 @@ enum UnitType
   /// Only birds in aoe and ror are of this type.
   UT_Bird = 40,
 
-  /// ???
-  UT_Unknown = 50,
+  /// Shared class inherited by combat objects.
+  UT_Combatant = 50,
 
   /// Projectiles
   UT_Projectile = 60,
@@ -86,7 +86,7 @@ public:
   /// See enum UnitType
   int8_t Type = 10;
 
-  int16_t ID1 = -1;
+  int16_t ID = -1;
 
   /// ID of the name string stored in the language.dll file
   uint16_t LanguageDLLName = 5000;
@@ -101,10 +101,11 @@ public:
   std::pair<int16_t, int16_t> StandingGraphic = {-1, -1};
 
   /// Graphic shown while the units is dying.
-  std::pair<int16_t, int16_t> DyingGraphic = {-1, -1};
+  int16_t DyingGraphic = -1;
+  int16_t UndeadGraphic = -1;
 
-  /// TODO
-  int8_t DeathMode = 0;
+  /// Enables undead state
+  int8_t UndeadMode = 0;
 
   /// Unit's hit points
   int16_t HitPoints = 1;
@@ -120,16 +121,17 @@ public:
   XYZF CollisionSize = {0, 0, 0};
 
   /// Sound played when the unit is created
-  std::pair<int16_t, int16_t> TrainSound = {-1, -1};
+  int16_t TrainSound = -1;
+  int16_t DamageSound = -1;
 
   /// ID of the unit to change to when this one dies.
   int16_t DeadUnitID = -1;
 
   /// TODO
-  int8_t PlacementMode = 0;
+  int8_t SortNumber = 0;
 
   /// TODO
-  int8_t AirMode = 0;
+  int8_t CanBeBuiltOn = 0;
 
   /// ID of the icon shown at the bottom when selected or when building
   int16_t IconID = -1;
@@ -138,7 +140,7 @@ public:
   int8_t HideInEditor = 0;
 
   /// TODO Unknown
-  int16_t Unknown1 = -1;         // Always -1
+  int16_t OldPortraitPict = -1;         // Always -1
 
   /// TODO
   int8_t Enabled = 1;
@@ -147,7 +149,7 @@ public:
   std::pair<int16_t, int16_t> PlacementTerrain = {-1, -1};
   std::pair<float, float> ClearanceSize = {0, 0};
   int8_t HillMode = 0;
-  int8_t VisibleInFog = 0;
+  int8_t FogVisibility = 0;
 
   /// ID of terrain restrictions that are imposed on the unit.
   int16_t TerrainRestriction = -1;
@@ -161,7 +163,7 @@ public:
   // TODO
   float ResourceDecay = 0;
   int8_t BlastDefenseLevel = 0;
-  int8_t SubType = 0;
+  int8_t CombatLevel = 0;
   int8_t InteractionMode = 0;
 
   /**
@@ -191,29 +193,29 @@ public:
    */
   int8_t MinimapMode = 0;
 
-  int8_t CommandAttribute = 0;// Page for Build button: 2 = Page 1, 10 = Page 2, ?11 = Page 3?
-  float Unknown3A = 0;
+  int8_t InterfaceKind = 0;// Page for Build button: 2 = Page 1, 10 = Page 2, ?11 = Page 3?
+  float MultipleAttributeMode = 0;
   uint8_t MinimapColor = 0;
   int32_t LanguageDLLHelp = 105000;
   int32_t LanguageDLLHotKeyText = 155000;
   int32_t HotKey = 16000;
-  int8_t Unselectable = 0;
+  int8_t Recyclable = 0;
   int8_t EnableAutoGather = 0;
-  int8_t AutoGatherMode = 0;
-  int8_t AutoGatherID = 0;
-  int8_t SelectionMask = 0;
+  int8_t CreateDoppelgangerOnDeath = 0;
+  int8_t ResourceGatherGroup = 0;
+  int8_t OcclusionMode = 0;
 
-  /// values for SelectionShapeType
+  /// values for ObstructionType
   /// 0 farm, gate, dead bodies, town center
   /// 2 buildings, gold mine
   /// 3 berserk, flag x
   /// 5 units
   /// 10 mountain(matches selction mask)
-  int8_t SelectionShapeType = 0;
+  int8_t ObstructionType = 0;
 
-  /// 0 square, 1+ circle
-  int8_t SelectionShape = 0;
-  uint8_t Attribute = 0;
+  /// 0 default, 1+ above
+  int8_t ObstructionClass = 0;
+  uint8_t Trait = 0;
   /// Seems to be used only in SWGB/CC
   int8_t Civilization = 0;
   int16_t Nothing = 0;
@@ -227,7 +229,7 @@ public:
    */
   int8_t SelectionEffect = 1;
   uint8_t EditorSelectionColour = 52;
-  XYZF SelectionShapeSize = {0, 0, 0};
+  XYZF OutlineSize = {0, 0, 0};
 
   typedef ResourceUsage<int16_t, float, int8_t> ResourceStorage;
 
@@ -239,8 +241,8 @@ public:
   /// Sound that is played when this unit is selected
   int16_t SelectionSound = -1;
   int16_t DyingSound = -1;
-  int8_t AttackMode = 0;
-  int8_t Unknown10 = 0;
+  int8_t OldAttackReaction = 0;
+  int8_t ConvertTerrain = 0;
   std::string Name = "";
   std::string Name2 = "";
 
@@ -250,8 +252,8 @@ public:
   /// MinGameVersion: SWGB
   int8_t MinTechLevel = -1;
 
-  int16_t ID2 = -1;
-  int16_t ID3 = -1;//not in aoe/ror
+  int16_t CopyID = -1;
+  int16_t BaseID = -1;//not in aoe/ror
 
 //      Type 20+
 
@@ -268,12 +270,6 @@ public:
   unit::Creatable Creatable;
 
   unit::Building Building;
-
-private:
-  /// Length of the internal name
-  uint16_t NameLength;
-  uint16_t NameLength2;
-  uint8_t DamageGraphicCount;
 
 protected:
   virtual void serializeObject(void);

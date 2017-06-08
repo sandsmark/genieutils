@@ -2,7 +2,7 @@
     genieutils - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2013 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2013 - 2017  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -24,30 +24,6 @@
 
 namespace genie
 {
-
-GameVersion ISerializable::defaultGameVersion = GV_None;
-
-//------------------------------------------------------------------------------
-ISerializable::ISerializable()
-{
-}
-
-//------------------------------------------------------------------------------
-ISerializable::~ISerializable()
-{
-}
-
-//------------------------------------------------------------------------------
-void ISerializable::setInitialReadPosition(std::streampos pos)
-{
-  init_read_pos_ = pos;
-}
-
-//------------------------------------------------------------------------------
-std::streampos ISerializable::getInitialReadPosition(void) const
-{
-  return init_read_pos_;
-}
 
 //------------------------------------------------------------------------------
 void ISerializable::readObject(std::istream &istr)
@@ -90,76 +66,6 @@ void ISerializable::serializeSubObject(ISerializable * const other)
   setGameVersion(other->gameVersion_);
   serializeObject();
 }
-
-//------------------------------------------------------------------------------
-void ISerializable::setGameVersion(GameVersion gv)
-{
-  gameVersion_ = gv;
-}
-
-//------------------------------------------------------------------------------
-GameVersion ISerializable::getGameVersion(void) const
-{
-  if (gameVersion_ == GV_None)
-    std::cerr << "Warning: Game version not set!" << std::endl;
-
-  return gameVersion_;
-}
-
-//------------------------------------------------------------------------------
-void ISerializable::setDefaultGameVersion(GameVersion gv)
-{
-  defaultGameVersion = gv;
-}
-
-//------------------------------------------------------------------------------
-GameVersion ISerializable::getDefaultGameVersion(void)
-{
-  return defaultGameVersion;
-}
-
-//------------------------------------------------------------------------------
-void ISerializable::setOperation(Operation op)
-{
-  operation_ = op;
-}
-
-//------------------------------------------------------------------------------
-ISerializable::Operation ISerializable::getOperation(void) const
-{
-  return operation_;
-}
-
-//------------------------------------------------------------------------------
-bool ISerializable::isOperation(Operation op) const
-{
-  return (op == operation_);
-}
-
-//------------------------------------------------------------------------------
-void ISerializable::setIStream(std::istream &istr)
-{
-  istr_ = &istr;
-}
-
-//------------------------------------------------------------------------------
-std::istream * ISerializable::getIStream(void)
-{
-  return istr_;
-}
-
-//------------------------------------------------------------------------------
-void ISerializable::setOStream(std::ostream &ostr)
-{
-  ostr_ = &ostr;
-}
-
-//------------------------------------------------------------------------------
-std::ostream * ISerializable::getOStream(void)
-{
-  return ostr_;
-}
-
 
 //------------------------------------------------------------------------------
 size_t ISerializable::strnlen(const char *str, size_t maxLen)

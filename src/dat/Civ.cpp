@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -45,32 +45,37 @@ unsigned short Civ::getNameSize(void)
 
 void Civ::serializeObject(void)
 {
-  serialize<int8_t>(Enabled); //TODO: enabled flag
-  serialize(Name, getNameSize());
-  serializeSize<uint16_t>(ResourceCount, Resources.size());
+  GameVersion gv = getGameVersion();
 
-  if (getGameVersion() >= genie::GV_MIK)
+  serialize<int8_t>(PlayerType);
+
+  serialize(Name, getNameSize());
+
+  uint16_t count;
+  serializeSize<uint16_t>(count, Resources.size());
+
+  if (gv >= GV_MIK)
   {
     serialize<int16_t>(TechTreeID);
-    if (getGameVersion() >= genie::GV_AoKB) // 10.38
+    if (gv >= GV_AoKB) // 10.38
     {
       serialize<int16_t>(TeamBonusID);
 
-      if (getGameVersion() >= genie::GV_SWGB)
+      if (gv >= GV_SWGB)
       {
         serialize(Name2, getNameSize());
-        serialize<int16_t>(UniqueUnitsResearches, 4);
+        serialize<int16_t>(UniqueUnitsTechs, 4);
       }
     }
   }
 
-  serialize<float>(Resources, ResourceCount);
+  serialize<float>(Resources, count);
 
   serialize<int8_t>(IconSet);
 
-  serializeSize<uint16_t>(UnitCount, UnitPointers.size());
-  serialize<int32_t>(UnitPointers, UnitCount);
-  serializeSubWithPointers<Unit>(Units, UnitCount, UnitPointers);
+  serializeSize<uint16_t>(count, Units.size());
+  serialize<int32_t>(UnitPointers, count);
+  serializeSubWithPointers<Unit>(Units, count, UnitPointers);
 }
 
 }

@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -44,9 +44,11 @@ void Building::setGameVersion(GameVersion gv)
 
 void Building::serializeObject(void)
 {
+  GameVersion gv = getGameVersion();
+
   serialize<int16_t>(ConstructionGraphicID);
 
-  if (getGameVersion() >= genie::GV_TC) // 11.53
+  if (gv >= GV_TC) // 11.53
     serialize<int16_t>(SnowGraphicID);
 
   serialize<int8_t>(AdjacentMode);
@@ -54,28 +56,29 @@ void Building::serializeObject(void)
   serialize<int8_t>(DisappearsWhenBuilt);
   serialize<int16_t>(StackUnitID);
   serialize<int16_t>(FoundationTerrainID);
-  serialize<int16_t>(OldTerrainLikeID); // Resource?
-  serialize<int16_t>(ResearchID);
+  serialize<int16_t>(OldOverlayID); // No longer used
+  serialize<int16_t>(TechID);
 
-  if (getGameVersion() >= genie::GV_AoKE3)
+  if (gv >= GV_AoKE3)
   {
-    serialize<int8_t>(Unknown33);
+    serialize<int8_t>(CanBurn);
     serializeSub<unit::BuildingAnnex>(Annexes, BUILDING_ANNEXES_SIZE); // 40 bytes
-    if (getGameVersion() >= genie::GV_AoKA)
+    if (gv >= GV_AoKA)
       serialize<int16_t>(HeadUnit); // 9.89
     serialize<int16_t>(TransformUnit);
-    serialize<int16_t>(UnknownSound);
+    serialize<int16_t>(TransformSound);
   }
 
   serialize<int16_t>(ConstructionSound);
 
-  if (getGameVersion() >= genie::GV_AoKE3)
+  if (gv >= GV_AoKE3)
   {
     serialize<int8_t>(GarrisonType);
     serialize<float>(GarrisonHealRate);
-    serialize<float>(Unknown35);
+    serialize<float>(GarrisonRepairRate);
     {
       serialize<int16_t>(PileUnit); // 9.06
+      // 9.06 - 9.25 -> 5 x 2 x int16_t
       serialize<int8_t>(LootingTable, LOOTABLE_RES_COUNT); // 9.26
     }
   }

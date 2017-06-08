@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -24,34 +24,36 @@ namespace genie
 {
 
 //------------------------------------------------------------------------------
-Techage::Techage()
+Effect::Effect()
 {
 }
 
 //------------------------------------------------------------------------------
-Techage::~Techage()
+Effect::~Effect()
 {
 }
 
 //------------------------------------------------------------------------------
-void Techage::setGameVersion(GameVersion gv)
+void Effect::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
 
-  updateGameVersion(Effects);
+  updateGameVersion(EffectCommands);
 }
 
-short Techage::getNameSize(void)
+unsigned short Effect::getNameSize(void)
 {
   return 31;
 }
 
 //------------------------------------------------------------------------------
-void Techage::serializeObject(void)
+void Effect::serializeObject(void)
 {
   serialize(Name, getNameSize());
-  serializeSize<uint16_t>(EffectCount, Effects.size());
-  serializeSub<TechageEffect>(Effects, EffectCount);
+
+  uint16_t command_count;
+  serializeSize<uint16_t>(command_count, EffectCommands.size());
+  serializeSub<EffectCommand>(EffectCommands, command_count);
 }
 
 }

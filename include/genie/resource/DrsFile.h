@@ -22,7 +22,7 @@
 
 #include <vector>
 #include <list>
-#include <map>
+#include <unordered_map>
 #include <stdint.h>
 
 #include "genie/file/IFile.h"
@@ -79,15 +79,12 @@ private:
 
   std::vector<std::string> table_types_;
   std::vector<uint32_t> table_num_of_files_;
-  std::list<uint32_t> loaded_slp_ids_;
-  std::map<uint32_t, uint32_t> wav_offsets_;
+
   std::vector<uint8_t> wav_file_;
 
-  typedef std::map<uint32_t, SlpFilePtr> SlpMap;
-  SlpMap slp_map_;
-
-  typedef std::map<uint32_t, BinaFilePtr> BinaMap;
-  BinaMap bina_map_;
+  std::unordered_map<uint32_t, SlpFilePtr> slp_map_;
+  std::unordered_map<uint32_t, BinaFilePtr> bina_map_;
+  std::unordered_map<uint32_t, uint32_t> wav_offsets_;
 
   unsigned int getCopyRightHeaderSize(void) const;
 

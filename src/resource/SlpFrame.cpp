@@ -1,7 +1,7 @@
 /*
     <one line to give the program's name and a brief idea of what it does.>
     Copyright (C) 2011  Armin Preiml
-    Copyright (C) 2015  Mikko "Tapsa" P
+    Copyright (C) 2015 - 2017  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -875,6 +875,83 @@ void SlpFrame::save(std::ostream &ostr)
   std::chrono::time_point<std::chrono::system_clock> endTime = std::chrono::system_clock::now();
   log.debug("SLP frame data saving took [%u] milliseconds", std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count());
 #endif
+}
+
+//------------------------------------------------------------------------------
+SlpFramePtr SlpFrame::mirrorX(void)
+{
+  SlpFramePtr mirrored(new genie::SlpFrame());
+
+  mirrored->properties_ = properties_;
+  mirrored->width_ = width_;
+  uint32_t swapper = width_ - 1;
+  mirrored->height_ = height_;
+  mirrored->hotspot_x = swapper - hotspot_x;
+  mirrored->hotspot_y = hotspot_y;
+
+  genie::SlpFrameData &new_data = mirrored->img_data;
+  new_data.bgra_channels.resize(img_data.bgra_channels.size());
+  new_data.pixel_indexes.resize(img_data.pixel_indexes.size());
+  new_data.alpha_channel.resize(img_data.alpha_channel.size());
+
+  for (uint32_t row = 0; row < height_; ++row)
+  {
+    for (uint32_t c1 = 0, c2 = width_; c2--> 0; ++c1)
+    {
+      if (is32bit())
+      {
+        new_data.bgra_channels[row * width_ + c1] = img_data.bgra_channels[row * width_ + c2];
+      }
+      else
+      {
+        new_data.pixel_indexes[row * width_ + c1] = img_data.pixel_indexes[row * width_ + c2];
+        new_data.alpha_channel[row * width_ + c1] = img_data.alpha_channel[row * width_ + c2];
+      }
+    }
+  }
+
+  // Let std::set sort the pixels for us.
+  std::set<XY> new_shadow_mask;
+  for(XY pixel: img_data.shadow_mask)
+  {
+    pixel.x = swapper - pixel.x;
+    new_shadow_mask.emplace(pixel);
+  }
+  new_data.shadow_mask = std::vector<XY>(new_shadow_mask.begin(), new_shadow_mask.end());
+
+  std::set<XY> new_shield_mask;
+  for(XY pixel: img_data.shield_mask)
+  {
+    pixel.x = swapper - pixel.x;
+    new_shield_mask.emplace(pixel);
+  }
+  new_data.shield_mask = std::vector<XY>(new_shield_mask.begin(), new_shield_mask.end());
+
+  std::set<XY> new_outline_pc_mask;
+  for(XY pixel: img_data.outline_pc_mask)
+  {
+    pixel.x = swapper - pixel.x;
+    new_outline_pc_mask.emplace(pixel);
+  }
+  new_data.outline_pc_mask = std::vector<XY>(new_outline_pc_mask.begin(), new_outline_pc_mask.end());
+
+  std::set<XY> new_transparency_mask;
+  for(XY pixel: img_data.transparency_mask)
+  {
+    pixel.x = swapper - pixel.x;
+    new_transparency_mask.emplace(pixel);
+  }
+  new_data.transparency_mask = std::vector<XY>(new_transparency_mask.begin(), new_transparency_mask.end());
+
+  std::set<PlayerColorXY> new_player_color_mask;
+  for(PlayerColorXY pixel: img_data.player_color_mask)
+  {
+    pixel.x = swapper - pixel.x;
+    new_player_color_mask.emplace(pixel);
+  }
+  new_data.player_color_mask = std::vector<PlayerColorXY>(new_player_color_mask.begin(), new_player_color_mask.end());
+
+  return mirrored;
 }
 
 }

@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -24,52 +24,52 @@ namespace genie
 {
 
 //------------------------------------------------------------------------------
-UnitCommand::UnitCommand()
+Task::Task()
 {
 }
 
 //------------------------------------------------------------------------------
-UnitCommand::~UnitCommand()
+Task::~Task()
 {
 }
 
 //------------------------------------------------------------------------------
-void UnitCommand::setGameVersion(GameVersion gv)
+void Task::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
 }
 
 //------------------------------------------------------------------------------
-void UnitCommand::serializeObject(void)
+void Task::serializeObject(void)
 {
-  serialize<int16_t>(Enabled);
+  serialize<int16_t>(TaskType);
   serialize<int16_t>(ID);
-  serialize<int8_t>(Unknown1);
-  serialize<int16_t>(Type);
+  serialize<int8_t>(IsDefault);
+  serialize<int16_t>(ActionType);
   serialize<int16_t>(ClassID);
   serialize<int16_t>(UnitID);
   serialize<int16_t>(TerrainID);
   serialize<int16_t>(ResourceIn);
-  serialize<int16_t>(ResourceProductivityMultiplier);
+  serialize<int16_t>(ResourceMultiplier);
   serialize<int16_t>(ResourceOut);
-  serialize<int16_t>(Resource);
-  serialize<float>(Quantity);
-  serialize<float>(ExecutionRadius);
-  serialize<float>(ExtraRange);
-  serialize<int8_t>(Unknown4);
-  serialize<float>(Unknown5);
-  serialize<int8_t>(SelectionEnabler);
-  serialize<int8_t>(Unknown7);
-  serialize<int16_t>(PlunderSource);
-  serialize<int16_t>(Unknown9);
-  serialize<int8_t>(SelectionMode);
-  serialize<int8_t>(RightClickMode);
-  serialize<int8_t>(Unknown12);
-  serialize<int16_t>(ToolGraphicID);
+  serialize<int16_t>(UnusedResource);
+  serialize<float>(WorkValue1);
+  serialize<float>(WorkValue2);
+  serialize<float>(WorkRange);
+  serialize<int8_t>(AutoSearchTargets);
+  serialize<float>(SearchWaitTime);
+  serialize<int8_t>(EnableTargeting);
+  serialize<int8_t>(CombatLevelFlag);
+  serialize<int16_t>(GatherType);
+  serialize<int16_t>(WorkFlag2);
+  serialize<int8_t>(TargetDiplomacy);
+  serialize<int8_t>(CarryCheck);
+  serialize<int8_t>(PickForConstruction);
+  serialize<int16_t>(MovingGraphicID);
   serialize<int16_t>(ProceedingGraphicID);
-  serialize<int16_t>(ActionGraphicID);
+  serialize<int16_t>(WorkingGraphicID);
   serialize<int16_t>(CarryingGraphicID);
-  serialize<int16_t>(ExecutionSoundID);
+  serialize<int16_t>(ResourceGatheringSoundID);
   serialize<int16_t>(ResourceDepositSoundID);
 }
 

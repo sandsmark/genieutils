@@ -1,7 +1,7 @@
 /*
     <one line to give the program's name and a brief idea of what it does.>
     Copyright (C) 2011  Armin Preiml
-    Copyright (C) 2015  Mikko "Tapsa" P
+    Copyright (C) 2015 - 2016  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -65,14 +65,8 @@ public:
   ///
   /// @return number of frames
   //
-  uint32_t getFrameCount();
-
-  //----------------------------------------------------------------------------
-  /// Returns the internal slp id.
-  ///
-  /// @return id
-  //
-//   int32_t getId();
+  uint32_t getFrameCount(void);
+  void setFrameCount(uint32_t);
 
   //----------------------------------------------------------------------------
   /// Returns the slp frame at given frame index.
@@ -81,6 +75,7 @@ public:
   /// @return SlpFrame
   //
   SlpFramePtr getFrame(uint32_t frame=0);
+  void setFrame(uint32_t, SlpFramePtr);
 
   std::string version;
   std::string comment;
@@ -89,9 +84,6 @@ private:
   static Logger &log;
 
   bool loaded_ = false;
-
-  uint32_t id_;
-  uint32_t len_;
 
   uint32_t num_frames_ = 0;
 

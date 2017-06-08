@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -40,31 +40,33 @@ void Graphic::setGameVersion(GameVersion gv)
   ISerializable::setGameVersion(gv);
 
   updateGameVersion(Deltas);
-  updateGameVersion(AttackSounds);
+  updateGameVersion(AngleSounds);
 }
 
 unsigned short Graphic::getNameSize()
 {
-  if (getGameVersion() < genie::GV_SWGB)
-    return NAME_SIZE;
+  if (getGameVersion() < GV_SWGB)
+    return 21;
   else
-    return NAME_SIZE_SWGB;
+    return 25;
 }
 
 unsigned short Graphic::getName2Size()
 {
-  if (getGameVersion() < genie::GV_SWGB)
-    return NAME_SIZE2;
+  if (getGameVersion() < GV_SWGB)
+    return 13;
   else
-    return NAME_SIZE_SWGB;
+    return 25;
 }
 
 void Graphic::serializeObject(void)
 {
-  serialize(Name, getNameSize());
-  serialize(Name2, getName2Size());
+  GameVersion gv = getGameVersion();
 
-  if (getGameVersion() < genie::GV_TEST)
+  serialize(Name, getNameSize());
+  serialize(FileName, getName2Size());
+
+  if (gv < GV_TEST)
   {
     int16_t slp = SLP;
     serialize<int16_t>(slp);
@@ -74,39 +76,44 @@ void Graphic::serializeObject(void)
   {
     serialize<int32_t>(SLP);
   }
-  serialize<int8_t>(Unknown1);
-  serialize<int8_t>(Unknown2); /// TODO: priority?
+  serialize<int8_t>(IsLoaded); // Unused
+  serialize<int8_t>(OldColorFlag); // Unused
   serialize<int8_t>(Layer);
   serialize<int8_t>(PlayerColor);
   serialize<int8_t>(Rainbow); // 2nd half of player color
-  serialize<int8_t>(Replay);
+  serialize<int8_t>(TransparentSelection);
 
   serialize<int16_t>(Coordinates, 4);
 
-  serializeSize<uint16_t>(DeltaCount, Deltas.size());
+  uint16_t delta_count;
+  serializeSize<uint16_t>(delta_count, Deltas.size());
   serialize<int16_t>(SoundID);
-  serialize<int8_t>(AttackSoundUsed);
+  serialize<int8_t>(AngleSoundsUsed);
   serialize<uint16_t>(FrameCount);
   serialize<uint16_t>(AngleCount);
-  serialize<float>(NewSpeed);
-  serialize<float>(FrameRate);
+  serialize<float>(SpeedMultiplier);
+  serialize<float>(FrameDuration);
   serialize<float>(ReplayDelay);
   serialize<int8_t>(SequenceType);
   serialize<int16_t>(ID);
   serialize<int8_t>(MirroringMode);
 
-  if (getGameVersion() >= genie::GV_AoKB) // 10.72
-    serialize<int8_t>(Unknown3); // Maybe sprite editor thing?
+  if (gv >= GV_AoKB) // 10.72
+    serialize<int8_t>(EditorFlag); // A sprite editor thing
 
-  serializeSub<GraphicDelta>(Deltas, DeltaCount);
+  serializeSub<GraphicDelta>(Deltas, delta_count);
 
-  if (AttackSoundUsed != 0)
+  if (AngleSoundsUsed != 0)
   {
-    if (isOperation(OP_WRITE) && AttackSounds.size() > AngleCount)
-      std::cerr << "Warning: There are more GraphicAttackSounds than angles!"
+    if (isOperation(OP_WRITE) && AngleSounds.size() != AngleCount)
+    {
+      std::cerr << "Warning: Size mismatch between angle sounds and angles!"
                 << std::endl;
+      //Be naughty and force the size to be correct.
+      AngleSounds.resize(AngleCount, AngleSounds.front());
+    }
 
-    serializeSub<GraphicAttackSound>(AttackSounds, AngleCount);
+    serializeSub<GraphicAngleSound>(AngleSounds, AngleCount);
   }
 
 }

@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -44,8 +44,8 @@ public:
 
   /// Probability out of 100 that this item will be played
   int16_t Probability = 100;
-  int16_t Culture = -1;//not in aoe/ror
-  int16_t PlayerID = -1;//not in aoe/ror; seems to be unused in tc
+  int16_t Civilization = -1;//not in aoe/ror
+  int16_t IconSet = -1;//not in aoe/ror
 
 private:
   virtual void serializeObject(void);
