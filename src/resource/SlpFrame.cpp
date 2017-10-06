@@ -203,7 +203,7 @@ void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
   cmd_table_offset_ = slp_offset_ + 4 * height_;
   slp_offset_ = cmd_table_offset_ + 4 * height_;
 
-  // TODO: Build integers from image data.
+  // Build integers from image data.
   left_edges_.resize(height_);
   right_edges_.resize(height_);
   cmd_offsets_.resize(height_);
@@ -370,7 +370,7 @@ KEEP_COLOR:
       }
     }
     // Handle last colors
-    if (is32bit() ? bgra == 0 : color_index == 0x100)
+    if (is32bit() ? bgra == 0 : count_type == CNT_TRANSPARENT)
     {
       right_edges_[row] = pixel_set_size;
     }
@@ -489,7 +489,7 @@ void SlpFrame::load(std::istream &istr)
             readPixelsToImage(row, pix_pos, pix_cnt);
           break;
 
-        case 0x1: // lesser skip (making pixels transparent)
+        case 0x1: // Lesser skip (making pixels transparent)
         case 0x5:
         case 0x9:
         case 0xD:
@@ -497,7 +497,7 @@ void SlpFrame::load(std::istream &istr)
           pix_pos += pix_cnt;
           break;
 
-        case 0x2: // greater block copy
+        case 0x2: // Greater block copy
           pix_cnt = (sub << 4) + read<uint8_t>();
           if (is32bit())
             readPixelsToImage32(row, pix_pos, pix_cnt);
@@ -505,12 +505,12 @@ void SlpFrame::load(std::istream &istr)
             readPixelsToImage(row, pix_pos, pix_cnt);
           break;
 
-        case 0x3: // greater skip
+        case 0x3: // Greater skip
           pix_cnt = (sub << 4) + read<uint8_t>();
           pix_pos += pix_cnt;
           break;
 
-        case 0x6: // copy and transform (player color)
+        case 0x6: // Copy and transform (player color)
           pix_cnt = getPixelCountFromData(data);
           if (is32bit())
             readPixelsToImage32(row, pix_pos, pix_cnt, 1);
@@ -539,21 +539,18 @@ void SlpFrame::load(std::istream &istr)
           setPixelsToShadow(row, pix_pos, pix_cnt);
           break;
 
-        case 0xE: // extended commands.. TODO
+        case 0xE: // Extended commands
           switch (data)
           {
-            case 0x0E: //xflip?? skip?? TODO
-            case 0x1E:
-              log.error("Cmd [%X] not implemented", data);
+            case 0x0E: // Forward draw
+            case 0x1E: // Reverse draw
+              log.error("Cmd [%X] is obsolete", data);
               return;
-              //row-= 1;
-              break;
 
-            case 0x2E:
-            case 0x3E:
-              log.error("Cmd [%X] not implemented", data);
+            case 0x2E: // Normal transform
+            case 0x3E: // Alternative transform
+              log.error("Cmd [%X] is obsolete", data);
               return;
-              break;
 
             case 0x4E:
               setPixelsToPcOutline(row, pix_pos, 1);//, 242);
@@ -570,18 +567,26 @@ void SlpFrame::load(std::istream &istr)
               pix_cnt = read<uint8_t>();
               setPixelsToShield(row, pix_pos, pix_cnt);//, 0);
               break;
-            case 0x9E: // Apparently some kind of edge blending to background.
+
+            case 0x8E: // Dither
+              log.error("Cmd [%X] not implemented", data);
+              return;
+
+            case 0x9E: // Premultiplied alpha
+            case 0xAE: // Original alpha
               pix_cnt = read<uint8_t>();
               if (is32bit())
               {
                 readPixelsToImage32(row, pix_pos, pix_cnt, 2);
                 break;
               }
+
             default:
-              log.error("Cmd [%X] not implemented", data);
+              log.error("Cmd [%X] is unknown", data);
               return;
           }
           break;
+
         default:
           log.error("Unknown cmd [%X]", data);
           std::cerr << "SlpFrame: Unknown cmd at " << std::hex << std::endl;
