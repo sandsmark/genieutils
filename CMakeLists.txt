@@ -124,6 +124,7 @@ set(RESOURCE_SRC
     src/resource/DrsFile.cpp
     src/resource/Color.cpp
     src/resource/BinaFile.cpp
+    src/resource/UIFile.cpp
     )
 
 set(SCRIPT_SRC

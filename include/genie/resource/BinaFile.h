@@ -21,6 +21,7 @@
 
 #include "genie/file/ISerializable.h"
 #include "PalFile.h"
+#include "UIFile.h"
 
 namespace genie
 {
@@ -31,13 +32,15 @@ namespace genie
 class BinaFile : public ISerializable
 {
 public:
-  BinaFile();
+  BinaFile(uint32_t size);
   virtual ~BinaFile();
   
   PalFilePtr readPalFile(std::istream *istr);
+  UIFilePtr readUIFile(std::istream *istr);
   
 private:
   virtual void serializeObject(void);
+  uint32_t m_size;
 };
 
 typedef std::shared_ptr<BinaFile> BinaFilePtr;

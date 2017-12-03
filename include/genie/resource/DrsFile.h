@@ -28,6 +28,7 @@
 #include "genie/file/IFile.h"
 #include "SlpFile.h"
 #include "BinaFile.h"
+#include "UIFile.h"
 
 namespace genie
 {
@@ -66,6 +67,7 @@ public:
   /// @return bina file pointer or "empty" shared pointer if not found
   //
   PalFilePtr getPalFile(uint32_t id);
+  UIFilePtr getUIFile(uint32_t id);
 
   unsigned char* getWavPtr(uint32_t id);
 

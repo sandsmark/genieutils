@@ -21,7 +21,8 @@
 namespace genie
 {
   
-BinaFile::BinaFile()
+BinaFile::BinaFile(uint32_t size) :
+    m_size(size)
 {
 }
   
@@ -38,6 +39,16 @@ PalFilePtr BinaFile::readPalFile(std::istream *istr)
   pal->readObject(*istr);
   
   return pal;
+}
+
+UIFilePtr BinaFile::readUIFile(std::istream *istr)
+{
+  UIFilePtr uifile(new UIFile());
+
+  uifile->setInitialReadPosition(getInitialReadPosition());
+
+  uifile->readObject(*istr);
+  return uifile;
 }
 
 void BinaFile::serializeObject(void)

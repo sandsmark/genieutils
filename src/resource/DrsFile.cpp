@@ -79,6 +79,21 @@ PalFilePtr DrsFile::getPalFile(uint32_t id)
   }
 }
 
+UIFilePtr DrsFile::getUIFile(uint32_t id)
+{
+  auto i = bina_map_.find(id);
+
+  if (i != bina_map_.end())
+  {
+    return i->second->readUIFile(getIStream());
+  }
+  else
+  {
+    log.warn("No bina file with id [%u] found!", id);
+    return UIFilePtr();
+  }
+}
+
 //------------------------------------------------------------------------------
 unsigned char* DrsFile::getWavPtr(uint32_t id)
 {
@@ -173,7 +188,8 @@ void DrsFile::loadHeader()
       {
         uint32_t id = read<uint32_t>();
         uint32_t pos = read<uint32_t>();
-        /*uint32_t len =*/ read<uint32_t>();
+        uint32_t len = read<uint32_t>();
+//        std::cout << "file header: " << table_types_[i] << std::endl;
 
         if (table_types_[i].compare(getSlpTableHeader()) == 0)
         {
@@ -184,7 +200,7 @@ void DrsFile::loadHeader()
         }
         else if (table_types_[i].compare(getBinaryTableHeader()) == 0)
         {
-          BinaFilePtr bina(new BinaFile());
+          BinaFilePtr bina(new BinaFile(len));
           bina->setInitialReadPosition(pos);
 
           bina_map_[id] = bina;

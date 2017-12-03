@@ -246,7 +246,7 @@ protected:
   template <typename T>
   T read()
   {
-    T ret;
+    T ret = {};
 
     if (!istr_->eof())
       istr_->read(reinterpret_cast<char *>(&ret), sizeof(ret));
