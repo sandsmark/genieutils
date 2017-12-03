@@ -25,6 +25,7 @@
 
 namespace genie
 {
+typedef std::shared_ptr<char> BmpFilePtr;
 
 //------------------------------------------------------------------------------
 /// Class for loading "bina" files of a drs file.
@@ -37,6 +38,7 @@ public:
   
   PalFilePtr readPalFile(std::istream *istr);
   UIFilePtr readUIFile(std::istream *istr);
+  BmpFilePtr readBmpFile(std::istream *istr);
   
 private:
   virtual void serializeObject(void);
