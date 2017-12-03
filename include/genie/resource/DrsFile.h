@@ -70,6 +70,7 @@ public:
   UIFilePtr getUIFile(uint32_t id);
   BmpFilePtr getBmpFile(uint32_t id);
   std::string getScriptFile(uint32_t id);
+  ScnFilePtr getScnFile(uint32_t id);
 
   unsigned char* getWavPtr(uint32_t id);
 

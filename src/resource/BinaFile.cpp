@@ -53,10 +53,10 @@ UIFilePtr BinaFile::readUIFile(std::istream *istr)
 
 BmpFilePtr BinaFile::readBmpFile(std::istream *istr)
 {
-    std::istream::pos_type pos = istr->tellg();
+    istr->seekg(getInitialReadPosition());
     const char b = istr->get();
     const char m = istr->get();
-    istr->seekg(pos);
+    istr->seekg(getInitialReadPosition());
 
     if (b != 'B' || m != 'M') {
         std::cerr << "Invalid bmp header" << std::endl;
@@ -71,9 +71,21 @@ BmpFilePtr BinaFile::readBmpFile(std::istream *istr)
 
 std::string BinaFile::readScriptFile(std::istream *istr)
 {
+    istr->seekg(getInitialReadPosition());
     char content[m_size];
     istr->read(content, m_size);
     return std::string(content, m_size);
+}
+
+ScnFilePtr BinaFile::readScnFile(std::istream *istr)
+{
+  ScnFilePtr scnFile(new ScnFile());
+
+  scnFile->setInitialReadPosition(getInitialReadPosition());
+
+  scnFile->readObject(*istr);
+  return scnFile;
+
 }
 
 void BinaFile::serializeObject(void)

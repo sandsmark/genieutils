@@ -22,6 +22,7 @@
 #include "genie/file/ISerializable.h"
 #include "PalFile.h"
 #include "UIFile.h"
+#include "genie/script/ScnFile.h"
 
 namespace genie
 {
@@ -40,6 +41,7 @@ public:
   UIFilePtr readUIFile(std::istream *istr);
   BmpFilePtr readBmpFile(std::istream *istr);
   std::string readScriptFile(std::istream *istr);
+  ScnFilePtr readScnFile(std::istream *istr);
 
 private:
   virtual void serializeObject(void);

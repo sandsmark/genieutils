@@ -117,6 +117,8 @@ private:
   void serializeVersion(void);
 };
 
+typedef std::shared_ptr<ScnFile> ScnFilePtr;
+
 }
 
 #endif // GENIE_SCNFILE_H

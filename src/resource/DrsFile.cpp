@@ -126,6 +126,21 @@ std::string DrsFile::getScriptFile(uint32_t id)
 
 }
 
+ScnFilePtr DrsFile::getScnFile(uint32_t id)
+{
+  auto i = bina_map_.find(id);
+
+  if (i != bina_map_.end())
+  {
+    return i->second->readScnFile(getIStream());
+  }
+  else
+  {
+    log.warn("No bina file with id [%u] found!", id);
+    return ScnFilePtr();
+  }
+}
+
 //------------------------------------------------------------------------------
 unsigned char* DrsFile::getWavPtr(uint32_t id)
 {
@@ -205,17 +220,22 @@ void DrsFile::loadHeader()
     num_of_tables_ = read<uint32_t>();
     header_offset_ = read<uint32_t>();
 
+    std::vector<uint32_t> table_offsets;
     // Load table data
     for (uint32_t i = 0; i < num_of_tables_; ++i)
     {
       table_types_.push_back(readString(4));
-      read<uint32_t>(); // TODO: Unknown
+      table_offsets.push_back(read<uint32_t>());
       table_num_of_files_.push_back(read<uint32_t>());
     }
 
     // Load file headers
     for (uint32_t i = 0; i < num_of_tables_; ++i)
     {
+     if (tellg() != table_offsets[i]) {
+         log.error("Tables aren't layed out linearly, is at position %d, but should be at %d", tellg(), table_offsets[i]);
+     }
+
       for (uint32_t j = 0; j < table_num_of_files_[i]; ++j)
       {
         uint32_t id = read<uint32_t>();
