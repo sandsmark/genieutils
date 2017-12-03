@@ -39,7 +39,8 @@ public:
   PalFilePtr readPalFile(std::istream *istr);
   UIFilePtr readUIFile(std::istream *istr);
   BmpFilePtr readBmpFile(std::istream *istr);
-  
+  std::string readScriptFile(std::istream *istr);
+
 private:
   virtual void serializeObject(void);
   uint32_t m_size;

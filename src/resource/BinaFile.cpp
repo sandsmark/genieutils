@@ -69,6 +69,13 @@ BmpFilePtr BinaFile::readBmpFile(std::istream *istr)
     return file;
 }
 
+std::string BinaFile::readScriptFile(std::istream *istr)
+{
+    char content[m_size];
+    istr->read(content, m_size);
+    return std::string(content, m_size);
+}
+
 void BinaFile::serializeObject(void)
 {
 }

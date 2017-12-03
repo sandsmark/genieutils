@@ -110,6 +110,22 @@ BmpFilePtr DrsFile::getBmpFile(uint32_t id)
 
 }
 
+std::string DrsFile::getScriptFile(uint32_t id)
+{
+  auto i = bina_map_.find(id);
+
+  if (i != bina_map_.end())
+  {
+    return i->second->readScriptFile(getIStream());
+  }
+  else
+  {
+    log.warn("No bina file with id [%u] found!", id);
+    return std::string();
+  }
+
+}
+
 //------------------------------------------------------------------------------
 unsigned char* DrsFile::getWavPtr(uint32_t id)
 {
