@@ -74,6 +74,8 @@ public:
 
   unsigned char* getWavPtr(uint32_t id);
 
+  std::vector<uint32_t> binaryFileIds() const;
+
 private:
   static Logger &log;
 

@@ -58,8 +58,26 @@ SlpFilePtr DrsFile::getSlpFile(uint32_t id)
   }
   else
   {
-    log.warn("No slp file with id [%u] found!", id);
-    return SlpFilePtr();
+      auto i = bina_map_.find(id);
+
+      if (i != bina_map_.end())
+      {
+#ifndef NDEBUG
+          log.debug("Loading SLP file [%u] from bina", id);
+#endif
+          SlpFilePtr slp(new SlpFile());
+
+          slp->setInitialReadPosition(i->second->getInitialReadPosition());
+
+          slp->readObject(*getIStream());
+
+          return slp;
+      }
+      else
+      {
+          log.warn("No slp file with id [%u] found!", id);
+          return SlpFilePtr();
+      }
   }
 }
 
@@ -74,7 +92,7 @@ PalFilePtr DrsFile::getPalFile(uint32_t id)
   }
   else
   {
-    log.warn("No bina file with id [%u] found!", id);
+    log.debug("No bina file with id [%u] found!", id);
     return PalFilePtr();
   }
 }
@@ -89,7 +107,7 @@ UIFilePtr DrsFile::getUIFile(uint32_t id)
   }
   else
   {
-    log.warn("No bina file with id [%u] found!", id);
+    log.debug("No bina file with id [%u] found!", id);
     return UIFilePtr();
   }
 }
@@ -104,7 +122,7 @@ BmpFilePtr DrsFile::getBmpFile(uint32_t id)
   }
   else
   {
-    log.warn("No bina file with id [%u] found!", id);
+    log.debug("No bina file with id [%u] found!", id);
     return BmpFilePtr();
   }
 
@@ -120,7 +138,7 @@ std::string DrsFile::getScriptFile(uint32_t id)
   }
   else
   {
-    log.warn("No bina file with id [%u] found!", id);
+    log.debug("No bina file with id [%u] found!", id);
     return std::string();
   }
 
@@ -136,7 +154,7 @@ ScnFilePtr DrsFile::getScnFile(uint32_t id)
   }
   else
   {
-    log.warn("No bina file with id [%u] found!", id);
+    log.debug("No bina file with id [%u] found!", id);
     return ScnFilePtr();
   }
 }
@@ -168,6 +186,16 @@ unsigned char* DrsFile::getWavPtr(uint32_t id)
     log.warn("No sound file with id [%u] found!", id);
     return NULL;
   }
+}
+
+std::vector<uint32_t> DrsFile::binaryFileIds() const
+{
+    std::vector<uint32_t> ret;
+    for (const std::pair<uint32_t, BinaFilePtr> &entry : bina_map_) {
+        ret.push_back(entry.first);
+    }
+
+    return ret;
 }
 
 //------------------------------------------------------------------------------
@@ -212,10 +240,16 @@ void DrsFile::loadHeader()
   {
     string copy_right = readString(getCopyRightHeaderSize());
 
+
     string version = readString(4);
+
 
     //File type
     string file_type = readString(12);
+
+    std::cout << "copyright: " << copy_right << std::endl;
+    std::cout << "version: " << version << std::endl;
+    std::cout << "filetype: " << file_type << std::endl;
 
     num_of_tables_ = read<uint32_t>();
     header_offset_ = read<uint32_t>();
@@ -241,7 +275,6 @@ void DrsFile::loadHeader()
         uint32_t id = read<uint32_t>();
         uint32_t pos = read<uint32_t>();
         uint32_t len = read<uint32_t>();
-//        std::cout << "file header: " << table_types_[i] << std::endl;
 
         if (table_types_[i].compare(getSlpTableHeader()) == 0)
         {
@@ -260,6 +293,10 @@ void DrsFile::loadHeader()
         else if (table_types_[i].compare(getSoundTableHeader()) == 0)
         {
           wav_offsets_[id] = pos;
+        }
+        else {
+            std::cout << "unknown file header: " << table_types_[i] << std::endl;
+
         }
       }
     }
