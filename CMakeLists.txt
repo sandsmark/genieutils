@@ -125,6 +125,7 @@ set(RESOURCE_SRC
     src/resource/Color.cpp
     src/resource/BinaFile.cpp
     src/resource/UIFile.cpp
+    src/resource/BlendomaticFile.cpp
     )
 
 set(SCRIPT_SRC
