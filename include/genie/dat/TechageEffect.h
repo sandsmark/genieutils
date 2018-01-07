@@ -36,10 +36,10 @@ public:
   virtual void setGameVersion(GameVersion gv);
 
   int8_t Type = -1;
-  int16_t A = -1;
-  int16_t B = -1;
-  int16_t C = -1;
-  float D = 0;
+  int16_t TargetUnit = -1;
+  int16_t UnitClassID = -1;
+  int16_t AttributeID = -1;
+  float Amount = 0;
 
 private:
   virtual void serializeObject(void);

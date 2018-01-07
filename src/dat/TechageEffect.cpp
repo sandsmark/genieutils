@@ -43,10 +43,10 @@ void EffectCommand::setGameVersion(GameVersion gv)
 void EffectCommand::serializeObject(void)
 {
   serialize<int8_t>(Type);
-  serialize<int16_t>(A);
-  serialize<int16_t>(B);
-  serialize<int16_t>(C);
-  serialize<float>(D);
+  serialize<int16_t>(TargetUnit);
+  serialize<int16_t>(UnitClassID);
+  serialize<int16_t>(AttributeID);
+  serialize<float>(Amount);
 }
 
 }
