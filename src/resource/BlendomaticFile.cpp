@@ -59,17 +59,19 @@ void BlendomaticFile::serializeObject(void)
 
         // number of pixels
         serialize(mode->pixelCount);
+        if (mode->pixelCount > 3000) {
+            std::cerr << "invalid pixel count " << mode->pixelCount << std::endl;
+            exit(0);
+        }
 
-        serialize(mode->flags, tileCount_);
+        // TODO:
+        // we should check these and skip the alphaValues reading in case any tiles don't have alpha
+        serialize(mode->tileHasAlpha, tileCount_);
 
-        // one bit per pixel, ish
-        serialize(mode->bitmasks, tileCount_ + 1, mode->pixelCount / 8);
+        serialize(mode->alphaBitmap, mode->pixelCount);
 
-        // don't know, don't care
-        serialize(mode->unknown);
-
-        // alpha values from 0-255
-        serialize(mode->bytemasks, tileCount_, mode->pixelCount);
+        // alpha values from 0-128
+        serialize(mode->alphaValues, tileCount_, mode->pixelCount);
     }
 }
 

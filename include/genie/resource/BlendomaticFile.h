@@ -33,11 +33,18 @@ namespace genie
 struct BlendMode
 {
     uint32_t pixelCount;
-    std::vector<uint8_t> flags;
 
-    std::vector<std::vector<uint8_t>> bitmasks;
+    // one per tile, 0 == no alpha, 1 == has alpha
+    // apparently all tiles usually have alpha
+    std::vector<uint8_t> tileHasAlpha;
 
-    std::vector<std::vector<uint8_t>> bytemasks;
+    // one bit per pixel, indicating if there is alpha
+    // the bits for the tiles are interleaved
+    // bit for pixel in tile: alphaBitmap[pixel] & 1 << tile
+    std::vector<uint32_t> alphaBitmap;
+
+    // alpha value in 0x0 - 0x80 (0 - 128)
+    std::vector<std::vector<uint8_t>> alphaValues;
 
     uint32_t unknown;
 };
@@ -71,7 +78,9 @@ private:
 
 //  bool loaded_ = false;
 
+  // 4 in AoK, 9 in AoC, apparently ignored by the game
   uint32_t modeCount_;
+  // 31, apparently ignored by the game
   uint32_t tileCount_;
   std::vector<BlendModePtr> modes_;
 

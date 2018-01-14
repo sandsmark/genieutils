@@ -110,7 +110,6 @@ void IFile::saveAs(const char *fileName) throw (std::ios_base::failure)
   file.close();
 }
 
-
 //------------------------------------------------------------------------------
 void IFile::unload(void)
 {

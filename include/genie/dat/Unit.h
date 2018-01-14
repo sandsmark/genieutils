@@ -36,7 +36,7 @@ namespace genie
 {
 
 /// Available unit types
-enum UnitType
+enum UnitType : uint8_t
 {
   /// Basic units like rubble and flares.
   UT_EyeCandy = 10,
