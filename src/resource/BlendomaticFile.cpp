@@ -44,50 +44,32 @@ BlendomaticFile::~BlendomaticFile()
 void BlendomaticFile::serializeObject(void)
 {
     serialize(modeCount_);
-    std::cout << modeCount_ << " modes" << std::endl;
     serialize(tileCount_);
-    std::cout << tileCount_ << " tiles" << std::endl;
 
     for (uint32_t i=0; i < modeCount_; i++) {
+        log.debug("reading mode %d", i);
+
         BlendModePtr mode;
-        if (isOperation(OP_WRITE)) {
-            mode = modes_[i];
-        } else {
+        if (isOperation(OP_READ)) {
             mode = std::make_unique<BlendMode>();
             modes_.push_back(mode);
+        } else {
+            mode = modes_[i];
         }
 
-        std::cout << "start mode: " << tellg() << std::endl;
-
-        serialize(mode->tileSize);
-        std::cout << "tilesize: " << mode->tileSize << std::endl;
-        if (mode->tileSize > 3000) {
-            std::cout << "invalid tilesize" << std::endl;
-            exit(0);
-//            return;
-        }
+        // number of pixels
+        serialize(mode->pixelCount);
 
         serialize(mode->flags, tileCount_);
 
-        std::cout << "start bitmasks: " << std::hex << tellg() << std::dec << std::endl;
-        std::streampos posBefore = tellg();
+        // one bit per pixel, ish
+        serialize(mode->bitmasks, tileCount_ + 1, mode->pixelCount / 8);
 
-        for (size_t i=0; i<mode->bitmasks.size(); i++){
-            serialize(mode->bitmasks[i], ::ceil(mode->tileSize/8));
-        }
-        std::cout << "bitmask size: " << std::hex << (tellg() - posBefore) << std::dec << std::endl;
+        // don't know, don't care
+        serialize(mode->unknown);
 
-        std::cout << "start bytemasks: " << std::hex << tellg() << std::dec << std::endl;
-        posBefore = tellg();
-
-        uint32_t dummy;
-        serialize(dummy);
-        std::cout << "dummy " << dummy << std::endl;
-
-        serialize(mode->bytemasks, tileCount_, mode->tileSize);
-
-
-        std::cout << "end tiles: " << std::hex << tellg() << std::dec << " read size: " << std::hex << (tellg() - posBefore) << std::dec << std::endl;
+        // alpha values from 0-255
+        serialize(mode->bytemasks, tileCount_, mode->pixelCount);
     }
 }
 
@@ -99,9 +81,17 @@ void BlendomaticFile::unload(void)
     tileCount_ = 0;
 }
 
+void BlendomaticFile::setBlendMode(uint32_t number, BlendModePtr mode)
+{
+    if (number >= modes_.size()) {
+        modes_.resize(number + 1);
+    }
+    modes_[number] = mode;
+}
+
 BlendModePtr BlendomaticFile::getBlendMode(uint32_t id)
 {
-    if (id < 0 || id > modes_.size()) {
+    if (id > modes_.size()) {
         log.error("Invalid blendomatic id %d", id);
         return nullptr;
     }

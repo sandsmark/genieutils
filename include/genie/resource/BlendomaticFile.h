@@ -32,12 +32,14 @@ namespace genie
 
 struct BlendMode
 {
-    uint32_t tileSize;
+    uint32_t pixelCount;
     std::vector<uint8_t> flags;
 
-    std::array<std::vector<uint8_t>, 32> bitmasks;
+    std::vector<std::vector<uint8_t>> bitmasks;
 
     std::vector<std::vector<uint8_t>> bytemasks;
+
+    uint32_t unknown;
 };
 
 typedef std::shared_ptr<BlendMode> BlendModePtr;
@@ -61,27 +63,7 @@ public:
   //
   void unload(void);
 
-//  //----------------------------------------------------------------------------
-//  /// Check whether the files content is loaded or not.
-//  //
-//  bool isLoaded(void) const;
-
-//  //----------------------------------------------------------------------------
-//  /// Return number of frames stored in the file. Available after load.
-//  ///
-//  /// @return number of frames
-//  //
-//  uint32_t getModeCount();
-//  void setModeCount(uint32_t);
-
-//  //----------------------------------------------------------------------------
-//  /// Returns the slp frame at given frame index.
-//  ///
-//  /// @param frame frame index
-//  /// @return BlendomaticFrame
-//  //
-//  BlendMode getMode(uint32_t mode=0);
-//  void setMode(uint32_t number, BlendModePtr mode);
+  void setBlendMode(uint32_t number, BlendModePtr mode);
   BlendModePtr getBlendMode(uint32_t id = 0);
 
 private:
@@ -95,15 +77,6 @@ private:
 
   //----------------------------------------------------------------------------
   virtual void serializeObject(void);
-
-  //----------------------------------------------------------------------------
-  /// Loads the file and its frames.
-  //
-//  void loadFile(void);
-//  void saveFile(void);
-
-  //----------------------------------------------------------------------------
-//  void serializeHeader(void);
 };
 
 typedef std::shared_ptr<BlendomaticFile> BlendomaticFilePtr;
