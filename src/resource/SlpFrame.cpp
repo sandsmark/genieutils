@@ -451,7 +451,6 @@ void SlpFrame::load(std::istream &istr)
     }
   }
 
-  if (integrity != 0x8000) // At least one visible row.
   // Each row has it's commands, 0x0F signals the end of a rows commands.
   for (uint32_t row = 0; row < height_; ++row)
   {
