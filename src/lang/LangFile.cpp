@@ -24,14 +24,16 @@
 #include <iconv.h>
 #include <errno.h>
 
+extern "C" {
 #include "pcrio/pcrio.h"
+}
 
 namespace genie
 {
   
 const char *LangFile::CONV_DEFAULT_CHARSET = "UTF-8";
   
-Logger& LangFile::log = Logger::getLogger("freeaoe.DrsFile");
+Logger& LangFile::log = Logger::getLogger("freeaoe.LangFile");
 
 //------------------------------------------------------------------------------
 PcrioError::PcrioError(int error) : 
@@ -348,7 +350,7 @@ std::string LangFile::convert(iconv_t cd, std::string input)
       }
       else  
       {
-        delete (inbuf);
+        delete [] inbuf;
         
         std::string error("Error in converting characters: ");
 
@@ -367,7 +369,7 @@ std::string LangFile::convert(iconv_t cd, std::string input)
       
   }
   
-  delete (inbuf);
+  delete []inbuf;
   
   return decodedStr;
 }

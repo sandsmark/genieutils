@@ -56,10 +56,10 @@ unsigned short TechTree::getCount()//GameVersion gv) // used before 10.84 (GV_Ao
 //------------------------------------------------------------------------------
 void TechTree::serializeObject(void)
 {
-  uint8_t age_count;
-  uint8_t building_count;
-  uint8_t research_count;
-  uint16_t unit_count;
+  uint8_t age_count = 0;
+  uint8_t building_count = 0;
+  uint8_t research_count = 0;
+  uint16_t unit_count = 0;
 
   serializeSize<uint8_t>(age_count, TechTreeAges.size());
 
