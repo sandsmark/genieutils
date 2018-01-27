@@ -22,7 +22,6 @@
 #include "genie/script/ScnFile.h"
 
 #include <math.h>
-//#include <boost/iostreams/copy.hpp>
 
 namespace genie
 {
@@ -68,8 +67,6 @@ void ScnFile::extractRaw(const char *from, const char *to)
   Compressor::decompress(ifs, ofs);
 
 //   std::shared_ptr<std::istream> dec = compressor_.startDecompression(&ifs);
-
-//   boost::iostreams::copy((*dec), ofs);
 
 //   compressor_.stopDecompression();
 

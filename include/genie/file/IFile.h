@@ -23,7 +23,6 @@
 
 #include "ISerializable.h"
 
-#include <boost/utility.hpp>
 #include <fstream>
 
 namespace genie
@@ -32,9 +31,11 @@ namespace genie
 //------------------------------------------------------------------------------
 /// Interface providing file loading and saving for ISerializable objects.
 //
-class IFile : public ISerializable, boost::noncopyable
+class IFile : public ISerializable
 {
 public:
+  IFile(const IFile &) = delete;
+  IFile &operator=(const IFile &) = delete;
 
   //----------------------------------------------------------------------------
   IFile();

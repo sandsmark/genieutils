@@ -14,20 +14,19 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake/)
 
 #set(Boost_USE_STATIC_LIBS        ON)
 #set(Boost_USE_STATIC_RUNTIME     ON)
-set(Boost_USE_MULTITHREADED      ON)
 
 find_library(iconv REQUIRED)
 
 # dependencies:
 
 find_package(ZLIB REQUIRED)
-find_package(Boost 1.55 COMPONENTS iostreams REQUIRED)
 
 if (GUTILS_TOOLS)
   find_package(Boost 1.55 COMPONENTS program_options REQUIRED)
 endif(GUTILS_TOOLS)
 
 if (GUTILS_TEST)
+  set(Boost_USE_MULTITHREADED      ON)
   find_package(Boost 1.55 COMPONENTS unit_test_framework program_options REQUIRED)
   find_package(SFML COMPONENTS SYSTEM WINDOW GRAPHICS REQUIRED)
 endif (GUTILS_TEST)
@@ -44,7 +43,7 @@ endif (${ICONV_FOUND})
 
 # include directories:
 
-set(GU_INCLUDE_DIRS include/ extern/zstr/src/ ../ ${Boost_INCLUDE_DIRS})
+set(GU_INCLUDE_DIRS include/ extern/zstr/src/ ../)
 
 if (${ICONV_FOUND})
   set(GU_INCLUDE_DIRS ${GU_INCLUDE_DIRS} ${ICONV_INCLUDE_DIR})
@@ -160,7 +159,7 @@ set(BINCOMP_SRC src/tools/bincompare/bincomp.cpp
 
 add_library(${Genieutils_LIBRARY} SHARED ${FILE_SRC} ${LANG_SRC} ${DAT_SRC} 
                                   ${RESOURCE_SRC} ${UTIL_SRC} ${SCRIPT_SRC} )
-target_link_libraries(${Genieutils_LIBRARY} ${ZLIB_LIBRARIES} ${Boost_LIBRARIES} ${ICONV_LIBRARIES})
+target_link_libraries(${Genieutils_LIBRARY} ${ZLIB_LIBRARIES} ${ICONV_LIBRARIES})
 
 #add_executable(main main.cpp)
 #target_link_libraries(main ${Genieutils_LIBRARY})
@@ -184,10 +183,12 @@ endif (GUTILS_TOOLS)
 # Debug/Test:
 #------------------------------------------------------------------------------#
 if (GUTILS_TEST)
+  set(GU_INCLUDE_DIRS ${GU_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
   add_executable(main main.cpp)
   target_link_libraries(main ${Genieutils_LIBRARY}
                       ${SFML_WINDOW_LIBRARY}
                       ${SFML_SYSTEM_LIBRARY}
                       ${SFML_GRAPHICS_LIBRARY}
+                      ${Boost_LIBRARIES}
   )
 endif(GUTILS_TEST)

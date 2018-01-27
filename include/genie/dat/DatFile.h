@@ -42,8 +42,6 @@
 #include "TechTree.h"
 #include "RandomMap.h"
 
-namespace boost { namespace iostreams { struct zlib_params; } }
-
 namespace genie
 {
 
