@@ -20,16 +20,9 @@
 #ifndef GENIE_COMPRESSOR_H
 #define GENIE_COMPRESSOR_H
 
-#include <boost/noncopyable.hpp>
 #include <iostream>
 #include <memory>
 #include "ISerializable.h"
-
-namespace boost {
-namespace iostreams {
-struct zlib_params;
-}
-}
 
 namespace genie
 {
@@ -38,9 +31,12 @@ namespace genie
 /// Utility to compress and decompress streams handled in ISerializeable 
 /// objects.
 //
-class Compressor : public boost::noncopyable
+class Compressor
 {
 public:
+  Compressor(const Compressor &) = delete;
+  Compressor &operator=(const Compressor &) = delete;
+
   //----------------------------------------------------------------------------
   /// Object that calls Compressors methods needs to register itself here.
   /// 
@@ -68,16 +64,9 @@ private:
   std::shared_ptr<std::istream> uncompressedIstream_;
   
   std::ostream *ostream_;
-  std::shared_ptr<std::iostream> bufferedStream_;
+  std::shared_ptr<std::ostream> bufferedStream_;
   
   Compressor();
-  
-  //----------------------------------------------------------------------------
-  /// Get zlib parameters necessary for (de)compressing genie archives.
-  ///
-  /// @return struct with set parameters
-  //
-  boost::iostreams::zlib_params getZlibParams(void) const;
   
   //----------------------------------------------------------------------------
   /// Decompresses istream and sets uncompressedIstream_.
@@ -94,7 +83,6 @@ private:
   
   //----------------------------------------------------------------------------
   void stopCompression(void);
-  
 };
 
 }

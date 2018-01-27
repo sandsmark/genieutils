@@ -44,7 +44,7 @@ endif (${ICONV_FOUND})
 
 # include directories:
 
-set(GU_INCLUDE_DIRS include/ ../ ${Boost_INCLUDE_DIRS})
+set(GU_INCLUDE_DIRS include/ extern/zstr/src/ ../ ${Boost_INCLUDE_DIRS})
 
 if (${ICONV_FOUND})
   set(GU_INCLUDE_DIRS ${GU_INCLUDE_DIRS} ${ICONV_INCLUDE_DIR})

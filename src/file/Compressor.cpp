@@ -21,19 +21,10 @@
 
 #include <vector>
 
-#include <boost/interprocess/streams/vectorstream.hpp>
-#include <boost/iostreams/filtering_streambuf.hpp>
-#include <boost/iostreams/filter/zlib.hpp>
-#include <boost/iostreams/device/back_inserter.hpp>
-#include <boost/iostreams/copy.hpp>
-
-using namespace boost;
-using namespace boost::iostreams;
+#include <zstr.hpp>
 
 namespace genie
 {
-  
-typedef boost::interprocess::basic_vectorstream< std::vector<char> > v_stream;
 
 Compressor::Compressor()
 {
@@ -54,42 +45,44 @@ void Compressor::beginCompression(void)
 {
   switch(obj_->getOperation())
   {
-    case ISerializable::OP_READ:
-      istream_ = obj_->getIStream();
-      
-      startDecompression();
-      
-      obj_->setIStream(*uncompressedIstream_);
-      break;
-    
-    case ISerializable::OP_WRITE:
-      obj_->setIStream(*istream_);
-      
-      startCompression();
-      break;
-    
-    default:
-      break;
-    
+  case ISerializable::OP_READ:
+    istream_ = obj_->getIStream();
+
+    startDecompression();
+
+    obj_->setIStream(*uncompressedIstream_);
+    break;
+
+  case ISerializable::OP_WRITE:
+    obj_->setIStream(*istream_);
+    ostream_ = obj_->getOStream();
+
+    startCompression();
+
+    obj_->setOStream(*bufferedStream_);
+    break;
+
+  default:
+    break;
+
   }
 }
-  
+
 //------------------------------------------------------------------------------
 void Compressor::endCompression(void)
 {
   switch(obj_->getOperation())
   {
-    case ISerializable::OP_READ:
-      stopDecompression();
-      break;
-      
-    case ISerializable::OP_WRITE:
-      stopCompression();
-      break;
-      
-    default:
-      break;
-    
+  case ISerializable::OP_READ:
+    stopDecompression();
+    break;
+
+  case ISerializable::OP_WRITE:
+    stopCompression();
+    break;
+
+  default:
+    break;
   }
 }
 
@@ -97,106 +90,59 @@ void Compressor::endCompression(void)
 void Compressor::decompress(std::istream &source, std::ostream &sink)
 {
   Compressor cmp;
-  
+
   cmp.istream_ = &source;
-  
   cmp.startDecompression();
-  
-  copy(*cmp.uncompressedIstream_, sink);
+
+  while (!cmp.uncompressedIstream_->eof() && sink.good()) {
+    char buffer[4096];
+    source.get(buffer, sizeof buffer);
+    sink.write(buffer, source.gcount());
+  }
 }
 
 //------------------------------------------------------------------------------
-boost::iostreams::zlib_params Compressor::getZlibParams(void ) const
-{  
-  zlib_params params;
-  
-  // important
-  params.window_bits = -15;
-  
-  // default
-  params.level = -1;
-  params.method = zlib::deflated;
-  params.mem_level = 9;
-  params.strategy = zlib::default_strategy;
-  
-  return params;
-}
-  
-//------------------------------------------------------------------------------
 void Compressor::startDecompression(void)
 { 
-  try
-  {
-    filtering_istreambuf in;
-    
-    // register decompressor
-    in.push(zlib_decompressor(getZlibParams()));
-    
-    in.push(*istream_);
-        
-    // extract file to buffer
-    std::vector<char> file_buf;
-    back_insert_device< std::vector<char> > b_ins(file_buf); 
-    
-    copy(in, b_ins);
-    
-    uncompressedIstream_ = std::shared_ptr<std::istream>(new v_stream(file_buf)); 
-  }
-  catch ( const zlib_error &z_err)
-  {
+  try {
+    // Important thing here is window_bits = 15
+    uncompressedIstream_ = std::make_shared<zstr::istream>(*istream_, (std::size_t)1 << 20, false, -15);
+  } catch (const zstr::Exception &exception) {
     uncompressedIstream_.reset();
     std::cerr << "Zlib decompression failed with error code: "
-              <<  z_err.error() << std::endl;
-    throw z_err;
+      <<  exception.what() << std::endl;
   }
 }
 
 //------------------------------------------------------------------------------
 void Compressor::stopDecompression(void)
 {
+  obj_->setIStream(*istream_);
   istream_ = 0;
-  
+
   uncompressedIstream_.reset();
 }
 
 //------------------------------------------------------------------------------
 void Compressor::startCompression(void)
 {
-  // create buffer
-  std::vector<char> file_buf;
-  
-  bufferedStream_ = std::shared_ptr<std::iostream>(new v_stream(file_buf));
-
-  ostream_ = obj_->getOStream();
-  
-  obj_->setOStream(*bufferedStream_);
+  try {
+    // Important thing here is window_bits = 15
+    bufferedStream_ = std::make_shared<zstr::ostream>(*ostream_, (std::size_t)1 << 20, false, -15);
+  } catch (const zstr::Exception &exception) {
+    bufferedStream_.reset();
+    std::cerr << "Zlib compression failed with error code: "
+      <<  exception.what() << std::endl;
+  }
 }
 
 //------------------------------------------------------------------------------
 void Compressor::stopCompression(void)
 {
-  try
-  {
-    filtering_ostreambuf out;
-    
-    out.push(zlib_compressor(getZlibParams()));
-    
-    out.push(*ostream_);
-    
-    copy (*bufferedStream_, out);
-    
-    obj_->setOStream(*ostream_);
-    ostream_ = 0;
-    
-    bufferedStream_.reset();
-    
-  }
-  catch (const zlib_error &z_err)
-  {
-    std::cerr << "Zlib compression failed with error code: "
-              <<  z_err.error() << std::endl;
-    throw z_err;
-  }
+  ostream_ = 0;
+  bufferedStream_.reset();
 }
-  
+
 }
+
+/* vim: set ts=2 sw=2 tw=0 cindent softtabstop=2 :*/
