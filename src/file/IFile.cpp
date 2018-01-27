@@ -53,7 +53,7 @@ const char *IFile::getFileName(void) const
 }
 
 //------------------------------------------------------------------------------
-void IFile::load() throw (std::ios_base::failure)
+void IFile::load()
 {
   if (fileName_.empty())
     throw std::ios_base::failure("Load: File name not set");
@@ -62,7 +62,7 @@ void IFile::load() throw (std::ios_base::failure)
 }
 
 //------------------------------------------------------------------------------
-void IFile::load(const char *fileName) throw (std::ios_base::failure)
+void IFile::load(const char *fileName)
 {
   freelock();
 
@@ -83,7 +83,7 @@ void IFile::load(const char *fileName) throw (std::ios_base::failure)
 }
 
 //------------------------------------------------------------------------------
-void IFile::save(void ) throw (std::ios_base::failure)
+void IFile::save()
 {
   if (fileName_.empty())
     throw std::ios_base::failure("Save: File name not set");
@@ -92,7 +92,7 @@ void IFile::save(void ) throw (std::ios_base::failure)
 }
 
 //------------------------------------------------------------------------------
-void IFile::saveAs(const char *fileName) throw (std::ios_base::failure)
+void IFile::saveAs(const char *fileName)
 {
   std::ofstream file;
 

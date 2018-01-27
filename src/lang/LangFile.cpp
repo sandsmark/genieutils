@@ -81,7 +81,7 @@ LangFile::~LangFile()
 }
 
 //------------------------------------------------------------------------------
-void LangFile::load(const char *filename) throw (std::ios_base::failure)
+void LangFile::load(const char *filename)
 {
   pcr_error_code errorCode_ = PCR_ERROR_NONE;  
   
@@ -149,7 +149,7 @@ void LangFile::load(const char *filename) throw (std::ios_base::failure)
 }
 
 //------------------------------------------------------------------------------
-void LangFile::saveAs(const char *filename) throw (std::ios_base::failure)
+void LangFile::saveAs(const char *filename)
 {
   pcr_error_code errorCode = PCR_ERROR_NONE;
   
