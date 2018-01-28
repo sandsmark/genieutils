@@ -18,7 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "genie/dat/unit/Creatable.h"
+#include "genie/dat/unit/BuildingCombat.h"
 
 namespace genie
 {

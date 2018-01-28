@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -18,7 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "genie/dat/unit/Projectile.h"
+#include "genie/dat/unit/Moving.h"
 
 namespace genie
 {
@@ -26,28 +26,39 @@ namespace genie
 namespace unit
 {
 
-Missile::Missile() //: Type50()
+Moving::Moving() //: Unit()
 {
 }
 
-Missile::~Missile()
+Moving::~Moving()
 {
 }
 
 //------------------------------------------------------------------------------
-void Missile::setGameVersion(GameVersion gv)
+void Moving::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
 }
 
-void Missile::serializeObject(void)
+void Moving::serializeObject(void)
 {
-  serialize<int8_t>(ProjectileType);
-  serialize<int8_t>(SmartMode);
-  serialize<int8_t>(HitMode);
-  serialize<int8_t>(VanishMode);
-  serialize<int8_t>(AreaEffectSpecials);
-  serialize<float>(ProjectileArc);
+  serialize<int16_t>(WalkingGraphic);
+  serialize<int16_t>(RunningGraphic);
+  serialize<float>(RotationSpeed);
+  serialize<int8_t>(OldSizeClass);
+  serialize<int16_t>(TrackingUnit);
+  serialize<int8_t>(TrackingUnitMode);
+  serialize<float>(TrackingUnitDensity);
+  serialize<int8_t>(OldMoveAlgorithm);
+
+  if (getGameVersion() >= GV_AoKB) // 10.28
+  {
+    serialize<float>(TurnRadius);
+    serialize<float>(TurnRadiusSpeed);
+    serialize<float>(MaxYawPerSecondMoving);
+    serialize<float>(StationaryYawRevolutionTime);
+    serialize<float>(MaxYawPerSecondStationary);
+  }
 }
 
 }

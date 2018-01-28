@@ -18,7 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "genie/dat/unit/Bird.h"
+#include "genie/dat/unit/Action.h"
 
 namespace genie
 {

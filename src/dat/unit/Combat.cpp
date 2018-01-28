@@ -18,7 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "genie/dat/unit/Type50.h"
+#include "genie/dat/unit/Combat.h"
 
 namespace genie
 {

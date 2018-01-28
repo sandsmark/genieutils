@@ -107,11 +107,11 @@ set(DAT_SRC
 
     src/dat/unit/AttackOrArmor.cpp
     src/dat/unit/DamageGraphic.cpp
-    src/dat/unit/DeadFish.cpp 
-    src/dat/unit/Bird.cpp
-    src/dat/unit/Type50.cpp
-    src/dat/unit/Projectile.cpp
-    src/dat/unit/Creatable.cpp
+    src/dat/unit/Moving.cpp
+    src/dat/unit/Action.cpp
+    src/dat/unit/Combat.cpp
+    src/dat/unit/Missile.cpp
+    src/dat/unit/BuildingCombat.cpp
     src/dat/unit/Building.cpp
     )
 
