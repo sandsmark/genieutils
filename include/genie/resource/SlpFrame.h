@@ -168,6 +168,31 @@ public:
   std::shared_ptr<SlpFrame> mirrorX(void);
 
 private:
+  enum Commands : uint8_t {
+      EndOfRow = 0xF,
+      GreaterBlockCopy = 0x2,
+      GreaterSkip = 0x3,
+      CopyAndTransform = 0x6,
+      FillColor = 0x7,
+      TransformBlock = 0xA,
+      Shadow = 0xB,
+      ExtendedCommand = 0xE
+  };
+  enum ExtendedCommands : uint8_t {
+      ForwardDraw = 0x0E,
+      ReverseDraw = 0x1E,
+      NormalTransform = 0x2E,
+      AlternativeTransform = 0x3E,
+      OutlinePlayerColor = 0x4E,
+      OutlineShieldColor = 0x6E,
+      OutlinePlayerColorSpan = 0x5E,
+      OutlineShieldColorSpan = 0x7E,
+      Dither = 0x8E,
+      PremultipliedAlpha = 0x9E,
+      OriginalAlpha = 0xAE,
+
+  };
+
   static Logger &log;
 
   std::streampos slp_file_pos_;

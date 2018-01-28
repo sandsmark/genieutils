@@ -468,35 +468,35 @@ void SlpFrame::load(std::istream &istr)
     {
       data = read<uint8_t>();
 
-      if (data == 0x0F) break;
-
-      uint8_t cmd = data & 0x0F;
-      uint8_t sub = data & 0xF0;
+      if (data == EndOfRow) {
+          break;
+      }
 
       uint32_t pix_cnt = 0;
 
+      const uint8_t low_bits = data & 0b11;
+      if (low_bits == 0) { // Lesser block copy
+          pix_cnt = (data & 0xFC) >> 2;
+          if (is32bit()) {
+            readPixelsToImage32(row, pix_pos, pix_cnt);
+          } else {
+            readPixelsToImage(row, pix_pos, pix_cnt);
+          }
+
+          continue;
+      } else if (low_bits == 1) { // Lesser skip (making pixels transparent)
+          pix_cnt = (data & 0xFC) >> 2;
+          pix_pos += pix_cnt;
+
+          continue;
+      }
+
+      const uint8_t cmd = data & 0x0F;
+      const uint8_t sub = data & 0xF0;
+
       switch (cmd) //0x00
       {
-        case 0x0: // Lesser block copy
-        case 0x4:
-        case 0x8:
-        case 0xC:
-          pix_cnt = (data & 0xFC) >> 2;
-          if (is32bit())
-            readPixelsToImage32(row, pix_pos, pix_cnt);
-          else
-            readPixelsToImage(row, pix_pos, pix_cnt);
-          break;
-
-        case 0x1: // Lesser skip (making pixels transparent)
-        case 0x5:
-        case 0x9:
-        case 0xD:
-          pix_cnt = (data & 0xFC) >> 2;
-          pix_pos += pix_cnt;
-          break;
-
-        case 0x2: // Greater block copy
+        case GreaterBlockCopy: // Greater block copy
           pix_cnt = (sub << 4) + read<uint8_t>();
           if (is32bit())
             readPixelsToImage32(row, pix_pos, pix_cnt);
@@ -504,12 +504,12 @@ void SlpFrame::load(std::istream &istr)
             readPixelsToImage(row, pix_pos, pix_cnt);
           break;
 
-        case 0x3: // Greater skip
+        case GreaterSkip: // Greater skip
           pix_cnt = (sub << 4) + read<uint8_t>();
           pix_pos += pix_cnt;
           break;
 
-        case 0x6: // Copy and transform (player color)
+        case CopyAndTransform: // Copy and transform (player color)
           pix_cnt = getPixelCountFromData(data);
           if (is32bit())
             readPixelsToImage32(row, pix_pos, pix_cnt, 1);
@@ -517,7 +517,7 @@ void SlpFrame::load(std::istream &istr)
             readPixelsToImage(row, pix_pos, pix_cnt, true);
           break;
 
-        case 0x7: // Run of plain color
+        case FillColor: // Run of plain color
           pix_cnt = getPixelCountFromData(data);
           if (is32bit())
             setPixelsToColor32(row, pix_pos, pix_cnt);
@@ -525,7 +525,7 @@ void SlpFrame::load(std::istream &istr)
             setPixelsToColor(row, pix_pos, pix_cnt);
           break;
 
-        case 0xA: // Transform block (player color)
+        case TransformBlock: // Transform block (player color)
           pix_cnt = getPixelCountFromData(data);
           if (is32bit())
             setPixelsToColor32(row, pix_pos, pix_cnt, true);
@@ -533,46 +533,46 @@ void SlpFrame::load(std::istream &istr)
             setPixelsToColor(row, pix_pos, pix_cnt, true);
           break;
 
-        case 0xB: // Shadow pixels
+        case Shadow: // Shadow pixels
           pix_cnt = getPixelCountFromData(data);
           setPixelsToShadow(row, pix_pos, pix_cnt);
           break;
 
-        case 0xE: // Extended commands
+        case ExtendedCommand: // Extended commands
           switch (data)
           {
-            case 0x0E: // Forward draw
-            case 0x1E: // Reverse draw
+            case ForwardDraw: // Forward draw
+            case ReverseDraw: // Reverse draw
               log.error("Cmd [%X] is obsolete", data);
               return;
 
-            case 0x2E: // Normal transform
-            case 0x3E: // Alternative transform
+            case NormalTransform: // Normal transform
+            case AlternativeTransform: // Alternative transform
               log.error("Cmd [%X] is obsolete", data);
               return;
 
-            case 0x4E:
+            case OutlinePlayerColor:
               setPixelsToPcOutline(row, pix_pos, 1);//, 242);
               break;
-            case 0x6E:
+            case OutlineShieldColor:
               setPixelsToShield(row, pix_pos, 1);//, 0);
               break;
 
-            case 0x5E:
+            case OutlinePlayerColorSpan:
               pix_cnt = read<uint8_t>();
               setPixelsToPcOutline(row, pix_pos, pix_cnt);//, 242);
               break;
-            case 0x7E:
+            case OutlineShieldColorSpan:
               pix_cnt = read<uint8_t>();
               setPixelsToShield(row, pix_pos, pix_cnt);//, 0);
               break;
 
-            case 0x8E: // Dither
+            case Dither: // Dither
               log.error("Cmd [%X] not implemented", data);
               return;
 
-            case 0x9E: // Premultiplied alpha
-            case 0xAE: // Original alpha
+            case PremultipliedAlpha: // Premultiplied alpha
+            case OriginalAlpha: // Original alpha
               pix_cnt = read<uint8_t>();
               if (is32bit())
               {
