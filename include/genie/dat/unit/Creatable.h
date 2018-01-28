@@ -18,8 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_CREATABLE_H
-#define GENIE_CREATABLE_H
+#pragma once
 
 #include "genie/file/ISerializable.h"
 #include "../ResourceUsage.h"
@@ -79,5 +78,3 @@ protected:
 }
 
 }
-
-#endif // GENIE_CREATABLE_H

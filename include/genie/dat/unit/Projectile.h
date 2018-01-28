@@ -18,8 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_PROJECTILE_H
-#define GENIE_PROJECTILE_H
+#pragma once
 
 #include "genie/file/ISerializable.h"
 
@@ -61,5 +60,3 @@ protected:
 }
 
 }
-
-#endif // GENIE_PROJECTILE_H

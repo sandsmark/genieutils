@@ -18,8 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_DEADFISH_H
-#define GENIE_DEADFISH_H
+#pragma once
 
 #include "genie/file/ISerializable.h"
 
@@ -60,5 +59,3 @@ protected:
 }
 
 }
-
-#endif // GENIE_DEADFISH_H

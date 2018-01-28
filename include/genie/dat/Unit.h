@@ -18,8 +18,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_UNIT_H
-#define GENIE_UNIT_H
+#pragma once
+
 #include "genie/file/ISerializable.h"
 #include "unit/DamageGraphic.h"
 #include "UnitCommand.h"
@@ -278,5 +278,3 @@ protected:
 };
 
 }
-
-#endif // GENIE_UNIT_H

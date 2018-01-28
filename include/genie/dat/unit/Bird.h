@@ -18,8 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_BIRD_H
-#define GENIE_BIRD_H
+#pragma once
 
 #include "genie/file/ISerializable.h"
 #include "../UnitCommand.h"
@@ -57,5 +56,3 @@ protected:
 }
 
 }
-
-#endif // GENIE_BIRD_H

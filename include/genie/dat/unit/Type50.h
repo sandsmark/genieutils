@@ -18,8 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_TYPE50_H
-#define GENIE_TYPE50_H
+#pragma once
 
 #include "genie/file/ISerializable.h"
 #include "AttackOrArmor.h"
@@ -71,5 +70,3 @@ protected:
 }
 
 }
-
-#endif // GENIE_TYPE50_H

@@ -18,8 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_BUILDING_H
-#define GENIE_BUILDING_H
+#pragma once
 
 #include "genie/file/ISerializable.h"
 
@@ -97,5 +96,3 @@ protected:
 }
 
 }
-
-#endif // GENIE_BUILDING_H
