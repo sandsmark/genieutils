@@ -171,8 +171,7 @@ std::string LangFile::getString(unsigned int id)
   char *strBuf;
   int strBufSize = pcr_get_strlenL(pfile_, id, defaultCultureId_) + 1;
   
-  if (strBufSize <= 1)
-  {
+  if (strBufSize <= 1) {
     log.debug("%s: String [%d] not found!", getFileName(), id);
     return std::string("");
   }
@@ -187,20 +186,19 @@ std::string LangFile::getString(unsigned int id)
   
   int codepage;
   
-  if (flag)
-  {
+  if (flag) {
     codepage = pcr_get_codepageL(pfile_, id, defaultCultureId_);
     
     log.info("Codepage differs, loading converter for cp [%d]", codepage);
-  }
-  else
+  } else {
     codepage = defaultCodepage_;
+  }
   
-  decodedStr = convertFrom(encodedStr, defaultCodepage_);
+  decodedStr = convertFrom(encodedStr, codepage);
   
   log.info("| Result: \"%s\"", decodedStr.c_str());
   
-  delete strBuf;
+  delete []strBuf;
   
   return decodedStr;
 }
