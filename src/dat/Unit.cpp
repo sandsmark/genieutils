@@ -39,11 +39,11 @@ void Unit::setGameVersion(GameVersion gv)
   ISerializable::setGameVersion(gv);
 
   updateGameVersion(DamageGraphics);
-  DeadFish.setGameVersion(gv);
-  Bird.setGameVersion(gv);
-  Type50.setGameVersion(gv);
-  Projectile.setGameVersion(gv);
-  Creatable.setGameVersion(gv);
+  Moving.setGameVersion(gv);
+  Action.setGameVersion(gv);
+  Combat.setGameVersion(gv);
+  Missile.setGameVersion(gv);
+  BuildingCombat.setGameVersion(gv);
   Building.setGameVersion(gv);
 }
 
@@ -192,20 +192,20 @@ void Unit::serializeObject(void)
   else
     return;
 
-  if (Type >= UT_Dead_Fish)
-    serialize<ISerializable>(DeadFish);
+  if (Type >= UT_Moving)
+    serialize<ISerializable>(Moving);
 
-  if (Type >= UT_Bird)
-    serialize<ISerializable>(Bird);
+  if (Type >= UT_Action)
+    serialize<ISerializable>(Action);
 
   if (Type >= UT_Combatant)
-    serialize<ISerializable>(Type50);
+    serialize<ISerializable>(Combat);
 
-  if (Type == UT_Projectile)
-    serialize<ISerializable>(Projectile);
+  if (Type == UT_Missile)
+    serialize<ISerializable>(Missile);
 
   if (Type >= UT_Creatable)
-    serialize<ISerializable>(Creatable);
+    serialize<ISerializable>(BuildingCombat);
 
   if (Type == UT_Building)
     serialize<ISerializable>(Building);

@@ -26,23 +26,23 @@ namespace genie
 namespace unit
 {
 
-Bird::Bird() //: DeadFish()
+Action::Action() //: DeadFish()
 {
 }
 
-Bird::~Bird()
+Action::~Action()
 {
 }
 
 //------------------------------------------------------------------------------
-void Bird::setGameVersion(GameVersion gv)
+void Action::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
 
   updateGameVersion(TaskList);
 }
 
-void Bird::serializeObject(void)
+void Action::serializeObject(void)
 {
   GameVersion gv = getGameVersion();
 

@@ -26,27 +26,27 @@ namespace genie
 namespace unit
 {
 
-Creatable::Creatable() : //Type50(),
+BuildingCombat::BuildingCombat() : //Type50(),
   ResourceCosts(3)
 {
 }
 
-Creatable::~Creatable()
+BuildingCombat::~BuildingCombat()
 {
 }
 
 //------------------------------------------------------------------------------
-void Creatable::setGameVersion(GameVersion gv)
+void BuildingCombat::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
 }
 
-unsigned short Creatable::getResourceCostsSize()
+unsigned short BuildingCombat::getResourceCostsSize()
 {
   return 3;
 }
 
-void Creatable::serializeObject(void)
+void BuildingCombat::serializeObject(void)
 {
   GameVersion gv = getGameVersion();
 

@@ -52,16 +52,16 @@ enum UnitType : uint8_t
 
   /// Dead and fish units. It seems to be unused in SWGB as units just explode
   /// and do not leave carcasses.
-  UT_Dead_Fish = 30,
+  UT_Moving = 30,
 
   /// Only birds in aoe and ror are of this type.
-  UT_Bird = 40,
+  UT_Action = 40,
 
   /// Shared class inherited by combat objects.
   UT_Combatant = 50,
 
   /// Projectiles
-  UT_Projectile = 60,
+  UT_Missile = 60,
 
   /// Units that can be created or trained like Army, Villagers and Ships.
   UT_Creatable = 70,
@@ -261,15 +261,15 @@ public:
 
   float Speed = 0;
 
-  unit::DeadFish DeadFish;
+  unit::Moving Moving;
 
-  unit::Bird Bird;
+  unit::Action Action;
 
-  unit::Type50 Type50;
+  unit::Combat Combat;
 
-  unit::Projectile Projectile;
+  unit::Missile Missile;
 
-  unit::Creatable Creatable;
+  unit::BuildingCombat BuildingCombat;
 
   unit::Building Building;
 

@@ -29,11 +29,11 @@ namespace genie
 namespace unit
 {
 
-class Projectile : public ISerializable
+class Missile : public ISerializable
 {
 public:
-  Projectile();
-  virtual ~Projectile();
+  Missile();
+  virtual ~Missile();
   virtual void setGameVersion(GameVersion gv);
 
   int8_t ProjectileType = 0;

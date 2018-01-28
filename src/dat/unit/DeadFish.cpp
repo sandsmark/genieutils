@@ -26,21 +26,21 @@ namespace genie
 namespace unit
 {
 
-DeadFish::DeadFish() //: Unit()
+Moving::Moving() //: Unit()
 {
 }
 
-DeadFish::~DeadFish()
+Moving::~Moving()
 {
 }
 
 //------------------------------------------------------------------------------
-void DeadFish::setGameVersion(GameVersion gv)
+void Moving::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
 }
 
-void DeadFish::serializeObject(void)
+void Moving::serializeObject(void)
 {
   serialize<int16_t>(WalkingGraphic);
   serialize<int16_t>(RunningGraphic);
