@@ -98,9 +98,7 @@ void ScnFile::serializeObject(void)
     serialize<uint32_t>(playerCount);
   }
 
-  std::cout << "Start compression: " << tellg() << std::endl;
   compressor_.beginCompression();
-  std::cout << "Start compression: " << tellg() << std::endl;
 
 // Compressed header:
 
