@@ -72,6 +72,8 @@ public:
   std::string getScriptFile(uint32_t id);
   ScnFilePtr getScnFile(uint32_t id);
 
+  std::string idType(uint32_t id);
+
   unsigned char* getWavPtr(uint32_t id);
 
   std::vector<uint32_t> binaryFileIds() const;

@@ -159,6 +159,26 @@ ScnFilePtr DrsFile::getScnFile(uint32_t id)
   }
 }
 
+std::string DrsFile::idType(uint32_t id)
+{
+    if (id >= 50000 && id < 50100) {
+        return "screen data";
+    }
+    if (wav_offsets_.find(id) != wav_offsets_.end()) {
+        return "wav";
+    }
+    if (slp_map_.find(id) != slp_map_.end()) {
+        return "slp";
+    }
+
+    auto i = bina_map_.find(id);
+    if (i == bina_map_.end()) {
+        return "unknown";
+    }
+
+    return i->second->filetype(getIStream());
+}
+
 //------------------------------------------------------------------------------
 unsigned char* DrsFile::getWavPtr(uint32_t id)
 {
@@ -247,9 +267,9 @@ void DrsFile::loadHeader()
     //File type
     string file_type = readString(12);
 
-    std::cout << "copyright: " << copy_right << std::endl;
-    std::cout << "version: " << version << std::endl;
-    std::cout << "filetype: " << file_type << std::endl;
+//    std::cout << "copyright: " << copy_right << std::endl;
+//    std::cout << "version: " << version << std::endl;
+//    std::cout << "filetype: " << file_type << std::endl;
 
     num_of_tables_ = read<uint32_t>();
     header_offset_ = read<uint32_t>();
@@ -295,8 +315,7 @@ void DrsFile::loadHeader()
           wav_offsets_[id] = pos;
         }
         else {
-            std::cout << "unknown file header: " << table_types_[i] << std::endl;
-
+            log.error("unknown file header: %s", table_types_[i]);
         }
       }
     }

@@ -26,6 +26,9 @@
 
 namespace genie
 {
+
+class Logger;
+
 typedef std::shared_ptr<char> BmpFilePtr;
 
 //------------------------------------------------------------------------------
@@ -43,7 +46,11 @@ public:
   std::string readScriptFile(std::istream *istr);
   ScnFilePtr readScnFile(std::istream *istr);
 
+  std::string filetype(std::istream *istr);
+
 private:
+  static Logger &log;
+
   virtual void serializeObject(void);
   uint32_t m_size;
 };
