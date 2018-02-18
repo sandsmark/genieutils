@@ -28,7 +28,7 @@
 #include "unit/Action.h"
 #include "unit/Combat.h"
 #include "unit/Missile.h"
-#include "unit/BuildingCombat.h"
+#include "unit/Creatable.h"
 #include "unit/Building.h"
 #include "ResourceUsage.h"
 
@@ -522,7 +522,7 @@ public:
 
   unit::Missile Missile;
 
-  unit::BuildingCombat BuildingCombat;
+  unit::Creatable Creatable;
 
   unit::Building Building;
 

@@ -18,7 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "genie/dat/unit/BuildingCombat.h"
+#include "genie/dat/unit/Creatable.h"
 
 namespace genie
 {
@@ -26,27 +26,27 @@ namespace genie
 namespace unit
 {
 
-BuildingCombat::BuildingCombat() : //Type50(),
+Creatable::Creatable() : //Type50(),
   ResourceCosts(3)
 {
 }
 
-BuildingCombat::~BuildingCombat()
+Creatable::~Creatable()
 {
 }
 
 //------------------------------------------------------------------------------
-void BuildingCombat::setGameVersion(GameVersion gv)
+void Creatable::setGameVersion(GameVersion gv)
 {
   ISerializable::setGameVersion(gv);
 }
 
-unsigned short BuildingCombat::getResourceCostsSize()
+unsigned short Creatable::getResourceCostsSize()
 {
   return 3;
 }
 
-void BuildingCombat::serializeObject(void)
+void Creatable::serializeObject(void)
 {
   GameVersion gv = getGameVersion();
 

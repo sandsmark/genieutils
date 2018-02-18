@@ -111,7 +111,7 @@ set(DAT_SRC
     src/dat/unit/Action.cpp
     src/dat/unit/Combat.cpp
     src/dat/unit/Missile.cpp
-    src/dat/unit/BuildingCombat.cpp
+    src/dat/unit/Creatable.cpp
     src/dat/unit/Building.cpp
     )
 

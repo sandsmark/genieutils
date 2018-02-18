@@ -44,7 +44,7 @@ void Unit::setGameVersion(GameVersion gv)
   Action.setGameVersion(gv);
   Combat.setGameVersion(gv);
   Missile.setGameVersion(gv);
-  BuildingCombat.setGameVersion(gv);
+  Creatable.setGameVersion(gv);
   Building.setGameVersion(gv);
 }
 
