@@ -20,6 +20,8 @@
 
 #include "genie/dat/UnitCommand.h"
 
+#include <unordered_map>
+
 namespace genie
 {
 
@@ -36,7 +38,65 @@ Task::~Task()
 //------------------------------------------------------------------------------
 void Task::setGameVersion(GameVersion gv)
 {
-  ISerializable::setGameVersion(gv);
+    ISerializable::setGameVersion(gv);
+}
+
+const std::string &Task::actionTypeName(const int16_t type)
+{
+    const std::unordered_map<int16_t, std::string> knownNames = {
+        { 0, "None" },
+        { 1, "Move to"},
+        { 2, "Follow"},
+        { 3, "Garrison"},
+        { 4, "Explore"},
+        { 5, "Gather/Rebuild"},
+        { 6, "Graze, deleted?"},
+        { 7, "Combat"},
+        { 8, "Shoot"},
+        { 9, "Attack"},
+        { 10, "Fly"},
+        { 11, "Scare/Hunt, deleted?"},
+        { 12, "Unload (Boat-Like)"},
+        { 13, "Guard"},
+        { 14, "HD Siege Tower Ability"},
+        { 20, "Escape, deleted?"},
+        { 21, "Make"},
+        { 100, "Num"},
+        { 101, "Build"},
+        { 102, "Make a Unit"},
+        { 103, "Make a Tech"},
+        { 104, "Convert"},
+        { 105, "Heal"},
+        { 106, "Repair"},
+        { 107, "Get Auto-converted"},
+        { 108, "Discovery Artifact"},
+        { 109, "Shooting range retreat"},
+        { 110, "Hunt"},
+        { 111, "Trade"},
+        { 120, "Generate Wonder Victory"},
+        { 121, "Deselect when Tasked (Farm)"},
+        { 122, "Loot (Gather)"},
+        { 123, "Housing"},
+        { 124, "Pack"},
+        { 125, "Unpack & Attack"},
+        { 130, "Unknown, offmaptrade 2?"},
+        { 131, "Off-Map Trade"},
+        { 132, "Pickup Unit"},
+        { 133, "Charge Attack"},
+        { 134, "Transform Unit"},
+        { 135, "Kidnap Unit"},
+        { 136, "Deposit Unit"},
+        { 149, "Shear"},
+        { 150, "HD Regeneration"},
+        { 151, "HD Feitoria Ability"},
+    };
+
+    if (knownNames.find(type) == knownNames.end()) {
+        static const std::string unknownString("Unknown class");
+        return unknownString;
+    }
+
+    return knownNames.at(type);
 }
 
 //------------------------------------------------------------------------------

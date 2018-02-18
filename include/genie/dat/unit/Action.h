@@ -32,6 +32,11 @@ namespace unit
 class Action : public ISerializable
 {
 public:
+    enum RunPatterns : int8_t {
+        EscapeStraight = 0,
+        EscapeRandomly = 1
+    };
+
   Action();
   virtual ~Action();
   virtual void setGameVersion(GameVersion gv);
@@ -42,6 +47,13 @@ public:
   std::pair<int16_t, int16_t> DropSite = {-1, -1};
 
   /// If activated unit switches villager types
+  /// When tasking the unit, it will transform into another unit,
+  /// if the action is not found in this unit, but exists on another unit,
+  /// that uses the same task swap group.
+  /// Changes according to task
+  /// 1   Male villager
+  /// 2   Female villager
+  /// 3+ Free slots
   int8_t TaskSwapGroup = 0;
   int16_t AttackSound = -1;
   int16_t MoveSound = -1;

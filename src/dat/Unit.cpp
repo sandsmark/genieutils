@@ -19,6 +19,7 @@
 */
 
 #include "genie/dat/Unit.h"
+#include <unordered_map>
 
 namespace genie
 {
@@ -45,6 +46,94 @@ void Unit::setGameVersion(GameVersion gv)
   Missile.setGameVersion(gv);
   BuildingCombat.setGameVersion(gv);
   Building.setGameVersion(gv);
+}
+
+const std::string &Unit::className(const int16_t classId, const GameVersion gameVersion)
+{
+    if (gameVersion < GV_AoKA) {
+        const std::unordered_map<int16_t, std::string> oldNames = {
+            {18, "Priest"},
+            {23, "Chariot Archer"},
+            {35, "Chariot"},
+            {39, "Slinger"},
+
+        };
+        if (oldNames.find(classId) != oldNames.end()) {
+            return oldNames.at(classId);
+        }
+    }
+
+    const std::unordered_map<int16_t, std::string> knownNames = {
+        {0, "Archer"},
+        {1, "Artifact"},
+        {2, "Trade Boat"},
+        {3, "Building"},
+        {4, "Civilian"},
+        {5, "Ocean Fish"},
+        {6, "Infantry"},
+        {7, "Berry Bush"},
+        {8, "Stone Mine"},
+        {9, "Prey Animal"},
+        {10, "Predator Animal"},
+        {11, "Miscellaneous"},
+        {12, "Cavalry"},
+        {13, "Siege Weapon"},
+        {14, "Terrain"},
+        {15, "Tree"},
+        {16, "Tree Stump"},
+        {17, "Healer"},
+        {18, "Monk"},
+        {19, "Trade Cart"},
+        {20, "Transport Boat"},
+        {21, "Fishing Boat"},
+        {22, "Warship"},
+        {23, "Conquistador"},
+        {24, "War Elephant"},
+        {25, "Hero"},
+        {26, "Elephant Archer"},
+        {27, "Wall"},
+        {28, "Phalanx"},
+        {29, "Domestic Animal"},
+        {30, "Flag"},
+        {31, "Deep Sea Fish"},
+        {32, "Gold Mine"},
+        {33, "Shore Fish"},
+        {34, "Cliff"},
+        {35, "Petard"},
+        {36, "Cavalry Archer"},
+        {37, "Doppelganger"},
+        {38, "Bird"},
+        {39, "Gate"},
+        {40, "Salvage Pile"},
+        {41, "Resource Pile"},
+        {42, "Relic"},
+        {43, "Monk with Relic"},
+        {44, "Hand Cannoneer"},
+        {45, "Two Handed Swordsman"},
+        {46, "Pikeman"},
+        {47, "Scout"},
+        {48, "Ore Mine"},
+        {49, "Farm"},
+        {50, "Spearman"},
+        {51, "Packed Unit"},
+        {52, "Tower"},
+        {53, "Boarding Boat"},
+        {54, "Unpacked Siege Unit"},
+        {55, "Ballista"},
+        {56, "Raider"},
+        {57, "Cavalry Raider"},
+        {58, "Livestock"},
+        {59, "King"},
+        {60, "Misc Building"},
+        {61, "Controlled Animal"},
+    };
+
+    if (knownNames.find(classId) == knownNames.end()) {
+        static const std::string unknownString("Unknown class");
+        return unknownString;
+    }
+
+    return knownNames.at(classId);
 }
 
 //------------------------------------------------------------------------------

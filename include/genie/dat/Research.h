@@ -41,7 +41,7 @@ public:
   /// The size of the array is 4 in aoe/ror and 6 at games >= aok
   std::vector<int16_t> RequiredTechs;
 
-  typedef ResourceUsage<int16_t, int16_t, int8_t> ResearchResourceCost;
+  typedef ResourceUsage<int16_t, int8_t> ResearchResourceCost;
 
   /// Resource cost in a list of max 3
   std::vector<ResearchResourceCost> ResourceCosts;

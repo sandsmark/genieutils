@@ -38,15 +38,36 @@ public:
 
   static unsigned short getResourceCostsSize();
 
-  typedef ResourceUsage<int16_t, int16_t, int16_t> ResourceCost;
+  typedef ResourceUsage<int16_t, int16_t> ResourceCost;
 
   std::vector<ResourceCost> ResourceCosts;
   int16_t TrainTime = 0;
+
+  // ID of unit where this is made
   int16_t TrainLocationID = -1;
+
+  /// First page (also second in TC) 1-15
+  /// Second (dock) page 21-35
+  /// Third page same as first (Star Wars)
+  /// First page in AoE/RoR 1-10
+  /// Second page in AoE/RoR 11-20
   int8_t ButtonID = 0;
+
   float RearAttackModifier = 0;
   float FlankAttackModifier = 0;
+
+  enum CreatableTypes : int8_t {
+      NonHumanType = 0, // building, animal, ship
+      VillagerType = 1, // villager, king
+      InfantryType = 2, // soldier, siege, predator, trader
+      CavalryType = 3, // camel rider
+      RelicType = 4,
+      ArcherType = 5,
+      MonkType = 6,
+      TransportShipType = 21
+  };
   int8_t CreatableType = 0;
+
   int8_t HeroMode = 0;
   int32_t GarrisonGraphic = -1; 
   float TotalProjectiles = 0;

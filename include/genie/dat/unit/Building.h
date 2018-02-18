@@ -68,6 +68,8 @@ public:
   int16_t StackUnitID = -1;
   int16_t FoundationTerrainID = -1;
   /// ES forgot to remove this when AoE was still in its alpha stages
+  /// This points to removed data block that was like terrain borders.
+  /// You could build roads back in 1996.
   int16_t OldOverlayID = -1;
   int16_t TechID = -1;
 
