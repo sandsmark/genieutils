@@ -30,7 +30,7 @@ enum GameVersion
   GV_TEST, // ?
   GV_MIK, // ?
   GV_DAVE, // ?
-  GV_MATT, // ?
+  GV_MATT, // < 6.92
   GV_AoEB, // 7.04 - 7.11
   GV_AoE, // 7.2
   GV_RoR, // 7.24
