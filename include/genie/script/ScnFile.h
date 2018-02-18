@@ -34,6 +34,8 @@
 namespace genie
 {
 
+class Logger;
+
 class ScnIncludedFile : public ISerializable
 {
 public:
@@ -104,6 +106,9 @@ public:
   std::vector<ScnIncludedFile> includedFiles;
 
 private:
+  static Logger &log;
+  bool verifyVersion();
+
   uint32_t headerLength_; //starting after this
   uint32_t playerCount1_;
   uint32_t playerCount2_;

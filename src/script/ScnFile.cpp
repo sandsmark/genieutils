@@ -21,6 +21,8 @@
 
 #include "genie/script/ScnFile.h"
 
+#include "genie/util/Logger.h"
+
 #include <math.h>
 
 namespace genie
@@ -30,6 +32,8 @@ std::string ISerializable::scn_ver = "0.00";
 float ISerializable::scn_plr_data_ver = 0.f;
 float ISerializable::scn_internal_ver = 0.f;
 double ISerializable::scn_trigger_ver = 0.0;
+
+Logger& ScnFile::log = Logger::getLogger("genie.ScnFile");
 
 //------------------------------------------------------------------------------
 ScnFile::ScnFile() : IFile(), compressor_(this)
@@ -72,31 +76,69 @@ void ScnFile::extractRaw(const char *from, const char *to)
 
   ifs.close();
   ofs.close();
-
 }
 
 //------------------------------------------------------------------------------
 uint32_t ScnFile::getSeparator(void)
 {
-  return 0xFFFFFF9D;
+    return 0xFFFFFF9D;
+}
+
+bool ScnFile::verifyVersion()
+{
+    if (version.size() < 4) {
+        log.error("Invalid version %s, too short:w", version);
+        //TODO: Exception
+        return false;
+    }
+
+    if (version[0] < '0' || version[0] > '9') {
+        log.error("Invalid version %s", version);
+        //TODO: Exception
+        return false;
+    }
+
+    if (version[1] != '.') {
+        log.error("Invalid version %s", version);
+        //TODO: Exception
+        return false;
+    }
+
+    if (version[2] < '0' || version[2] > '9') {
+        log.error("Invalid version %s", version);
+        //TODO: Exception
+        return false;
+    }
+
+    if (version[3] < '0' || version[3] > '9') {
+        log.error("Invalid version %s", version);
+        //TODO: Exception
+        return false;
+    }
+
+    return true;
 }
 
 //------------------------------------------------------------------------------
 void ScnFile::serializeObject(void)
 {
   serializeVersion();
-  if (isOperation(OP_WRITE))
-  {
-    headerLength_ = 21 + scenarioInstructions.size();
+  if (isOperation(OP_READ) && !verifyVersion()) {
+      std::cout << "ERROR" << std::endl;
+      return;
   }
+
+  if (isOperation(OP_WRITE)) {
+      headerLength_ = 21 + scenarioInstructions.size();
+  }
+
   serialize<uint32_t>(headerLength_); // Used in AoE 1 lobby
-  {
-    serialize<int32_t>(saveType);
-    serialize<uint32_t>(lastSaveTime);
-    serializeForcedString<uint32_t>(scenarioInstructions);
-    serialize<uint32_t>(victoryType);
-    serialize<uint32_t>(playerCount);
-  }
+
+  serialize<int32_t>(saveType);
+  serialize<uint32_t>(lastSaveTime);
+  serializeForcedString<uint32_t>(scenarioInstructions);
+  serialize<uint32_t>(victoryType);
+  serialize<uint32_t>(playerCount);
 
   compressor_.beginCompression();
 
