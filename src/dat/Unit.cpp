@@ -273,30 +273,30 @@ void Unit::serializeObject(void)
   if (gv >= GV_T5 && gv <= GV_LatestTap)
     serialize<int16_t>(TelemetryID);
 
-  if (Type == UT_AoeTrees)
+  if (Type == AoeTreeType)
     return;
 
-  if (Type >= UT_Flag)
+  if (Type >= FlagType)
     serialize<float>(Speed);
   else
     return;
 
-  if (Type >= UT_Moving)
+  if (Type >= MovingType)
     serialize<ISerializable>(Moving);
 
-  if (Type >= UT_Action)
+  if (Type >= ActionType)
     serialize<ISerializable>(Action);
 
-  if (Type >= UT_Combatant)
+  if (Type >= CombatantType)
     serialize<ISerializable>(Combat);
 
-  if (Type == UT_Missile)
+  if (Type == MissileType)
     serialize<ISerializable>(Missile);
 
-  if (Type >= UT_Creatable)
-    serialize<ISerializable>(BuildingCombat);
+  if (Type >= CreatableType)
+    serialize<ISerializable>(Creatable);
 
-  if (Type == UT_Building)
+  if (Type == BuildingType)
     serialize<ISerializable>(Building);
 }
 

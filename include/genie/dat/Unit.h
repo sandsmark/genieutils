@@ -35,117 +35,12 @@
 namespace genie
 {
 
-/// Available unit types
-enum UnitType : uint8_t
-{
-  /// Basic units like rubble and flares.
-  UT_EyeCandy = 10,
-
-  /// Trees, used to be 90?
-  UT_Trees = 15,
-
-  /// With Speed but mostly flags.
-  UT_Flag = 20,
-
-  /// Only one unit has this type. AOK, DOPL (id 243) same properties as UT_Flag
-  UT_25 = 25,
-
-  /// Dead and fish units. It seems to be unused in SWGB as units just explode
-  /// and do not leave carcasses.
-  UT_Moving = 30,
-
-  /// Only birds in aoe and ror are of this type.
-  UT_Action = 40,
-
-  /// Shared class inherited by combat objects.
-  UT_Combatant = 50,
-
-  /// Projectiles
-  UT_Missile = 60,
-
-  /// Units that can be created or trained like Army, Villagers and Ships.
-  UT_Creatable = 70,
-
-  /// Buildings
-  UT_Building = 80,
-
-  /// Trees in aoe and ror are of this type
-  UT_AoeTrees = 90
-};
-
 //------------------------------------------------------------------------------
 /// Stores properties of genie units.
 //
 class Unit : public ISerializable
 {
 public:
-    enum UnitClass : int16_t {
-        // AoE1-ish
-        Archer = 0,
-        Artifact = 1,
-        TradeBoat = 2,
-        BuildingClass = 3,
-        Civilian = 4,
-        OceanFish = 5,
-        Infantry = 6,
-        BerryBush = 7,
-        StoneMine = 8,
-        PreyAnimal = 9,
-        PredatorAnimal = 10,
-        Miscellaneous = 11,
-        Cavalry = 12,
-        SiegeWeapon = 13,
-        TerrainClass = 14,
-        Tree = 15,
-        TreeStump = 16,
-        Healer = 17,
-        Monk = 18,
-        TradeCart = 19,
-        TransportBoat = 20,
-        FishingBoat = 21,
-        Warship = 22,
-        Conquistador = 23,
-        WarElephant = 24,
-        Hero = 25,
-        ElephantArcher = 26,
-        Wall = 27,
-        Phalanx = 28,
-        DomesticAnimal = 29,
-        Flag = 30,
-        DeepSeaFish = 31,
-        GoldMine = 32,
-        ShoreFish = 34,
-        Cliff = 34,
-        Petard = 35,
-        CavalryArcher = 36,
-        Doppelganger = 37,
-        Bird = 38,
-
-        // AoE2
-        Gate = 39,
-        SalvagePile = 40,
-        ResourcePile  = 41,
-        Relic = 42,
-        MonkWithRelic = 43,
-        HandCannoneer = 44,
-        TwoHandedSwordsman = 45,
-        Pikeman = 46,
-        Scout = 47,
-        OreMine = 48,
-        Farm = 49,
-        Spearman = 50,
-        PackedUnit = 51,
-        Tower = 52,
-        BoardingBoat = 53,
-        UnpackedSiegeUnit = 54,
-        Ballista = 55,
-        Raider = 56,
-        CavalryRaider = 57,
-        Livestock = 58,
-        King = 59,
-        MiscBuilding = 60,
-        ControlledAnimal = 61,
-    };
 
     enum MinimapMode : int8_t {
         MinimapLandscape = 0,
@@ -165,7 +60,43 @@ public:
   virtual ~Unit();
   virtual void setGameVersion(GameVersion gv);
 
-  /// See enum UnitType
+  /// Available unit types
+  enum UnitType : uint8_t
+  {
+      /// Basic units like rubble and flares.
+      EyeCandyType = 10,
+
+      /// Trees, used to be 90?
+      TreeType = 15,
+
+      /// With Speed but mostly flags.
+      FlagType = 20,
+
+      /// Only one unit has this type. AOK, DOPL (id 243) same properties as UT_Flag
+      DoppelgangerType = 25,
+
+      /// Dead and fish units. It seems to be unused in SWGB as units just explode
+      /// and do not leave carcasses.
+      MovingType = 30,
+
+      /// Only birds in aoe and ror are of this type.
+      ActionType = 40,
+
+      /// Shared class inherited by combat objects.
+      CombatantType = 50,
+
+      /// Projectiles
+      MissileType = 60,
+
+      /// Units that can be created or trained like Army, Villagers and Ships.
+      CreatableType = 70,
+
+      /// Buildings
+      BuildingType = 80,
+
+      /// Trees in aoe and ror are of this type
+      AoeTreeType = 90
+  };
   int8_t Type = 10;
 
   int16_t ID = -1;
