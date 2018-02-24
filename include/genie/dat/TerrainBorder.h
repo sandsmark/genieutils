@@ -23,29 +23,27 @@
 #include "genie/file/ISerializable.h"
 #include "genie/dat/TerrainCommon.h"
 
-namespace genie
-{
+namespace genie {
 
 /// Seems to be unused in GV > RoR
 class TerrainBorder : public SharedTerrain
 {
 public:
-  TerrainBorder();
-  virtual ~TerrainBorder();
-  virtual void setGameVersion(GameVersion gv);
+    TerrainBorder();
+    virtual ~TerrainBorder();
+    virtual void setGameVersion(GameVersion gv);
 
-  unsigned short getNameSize(void);
+    unsigned short getNameSize(void);
 
-  std::vector<std::vector<FrameData>> Borders;
+    std::vector<std::vector<FrameData>> Borders;
 
-  int16_t DrawTerrain = 0; // always 0
-  int16_t UnderlayTerrain = -1;
-  int16_t BorderStyle = 0;
+    int16_t DrawTerrain = 0; // always 0
+    int16_t UnderlayTerrain = -1;
+    int16_t BorderStyle = 0;
 
 private:
-  virtual void serializeObject(void);
+    virtual void serializeObject(void);
 };
-
 }
 
 #endif // GENIE_TERRAINBORDER_H

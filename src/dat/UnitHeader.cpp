@@ -20,8 +20,7 @@
 
 #include "genie/dat/UnitHeader.h"
 
-namespace genie
-{
+namespace genie {
 
 //------------------------------------------------------------------------------
 UnitHeader::UnitHeader()
@@ -36,22 +35,20 @@ UnitHeader::~UnitHeader()
 //------------------------------------------------------------------------------
 void UnitHeader::setGameVersion(GameVersion gv)
 {
-  ISerializable::setGameVersion(gv);
+    ISerializable::setGameVersion(gv);
 
-  updateGameVersion(TaskList);
+    updateGameVersion(TaskList);
 }
 
 //------------------------------------------------------------------------------
 void UnitHeader::serializeObject(void)
 {
-  serialize<int8_t>(Exists);
+    serialize<int8_t>(Exists);
 
-  if (Exists)
-  {
-    uint16_t task_count;
-    serializeSize<uint16_t>(task_count, TaskList.size());
-    serializeSub<Task>(TaskList, task_count);
-  }
+    if (Exists) {
+        uint16_t task_count;
+        serializeSize<uint16_t>(task_count, TaskList.size());
+        serializeSub<Task>(TaskList, task_count);
+    }
 }
-
 }

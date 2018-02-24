@@ -22,46 +22,44 @@
 #define GENIE_PLAYERCOLOUR_H
 #include "genie/file/ISerializable.h"
 
-namespace genie
-{
+namespace genie {
 
 class PlayerColour : public ISerializable
 {
 public:
-  PlayerColour();
-  virtual ~PlayerColour();
-  virtual void setGameVersion(GameVersion gv);
+    PlayerColour();
+    virtual ~PlayerColour();
+    virtual void setGameVersion(GameVersion gv);
 
-  int32_t ID = -1;
-  int32_t MinimapColour = 0;
+    int32_t ID = -1;
+    int32_t MinimapColour = 0;
 
-// AoE 2 variables
+    // AoE 2 variables
 
-  int32_t PlayerColorBase = 0;
-  int32_t UnitOutlineColor = 0;
-  int32_t UnitSelectionColor1 = 0;
-  int32_t UnitSelectionColor2 = 0;
-  int32_t MinimapColor2 = 0;
-  int32_t MinimapColor3 = 0;
+    int32_t PlayerColorBase = 0;
+    int32_t UnitOutlineColor = 0;
+    int32_t UnitSelectionColor1 = 0;
+    int32_t UnitSelectionColor2 = 0;
+    int32_t MinimapColor2 = 0;
+    int32_t MinimapColor3 = 0;
 
-  /// Reference to PlayerColour, often itself
-  int32_t StatisticsText = -1;
+    /// Reference to PlayerColour, often itself
+    int32_t StatisticsText = -1;
 
-// AoE 1 variables
+    // AoE 1 variables
 
-  static const unsigned short NAME_SIZE = 30;
-  std::string Name = "";
+    static const unsigned short NAME_SIZE = 30;
+    std::string Name = "";
 
-  /// Intended to replace filename, but never actually made so.
-  int16_t ResourceID = 0;
+    /// Intended to replace filename, but never actually made so.
+    int16_t ResourceID = 0;
 
-  /// 0 transform, 1 transform player color, 2 shadow, 3 translucent
-  uint8_t Type = 1;
+    /// 0 transform, 1 transform player color, 2 shadow, 3 translucent
+    uint8_t Type = 1;
 
 private:
-  virtual void serializeObject(void);
+    virtual void serializeObject(void);
 };
-
 }
 
 #endif // GENIE_PLAYERCOLOUR_H

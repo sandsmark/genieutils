@@ -23,65 +23,62 @@
 #include "genie/file/ISerializable.h"
 #include "../ResourceUsage.h"
 
-namespace genie
-{
+namespace genie {
 
-namespace unit
-{
+namespace unit {
 
-class Creatable : public ISerializable
-{
-public:
+    class Creatable : public ISerializable
+    {
+    public:
+        Creatable();
+        virtual ~Creatable();
+        virtual void setGameVersion(GameVersion gv);
 
-  Creatable();
-  virtual ~Creatable();
-  virtual void setGameVersion(GameVersion gv);
+        static unsigned short getResourceCostsSize();
 
-  static unsigned short getResourceCostsSize();
+        typedef ResourceUsage<int16_t, int16_t> ResourceCost;
 
-  typedef ResourceUsage<int16_t, int16_t> ResourceCost;
+        std::vector<ResourceCost> ResourceCosts;
+        int16_t TrainTime = 0;
 
-  std::vector<ResourceCost> ResourceCosts;
-  int16_t TrainTime = 0;
+        // ID of unit where this is made
+        int16_t TrainLocationID = -1;
 
-  // ID of unit where this is made
-  int16_t TrainLocationID = -1;
+        /// First page (also second in TC) 1-15
+        /// Second (dock) page 21-35
+        /// Third page same as first (Star Wars)
+        /// First page in AoE/RoR 1-10
+        /// Second page in AoE/RoR 11-20
+        int8_t ButtonID = 0;
 
-  /// First page (also second in TC) 1-15
-  /// Second (dock) page 21-35
-  /// Third page same as first (Star Wars)
-  /// First page in AoE/RoR 1-10
-  /// Second page in AoE/RoR 11-20
-  int8_t ButtonID = 0;
+        float RearAttackModifier = 0;
+        float FlankAttackModifier = 0;
 
-  float RearAttackModifier = 0;
-  float FlankAttackModifier = 0;
+        enum CreatableTypes : int8_t {
+            NonHumanType = 0, // building, animal, ship
+            VillagerType = 1, // villager, king
+            InfantryType = 2, // soldier, siege, predator, trader
+            CavalryType = 3, // camel rider
+            RelicType = 4,
+            ArcherType = 5,
+            MonkType = 6,
+            TransportShipType = 21
+        };
+        int8_t CreatableType = 0;
 
-  enum CreatableTypes : int8_t {
-      NonHumanType = 0, // building, animal, ship
-      VillagerType = 1, // villager, king
-      InfantryType = 2, // soldier, siege, predator, trader
-      CavalryType = 3, // camel rider
-      RelicType = 4,
-      ArcherType = 5,
-      MonkType = 6,
-      TransportShipType = 21
-  };
-  int8_t CreatableType = 0;
+        int8_t HeroMode = 0;
+        int32_t GarrisonGraphic = -1;
+        float TotalProjectiles = 0;
+        int8_t MaxTotalProjectiles = 0;
 
-  int8_t HeroMode = 0;
-  int32_t GarrisonGraphic = -1; 
-  float TotalProjectiles = 0;
-  int8_t MaxTotalProjectiles = 0;
+        /// The area from which projectiles spawn. Size and randomness.
+        std::vector<float> ProjectileSpawningArea = { 0, 0, 0 };
 
-  /// The area from which projectiles spawn. Size and randomness.
-  std::vector<float> ProjectileSpawningArea = {0, 0, 0};
+        int32_t SecondaryProjectileUnit = -1;
+        int32_t SpecialGraphic = -1;
 
-  int32_t SecondaryProjectileUnit = -1;
-  int32_t SpecialGraphic = -1;
-
-  //TODO:
-  /*
+        //TODO:
+        /*
    * 1.Determines adjacent unit graphics
     2.Enter 0 or 1
     3.If “1”, the building will have the capability to change graphics depending
@@ -89,14 +86,11 @@ public:
     wall end piece, but if a wall is placed between two other walls, it will
     have a different graphic.
    */
-  int8_t SpecialAbility = 0;
-  int16_t DisplayedPierceArmour = 0;
+        int8_t SpecialAbility = 0;
+        int16_t DisplayedPierceArmour = 0;
 
-protected:
-  virtual void serializeObject(void);
-
-};
-
+    protected:
+        virtual void serializeObject(void);
+    };
 }
-
 }

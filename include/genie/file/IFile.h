@@ -25,8 +25,7 @@
 
 #include <fstream>
 
-namespace genie
-{
+namespace genie {
 
 //------------------------------------------------------------------------------
 /// Interface providing file loading and saving for ISerializable objects.
@@ -34,82 +33,80 @@ namespace genie
 class IFile : public ISerializable
 {
 public:
-  IFile(const IFile &) = delete;
-  IFile &operator=(const IFile &) = delete;
+    IFile(const IFile &) = delete;
+    IFile &operator=(const IFile &) = delete;
 
-  //----------------------------------------------------------------------------
-  IFile();
+    //----------------------------------------------------------------------------
+    IFile();
 
-  //----------------------------------------------------------------------------
-  virtual ~IFile();
-  void freelock(void);
+    //----------------------------------------------------------------------------
+    virtual ~IFile();
+    void freelock(void);
 
-  //----------------------------------------------------------------------------
-  /// Sets name of file to work with.
-  ///
-  /// @param fileName.
-  //
-  void setFileName(const char *fileName);
+    //----------------------------------------------------------------------------
+    /// Sets name of file to work with.
+    ///
+    /// @param fileName.
+    //
+    void setFileName(const char *fileName);
 
-  //----------------------------------------------------------------------------
-  /// Get name of file worked on.
-  ///
-  /// @return fileName.
-  //
-  const char *getFileName(void) const;
+    //----------------------------------------------------------------------------
+    /// Get name of file worked on.
+    ///
+    /// @return fileName.
+    //
+    const char *getFileName(void) const;
 
-  //----------------------------------------------------------------------------
-  /// Loads the object from file. Can only be called if fileName is already set.
-  ///
-  /// @exception std::ios_base::failure thrown if file can't be read (file
-  ///                                   doesn't exist, insufficient rights...)
-  ///
-  //
-  void load();
+    //----------------------------------------------------------------------------
+    /// Loads the object from file. Can only be called if fileName is already set.
+    ///
+    /// @exception std::ios_base::failure thrown if file can't be read (file
+    ///                                   doesn't exist, insufficient rights...)
+    ///
+    //
+    void load();
 
-  //----------------------------------------------------------------------------
-  /// Loads the object from file.
-  ///
-  /// @param fileName file name
-  /// @exception std::ios_base::failure thrown if file can't be read (file
-  ///                                   doesn't exist, insufficient rights...)
-  //
-  virtual void load(const char *fileName);
+    //----------------------------------------------------------------------------
+    /// Loads the object from file.
+    ///
+    /// @param fileName file name
+    /// @exception std::ios_base::failure thrown if file can't be read (file
+    ///                                   doesn't exist, insufficient rights...)
+    //
+    virtual void load(const char *fileName);
 
-  //----------------------------------------------------------------------------
-  /// Saves data to file. Can only be called if fileName is set through set
-  /// method or the file was loaded using the load method.
-  ///
-  /// @exception std::ios_base::failure thrown if file can't be written (
-  ///                                   insufficient rights...)
-  //
-  void save();
+    //----------------------------------------------------------------------------
+    /// Saves data to file. Can only be called if fileName is set through set
+    /// method or the file was loaded using the load method.
+    ///
+    /// @exception std::ios_base::failure thrown if file can't be written (
+    ///                                   insufficient rights...)
+    //
+    void save();
 
-  //----------------------------------------------------------------------------
-  /// Saves data to a different file.
-  ///
-  /// @param fileName file name
-  /// @exception std::ios_base::failure thrown if file can't be written (
-  ///                                   insufficient rights...)
-  //
-  virtual void saveAs(const char *fileName);
+    //----------------------------------------------------------------------------
+    /// Saves data to a different file.
+    ///
+    /// @param fileName file name
+    /// @exception std::ios_base::failure thrown if file can't be written (
+    ///                                   insufficient rights...)
+    //
+    virtual void saveAs(const char *fileName);
 
 protected:
-
-  //----------------------------------------------------------------------------
-  /// The unload method will be called before loading an object, but only
-  /// if the object was already loaded once.
-  //
-  virtual void unload(void);
+    //----------------------------------------------------------------------------
+    /// The unload method will be called before loading an object, but only
+    /// if the object was already loaded once.
+    //
+    virtual void unload(void);
 
 private:
-  std::string fileName_;
+    std::string fileName_;
 
-  std::ifstream fileIn_;
+    std::ifstream fileIn_;
 
-  bool loaded_ = false;
+    bool loaded_ = false;
 };
-
 }
 
 #endif // GENIE_IFILE_H

@@ -25,44 +25,42 @@
 #include "genie/file/ISerializable.h"
 #include <stdint.h>
 
-namespace genie
-{
+namespace genie {
 
 class MapTile : public ISerializable
 {
 public:
-  MapTile();
-  virtual ~MapTile();
+    MapTile();
+    virtual ~MapTile();
 
-  uint8_t terrainID = 0;
-  uint8_t elevation = 0;
+    uint8_t terrainID = 0;
+    uint8_t elevation = 0;
 
-  /// always 0
-  uint8_t unused = 0;
+    /// always 0
+    uint8_t unused = 0;
 
 private:
-  virtual void serializeObject(void);
+    virtual void serializeObject(void);
 };
 
 /// Naming it ScnMap because it may be used elsewhere
 class ScnMap : public ISerializable
 {
 public:
-  ScnMap();
-  virtual ~ScnMap();
+    ScnMap();
+    virtual ~ScnMap();
 
-  /// AoK caps at 256
-  uint32_t width = 0;
+    /// AoK caps at 256
+    uint32_t width = 0;
 
-  /// AoK caps at 256
-  uint32_t height = 0;
+    /// AoK caps at 256
+    uint32_t height = 0;
 
-  std::vector<MapTile> tiles;
+    std::vector<MapTile> tiles;
 
 private:
-  virtual void serializeObject(void);
+    virtual void serializeObject(void);
 };
-
 }
 
 #endif // GENIE_MAP_DESCRIPTION_H

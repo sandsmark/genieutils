@@ -19,8 +19,7 @@
 
 #include "genie/dat/Terrain.h"
 
-namespace genie
-{
+namespace genie {
 
 //------------------------------------------------------------------------------
 FrameData::FrameData()
@@ -35,15 +34,14 @@ FrameData::~FrameData()
 //------------------------------------------------------------------------------
 void FrameData::setGameVersion(GameVersion gv)
 {
-  ISerializable::setGameVersion(gv);
+    ISerializable::setGameVersion(gv);
 }
 
 //------------------------------------------------------------------------------
 void FrameData::serializeObject(void)
 {
-  serialize<int16_t>(FrameCount);
-  serialize<int16_t>(AngleCount);
-  serialize<int16_t>(ShapeID);
+    serialize<int16_t>(FrameCount);
+    serialize<int16_t>(AngleCount);
+    serialize<int16_t>(ShapeID);
 }
-
 }

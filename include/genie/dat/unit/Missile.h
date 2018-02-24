@@ -22,41 +22,37 @@
 
 #include "genie/file/ISerializable.h"
 
-namespace genie
-{
+namespace genie {
 
-namespace unit
-{
+namespace unit {
 
-class Missile : public ISerializable
-{
-public:
-  Missile();
-  virtual ~Missile();
-  virtual void setGameVersion(GameVersion gv);
+    class Missile : public ISerializable
+    {
+    public:
+        Missile();
+        virtual ~Missile();
+        virtual void setGameVersion(GameVersion gv);
 
-  int8_t ProjectileType = 0;
-  int8_t SmartMode = 0;
-  int8_t HitMode = 0;
+        int8_t ProjectileType = 0;
+        int8_t SmartMode = 0;
+        int8_t HitMode = 0;
 
-  /// Affects the graphics so that they pass through the target instead of stopping
-  /// 1 allows the projectile to pass through, a value of 0 stops the projectile.
-  /// Only affects graphic not pass through damage.
-  int8_t VanishMode = 0;
+        /// Affects the graphics so that they pass through the target instead of stopping
+        /// 1 allows the projectile to pass through, a value of 0 stops the projectile.
+        /// Only affects graphic not pass through damage.
+        int8_t VanishMode = 0;
 
-  int8_t AreaEffectSpecials = 0;
+        int8_t AreaEffectSpecials = 0;
 
-  /// Determines the arc a projectile follows.
-  /// Enter a non-negative value.
-  /// The higher the value, the higher the arc will be that the projectile travels.
-  /// The graphics do not change, so a scorpion bolt will still always point forwards,
-  /// even if it has a very high arc.
-  float ProjectileArc = 0;
+        /// Determines the arc a projectile follows.
+        /// Enter a non-negative value.
+        /// The higher the value, the higher the arc will be that the projectile travels.
+        /// The graphics do not change, so a scorpion bolt will still always point forwards,
+        /// even if it has a very high arc.
+        float ProjectileArc = 0;
 
-protected:
-  virtual void serializeObject(void);
-};
-
+    protected:
+        virtual void serializeObject(void);
+    };
 }
-
 }

@@ -20,36 +20,32 @@
 
 #include "genie/dat/unit/Missile.h"
 
-namespace genie
-{
+namespace genie {
 
-namespace unit
-{
+namespace unit {
 
-Missile::Missile() //: Type50()
-{
+    Missile::Missile() //: Type50()
+    {
+    }
+
+    Missile::~Missile()
+    {
+    }
+
+    //------------------------------------------------------------------------------
+    void Missile::setGameVersion(GameVersion gv)
+    {
+        ISerializable::setGameVersion(gv);
+    }
+
+    void Missile::serializeObject(void)
+    {
+        serialize<int8_t>(ProjectileType);
+        serialize<int8_t>(SmartMode);
+        serialize<int8_t>(HitMode);
+        serialize<int8_t>(VanishMode);
+        serialize<int8_t>(AreaEffectSpecials);
+        serialize<float>(ProjectileArc);
+    }
 }
-
-Missile::~Missile()
-{
-}
-
-//------------------------------------------------------------------------------
-void Missile::setGameVersion(GameVersion gv)
-{
-  ISerializable::setGameVersion(gv);
-}
-
-void Missile::serializeObject(void)
-{
-  serialize<int8_t>(ProjectileType);
-  serialize<int8_t>(SmartMode);
-  serialize<int8_t>(HitMode);
-  serialize<int8_t>(VanishMode);
-  serialize<int8_t>(AreaEffectSpecials);
-  serialize<float>(ProjectileArc);
-}
-
-}
-
 }

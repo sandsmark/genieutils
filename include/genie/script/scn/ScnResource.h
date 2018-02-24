@@ -26,60 +26,58 @@
 
 #include <stdint.h>
 
-namespace genie
-{
+namespace genie {
 
 class ScnUnit : public ISerializable
 {
 public:
-  ScnUnit();
-  virtual ~ScnUnit();
+    ScnUnit();
+    virtual ~ScnUnit();
 
-  float positionX;
-  float positionY;
-  float positionZ;
-  uint32_t spawnID;
-  uint16_t objectID;
-  uint8_t state;
-  float rotation;
-  uint16_t initAnimationFrame;
-  uint32_t garrisonedInID;
+    float positionX;
+    float positionY;
+    float positionZ;
+    uint32_t spawnID;
+    uint16_t objectID;
+    uint8_t state;
+    float rotation;
+    uint16_t initAnimationFrame;
+    uint32_t garrisonedInID;
 
 private:
-  virtual void serializeObject(void);
+    virtual void serializeObject(void);
 };
 
 class ScnPlayerResources : public ISerializable
 {
 public:
-  ScnPlayerResources();
-  virtual ~ScnPlayerResources();
+    ScnPlayerResources();
+    virtual ~ScnPlayerResources();
 
-  float food = 0;
-  float wood = 0;
-  float gold = 0;
-  float stone = 0;
-  float ore = 0;
-  float goods = 0;
-  float popLimit = 75;
+    float food = 0;
+    float wood = 0;
+    float gold = 0;
+    float stone = 0;
+    float ore = 0;
+    float goods = 0;
+    float popLimit = 75;
 
 private:
-  virtual void serializeObject(void);
+    virtual void serializeObject(void);
 };
 
 class ScnPlayerUnits : public ISerializable
 {
 public:
-  ScnPlayerUnits();
-  virtual ~ScnPlayerUnits();
+    ScnPlayerUnits();
+    virtual ~ScnPlayerUnits();
 
-  std::vector<ScnUnit> units;
+    std::vector<ScnUnit> units;
 
 private:
-  uint32_t unitCount_;
-  virtual void serializeObject(void);
+    uint32_t unitCount_;
+    virtual void serializeObject(void);
 };
-
 }
 
 #endif // GENIE_SCN_RESOURCE_H

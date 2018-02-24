@@ -20,34 +20,30 @@
 
 #include "genie/dat/unit/DamageGraphic.h"
 
-namespace genie
-{
+namespace genie {
 
-namespace unit
-{
+namespace unit {
 
-DamageGraphic::DamageGraphic()
-{
+    DamageGraphic::DamageGraphic()
+    {
+    }
+
+    DamageGraphic::~DamageGraphic()
+    {
+    }
+
+    //------------------------------------------------------------------------------
+    void DamageGraphic::setGameVersion(GameVersion gv)
+    {
+        ISerializable::setGameVersion(gv);
+    }
+
+    void DamageGraphic::serializeObject(void)
+    {
+        serialize<int16_t>(GraphicID);
+        serialize<int8_t>(DamagePercent);
+        serialize<int8_t>(OldApplyMode); // This isn't even actual variable
+        serialize<int8_t>(ApplyMode);
+    }
 }
-
-DamageGraphic::~DamageGraphic()
-{
-}
-
-//------------------------------------------------------------------------------
-void DamageGraphic::setGameVersion(GameVersion gv)
-{
-  ISerializable::setGameVersion(gv);
-}
-
-void DamageGraphic::serializeObject(void)
-{
-  serialize<int16_t>(GraphicID);
-  serialize<int8_t>(DamagePercent);
-  serialize<int8_t>(OldApplyMode); // This isn't even actual variable
-  serialize<int8_t>(ApplyMode);
-}
-
-}
-
 }

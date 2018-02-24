@@ -21,8 +21,7 @@
 #include "genie/dat/SoundItem.h"
 #include <string.h>
 
-namespace genie
-{
+namespace genie {
 
 SoundItem::SoundItem()
 {
@@ -35,46 +34,38 @@ SoundItem::~SoundItem()
 //------------------------------------------------------------------------------
 void SoundItem::setGameVersion(GameVersion gv)
 {
-  ISerializable::setGameVersion(gv);
+    ISerializable::setGameVersion(gv);
 }
 
 unsigned short SoundItem::getFileNameSize()
 {
-  if (getGameVersion() < GV_SWGB)
-    return 13;
-  return 27;
+    if (getGameVersion() < GV_SWGB)
+        return 13;
+    return 27;
 }
 
 void SoundItem::serializeObject(void)
 {
-  GameVersion gv = getGameVersion();
+    GameVersion gv = getGameVersion();
 
-  if (gv > GV_LatestTap || gv < GV_Tapsa)
-  {
-    serialize(FileName, getFileNameSize());
-  }
-  else
-  {
-    serializeDebugString(FileName);
-  }
+    if (gv > GV_LatestTap || gv < GV_Tapsa) {
+        serialize(FileName, getFileNameSize());
+    } else {
+        serializeDebugString(FileName);
+    }
 
-  if (gv < GV_TEST)
-  {
-    int16_t res = ResourceID;
-    serialize<int16_t>(res);
-    ResourceID = res;
-  }
-  else
-  {
-    serialize<int32_t>(ResourceID);
-  }
-  serialize<int16_t>(Probability);
+    if (gv < GV_TEST) {
+        int16_t res = ResourceID;
+        serialize<int16_t>(res);
+        ResourceID = res;
+    } else {
+        serialize<int32_t>(ResourceID);
+    }
+    serialize<int16_t>(Probability);
 
-  if (gv >= GV_AoKE3)
-  {
-    serialize<int16_t>(Civilization);
-    serialize<int16_t>(IconSet);
-  }
+    if (gv >= GV_AoKE3) {
+        serialize<int16_t>(Civilization);
+        serialize<int16_t>(IconSet);
+    }
 }
-
 }

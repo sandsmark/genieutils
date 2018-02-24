@@ -22,30 +22,26 @@
 #define GENIE_DAMAGEGRAPHIC_H
 #include "genie/file/ISerializable.h"
 
-namespace genie
-{
+namespace genie {
 
-namespace unit
-{
+namespace unit {
 
-class DamageGraphic : public ISerializable
-{
-public:
-  DamageGraphic();
-  virtual ~DamageGraphic();
-  virtual void setGameVersion(GameVersion gv);
+    class DamageGraphic : public ISerializable
+    {
+    public:
+        DamageGraphic();
+        virtual ~DamageGraphic();
+        virtual void setGameVersion(GameVersion gv);
 
-  int16_t GraphicID = -1;
-  int8_t DamagePercent = 0;
-  int8_t OldApplyMode = 0;
-  int8_t ApplyMode = 0;
+        int16_t GraphicID = -1;
+        int8_t DamagePercent = 0;
+        int8_t OldApplyMode = 0;
+        int8_t ApplyMode = 0;
 
-private:
-  virtual void serializeObject(void);
-};
-
+    private:
+        virtual void serializeObject(void);
+    };
 }
-
 }
 
 #endif // GENIE_UNITDAMAGEGRAPHIC_H

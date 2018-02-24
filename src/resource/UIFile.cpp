@@ -16,7 +16,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include "genie/resource/UIFile.h"
 
 #include <iostream>
@@ -24,12 +23,11 @@
 
 #include "genie/util/Logger.h"
 
-namespace genie
-{
+namespace genie {
 
 using std::string;
 
-Logger& UIFile::log = Logger::getLogger("genie.UIFile");
+Logger &UIFile::log = Logger::getLogger("genie.UIFile");
 
 //------------------------------------------------------------------------------
 UIFile::UIFile()
@@ -44,86 +42,83 @@ UIFile::~UIFile()
 //------------------------------------------------------------------------------
 void UIFile::serializeObject(void)
 {
-  if (isOperation(OP_READ))
-  {
-    std::istream *istr = getIStream();
+    if (isOperation(OP_READ)) {
+        std::istream *istr = getIStream();
 
-    if (!readBackground(istr, &background1, "background1_files")) {
-        return;
-    }
-    if (!readBackground(istr, &background2, "background2_files")) {
-        return;
-    }
-    if (!readBackground(istr, &background3, "background3_files")) {
-        return;
-    }
-    if (!readFileReference(istr, &paletteFile, "palette_file")) {
-        return;
-    }
-    if (!readFileReference(istr, &cursorFile, "cursor_file")) {
-        return;
-    }
-    if (!readValue(istr, &shadePercent, "shade_amount", "percent")) {
-        return;
-    }
-    if (!readFileReference(istr, &buttonFile, "button_file")) {
-        return;
-    }
-    if (!readFileReference(istr, &popupDialogFile, "popup_dialog_sin")) {
-        return;
-    }
+        if (!readBackground(istr, &background1, "background1_files")) {
+            return;
+        }
+        if (!readBackground(istr, &background2, "background2_files")) {
+            return;
+        }
+        if (!readBackground(istr, &background3, "background3_files")) {
+            return;
+        }
+        if (!readFileReference(istr, &paletteFile, "palette_file")) {
+            return;
+        }
+        if (!readFileReference(istr, &cursorFile, "cursor_file")) {
+            return;
+        }
+        if (!readValue(istr, &shadePercent, "shade_amount", "percent")) {
+            return;
+        }
+        if (!readFileReference(istr, &buttonFile, "button_file")) {
+            return;
+        }
+        if (!readFileReference(istr, &popupDialogFile, "popup_dialog_sin")) {
+            return;
+        }
 
-    if (!readValue(istr, &backgroundPosition, "background_position")) {
-        return;
-    }
-    if (!readValue(istr, &backgroundColor, "background_color")) {
-        return;
-    }
+        if (!readValue(istr, &backgroundPosition, "background_position")) {
+            return;
+        }
+        if (!readValue(istr, &backgroundColor, "background_color")) {
+            return;
+        }
 
-    std::string bevelColorName;
-    *istr >> bevelColorName;
-    if (bevelColorName != "bevel_colors") {
-        log.error("Expected name bevel_colors, got %s", bevelColorName.c_str());
-        return;
-    }
+        std::string bevelColorName;
+        *istr >> bevelColorName;
+        if (bevelColorName != "bevel_colors") {
+            log.error("Expected name bevel_colors, got %s", bevelColorName.c_str());
+            return;
+        }
 
-    // istream doesn't understand uint8_t
-    int bevelColor1r, bevelColor1g, bevelColor1b;
-    *istr >> bevelColor1r >> bevelColor1g >> bevelColor1b;
-    bevelColor1.r = bevelColor1r;
-    bevelColor1.g = bevelColor1g;
-    bevelColor1.b = bevelColor1b;
+        // istream doesn't understand uint8_t
+        int bevelColor1r, bevelColor1g, bevelColor1b;
+        *istr >> bevelColor1r >> bevelColor1g >> bevelColor1b;
+        bevelColor1.r = bevelColor1r;
+        bevelColor1.g = bevelColor1g;
+        bevelColor1.b = bevelColor1b;
 
-    int bevelColor2r, bevelColor2g, bevelColor2b;
-    *istr >> bevelColor2r >> bevelColor2g >> bevelColor2b;
-    bevelColor2.r = bevelColor2r;
-    bevelColor2.g = bevelColor2g;
-    bevelColor2.b = bevelColor2b;
+        int bevelColor2r, bevelColor2g, bevelColor2b;
+        *istr >> bevelColor2r >> bevelColor2g >> bevelColor2b;
+        bevelColor2.r = bevelColor2r;
+        bevelColor2.g = bevelColor2g;
+        bevelColor2.b = bevelColor2b;
 
-    if (!readColor(istr, &textColor1, "text_color1")) {
+        if (!readColor(istr, &textColor1, "text_color1")) {
+            return;
+        }
+        if (!readColor(istr, &textColor2, "text_color2")) {
+            return;
+        }
+        if (!readColor(istr, &focusColor1, "focus_color1")) {
+            return;
+        }
+        if (!readColor(istr, &focusColor2, "focus_color2")) {
+            return;
+        }
+        if (!readColor(istr, &stateColor1, "state_color1")) {
+            return;
+        }
+        if (!readColor(istr, &stateColor2, "state_color2")) {
+            return;
+        }
+    } else {
+        log.error("writing not implemented");
         return;
     }
-    if (!readColor(istr, &textColor2, "text_color2")) {
-        return;
-    }
-    if (!readColor(istr, &focusColor1, "focus_color1")) {
-        return;
-    }
-    if (!readColor(istr, &focusColor2, "focus_color2")) {
-        return;
-    }
-    if (!readColor(istr, &stateColor1, "state_color1")) {
-        return;
-    }
-    if (!readColor(istr, &stateColor2, "state_color2")) {
-        return;
-    }
-  }
-  else
-  {
-      log.error("writing not implemented");
-      return;
-  }
 }
 
 bool UIFile::readBackground(std::istream *istr, UIFile::Background *background, const std::string &expectedName)
@@ -194,8 +189,4 @@ bool UIFile::readColor(std::istream *istr, Color *color, const std::string &expe
 
     return true;
 }
-
-
 }
-
-

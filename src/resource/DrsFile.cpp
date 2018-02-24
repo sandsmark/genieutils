@@ -26,12 +26,11 @@
 
 //#include <file/BinaFile.h>
 
-namespace genie
-{
+namespace genie {
 
 using std::string;
 
-Logger& DrsFile::log = Logger::getLogger("freeaoe.DrsFile");
+Logger &DrsFile::log = Logger::getLogger("freeaoe.DrsFile");
 
 //------------------------------------------------------------------------------
 DrsFile::DrsFile()
@@ -46,117 +45,94 @@ DrsFile::~DrsFile()
 //------------------------------------------------------------------------------
 SlpFilePtr DrsFile::getSlpFile(uint32_t id)
 {
-  auto i = slp_map_.find(id);
+    auto i = slp_map_.find(id);
 
-  if (i != slp_map_.end())
-  {
+    if (i != slp_map_.end()) {
 #ifndef NDEBUG
-    log.debug("Loading SLP file [%u]", id);
+        log.debug("Loading SLP file [%u]", id);
 #endif
-    i->second->readObject(*getIStream());
-    return i->second;
-  }
-  else
-  {
-      auto i = bina_map_.find(id);
+        i->second->readObject(*getIStream());
+        return i->second;
+    } else {
+        auto i = bina_map_.find(id);
 
-      if (i != bina_map_.end())
-      {
+        if (i != bina_map_.end()) {
 #ifndef NDEBUG
-          log.debug("Loading SLP file [%u] from bina", id);
+            log.debug("Loading SLP file [%u] from bina", id);
 #endif
-          SlpFilePtr slp(new SlpFile());
+            SlpFilePtr slp(new SlpFile());
 
-          slp->setInitialReadPosition(i->second->getInitialReadPosition());
+            slp->setInitialReadPosition(i->second->getInitialReadPosition());
 
-          slp->readObject(*getIStream());
+            slp->readObject(*getIStream());
 
-          return slp;
-      }
-      else
-      {
-          log.warn("No slp file with id [%u] found!", id);
-          return SlpFilePtr();
-      }
-  }
+            return slp;
+        } else {
+            log.warn("No slp file with id [%u] found!", id);
+            return SlpFilePtr();
+        }
+    }
 }
 
 //------------------------------------------------------------------------------
 PalFilePtr DrsFile::getPalFile(uint32_t id)
 {
-  auto i = bina_map_.find(id);
+    auto i = bina_map_.find(id);
 
-  if (i != bina_map_.end())
-  {
-    return i->second->readPalFile(getIStream());
-  }
-  else
-  {
-    log.debug("No bina file with id [%u] found!", id);
-    return PalFilePtr();
-  }
+    if (i != bina_map_.end()) {
+        return i->second->readPalFile(getIStream());
+    } else {
+        log.debug("No bina file with id [%u] found!", id);
+        return PalFilePtr();
+    }
 }
 
 UIFilePtr DrsFile::getUIFile(uint32_t id)
 {
-  auto i = bina_map_.find(id);
+    auto i = bina_map_.find(id);
 
-  if (i != bina_map_.end())
-  {
-    return i->second->readUIFile(getIStream());
-  }
-  else
-  {
-    log.debug("No bina file with id [%u] found!", id);
-    return UIFilePtr();
-  }
+    if (i != bina_map_.end()) {
+        return i->second->readUIFile(getIStream());
+    } else {
+        log.debug("No bina file with id [%u] found!", id);
+        return UIFilePtr();
+    }
 }
 
 BmpFilePtr DrsFile::getBmpFile(uint32_t id)
 {
-  auto i = bina_map_.find(id);
+    auto i = bina_map_.find(id);
 
-  if (i != bina_map_.end())
-  {
-    return i->second->readBmpFile(getIStream());
-  }
-  else
-  {
-    log.debug("No bina file with id [%u] found!", id);
-    return BmpFilePtr();
-  }
-
+    if (i != bina_map_.end()) {
+        return i->second->readBmpFile(getIStream());
+    } else {
+        log.debug("No bina file with id [%u] found!", id);
+        return BmpFilePtr();
+    }
 }
 
 std::string DrsFile::getScriptFile(uint32_t id)
 {
-  auto i = bina_map_.find(id);
+    auto i = bina_map_.find(id);
 
-  if (i != bina_map_.end())
-  {
-    return i->second->readScriptFile(getIStream());
-  }
-  else
-  {
-    log.debug("No bina file with id [%u] found!", id);
-    return std::string();
-  }
-
+    if (i != bina_map_.end()) {
+        return i->second->readScriptFile(getIStream());
+    } else {
+        log.debug("No bina file with id [%u] found!", id);
+        return std::string();
+    }
 }
 
 ScnFilePtr DrsFile::getScnFile(uint32_t id)
 {
-  auto i = bina_map_.find(id);
+    auto i = bina_map_.find(id);
 
-  if (i != bina_map_.end())
-  {
-    return i->second->readScnFile(getIStream());
-  }
-  else
-  {
-    log.debug("No bina file with id [%u] found!", id);
-    return ScnFilePtr();
-  }
+    if (i != bina_map_.end()) {
+        return i->second->readScnFile(getIStream());
+    } else {
+        log.debug("No bina file with id [%u] found!", id);
+        return ScnFilePtr();
+    }
 }
 
 std::string DrsFile::idType(uint32_t id)
@@ -180,32 +156,28 @@ std::string DrsFile::idType(uint32_t id)
 }
 
 //------------------------------------------------------------------------------
-unsigned char* DrsFile::getWavPtr(uint32_t id)
+unsigned char *DrsFile::getWavPtr(uint32_t id)
 {
-  auto i = wav_offsets_.find(id);
+    auto i = wav_offsets_.find(id);
 
-  if (i != wav_offsets_.end())
-  {
-    wav_file_.clear();
-    getIStream()->seekg(std::streampos(i->second));
-    uint32_t type = read<uint32_t>();
-    uint32_t size = read<uint32_t>();
+    if (i != wav_offsets_.end()) {
+        wav_file_.clear();
+        getIStream()->seekg(std::streampos(i->second));
+        uint32_t type = read<uint32_t>();
+        uint32_t size = read<uint32_t>();
 #ifndef NDEBUG
-    log.debug("WAV [%u], type [%X], size [%u]", id, type, size);
+        log.debug("WAV [%u], type [%X], size [%u]", id, type, size);
 #endif
-    getIStream()->seekg(std::streampos(i->second));
-    wav_file_.resize(size + 8);
-    for (auto &pos: wav_file_)
-    {
-      pos = read<uint8_t>();
+        getIStream()->seekg(std::streampos(i->second));
+        wav_file_.resize(size + 8);
+        for (auto &pos : wav_file_) {
+            pos = read<uint8_t>();
+        }
+        return wav_file_.data();
+    } else {
+        log.warn("No sound file with id [%u] found!", id);
+        return NULL;
     }
-    return wav_file_.data();
-  }
-  else
-  {
-    log.warn("No sound file with id [%u] found!", id);
-    return NULL;
-  }
 }
 
 std::vector<uint32_t> DrsFile::binaryFileIds() const
@@ -231,107 +203,94 @@ std::vector<uint32_t> DrsFile::slpFileIds() const
 //------------------------------------------------------------------------------
 void DrsFile::serializeObject(void)
 {
-  loadHeader();
+    loadHeader();
 }
 
 //------------------------------------------------------------------------------
 unsigned int DrsFile::getCopyRightHeaderSize(void) const
 {
-  if (getGameVersion() >= GV_SWGB)
-    return 0x3C;
-  else
-    return 0x28;
+    if (getGameVersion() >= GV_SWGB)
+        return 0x3C;
+    else
+        return 0x28;
 }
 
 //------------------------------------------------------------------------------
 std::string DrsFile::getSlpTableHeader(void) const
 {
-  return " pls";
+    return " pls";
 }
 
 //------------------------------------------------------------------------------
 std::string DrsFile::getBinaryTableHeader(void) const
 {
-  return "anib";
+    return "anib";
 }
 
 //------------------------------------------------------------------------------
 std::string DrsFile::getSoundTableHeader(void) const
 {
-  return " vaw";
+    return " vaw";
 }
 
 //------------------------------------------------------------------------------
 void DrsFile::loadHeader()
 {
-  if (header_loaded_)
-    log.warn("Trying to load header again!");
-  else
-  {
-    string copy_right = readString(getCopyRightHeaderSize());
+    if (header_loaded_)
+        log.warn("Trying to load header again!");
+    else {
+        string copy_right = readString(getCopyRightHeaderSize());
 
+        string version = readString(4);
 
-    string version = readString(4);
+        //File type
+        string file_type = readString(12);
 
+        //    std::cout << "copyright: " << copy_right << std::endl;
+        //    std::cout << "version: " << version << std::endl;
+        //    std::cout << "filetype: " << file_type << std::endl;
 
-    //File type
-    string file_type = readString(12);
+        num_of_tables_ = read<uint32_t>();
+        header_offset_ = read<uint32_t>();
 
-//    std::cout << "copyright: " << copy_right << std::endl;
-//    std::cout << "version: " << version << std::endl;
-//    std::cout << "filetype: " << file_type << std::endl;
+        std::vector<uint32_t> table_offsets;
+        // Load table data
+        for (uint32_t i = 0; i < num_of_tables_; ++i) {
+            table_types_.push_back(readString(4));
+            table_offsets.push_back(read<uint32_t>());
+            table_num_of_files_.push_back(read<uint32_t>());
+        }
 
-    num_of_tables_ = read<uint32_t>();
-    header_offset_ = read<uint32_t>();
+        // Load file headers
+        for (uint32_t i = 0; i < num_of_tables_; ++i) {
+            if (tellg() != table_offsets[i]) {
+                log.error("Tables aren't layed out linearly, is at position %d, but should be at %d", tellg(), table_offsets[i]);
+            }
 
-    std::vector<uint32_t> table_offsets;
-    // Load table data
-    for (uint32_t i = 0; i < num_of_tables_; ++i)
-    {
-      table_types_.push_back(readString(4));
-      table_offsets.push_back(read<uint32_t>());
-      table_num_of_files_.push_back(read<uint32_t>());
+            for (uint32_t j = 0; j < table_num_of_files_[i]; ++j) {
+                uint32_t id = read<uint32_t>();
+                uint32_t pos = read<uint32_t>();
+                uint32_t len = read<uint32_t>();
+
+                if (table_types_[i].compare(getSlpTableHeader()) == 0) {
+                    SlpFilePtr slp(new SlpFile());
+                    slp->setInitialReadPosition(pos);
+
+                    slp_map_[id] = slp;
+                } else if (table_types_[i].compare(getBinaryTableHeader()) == 0) {
+                    BinaFilePtr bina(new BinaFile(len));
+                    bina->setInitialReadPosition(pos);
+
+                    bina_map_[id] = bina;
+                } else if (table_types_[i].compare(getSoundTableHeader()) == 0) {
+                    wav_offsets_[id] = pos;
+                } else {
+                    log.error("unknown file header: %s", table_types_[i]);
+                }
+            }
+        }
+
+        header_loaded_ = true;
     }
-
-    // Load file headers
-    for (uint32_t i = 0; i < num_of_tables_; ++i)
-    {
-     if (tellg() != table_offsets[i]) {
-         log.error("Tables aren't layed out linearly, is at position %d, but should be at %d", tellg(), table_offsets[i]);
-     }
-
-      for (uint32_t j = 0; j < table_num_of_files_[i]; ++j)
-      {
-        uint32_t id = read<uint32_t>();
-        uint32_t pos = read<uint32_t>();
-        uint32_t len = read<uint32_t>();
-
-        if (table_types_[i].compare(getSlpTableHeader()) == 0)
-        {
-          SlpFilePtr slp(new SlpFile());
-          slp->setInitialReadPosition(pos);
-
-          slp_map_[id] = slp;
-        }
-        else if (table_types_[i].compare(getBinaryTableHeader()) == 0)
-        {
-          BinaFilePtr bina(new BinaFile(len));
-          bina->setInitialReadPosition(pos);
-
-          bina_map_[id] = bina;
-        }
-        else if (table_types_[i].compare(getSoundTableHeader()) == 0)
-        {
-          wav_offsets_[id] = pos;
-        }
-        else {
-            log.error("unknown file header: %s", table_types_[i]);
-        }
-      }
-    }
-
-    header_loaded_ = true;
-  }
 }
-
 }

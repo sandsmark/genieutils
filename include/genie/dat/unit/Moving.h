@@ -22,40 +22,36 @@
 
 #include "genie/file/ISerializable.h"
 
-namespace genie
-{
+namespace genie {
 
-namespace unit
-{
+namespace unit {
 
-/// Attributes for Unit of type >= DeadFish.
-class Moving : public ISerializable
-{
-public:
-  Moving();
-  virtual ~Moving();
-  virtual void setGameVersion(GameVersion gv);
+    /// Attributes for Unit of type >= DeadFish.
+    class Moving : public ISerializable
+    {
+    public:
+        Moving();
+        virtual ~Moving();
+        virtual void setGameVersion(GameVersion gv);
 
-  int16_t WalkingGraphic = -1;
-  int16_t RunningGraphic = -1;
-  float RotationSpeed = 0;
-  int8_t OldSizeClass = 0;
-  int16_t TrackingUnit = -1;
-  int8_t TrackingUnitMode = 0;
-  float TrackingUnitDensity = 0;
-  int8_t OldMoveAlgorithm = 0;
+        int16_t WalkingGraphic = -1;
+        int16_t RunningGraphic = -1;
+        float RotationSpeed = 0;
+        int8_t OldSizeClass = 0;
+        int16_t TrackingUnit = -1;
+        int8_t TrackingUnitMode = 0;
+        float TrackingUnitDensity = 0;
+        int8_t OldMoveAlgorithm = 0;
 
-  // All can change while playing
-  float TurnRadius = 0;
-  float TurnRadiusSpeed = 3.40282347e+38f;
-  float MaxYawPerSecondMoving = 3.40282347e+38f;
-  float StationaryYawRevolutionTime = 0;
-  float MaxYawPerSecondStationary = 3.40282347e+38f;
+        // All can change while playing
+        float TurnRadius = 0;
+        float TurnRadiusSpeed = 3.40282347e+38f;
+        float MaxYawPerSecondMoving = 3.40282347e+38f;
+        float StationaryYawRevolutionTime = 0;
+        float MaxYawPerSecondStationary = 3.40282347e+38f;
 
-protected:
-  virtual void serializeObject(void);
-};
-
+    protected:
+        virtual void serializeObject(void);
+    };
 }
-
 }

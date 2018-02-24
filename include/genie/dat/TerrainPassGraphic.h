@@ -22,25 +22,23 @@
 #define GENIE_TERRAINPASSGRAPHIC_H
 #include "genie/file/ISerializable.h"
 
-namespace genie
-{
+namespace genie {
 
 class TerrainPassGraphic : public ISerializable
 {
 public:
-  TerrainPassGraphic();
-  virtual ~TerrainPassGraphic();
-  virtual void setGameVersion(GameVersion gv);
+    TerrainPassGraphic();
+    virtual ~TerrainPassGraphic();
+    virtual void setGameVersion(GameVersion gv);
 
-  int32_t ExitTileSpriteID = -1;
-  int32_t EnterTileSpriteID = -1;
-  int32_t WalkTileSpriteID = -1;
-  float WalkSpriteRate = 0;
+    int32_t ExitTileSpriteID = -1;
+    int32_t EnterTileSpriteID = -1;
+    int32_t WalkTileSpriteID = -1;
+    float WalkSpriteRate = 0;
 
 private:
-  virtual void serializeObject(void);
+    virtual void serializeObject(void);
 };
-
 }
 
 #endif // GENIE_TERRAINPASSGRAPHIC_H

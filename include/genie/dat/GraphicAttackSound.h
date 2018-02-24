@@ -22,28 +22,26 @@
 #define GENIE_GRAPHICATTACKSOUND_H
 #include "genie/file/ISerializable.h"
 
-namespace genie
-{
+namespace genie {
 
 class GraphicAngleSound : public ISerializable
 {
 public:
-  GraphicAngleSound();
-  virtual ~GraphicAngleSound();
-  virtual void setGameVersion(GameVersion gv);
+    GraphicAngleSound();
+    virtual ~GraphicAngleSound();
+    virtual void setGameVersion(GameVersion gv);
 
-  //TODO: Array
-  int16_t FrameNum = -1;
-  int16_t SoundID = -1;
-  int16_t FrameNum2 = -1;
-  int16_t SoundID2 = -1;
-  int16_t FrameNum3 = -1;
-  int16_t SoundID3 = -1;
+    //TODO: Array
+    int16_t FrameNum = -1;
+    int16_t SoundID = -1;
+    int16_t FrameNum2 = -1;
+    int16_t SoundID2 = -1;
+    int16_t FrameNum3 = -1;
+    int16_t SoundID3 = -1;
 
 private:
-  virtual void serializeObject(void);
+    virtual void serializeObject(void);
 };
-
 }
 
 #endif // GENIE_GRAPHICATTACKSOUND_H

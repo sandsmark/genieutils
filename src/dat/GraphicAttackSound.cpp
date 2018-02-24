@@ -21,8 +21,7 @@
 #include "genie/dat/GraphicAttackSound.h"
 #include <string.h>
 
-namespace genie
-{
+namespace genie {
 
 GraphicAngleSound::GraphicAngleSound()
 {
@@ -35,17 +34,16 @@ GraphicAngleSound::~GraphicAngleSound()
 //------------------------------------------------------------------------------
 void GraphicAngleSound::setGameVersion(GameVersion gv)
 {
-  ISerializable::setGameVersion(gv);
+    ISerializable::setGameVersion(gv);
 }
 
 void GraphicAngleSound::serializeObject(void)
 {
-  serialize<int16_t>(FrameNum);
-  serialize<int16_t>(SoundID);
-  serialize<int16_t>(FrameNum2);
-  serialize<int16_t>(SoundID2);
-  serialize<int16_t>(FrameNum3);
-  serialize<int16_t>(SoundID3);
+    serialize<int16_t>(FrameNum);
+    serialize<int16_t>(SoundID);
+    serialize<int16_t>(FrameNum2);
+    serialize<int16_t>(SoundID2);
+    serialize<int16_t>(FrameNum3);
+    serialize<int16_t>(SoundID3);
 }
-
 }

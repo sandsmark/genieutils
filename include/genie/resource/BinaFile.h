@@ -24,8 +24,7 @@
 #include "UIFile.h"
 #include "genie/script/ScnFile.h"
 
-namespace genie
-{
+namespace genie {
 
 class Logger;
 
@@ -37,26 +36,25 @@ typedef std::shared_ptr<char> BmpFilePtr;
 class BinaFile : public ISerializable
 {
 public:
-  BinaFile(uint32_t size);
-  virtual ~BinaFile();
-  
-  PalFilePtr readPalFile(std::istream *istr);
-  UIFilePtr readUIFile(std::istream *istr);
-  BmpFilePtr readBmpFile(std::istream *istr);
-  std::string readScriptFile(std::istream *istr);
-  ScnFilePtr readScnFile(std::istream *istr);
+    BinaFile(uint32_t size);
+    virtual ~BinaFile();
 
-  std::string filetype(std::istream *istr);
+    PalFilePtr readPalFile(std::istream *istr);
+    UIFilePtr readUIFile(std::istream *istr);
+    BmpFilePtr readBmpFile(std::istream *istr);
+    std::string readScriptFile(std::istream *istr);
+    ScnFilePtr readScnFile(std::istream *istr);
+
+    std::string filetype(std::istream *istr);
 
 private:
-  static Logger &log;
+    static Logger &log;
 
-  virtual void serializeObject(void);
-  uint32_t m_size;
+    virtual void serializeObject(void);
+    uint32_t m_size;
 };
 
 typedef std::shared_ptr<BinaFile> BinaFilePtr;
-
 }
 
 #endif // GENIE_BINAFILE_H

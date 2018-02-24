@@ -20,8 +20,7 @@
 
 #include "genie/dat/UnitLine.h"
 
-namespace genie
-{
+namespace genie {
 
 //------------------------------------------------------------------------------
 UnitLine::UnitLine()
@@ -36,20 +35,19 @@ UnitLine::~UnitLine()
 //------------------------------------------------------------------------------
 void UnitLine::setGameVersion(GameVersion gv)
 {
-  ISerializable::setGameVersion(gv);
+    ISerializable::setGameVersion(gv);
 }
 
 //------------------------------------------------------------------------------
 void UnitLine::serializeObject(void)
 {
-  serialize<int16_t>(ID);
+    serialize<int16_t>(ID);
 
-  uint16_t name_len;
-  serializeSize<uint16_t>(name_len, Name, false);
-  serialize(Name, name_len);
+    uint16_t name_len;
+    serializeSize<uint16_t>(name_len, Name, false);
+    serialize(Name, name_len);
 
-  serializeSize<uint16_t>(name_len, UnitIDs.size());
-  serialize<int16_t>(UnitIDs, name_len);
+    serializeSize<uint16_t>(name_len, UnitIDs.size());
+    serialize<int16_t>(UnitIDs, name_len);
 }
-
 }

@@ -22,30 +22,29 @@
 #include <iostream>
 #include <fstream>
 
-namespace genie
-{
+namespace genie {
 
 Logger::LogLevel Logger::LOG_LEVEL = L_OFF;
 
 std::ostream *Logger::global_out_ = &std::cout;
 
 //------------------------------------------------------------------------------
-Logger& Logger::getRootLogger(void) 
+Logger &Logger::getRootLogger(void)
 {
-  static Logger l;
-  return l;
+    static Logger l;
+    return l;
 }
 
 //------------------------------------------------------------------------------
-Logger& Logger::getLogger(std::string name) 
+Logger &Logger::getLogger(std::string name)
 {
-  return getRootLogger();
+    return getRootLogger();
 }
 
 //------------------------------------------------------------------------------
-void Logger::setLogLevel(Logger::LogLevel loglevel) 
+void Logger::setLogLevel(Logger::LogLevel loglevel)
 {
-  Logger::LOG_LEVEL = loglevel;
+    Logger::LOG_LEVEL = loglevel;
 }
 
 void Logger::setGlobalOutputStream(std::ostream &ostream)
@@ -78,20 +77,19 @@ void Logger::fatal(const std::string &msg)
     log(L_FATAL, msg);
 }
 
-std::ostream* Logger::getGlobalOutputStream(void)
+std::ostream *Logger::getGlobalOutputStream(void)
 {
-  return global_out_;
+    return global_out_;
 }
 
 //------------------------------------------------------------------------------
-Logger::Logger() 
+Logger::Logger()
 {
 }
 
 //------------------------------------------------------------------------------
-Logger::~Logger() 
+Logger::~Logger()
 {
-
 }
 
 void Logger::log(LogLevel loglevel, const std::string &format)
@@ -102,17 +100,15 @@ void Logger::log(LogLevel loglevel, const std::string &format)
 //------------------------------------------------------------------------------
 std::string Logger::getLogLevelName(Logger::LogLevel loglevel)
 {
-  static const std::string LOG_LEVEL_NAMES[] = {
-    "Info   ",  //LINFO
-    "Debug  ",
-    "Warning",
-    "ERROR  ",
-    "FATAL  ",
-    "Off    "   //LOFF
-  };
-  
-  return LOG_LEVEL_NAMES[loglevel];
-}
+    static const std::string LOG_LEVEL_NAMES[] = {
+        "Info   ", //LINFO
+        "Debug  ",
+        "Warning",
+        "ERROR  ",
+        "FATAL  ",
+        "Off    " //LOFF
+    };
 
+    return LOG_LEVEL_NAMES[loglevel];
 }
-
+}

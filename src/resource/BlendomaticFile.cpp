@@ -25,13 +25,13 @@
 
 #include "genie/resource/BlendomaticFile.h"
 
-namespace genie
-{
+namespace genie {
 
-Logger& BlendomaticFile::log = Logger::getLogger("genie.BlendomaticFile");
+Logger &BlendomaticFile::log = Logger::getLogger("genie.BlendomaticFile");
 
 //------------------------------------------------------------------------------
-BlendomaticFile::BlendomaticFile() : IFile()
+BlendomaticFile::BlendomaticFile() :
+    IFile()
 {
 }
 
@@ -46,7 +46,7 @@ void BlendomaticFile::serializeObject(void)
     serialize(modeCount_);
     serialize(tileCount_);
 
-    for (uint32_t i=0; i < modeCount_; i++) {
+    for (uint32_t i = 0; i < modeCount_; i++) {
         log.debug("reading mode %d", i);
 
         BlendModePtr mode;
@@ -100,6 +100,4 @@ BlendModePtr BlendomaticFile::getBlendMode(uint32_t id)
 
     return modes_[id];
 }
-
-
 }

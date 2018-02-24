@@ -16,7 +16,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef GENIE_PALFILE_H
 #define GENIE_PALFILE_H
 
@@ -27,9 +26,8 @@
 
 #include "genie/file/IFile.h"
 
-namespace genie
-{
-  
+namespace genie {
+
 class Logger;
 class Color;
 
@@ -40,62 +38,61 @@ class PalFile : public IFile
 {
 
 public:
-  //----------------------------------------------------------------------------
-  /// Constructor
-  //
-  PalFile();
-  
-  //----------------------------------------------------------------------------
-  /// Destructor
-  //
-  virtual ~PalFile();
-   
-  //----------------------------------------------------------------------------
-  /// Returns a color at given index.
-  ///
-  /// @param index index of color in palette
-  /// @return color object
-  //
-  Color& operator[](uint16_t index);
-  std::vector<Color> getColors(void) const;
-  
-  //----------------------------------------------------------------------------
-  /// Number of colors stored in this palette.
-  ///
-  /// @return size
-  //
-  size_t size(void) const;
-  
-  //----------------------------------------------------------------------------
-  /// TODO: Somethings wrong...
-  //
-  virtual size_t objectSize(void); 
+    //----------------------------------------------------------------------------
+    /// Constructor
+    //
+    PalFile();
+
+    //----------------------------------------------------------------------------
+    /// Destructor
+    //
+    virtual ~PalFile();
+
+    //----------------------------------------------------------------------------
+    /// Returns a color at given index.
+    ///
+    /// @param index index of color in palette
+    /// @return color object
+    //
+    Color &operator[](uint16_t index);
+    std::vector<Color> getColors(void) const;
+
+    //----------------------------------------------------------------------------
+    /// Number of colors stored in this palette.
+    ///
+    /// @return size
+    //
+    size_t size(void) const;
+
+    //----------------------------------------------------------------------------
+    /// TODO: Somethings wrong...
+    //
+    virtual size_t objectSize(void);
+
 private:
-  
-  static Logger &log;
-  
-  std::vector<Color> colors_;
-  
-  uint32_t num_colors_ = 0;
-  
-  std::string type_;
-  std::string unknown_;
-  
-  std::string getHeader() const; 
-  std::string getHeader2() const; //TODO Unknown
-  
-  virtual void serializeObject(void);
-  
-  // TODO: Not implemented yet
-  
-  //----------------------------------------------------------------------------
-  /// Get number of characters of a number serialized as a string.
-  //
-  size_t numOfChars(uint8_t number);
+    static Logger &log;
+
+    std::vector<Color> colors_;
+
+    uint32_t num_colors_ = 0;
+
+    std::string type_;
+    std::string unknown_;
+
+    std::string getHeader() const;
+    std::string getHeader2() const; //TODO Unknown
+
+    virtual void serializeObject(void);
+
+    // TODO: Not implemented yet
+
+    //----------------------------------------------------------------------------
+    /// Get number of characters of a number serialized as a string.
+    //
+    size_t numOfChars(uint8_t number);
 };
 
 typedef std::shared_ptr<PalFile> PalFilePtr;
-
 }
 
 #endif // GENIE_PALFILE_H

@@ -20,50 +20,46 @@
 
 #include "genie/dat/unit/Action.h"
 
-namespace genie
-{
+namespace genie {
 
-namespace unit
-{
+namespace unit {
 
-Action::Action() //: DeadFish()
-{
+    Action::Action() //: DeadFish()
+    {
+    }
+
+    Action::~Action()
+    {
+    }
+
+    //------------------------------------------------------------------------------
+    void Action::setGameVersion(GameVersion gv)
+    {
+        ISerializable::setGameVersion(gv);
+
+        updateGameVersion(TaskList);
+    }
+
+    void Action::serializeObject(void)
+    {
+        GameVersion gv = getGameVersion();
+
+        serialize<int16_t>(DefaultTaskID);
+        serialize<float>(SearchRadius);
+        serialize<float>(WorkRate);
+        serializePair<int16_t>(DropSite, (gv < GV_TEST) ? true : false);
+        serialize<int8_t>(TaskSwapGroup);
+        serialize<int16_t>(AttackSound);
+        if (gv >= GV_AoEB)
+            serialize<int16_t>(MoveSound); // 6.92
+        serialize<int8_t>(RunPattern);
+
+        if (gv < GV_AoK) // 11.24
+        {
+            uint16_t task_count;
+            serializeSize<uint16_t>(task_count, TaskList.size());
+            serializeSub<Task>(TaskList, task_count);
+        }
+    }
 }
-
-Action::~Action()
-{
-}
-
-//------------------------------------------------------------------------------
-void Action::setGameVersion(GameVersion gv)
-{
-  ISerializable::setGameVersion(gv);
-
-  updateGameVersion(TaskList);
-}
-
-void Action::serializeObject(void)
-{
-  GameVersion gv = getGameVersion();
-
-  serialize<int16_t>(DefaultTaskID);
-  serialize<float>(SearchRadius);
-  serialize<float>(WorkRate);
-  serializePair<int16_t>(DropSite, (gv < GV_TEST) ? true : false);
-  serialize<int8_t>(TaskSwapGroup);
-  serialize<int16_t>(AttackSound);
-  if (gv >= GV_AoEB)
-    serialize<int16_t>(MoveSound); // 6.92
-  serialize<int8_t>(RunPattern);
-
-  if (gv < GV_AoK) // 11.24
-  {
-    uint16_t task_count;
-    serializeSize<uint16_t>(task_count, TaskList.size());
-    serializeSub<Task>(TaskList, task_count);
-  }
-}
-
-}
-
 }

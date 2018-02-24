@@ -20,69 +20,65 @@
 
 #include "genie/dat/unit/Creatable.h"
 
-namespace genie
-{
+namespace genie {
 
-namespace unit
-{
+namespace unit {
 
-Creatable::Creatable() : //Type50(),
-  ResourceCosts(3)
-{
-}
-
-Creatable::~Creatable()
-{
-}
-
-//------------------------------------------------------------------------------
-void Creatable::setGameVersion(GameVersion gv)
-{
-  ISerializable::setGameVersion(gv);
-}
-
-unsigned short Creatable::getResourceCostsSize()
-{
-  return 3;
-}
-
-void Creatable::serializeObject(void)
-{
-  GameVersion gv = getGameVersion();
-
-  serializeSub<ResourceCost>(ResourceCosts, 3);
-  serialize<int16_t>(TrainTime);
-  serialize<int16_t>(TrainLocationID);
-  serialize<int8_t>(ButtonID);
-
-  if (gv >= GV_AoEB) // 7.01
-  {
-    if (gv >= GV_AoKE3) // 9.07
+    Creatable::Creatable() :
+        //Type50(),
+        ResourceCosts(3)
     {
-      serialize<float>(RearAttackModifier);
-      serialize<float>(FlankAttackModifier);
-      serialize<int8_t>(CreatableType);
-
-      if (gv >= GV_AoKB)
-      {
-        serialize<int8_t>(HeroMode); // 10.49
-        serialize<int32_t>(GarrisonGraphic); // 10.73
-      }
-
-      serialize<float>(TotalProjectiles);
-      serialize<int8_t>(MaxTotalProjectiles);
-      serialize<float>(ProjectileSpawningArea, 3);
-      serialize<int32_t>(SecondaryProjectileUnit); // 9.08
-      // 9.2
-      {
-        serialize<int32_t>(SpecialGraphic);
-        serialize<int8_t>(SpecialAbility);
-      }
     }
-    serialize<int16_t>(DisplayedPierceArmour);
-  }
-}
 
-}
+    Creatable::~Creatable()
+    {
+    }
 
+    //------------------------------------------------------------------------------
+    void Creatable::setGameVersion(GameVersion gv)
+    {
+        ISerializable::setGameVersion(gv);
+    }
+
+    unsigned short Creatable::getResourceCostsSize()
+    {
+        return 3;
+    }
+
+    void Creatable::serializeObject(void)
+    {
+        GameVersion gv = getGameVersion();
+
+        serializeSub<ResourceCost>(ResourceCosts, 3);
+        serialize<int16_t>(TrainTime);
+        serialize<int16_t>(TrainLocationID);
+        serialize<int8_t>(ButtonID);
+
+        if (gv >= GV_AoEB) // 7.01
+        {
+            if (gv >= GV_AoKE3) // 9.07
+            {
+                serialize<float>(RearAttackModifier);
+                serialize<float>(FlankAttackModifier);
+                serialize<int8_t>(CreatableType);
+
+                if (gv >= GV_AoKB) {
+                    serialize<int8_t>(HeroMode); // 10.49
+                    serialize<int32_t>(GarrisonGraphic); // 10.73
+                }
+
+                serialize<float>(TotalProjectiles);
+                serialize<int8_t>(MaxTotalProjectiles);
+                serialize<float>(ProjectileSpawningArea, 3);
+                serialize<int32_t>(SecondaryProjectileUnit); // 9.08
+                // 9.2
+                {
+                    serialize<int32_t>(SpecialGraphic);
+                    serialize<int8_t>(SpecialAbility);
+                }
+            }
+            serialize<int16_t>(DisplayedPierceArmour);
+        }
+    }
+}
 }

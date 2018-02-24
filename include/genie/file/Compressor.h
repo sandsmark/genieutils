@@ -24,67 +24,64 @@
 #include <memory>
 #include "ISerializable.h"
 
-namespace genie
-{
-  
+namespace genie {
+
 //------------------------------------------------------------------------------
-/// Utility to compress and decompress streams handled in ISerializeable 
+/// Utility to compress and decompress streams handled in ISerializeable
 /// objects.
 //
 class Compressor
 {
 public:
-  Compressor(const Compressor &) = delete;
-  Compressor &operator=(const Compressor &) = delete;
+    Compressor(const Compressor &) = delete;
+    Compressor &operator=(const Compressor &) = delete;
 
-  //----------------------------------------------------------------------------
-  /// Object that calls Compressors methods needs to register itself here.
-  /// 
-  /// @param obj object that calls compressors methods
-  //
-  Compressor(ISerializable *obj);
-  
-  //----------------------------------------------------------------------------
-  virtual ~Compressor();
-  
-  //----------------------------------------------------------------------------
-  void beginCompression(void);
-  
-  //----------------------------------------------------------------------------
-  void endCompression(void);
-  
-  //----------------------------------------------------------------------------
-  static void decompress(std::istream &source, std::ostream &sink);
-  
+    //----------------------------------------------------------------------------
+    /// Object that calls Compressors methods needs to register itself here.
+    ///
+    /// @param obj object that calls compressors methods
+    //
+    Compressor(ISerializable *obj);
+
+    //----------------------------------------------------------------------------
+    virtual ~Compressor();
+
+    //----------------------------------------------------------------------------
+    void beginCompression(void);
+
+    //----------------------------------------------------------------------------
+    void endCompression(void);
+
+    //----------------------------------------------------------------------------
+    static void decompress(std::istream &source, std::ostream &sink);
+
 private:
-  
-  ISerializable *obj_; 
-  
-  std::istream *istream_ = 0;
-  std::shared_ptr<std::istream> uncompressedIstream_;
-  
-  std::ostream *ostream_;
-  std::shared_ptr<std::ostream> bufferedStream_;
-  
-  Compressor();
-  
-  //----------------------------------------------------------------------------
-  /// Decompresses istream and sets uncompressedIstream_.
-  //
-  void startDecompression(void);
-  
-  //----------------------------------------------------------------------------
-  /// Closes decompressed stream.
-  //
-  void stopDecompression(void);
-  
-  //----------------------------------------------------------------------------
-  void startCompression(void);
-  
-  //----------------------------------------------------------------------------
-  void stopCompression(void);
-};
+    ISerializable *obj_;
 
+    std::istream *istream_ = 0;
+    std::shared_ptr<std::istream> uncompressedIstream_;
+
+    std::ostream *ostream_;
+    std::shared_ptr<std::ostream> bufferedStream_;
+
+    Compressor();
+
+    //----------------------------------------------------------------------------
+    /// Decompresses istream and sets uncompressedIstream_.
+    //
+    void startDecompression(void);
+
+    //----------------------------------------------------------------------------
+    /// Closes decompressed stream.
+    //
+    void stopDecompression(void);
+
+    //----------------------------------------------------------------------------
+    void startCompression(void);
+
+    //----------------------------------------------------------------------------
+    void stopCompression(void);
+};
 }
 
 #endif // GENIE_COMPRESSOR_H

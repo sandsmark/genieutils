@@ -20,8 +20,7 @@
 
 #include "genie/dat/GraphicDelta.h"
 
-namespace genie
-{
+namespace genie {
 
 GraphicDelta::GraphicDelta()
 {
@@ -34,18 +33,17 @@ GraphicDelta::~GraphicDelta()
 //------------------------------------------------------------------------------
 void GraphicDelta::setGameVersion(GameVersion gv)
 {
-  ISerializable::setGameVersion(gv);
+    ISerializable::setGameVersion(gv);
 }
 
 void GraphicDelta::serializeObject(void)
 {
-  serialize<int16_t>(GraphicID);
-  serialize<int16_t>(Padding1);
-  serialize<int32_t>(SpritePtr);
-  serialize<int16_t>(OffsetX);
-  serialize<int16_t>(OffsetY);
-  serialize<int16_t>(DisplayAngle);
-  serialize<int16_t>(Padding2);
+    serialize<int16_t>(GraphicID);
+    serialize<int16_t>(Padding1);
+    serialize<int32_t>(SpritePtr);
+    serialize<int16_t>(OffsetX);
+    serialize<int16_t>(OffsetY);
+    serialize<int16_t>(DisplayAngle);
+    serialize<int16_t>(Padding2);
 }
-
 }

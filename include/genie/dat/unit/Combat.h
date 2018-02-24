@@ -23,50 +23,46 @@
 #include "genie/file/ISerializable.h"
 #include "AttackOrArmor.h"
 
-namespace genie
-{
+namespace genie {
 
-namespace unit
-{
+namespace unit {
 
-class Combat : public ISerializable
-{
-public:
-  Combat();
-  virtual ~Combat();
-  virtual void setGameVersion(GameVersion gv);
+    class Combat : public ISerializable
+    {
+    public:
+        Combat();
+        virtual ~Combat();
+        virtual void setGameVersion(GameVersion gv);
 
-  int16_t BaseArmor = 1000; // uint8_t below TC
-  std::vector<unit::AttackOrArmor> Attacks;
-  std::vector<unit::AttackOrArmor> Armours;
-  int16_t DefenseTerrainBonus = -1;
-  float MaxRange = 0;
-  float BlastWidth = 0;
-  float ReloadTime = 0;
-  int16_t ProjectileUnitID = -1;
+        int16_t BaseArmor = 1000; // uint8_t below TC
+        std::vector<unit::AttackOrArmor> Attacks;
+        std::vector<unit::AttackOrArmor> Armours;
+        int16_t DefenseTerrainBonus = -1;
+        float MaxRange = 0;
+        float BlastWidth = 0;
+        float ReloadTime = 0;
+        int16_t ProjectileUnitID = -1;
 
-  /// Percentage value determining the probability of an attack hiting
-  int16_t AccuracyPercent = 0;
+        /// Percentage value determining the probability of an attack hiting
+        int16_t AccuracyPercent = 0;
 
-  /// Used in AoE/RoR for towers.
-  int8_t BreakOffCombat = 0;
-  int16_t FrameDelay = 0;
+        /// Used in AoE/RoR for towers.
+        int8_t BreakOffCombat = 0;
+        int16_t FrameDelay = 0;
 
-  std::vector<float> GraphicDisplacement = {0, 0, 0};
+        std::vector<float> GraphicDisplacement = { 0, 0, 0 };
 
-  int8_t BlastAttackLevel = 0;
-  float MinRange = 0;
-  float AccuracyDispersion = 0;
-  int16_t AttackGraphic = -1;
-  int16_t DisplayedMeleeArmour = 0;
-  int16_t DisplayedAttack = 0;
-  float DisplayedRange = 0;
-  float DisplayedReloadTime = 0;
+        int8_t BlastAttackLevel = 0;
+        float MinRange = 0;
+        float AccuracyDispersion = 0;
+        int16_t AttackGraphic = -1;
+        int16_t DisplayedMeleeArmour = 0;
+        int16_t DisplayedAttack = 0;
+        float DisplayedRange = 0;
+        float DisplayedReloadTime = 0;
 
-protected:
-  virtual void serializeObject(void);
-};
-
+    protected:
+        virtual void serializeObject(void);
+    };
 }
-
 }

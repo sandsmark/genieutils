@@ -20,8 +20,7 @@
 
 #include "genie/file/IFile.h"
 
-namespace genie
-{
+namespace genie {
 
 //------------------------------------------------------------------------------
 IFile::IFile()
@@ -31,88 +30,81 @@ IFile::IFile()
 //------------------------------------------------------------------------------
 IFile::~IFile()
 {
-  fileIn_.close();
+    fileIn_.close();
 }
 
 //------------------------------------------------------------------------------
 void IFile::freelock(void)
 {
-  fileIn_.close();
+    fileIn_.close();
 }
 
 //------------------------------------------------------------------------------
 void IFile::setFileName(const char *fileName)
 {
-  fileName_ = std::string(fileName);
+    fileName_ = std::string(fileName);
 }
 
 //------------------------------------------------------------------------------
 const char *IFile::getFileName(void) const
 {
-  return fileName_.c_str();
+    return fileName_.c_str();
 }
 
 //------------------------------------------------------------------------------
 void IFile::load()
 {
-  if (fileName_.empty())
-    throw std::ios_base::failure("Load: File name not set");
+    if (fileName_.empty())
+        throw std::ios_base::failure("Load: File name not set");
 
-  load(fileName_.c_str());
+    load(fileName_.c_str());
 }
 
 //------------------------------------------------------------------------------
 void IFile::load(const char *fileName)
 {
-  freelock();
+    freelock();
 
-  fileName_ = std::string(fileName);
+    fileName_ = std::string(fileName);
 
-  fileIn_.open(fileName, std::ios::binary | std::ios::in);
+    fileIn_.open(fileName, std::ios::binary | std::ios::in);
 
-  if (fileIn_.fail())
-  {
-    fileIn_.close();
-    throw std::ios_base::failure("Cant read file: \"" + fileName_ + "\"");
-  }
-  else
-  {
-    readObject(fileIn_);
-    loaded_ = true;
-  }
+    if (fileIn_.fail()) {
+        fileIn_.close();
+        throw std::ios_base::failure("Cant read file: \"" + fileName_ + "\"");
+    } else {
+        readObject(fileIn_);
+        loaded_ = true;
+    }
 }
 
 //------------------------------------------------------------------------------
 void IFile::save()
 {
-  if (fileName_.empty())
-    throw std::ios_base::failure("Save: File name not set");
+    if (fileName_.empty())
+        throw std::ios_base::failure("Save: File name not set");
 
-  saveAs(fileName_.c_str());
+    saveAs(fileName_.c_str());
 }
 
 //------------------------------------------------------------------------------
 void IFile::saveAs(const char *fileName)
 {
-  std::ofstream file;
+    std::ofstream file;
 
-  file.open(fileName, std::ofstream::binary);
+    file.open(fileName, std::ofstream::binary);
 
-  if (file.fail())
-  {
+    if (file.fail()) {
+        file.close();
+        throw std::ios_base::failure("Cant write to file: \"" + std::string(fileName) + "\"");
+    } else
+        writeObject(file);
+
     file.close();
-    throw std::ios_base::failure("Cant write to file: \"" +
-                                std::string(fileName) + "\"");
-  }
-  else
-    writeObject(file);
-
-  file.close();
 }
 
 //------------------------------------------------------------------------------
 void IFile::unload(void)
 {
 }
-
 }

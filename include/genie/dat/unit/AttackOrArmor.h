@@ -22,29 +22,25 @@
 #define GENIE_ATTACKORARMOR_H
 #include "genie/file/ISerializable.h"
 
-namespace genie
-{
+namespace genie {
 
-namespace unit
-{
+namespace unit {
 
-/// Stores information about the class and amount of an armor or attack
-class AttackOrArmor : public ISerializable
-{
-public:
-  AttackOrArmor();
-  virtual ~AttackOrArmor();
-  virtual void setGameVersion(GameVersion gv);
+    /// Stores information about the class and amount of an armor or attack
+    class AttackOrArmor : public ISerializable
+    {
+    public:
+        AttackOrArmor();
+        virtual ~AttackOrArmor();
+        virtual void setGameVersion(GameVersion gv);
 
-  int16_t Class = -1;
-  int16_t Amount = 0;
+        int16_t Class = -1;
+        int16_t Amount = 0;
 
-private:
-  virtual void serializeObject(void);
-};
-
+    private:
+        virtual void serializeObject(void);
+    };
 }
-
 }
 
 #endif // GENIE_UNITATTACKORARMOR_H

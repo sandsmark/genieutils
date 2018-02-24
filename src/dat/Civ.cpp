@@ -20,8 +20,7 @@
 
 #include "genie/dat/Civ.h"
 
-namespace genie
-{
+namespace genie {
 
 Civ::Civ()
 {
@@ -33,56 +32,50 @@ Civ::~Civ()
 
 void Civ::setGameVersion(GameVersion gv)
 {
-  ISerializable::setGameVersion(gv);
+    ISerializable::setGameVersion(gv);
 
-  updateGameVersion(Units);
+    updateGameVersion(Units);
 }
 
 unsigned short Civ::getNameSize(void)
 {
-  return 20;
+    return 20;
 }
 
 void Civ::serializeObject(void)
 {
-  GameVersion gv = getGameVersion();
+    GameVersion gv = getGameVersion();
 
-  serialize<int8_t>(PlayerType);
+    serialize<int8_t>(PlayerType);
 
-  if (gv > GV_LatestTap || gv < GV_Tapsa)
-  {
-    serialize(Name, getNameSize());
-  }
-  else
-  {
-    serializeDebugString(Name);
-  }
-
-  uint16_t count;
-  serializeSize<uint16_t>(count, Resources.size());
-
-  if (gv >= GV_MIK)
-  {
-    serialize<int16_t>(TechTreeID);
-    if (gv >= GV_AoKB) // 10.38
-    {
-      serialize<int16_t>(TeamBonusID);
-
-      if (gv >= GV_SWGB)
-      {
-        serialize(Name2, getNameSize());
-        serialize<int16_t>(UniqueUnitsTechs, 4);
-      }
+    if (gv > GV_LatestTap || gv < GV_Tapsa) {
+        serialize(Name, getNameSize());
+    } else {
+        serializeDebugString(Name);
     }
-  }
 
-  serialize<float>(Resources, count);
+    uint16_t count;
+    serializeSize<uint16_t>(count, Resources.size());
 
-  serialize<int8_t>(IconSet);
+    if (gv >= GV_MIK) {
+        serialize<int16_t>(TechTreeID);
+        if (gv >= GV_AoKB) // 10.38
+        {
+            serialize<int16_t>(TeamBonusID);
 
-  serializeSize<uint16_t>(count, Units.size());
-  serialize<int32_t>(UnitPointers, count);
-  serializeSubWithPointers<Unit>(Units, count, UnitPointers);
+            if (gv >= GV_SWGB) {
+                serialize(Name2, getNameSize());
+                serialize<int16_t>(UniqueUnitsTechs, 4);
+            }
+        }
+    }
+
+    serialize<float>(Resources, count);
+
+    serialize<int8_t>(IconSet);
+
+    serializeSize<uint16_t>(count, Units.size());
+    serialize<int32_t>(UnitPointers, count);
+    serializeSubWithPointers<Unit>(Units, count, UnitPointers);
 }
-
 }

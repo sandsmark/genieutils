@@ -27,8 +27,7 @@
 #include "genie/util/Logger.h"
 #include "PalFile.h"
 
-namespace genie
-{
+namespace genie {
 
 struct BlendMode
 {
@@ -55,41 +54,40 @@ class BlendomaticFile : public IFile
 {
 
 public:
-  //----------------------------------------------------------------------------
-  /// Constructor
-  //
-  BlendomaticFile();
+    //----------------------------------------------------------------------------
+    /// Constructor
+    //
+    BlendomaticFile();
 
-  //----------------------------------------------------------------------------
-  /// Destructor
-  //
-  virtual ~BlendomaticFile();
+    //----------------------------------------------------------------------------
+    /// Destructor
+    //
+    virtual ~BlendomaticFile();
 
-  //----------------------------------------------------------------------------
-  /// Frees all content of a slp file.
-  //
-  void unload(void);
+    //----------------------------------------------------------------------------
+    /// Frees all content of a slp file.
+    //
+    void unload(void);
 
-  void setBlendMode(uint32_t number, BlendModePtr mode);
-  BlendModePtr getBlendMode(uint32_t id = 0);
+    void setBlendMode(uint32_t number, BlendModePtr mode);
+    BlendModePtr getBlendMode(uint32_t id = 0);
 
 private:
-  static Logger &log;
+    static Logger &log;
 
-//  bool loaded_ = false;
+    //  bool loaded_ = false;
 
-  // 4 in AoK, 9 in AoC, apparently ignored by the game
-  uint32_t modeCount_;
-  // 31, apparently ignored by the game
-  uint32_t tileCount_;
-  std::vector<BlendModePtr> modes_;
+    // 4 in AoK, 9 in AoC, apparently ignored by the game
+    uint32_t modeCount_;
+    // 31, apparently ignored by the game
+    uint32_t tileCount_;
+    std::vector<BlendModePtr> modes_;
 
-  //----------------------------------------------------------------------------
-  virtual void serializeObject(void);
+    //----------------------------------------------------------------------------
+    virtual void serializeObject(void);
 };
 
 typedef std::shared_ptr<BlendomaticFile> BlendomaticFilePtr;
-
 }
 
 #endif // GENIE_BLENDOMATICFILE_H

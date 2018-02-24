@@ -21,37 +21,31 @@
 
 //
 
-int binaryCompare(const char * file1, const char * file2)
+int binaryCompare(const char *file1, const char *file2)
 {
- 
-  std::ifstream f1(file1, std::ifstream::binary), f2(file2, std::ifstream::binary);
-  
-  int cnt = 0;
-    
-  while (!f1.eof() && !f2.eof())
-  {
-    char c1, c2;
-    
-    f1.read(&c1,1);
-    f2.read(&c2,1);
-    
-    
-    if (c1 != c2)
-    {
-      std::cout << f1.tellg() << ": " << std::hex << (short)c1 << " " 
-                << (short)c2 << std::dec << std::endl;
-      cnt ++;
+
+    std::ifstream f1(file1, std::ifstream::binary), f2(file2, std::ifstream::binary);
+
+    int cnt = 0;
+
+    while (!f1.eof() && !f2.eof()) {
+        char c1, c2;
+
+        f1.read(&c1, 1);
+        f2.read(&c2, 1);
+
+        if (c1 != c2) {
+            std::cout << f1.tellg() << ": " << std::hex << (short)c1 << " "
+                      << (short)c2 << std::dec << std::endl;
+            cnt++;
+        }
     }
-    
-  }
-  
-  std::cout << cnt << " diffs!" << std::endl;
-  
-  if (f1.eof() != f2.eof())
-  {
-    std::cout << "EOF diff!!" << std::endl;
-    return -1;
-  }
-  else
-    return cnt;
+
+    std::cout << cnt << " diffs!" << std::endl;
+
+    if (f1.eof() != f2.eof()) {
+        std::cout << "EOF diff!!" << std::endl;
+        return -1;
+    } else
+        return cnt;
 }

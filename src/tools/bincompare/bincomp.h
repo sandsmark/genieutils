@@ -17,4 +17,4 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-int binaryCompare(const char * file1, const char * file2);
+int binaryCompare(const char *file1, const char *file2);

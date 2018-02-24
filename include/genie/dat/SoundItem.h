@@ -22,35 +22,33 @@
 #define GENIE_SOUNDITEM_H
 #include "genie/file/ISerializable.h"
 
-namespace genie
-{
+namespace genie {
 
 class SoundItem : public ISerializable
 {
 public:
-  SoundItem();
-  virtual ~SoundItem();
-  virtual void setGameVersion(GameVersion gv);
+    SoundItem();
+    virtual ~SoundItem();
+    virtual void setGameVersion(GameVersion gv);
 
-  unsigned short getFileNameSize();
+    unsigned short getFileNameSize();
 
-  /// File name of the resource
-  /// 13 in games <= TC and 27 in games >= SWGB
-  std::string FileName = "";
+    /// File name of the resource
+    /// 13 in games <= TC and 27 in games >= SWGB
+    std::string FileName = "";
 
-  /// ID of the resource in the drs file, if -1 the sound file may be stored
-  /// in the Sound directory.
-  int32_t ResourceID = -1;
+    /// ID of the resource in the drs file, if -1 the sound file may be stored
+    /// in the Sound directory.
+    int32_t ResourceID = -1;
 
-  /// Probability out of 100 that this item will be played
-  int16_t Probability = 100;
-  int16_t Civilization = -1;//not in aoe/ror
-  int16_t IconSet = -1;//not in aoe/ror
+    /// Probability out of 100 that this item will be played
+    int16_t Probability = 100;
+    int16_t Civilization = -1; //not in aoe/ror
+    int16_t IconSet = -1; //not in aoe/ror
 
 private:
-  virtual void serializeObject(void);
+    virtual void serializeObject(void);
 };
-
 }
 
 #endif // GENIE_SOUNDITEM_H

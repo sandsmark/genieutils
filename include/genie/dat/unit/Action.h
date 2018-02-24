@@ -23,48 +23,44 @@
 #include "genie/file/ISerializable.h"
 #include "../UnitCommand.h"
 
-namespace genie
-{
+namespace genie {
 
-namespace unit
-{
+namespace unit {
 
-class Action : public ISerializable
-{
-public:
-    enum RunPatterns : int8_t {
-        EscapeStraight = 0,
-        EscapeRandomly = 1
+    class Action : public ISerializable
+    {
+    public:
+        enum RunPatterns : int8_t {
+            EscapeStraight = 0,
+            EscapeRandomly = 1
+        };
+
+        Action();
+        virtual ~Action();
+        virtual void setGameVersion(GameVersion gv);
+
+        int16_t DefaultTaskID = -1;
+        float SearchRadius = 0;
+        float WorkRate = 0;
+        std::pair<int16_t, int16_t> DropSite = { -1, -1 };
+
+        /// If activated unit switches villager types
+        /// When tasking the unit, it will transform into another unit,
+        /// if the action is not found in this unit, but exists on another unit,
+        /// that uses the same task swap group.
+        /// Changes according to task
+        /// 1   Male villager
+        /// 2   Female villager
+        /// 3+ Free slots
+        int8_t TaskSwapGroup = 0;
+        int16_t AttackSound = -1;
+        int16_t MoveSound = -1;
+        /// Some animals have this.
+        int8_t RunPattern = 0;
+        std::vector<Task> TaskList; //only in aoe/ror
+
+    protected:
+        virtual void serializeObject(void);
     };
-
-  Action();
-  virtual ~Action();
-  virtual void setGameVersion(GameVersion gv);
-
-  int16_t DefaultTaskID = -1;
-  float SearchRadius = 0;
-  float WorkRate = 0;
-  std::pair<int16_t, int16_t> DropSite = {-1, -1};
-
-  /// If activated unit switches villager types
-  /// When tasking the unit, it will transform into another unit,
-  /// if the action is not found in this unit, but exists on another unit,
-  /// that uses the same task swap group.
-  /// Changes according to task
-  /// 1   Male villager
-  /// 2   Female villager
-  /// 3+ Free slots
-  int8_t TaskSwapGroup = 0;
-  int16_t AttackSound = -1;
-  int16_t MoveSound = -1;
-  /// Some animals have this.
-  int8_t RunPattern = 0;
-  std::vector<Task> TaskList;//only in aoe/ror
-
-protected:
-  virtual void serializeObject(void);
-};
-
 }
-
 }

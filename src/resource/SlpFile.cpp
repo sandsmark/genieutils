@@ -25,13 +25,13 @@
 #include "genie/resource/SlpFrame.h"
 #include "genie/resource/PalFile.h"
 
-namespace genie
-{
+namespace genie {
 
-Logger& SlpFile::log = Logger::getLogger("genie.SlpFile");
+Logger &SlpFile::log = Logger::getLogger("genie.SlpFile");
 
 //------------------------------------------------------------------------------
-SlpFile::SlpFile() : IFile()
+SlpFile::SlpFile() :
+    IFile()
 {
 }
 
@@ -43,134 +43,124 @@ SlpFile::~SlpFile()
 //------------------------------------------------------------------------------
 void SlpFile::serializeObject(void)
 {
-  if (isOperation(OP_READ) && !loaded_)
-  {
-    loadFile();
-  }
-  else if (isOperation(OP_WRITE))// && loaded_)
-  {
-    saveFile();
-  }
+    if (isOperation(OP_READ) && !loaded_) {
+        loadFile();
+    } else if (isOperation(OP_WRITE)) // && loaded_)
+    {
+        saveFile();
+    }
 }
 
 //------------------------------------------------------------------------------
 void SlpFile::loadFile()
 {
-  serializeHeader();
+    serializeHeader();
 
-  frames_.resize(num_frames_);
+    frames_.resize(num_frames_);
 
-  // Load frame headers
-  for (uint32_t i = 0; i < num_frames_; ++i)
-  {
-    frames_[i] = SlpFramePtr(new SlpFrame());
-    frames_[i]->setLoadParams(*getIStream());
-    frames_[i]->serializeHeader();
-    frames_[i]->setSlpFilePos(getInitialReadPosition());
-  }
+    // Load frame headers
+    for (uint32_t i = 0; i < num_frames_; ++i) {
+        frames_[i] = SlpFramePtr(new SlpFrame());
+        frames_[i]->setLoadParams(*getIStream());
+        frames_[i]->serializeHeader();
+        frames_[i]->setSlpFilePos(getInitialReadPosition());
+    }
 
-  // Load frame content
-  for (uint32_t i = 0; i < num_frames_; ++i)
-  {
-    frames_[i]->load(*getIStream());
-  }
+    // Load frame content
+    for (uint32_t i = 0; i < num_frames_; ++i) {
+        frames_[i]->load(*getIStream());
+    }
 
-  loaded_ = true;
+    loaded_ = true;
 }
 
 //------------------------------------------------------------------------------
 void SlpFile::saveFile()
 {
 #ifndef NDEBUG
-  std::chrono::time_point<std::chrono::system_clock> startTime = std::chrono::system_clock::now();
+    std::chrono::time_point<std::chrono::system_clock> startTime = std::chrono::system_clock::now();
 #endif
-  serializeHeader();
-  slp_offset_ = 32 + 32 * num_frames_;
+    serializeHeader();
+    slp_offset_ = 32 + 32 * num_frames_;
 
-  // Write frame headers
-  for (uint32_t i = 0; i < num_frames_; ++i)
-  {
-    frames_[i]->setSaveParams(*getOStream(), slp_offset_);
-    frames_[i]->serializeHeader();
-  }
+    // Write frame headers
+    for (uint32_t i = 0; i < num_frames_; ++i) {
+        frames_[i]->setSaveParams(*getOStream(), slp_offset_);
+        frames_[i]->serializeHeader();
+    }
 
-  // Write frame content
-  for (uint32_t i = 0; i < num_frames_; ++i)
-  {
-    frames_[i]->save(*getOStream());
-  }
+    // Write frame content
+    for (uint32_t i = 0; i < num_frames_; ++i) {
+        frames_[i]->save(*getOStream());
+    }
 #ifndef NDEBUG
-  std::chrono::time_point<std::chrono::system_clock> endTime = std::chrono::system_clock::now();
-  log.debug("SLP (%u bytes) saving took [%u] milliseconds", slp_offset_, std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count());
+    std::chrono::time_point<std::chrono::system_clock> endTime = std::chrono::system_clock::now();
+    log.debug("SLP (%u bytes) saving took [%u] milliseconds", slp_offset_, std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count());
 #endif
 }
 
 //------------------------------------------------------------------------------
 void SlpFile::unload(void)
 {
-  if (!loaded_)
-    log.warn("Trying to unload a not loaded slpfile!");
+    if (!loaded_)
+        log.warn("Trying to unload a not loaded slpfile!");
 
-  frames_.clear();
-  num_frames_ = 0;
+    frames_.clear();
+    num_frames_ = 0;
 
-  loaded_ = false;
+    loaded_ = false;
 }
 
 //------------------------------------------------------------------------------
 bool SlpFile::isLoaded(void) const
 {
-  return loaded_;
+    return loaded_;
 }
 
 //------------------------------------------------------------------------------
 uint32_t SlpFile::getFrameCount(void)
 {
-  return frames_.size();
+    return frames_.size();
 }
 
 //------------------------------------------------------------------------------
 void SlpFile::setFrameCount(uint32_t count)
 {
-  frames_.resize(count);
-  num_frames_ = count;
+    frames_.resize(count);
+    num_frames_ = count;
 }
 
 //------------------------------------------------------------------------------
 SlpFramePtr SlpFile::getFrame(uint32_t frame)
 {
-  if (frame >= frames_.size())
-  {
-    if (!loaded_)
-    {
+    if (frame >= frames_.size()) {
+        if (!loaded_) {
 #ifndef NDEBUG
-      log.debug("Reloading SLP, seeking frame [%u]", frame);
+            log.debug("Reloading SLP, seeking frame [%u]", frame);
 #endif
-      readObject(*getIStream());
-      return getFrame(frame);
+            readObject(*getIStream());
+            return getFrame(frame);
+        }
+        log.error("Trying to get frame [%u] from index out of range!", frame);
+        throw std::out_of_range("getFrame()");
     }
-    log.error("Trying to get frame [%u] from index out of range!", frame);
-    throw std::out_of_range("getFrame()");
-  }
 
-  return frames_[frame];
+    return frames_[frame];
 }
 
 //------------------------------------------------------------------------------
 void SlpFile::setFrame(uint32_t frame, SlpFramePtr data)
 {
-  if (frame < frames_.size())
-  {
-    frames_[frame] = data;
-  }
+    if (frame < frames_.size()) {
+        frames_[frame] = data;
+    }
 }
 
 //------------------------------------------------------------------------------
 void SlpFile::serializeHeader()
 {
-  serialize(version, 4);
-  serializeSize<uint32_t>(num_frames_, frames_.size());
-  serialize(comment, 24);
+    serialize(version, 4);
+    serializeSize<uint32_t>(num_frames_, frames_.size());
+    serialize(comment, 24);
 }
-
 }

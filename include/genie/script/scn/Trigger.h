@@ -25,8 +25,7 @@
 
 #include <stdint.h>
 
-namespace genie
-{
+namespace genie {
 
 struct MapPoint
 {
@@ -36,91 +35,90 @@ struct MapPoint
 class TriggerCondition : public ISerializable
 {
 public:
-  TriggerCondition();
-  virtual ~TriggerCondition();
+    TriggerCondition();
+    virtual ~TriggerCondition();
 
-  int32_t type = 0;
-  int32_t usedVariables = 0; //always = 0x10 (for internal use)
-  int32_t amount = -1; //of objects, difficult level
-  int32_t resource = -1; //resource type (see constants below)
-  int32_t setObject = -1;
-  int32_t nextObject = -1;
-  int32_t object = -1;
-  int32_t sourcePlayer = -1;
-  int32_t technology = -1;
-  int32_t timer = -1;
-  int32_t trigger = -1;
-  MapPoint areaFrom = {-1, -1};
-  MapPoint areaTo = {-1, -1};
-  int32_t objectGroup = -1;
-  int32_t objectType = -1; //Civilian, Military, Building, Other
-  int32_t aiSignal = -1;
+    int32_t type = 0;
+    int32_t usedVariables = 0; //always = 0x10 (for internal use)
+    int32_t amount = -1; //of objects, difficult level
+    int32_t resource = -1; //resource type (see constants below)
+    int32_t setObject = -1;
+    int32_t nextObject = -1;
+    int32_t object = -1;
+    int32_t sourcePlayer = -1;
+    int32_t technology = -1;
+    int32_t timer = -1;
+    int32_t trigger = -1;
+    MapPoint areaFrom = { -1, -1 };
+    MapPoint areaTo = { -1, -1 };
+    int32_t objectGroup = -1;
+    int32_t objectType = -1; //Civilian, Military, Building, Other
+    int32_t aiSignal = -1;
 
 private:
-  virtual void serializeObject(void);
+    virtual void serializeObject(void);
 };
 
 class TriggerEffect : public ISerializable
 {
 public:
-  TriggerEffect();
-  virtual ~TriggerEffect();
+    TriggerEffect();
+    virtual ~TriggerEffect();
 
-  int32_t type = 0;
-  int32_t usedVariables = 0;
-  int32_t aiGoal = -1;
-  int32_t amount = -1;
-  int32_t resource = -1;
-  int32_t diplomacy = -1;
-  int32_t setObjects = -1;
-  int32_t nextObject = -1;
-  int32_t object = -1;
-  int32_t sourcePlayer = -1;
-  int32_t targetPlayer = -1;
-  int32_t technology = -1;
-  int32_t stringTableID = -1;
-  int32_t soundResourceID = -1;
-  int32_t timer = -1;
-  int32_t trigger = -1;
-  MapPoint location = {-1, -1};
-  MapPoint areaFrom = {-1, -1}; //lower-left corner of area
-  MapPoint areaTo = {-1, -1}; //upper-right corner
-  int32_t objectGroup = -1;
-  int32_t objectType = -1; //Civilian, Military, Building, Other
-  int32_t instructionPanel = -1;
-  std::string message = "";	//Instructions/Chat
-  std::string soundFile = "";
-  std::vector<int32_t> selectedUnits;
+    int32_t type = 0;
+    int32_t usedVariables = 0;
+    int32_t aiGoal = -1;
+    int32_t amount = -1;
+    int32_t resource = -1;
+    int32_t diplomacy = -1;
+    int32_t setObjects = -1;
+    int32_t nextObject = -1;
+    int32_t object = -1;
+    int32_t sourcePlayer = -1;
+    int32_t targetPlayer = -1;
+    int32_t technology = -1;
+    int32_t stringTableID = -1;
+    int32_t soundResourceID = -1;
+    int32_t timer = -1;
+    int32_t trigger = -1;
+    MapPoint location = { -1, -1 };
+    MapPoint areaFrom = { -1, -1 }; //lower-left corner of area
+    MapPoint areaTo = { -1, -1 }; //upper-right corner
+    int32_t objectGroup = -1;
+    int32_t objectType = -1; //Civilian, Military, Building, Other
+    int32_t instructionPanel = -1;
+    std::string message = ""; //Instructions/Chat
+    std::string soundFile = "";
+    std::vector<int32_t> selectedUnits;
 
 private:
-  virtual void serializeObject(void);
+    virtual void serializeObject(void);
 };
 
 class Trigger : public ISerializable
 {
 public:
-  Trigger();
-  virtual ~Trigger();
+    Trigger();
+    virtual ~Trigger();
 
-  int32_t startingState;
-  int8_t looping;
-  int32_t stringTableID;
-  int8_t isObjective;
-  int32_t descriptionOrder;
-  int32_t startingTime;
-  std::string description;
-  std::string name;
-  std::vector<TriggerEffect> effects;
-  std::vector<int32_t> effectDisplayOrder;
-  std::vector<TriggerCondition> conditions;
-  std::vector<int32_t> conditionDisplayOrder;
+    int32_t startingState;
+    int8_t looping;
+    int32_t stringTableID;
+    int8_t isObjective;
+    int32_t descriptionOrder;
+    int32_t startingTime;
+    std::string description;
+    std::string name;
+    std::vector<TriggerEffect> effects;
+    std::vector<int32_t> effectDisplayOrder;
+    std::vector<TriggerCondition> conditions;
+    std::vector<int32_t> conditionDisplayOrder;
 
 private:
-  int32_t numEffects_;
-  int32_t numConditions_;
-  virtual void serializeObject(void);
+    int32_t numEffects_;
+    int32_t numConditions_;
+    virtual void serializeObject(void);
 };
-
 }
 
 #endif // GENIE_SCN_TRIGGER_H

@@ -42,108 +42,106 @@
 #include "TechTree.h"
 #include "RandomMap.h"
 
-namespace genie
-{
+namespace genie {
 
 class DatFile : public IFile
 {
 public:
-  //----------------------------------------------------------------------------
-  /// Standard constructor
-  //
-  DatFile();
+    //----------------------------------------------------------------------------
+    /// Standard constructor
+    //
+    DatFile();
 
-  //----------------------------------------------------------------------------
-  /// Destructor
-  //
-  virtual ~DatFile();
+    //----------------------------------------------------------------------------
+    /// Destructor
+    //
+    virtual ~DatFile();
 
-  //----------------------------------------------------------------------------
-  virtual void setGameVersion(GameVersion gv);
+    //----------------------------------------------------------------------------
+    virtual void setGameVersion(GameVersion gv);
 
-  //----------------------------------------------------------------------------
-  /// Uncompress dat file.
-  //
-  void extractRaw(const char *inFile, const char *outFile);
+    //----------------------------------------------------------------------------
+    /// Uncompress dat file.
+    //
+    void extractRaw(const char *inFile, const char *outFile);
 
-  //----------------------------------------------------------------------------
-  /// Debug information will be printed to stdout if activated.
-  ///
-  /// @param verbose true to activate
-  //
-  void setVerboseMode(bool verbose);
+    //----------------------------------------------------------------------------
+    /// Debug information will be printed to stdout if activated.
+    ///
+    /// @param verbose true to activate
+    //
+    void setVerboseMode(bool verbose);
 
-  // File data
-  static const unsigned short FILE_VERSION_SIZE = 8;
-  std::string FileVersion;
+    // File data
+    static const unsigned short FILE_VERSION_SIZE = 8;
+    std::string FileVersion;
 
-  std::vector<int32_t> FloatPtrTerrainTables;
-  std::vector<int32_t> TerrainPassGraphicPointers;
-  std::vector<TerrainRestriction> TerrainRestrictions;
+    std::vector<int32_t> FloatPtrTerrainTables;
+    std::vector<int32_t> TerrainPassGraphicPointers;
+    std::vector<TerrainRestriction> TerrainRestrictions;
 
-  std::vector<PlayerColour> PlayerColours;
+    std::vector<PlayerColour> PlayerColours;
 
-  std::vector<Sound> Sounds;
+    std::vector<Sound> Sounds;
 
-  std::vector<int32_t> GraphicPointers;
-  std::vector<Graphic> Graphics;
+    std::vector<int32_t> GraphicPointers;
+    std::vector<Graphic> Graphics;
 
-  genie::TerrainBlock TerrainBlock;
-  genie::RandomMaps RandomMaps;
+    genie::TerrainBlock TerrainBlock;
+    genie::RandomMaps RandomMaps;
 
-  std::vector<Effect> Effects;
+    std::vector<Effect> Effects;
 
-  std::vector<UnitHeader> UnitHeaders;
+    std::vector<UnitHeader> UnitHeaders;
 
-  std::vector<Civ> Civs;
+    std::vector<Civ> Civs;
 
-  std::vector<Tech> Techs;
+    std::vector<Tech> Techs;
 
-  /// Only present in gv >= SWGB
-  std::vector<UnitLine> UnitLines;
+    /// Only present in gv >= SWGB
+    std::vector<UnitLine> UnitLines;
 
-  genie::TechTree TechTree;
+    genie::TechTree TechTree;
 
-  /// History totals
-  int32_t TimeSlice;
-  int32_t UnitKillRate;
-  int32_t UnitKillTotal;
-  int32_t UnitHitPointRate;
-  int32_t UnitHitPointTotal;
-  int32_t RazingKillRate;
-  int32_t RazingKillTotal;
+    /// History totals
+    int32_t TimeSlice;
+    int32_t UnitKillRate;
+    int32_t UnitKillTotal;
+    int32_t UnitHitPointRate;
+    int32_t UnitHitPointTotal;
+    int32_t RazingKillRate;
+    int32_t RazingKillTotal;
 
-  uint16_t TerrainsUsed1;
+    uint16_t TerrainsUsed1;
 
-  //SWGB Unknowns:
-  int32_t SUnknown2;
-  int32_t SUnknown3;
-  int32_t SUnknown4;
-  int32_t SUnknown5;
+    //SWGB Unknowns:
+    int32_t SUnknown2;
+    int32_t SUnknown3;
+    int32_t SUnknown4;
+    int32_t SUnknown5;
 
-  int8_t SUnknown7;
-  int8_t SUnknown8;
+    int8_t SUnknown7;
+    int8_t SUnknown8;
 
 private:
-  // if true print debug messages
-  bool verbose_ = false;
+    // if true print debug messages
+    bool verbose_ = false;
 
-  std::string file_name_ = "";
-  std::fstream *file_ = 0;
+    std::string file_name_ = "";
+    std::fstream *file_ = 0;
 
-  Compressor compressor_;
+    Compressor compressor_;
 
-  DatFile(const DatFile &other);
-  DatFile &operator=(const DatFile &other);
+    DatFile(const DatFile &other);
+    DatFile &operator=(const DatFile &other);
 
-  //----------------------------------------------------------------------------
-  /// Clears all data.
-  //
-  virtual void unload(void);
+    //----------------------------------------------------------------------------
+    /// Clears all data.
+    //
+    virtual void unload(void);
 
-  virtual void serializeObject(void);
+    virtual void serializeObject(void);
 };
-
 }
 
 #endif // GENIE_DATFILE_H

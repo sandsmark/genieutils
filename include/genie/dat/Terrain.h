@@ -23,56 +23,54 @@
 #include "genie/file/ISerializable.h"
 #include "genie/dat/TerrainCommon.h"
 
-namespace genie
-{
+namespace genie {
 
 class Terrain : public SharedTerrain
 {
 public:
-  Terrain();
-  virtual ~Terrain();
-  virtual void setGameVersion(GameVersion gv);
-  static unsigned short getTerrainCount(GameVersion gv);
-  static void setTerrainCount(unsigned short cnt);
+    Terrain();
+    virtual ~Terrain();
+    virtual void setGameVersion(GameVersion gv);
+    static unsigned short getTerrainCount(GameVersion gv);
+    static void setTerrainCount(unsigned short cnt);
 
-  int8_t IsWater = 0;
-  int8_t HideInEditor = 0;
-  int32_t StringID = 0;
-  int16_t Phantom = 0;
+    int8_t IsWater = 0;
+    int8_t HideInEditor = 0;
+    int32_t StringID = 0;
+    int16_t Phantom = 0;
 
-  unsigned short getNameSize(void);
+    unsigned short getNameSize(void);
 
-  int32_t BlendPriority = 0;//not in aoe/ror
-  int32_t BlendType = 0; //not in aoe/ror
+    int32_t BlendPriority = 0; //not in aoe/ror
+    int32_t BlendType = 0; //not in aoe/ror
 
-  std::pair<uint8_t, uint8_t> CliffColors = {0, 0};
-  int8_t PassableTerrain = -1;
-  int8_t ImpassableTerrain = -1;
+    std::pair<uint8_t, uint8_t> CliffColors = { 0, 0 };
+    int8_t PassableTerrain = -1;
+    int8_t ImpassableTerrain = -1;
 
-  std::vector<FrameData> ElevationGraphics;
+    std::vector<FrameData> ElevationGraphics;
 
-  int16_t TerrainToDraw = 0;
-  std::pair<int16_t, int16_t> TerrainDimensions = {0, 0}; // rows + cols
+    int16_t TerrainToDraw = 0;
+    std::pair<int16_t, int16_t> TerrainDimensions = { 0, 0 }; // rows + cols
 
-  /// These refer to terrain borders, which are actually used only in AoE and RoR.
-  std::vector<int16_t> Borders;
+    /// These refer to terrain borders, which are actually used only in AoE and RoR.
+    std::vector<int16_t> Borders;
 
-  static const unsigned short TERRAIN_UNITS_SIZE = 30;
-  std::vector<int16_t> TerrainUnitID;
-  std::vector<int16_t> TerrainUnitDensity;
+    static const unsigned short TERRAIN_UNITS_SIZE = 30;
+    std::vector<int16_t> TerrainUnitID;
+    std::vector<int16_t> TerrainUnitDensity;
 
-  /// If two terrain units are to be placed on same spot, this selects which one will prevail others.
-  /// 1 = prevails, others don't.
-  std::vector<int8_t> TerrainUnitCentering;
+    /// If two terrain units are to be placed on same spot, this selects which one will prevail others.
+    /// 1 = prevails, others don't.
+    std::vector<int8_t> TerrainUnitCentering;
 
-  int16_t NumberOfTerrainUnitsUsed = 0;
+    int16_t NumberOfTerrainUnitsUsed = 0;
 
 private:
-  static unsigned short terrain_count_;
+    static unsigned short terrain_count_;
 
-  virtual void serializeObject(void);
+    virtual void serializeObject(void);
 };
-
 }
 
 #endif // GENIE_TERRAIN_H

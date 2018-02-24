@@ -31,22 +31,21 @@
 #include "scn/MapDescription.h"
 #include "scn/Trigger.h"
 
-namespace genie
-{
+namespace genie {
 
 class Logger;
 
 class ScnIncludedFile : public ISerializable
 {
 public:
-  ScnIncludedFile();
-  virtual ~ScnIncludedFile();
+    ScnIncludedFile();
+    virtual ~ScnIncludedFile();
 
-  std::string perFileName;
-  std::string someString;
+    std::string perFileName;
+    std::string someString;
 
 private:
-  virtual void serializeObject(void);
+    virtual void serializeObject(void);
 };
 
 //------------------------------------------------------------------------------
@@ -56,74 +55,73 @@ private:
 class ScnFile : public IFile
 {
 public:
-  ScnFile();
-  virtual ~ScnFile();
+    ScnFile();
+    virtual ~ScnFile();
 
-  //----------------------------------------------------------------------------
-  /// Extracts a scenario (for debugging purpose).
-  //
-  void extractRaw(const char *from, const char *to);
+    //----------------------------------------------------------------------------
+    /// Extracts a scenario (for debugging purpose).
+    //
+    void extractRaw(const char *from, const char *to);
 
-  static uint32_t getSeparator(void);
+    static uint32_t getSeparator(void);
 
-  std::string version;
+    std::string version;
 
-  // Uncompressed Header:
+    // Uncompressed Header:
 
-  int32_t saveType;
+    int32_t saveType;
 
-  /// Timestamp of last save
-  uint32_t lastSaveTime;
+    /// Timestamp of last save
+    uint32_t lastSaveTime;
 
-  std::string scenarioInstructions;
+    std::string scenarioInstructions;
 
-  uint32_t victoryType;
+    uint32_t victoryType;
 
-  uint32_t playerCount;
+    uint32_t playerCount;
 
-  // Compressed header:
+    // Compressed header:
 
-  /// aokts description: "Next unit ID to place" ??
-  uint32_t nextUnitID;
+    /// aokts description: "Next unit ID to place" ??
+    uint32_t nextUnitID;
 
-  ScnMainPlayerData playerData;
+    ScnMainPlayerData playerData;
 
-  ScnMap map;
+    ScnMap map;
 
-  std::vector<ScnPlayerResources> playerResources;
-  std::vector<ScnPlayerUnits> playerUnits;
+    std::vector<ScnPlayerResources> playerResources;
+    std::vector<ScnPlayerUnits> playerUnits;
 
-  std::vector<ScnMorePlayerData> players;
+    std::vector<ScnMorePlayerData> players;
 
-  double triggerVersion;
-  int8_t objectivesStartingState;
-  std::vector<Trigger> triggers;
-  std::vector<int32_t> triggerDisplayOrder;
+    double triggerVersion;
+    int8_t objectivesStartingState;
+    std::vector<Trigger> triggers;
+    std::vector<int32_t> triggerDisplayOrder;
 
-  uint32_t includeFiles;
-  uint32_t perErrorIncluded;
-  std::vector<uint32_t> perError;
-  std::vector<ScnIncludedFile> includedFiles;
+    uint32_t includeFiles;
+    uint32_t perErrorIncluded;
+    std::vector<uint32_t> perError;
+    std::vector<ScnIncludedFile> includedFiles;
 
 private:
-  static Logger &log;
-  bool verifyVersion();
+    static Logger &log;
+    bool verifyVersion();
 
-  uint32_t headerLength_; //starting after this
-  uint32_t playerCount1_;
-  uint32_t playerCount2_;
-  uint32_t numTriggers_;
-  uint32_t fileCount_;
+    uint32_t headerLength_; //starting after this
+    uint32_t playerCount1_;
+    uint32_t playerCount2_;
+    uint32_t numTriggers_;
+    uint32_t fileCount_;
 
-  Compressor compressor_;
+    Compressor compressor_;
 
-  virtual void serializeObject(void);
+    virtual void serializeObject(void);
 
-  void serializeVersion(void);
+    void serializeVersion(void);
 };
 
 typedef std::shared_ptr<ScnFile> ScnFilePtr;
-
 }
 
 #endif // GENIE_SCNFILE_H

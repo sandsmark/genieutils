@@ -22,8 +22,7 @@
 #define GENIE_TECHAGEEFFECT_H
 #include "genie/file/ISerializable.h"
 
-namespace genie
-{
+namespace genie {
 
 /// Stores the effect type and its parameters
 /// See http://www.digitization.org/wiki/index.php/Genie_technologies#Effects
@@ -31,20 +30,19 @@ namespace genie
 class EffectCommand : public ISerializable
 {
 public:
-  EffectCommand();
-  virtual ~EffectCommand();
-  virtual void setGameVersion(GameVersion gv);
+    EffectCommand();
+    virtual ~EffectCommand();
+    virtual void setGameVersion(GameVersion gv);
 
-  int8_t Type = -1;
-  int16_t TargetUnit = -1;
-  int16_t UnitClassID = -1;
-  int16_t AttributeID = -1;
-  float Amount = 0;
+    int8_t Type = -1;
+    int16_t TargetUnit = -1;
+    int16_t UnitClassID = -1;
+    int16_t AttributeID = -1;
+    float Amount = 0;
 
 private:
-  virtual void serializeObject(void);
+    virtual void serializeObject(void);
 };
-
 }
 
 #endif // GENIE_TECHAGEEFFECT_H

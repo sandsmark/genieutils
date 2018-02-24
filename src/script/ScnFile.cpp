@@ -25,20 +25,20 @@
 
 #include <math.h>
 
-namespace genie
-{
+namespace genie {
 
 std::string ISerializable::scn_ver = "0.00";
 float ISerializable::scn_plr_data_ver = 0.f;
 float ISerializable::scn_internal_ver = 0.f;
 double ISerializable::scn_trigger_ver = 0.0;
 
-Logger& ScnFile::log = Logger::getLogger("genie.ScnFile");
+Logger &ScnFile::log = Logger::getLogger("genie.ScnFile");
 
 //------------------------------------------------------------------------------
-ScnFile::ScnFile() : IFile(), compressor_(this)
+ScnFile::ScnFile() :
+    IFile(), compressor_(this)
 {
-  scn_internal_ver = 0.f;
+    scn_internal_ver = 0.f;
 }
 
 //------------------------------------------------------------------------------
@@ -48,34 +48,34 @@ ScnFile::~ScnFile()
 
 void ScnFile::extractRaw(const char *from, const char *to)
 {
-  std::ifstream ifs;
-  std::ofstream ofs;
+    std::ifstream ifs;
+    std::ofstream ofs;
 
-  ifs.open(from, std::ios::binary);
-  ofs.open(to, std::ios::binary);
+    ifs.open(from, std::ios::binary);
+    ofs.open(to, std::ios::binary);
 
-  char version[4];
-  ifs.read(version, 4);
-  ofs.write(version, 4);
+    char version[4];
+    ifs.read(version, 4);
+    ofs.write(version, 4);
 
-  uint32_t headerLen;
+    uint32_t headerLen;
 
-  ifs.read(reinterpret_cast<char *>(&headerLen), 4);
-  ofs.write(reinterpret_cast<char *>(&headerLen), 4);
+    ifs.read(reinterpret_cast<char *>(&headerLen), 4);
+    ofs.write(reinterpret_cast<char *>(&headerLen), 4);
 
-  char header[headerLen];
+    char header[headerLen];
 
-  ifs.read(header, headerLen);
-  ofs.write(header, headerLen);
+    ifs.read(header, headerLen);
+    ofs.write(header, headerLen);
 
-  Compressor::decompress(ifs, ofs);
+    Compressor::decompress(ifs, ofs);
 
-//   std::shared_ptr<std::istream> dec = compressor_.startDecompression(&ifs);
+    //   std::shared_ptr<std::istream> dec = compressor_.startDecompression(&ifs);
 
-//   compressor_.stopDecompression();
+    //   compressor_.stopDecompression();
 
-  ifs.close();
-  ofs.close();
+    ifs.close();
+    ofs.close();
 }
 
 //------------------------------------------------------------------------------
@@ -122,75 +122,75 @@ bool ScnFile::verifyVersion()
 //------------------------------------------------------------------------------
 void ScnFile::serializeObject(void)
 {
-  serializeVersion();
-  if (isOperation(OP_READ) && !verifyVersion()) {
-      std::cout << "ERROR" << std::endl;
-      return;
-  }
-
-  if (isOperation(OP_WRITE)) {
-      headerLength_ = 21 + scenarioInstructions.size();
-  }
-
-  serialize<uint32_t>(headerLength_); // Used in AoE 1 lobby
-
-  serialize<int32_t>(saveType);
-  serialize<uint32_t>(lastSaveTime);
-  serializeForcedString<uint32_t>(scenarioInstructions);
-  serialize<uint32_t>(victoryType);
-  serialize<uint32_t>(playerCount);
-
-  compressor_.beginCompression();
-
-// Compressed header:
-
-  serialize<uint32_t>(nextUnitID);
-
-  serialize<ISerializable>(playerData);
-
-  serialize<ISerializable>(map);
-
-  if (scn_ver == "1.20" || scn_ver == "1.21") scn_internal_ver = 1.14f;
-  else if (scn_ver == "1.17" || scn_ver == "1.18" || scn_ver == "1.19") scn_internal_ver = 1.13f;
-  else if (scn_ver == "1.14" || scn_ver == "1.15" || scn_ver == "1.16") scn_internal_ver = 1.12f;
-
-  serializeSize<uint32_t>(playerCount1_, playerUnits.size());
-  if (scn_internal_ver > 1.06f)
-    serializeSub<ScnPlayerResources>(playerResources, 8);
-  else
-  {
-    // A lot of data is read here.
-  }
-  serializeSub<ScnPlayerUnits>(playerUnits, playerCount1_);
-
-  serialize<uint32_t>(playerCount2_);
-  serializeSub<ScnMorePlayerData>(players, 8);
-
-  triggerVersion = scn_trigger_ver;
-  serialize<double>(triggerVersion);
-  scn_trigger_ver = triggerVersion;
-
-  if (scn_trigger_ver > 1.4f)
-    serialize<int8_t>(objectivesStartingState);
-  serializeSize<uint32_t>(numTriggers_, triggers.size());
-  serializeSub<Trigger>(triggers, numTriggers_);
-  if (scn_trigger_ver > 1.3f)
-    serialize<int32_t>(triggerDisplayOrder, numTriggers_);
-
-  if (scn_ver == "1.21" || scn_ver == "1.20" || scn_ver == "1.19" || scn_ver == "1.18")
-  {
-    serialize<uint32_t>(includeFiles);
-    serialize<uint32_t>(perErrorIncluded);
-    if (perErrorIncluded)
-      serialize<uint32_t>(perError, 99);
-    if (includeFiles)
-    {
-      serializeSize<uint32_t>(fileCount_, includedFiles.size());
-      serializeSub<ScnIncludedFile>(includedFiles, fileCount_);
+    serializeVersion();
+    if (isOperation(OP_READ) && !verifyVersion()) {
+        std::cout << "ERROR" << std::endl;
+        return;
     }
-  }
 
-  compressor_.endCompression();
+    if (isOperation(OP_WRITE)) {
+        headerLength_ = 21 + scenarioInstructions.size();
+    }
+
+    serialize<uint32_t>(headerLength_); // Used in AoE 1 lobby
+
+    serialize<int32_t>(saveType);
+    serialize<uint32_t>(lastSaveTime);
+    serializeForcedString<uint32_t>(scenarioInstructions);
+    serialize<uint32_t>(victoryType);
+    serialize<uint32_t>(playerCount);
+
+    compressor_.beginCompression();
+
+    // Compressed header:
+
+    serialize<uint32_t>(nextUnitID);
+
+    serialize<ISerializable>(playerData);
+
+    serialize<ISerializable>(map);
+
+    if (scn_ver == "1.20" || scn_ver == "1.21")
+        scn_internal_ver = 1.14f;
+    else if (scn_ver == "1.17" || scn_ver == "1.18" || scn_ver == "1.19")
+        scn_internal_ver = 1.13f;
+    else if (scn_ver == "1.14" || scn_ver == "1.15" || scn_ver == "1.16")
+        scn_internal_ver = 1.12f;
+
+    serializeSize<uint32_t>(playerCount1_, playerUnits.size());
+    if (scn_internal_ver > 1.06f)
+        serializeSub<ScnPlayerResources>(playerResources, 8);
+    else {
+        // A lot of data is read here.
+    }
+    serializeSub<ScnPlayerUnits>(playerUnits, playerCount1_);
+
+    serialize<uint32_t>(playerCount2_);
+    serializeSub<ScnMorePlayerData>(players, 8);
+
+    triggerVersion = scn_trigger_ver;
+    serialize<double>(triggerVersion);
+    scn_trigger_ver = triggerVersion;
+
+    if (scn_trigger_ver > 1.4f)
+        serialize<int8_t>(objectivesStartingState);
+    serializeSize<uint32_t>(numTriggers_, triggers.size());
+    serializeSub<Trigger>(triggers, numTriggers_);
+    if (scn_trigger_ver > 1.3f)
+        serialize<int32_t>(triggerDisplayOrder, numTriggers_);
+
+    if (scn_ver == "1.21" || scn_ver == "1.20" || scn_ver == "1.19" || scn_ver == "1.18") {
+        serialize<uint32_t>(includeFiles);
+        serialize<uint32_t>(perErrorIncluded);
+        if (perErrorIncluded)
+            serialize<uint32_t>(perError, 99);
+        if (includeFiles) {
+            serializeSize<uint32_t>(fileCount_, includedFiles.size());
+            serializeSub<ScnIncludedFile>(includedFiles, fileCount_);
+        }
+    }
+
+    compressor_.endCompression();
 }
 
 ScnIncludedFile::ScnIncludedFile()
@@ -210,7 +210,7 @@ void ScnIncludedFile::serializeObject(void)
 //------------------------------------------------------------------------------
 void ScnFile::serializeVersion(void)
 {
-/* Internal versions
+    /* Internal versions
 1.01 - 1.00
 1.02 - 1.03
 1.03 - 1.03
@@ -234,29 +234,29 @@ void ScnFile::serializeVersion(void)
 1.21 - 1.14
 */
 
-// "1.01"
-// "1.02"
-// "1.03"
-// "1.04"
-// "1.05"
-// "1.06"
-// "1.07"
-// "1.08"
-// "1.09"
-// "1.10" Rise of Rome? 1.10 is used for trial versions till 1.19
-// "1.11"
-// "1.12"
-// "1.13"
-// "1.14" from this onwards the handling is same.
-// "1.15"
-// "1.16"
-// "1.17"
-// "1.18" first AoK?
-// "1.19"
-// "1.20"
-// "1.21" The Conquerors?
+    // "1.01"
+    // "1.02"
+    // "1.03"
+    // "1.04"
+    // "1.05"
+    // "1.06"
+    // "1.07"
+    // "1.08"
+    // "1.09"
+    // "1.10" Rise of Rome? 1.10 is used for trial versions till 1.19
+    // "1.11"
+    // "1.12"
+    // "1.13"
+    // "1.14" from this onwards the handling is same.
+    // "1.15"
+    // "1.16"
+    // "1.17"
+    // "1.18" first AoK?
+    // "1.19"
+    // "1.20"
+    // "1.21" The Conquerors?
 
-  /*if (isOperation(OP_WRITE))
+    /*if (isOperation(OP_WRITE))
   {
     switch (getGameVersion())
     {
@@ -280,15 +280,15 @@ void ScnFile::serializeVersion(void)
     }
   }*/
 
-  version = scn_ver;
-  serialize(version, 4);
-  scn_ver = version;
+    version = scn_ver;
+    serialize(version, 4);
+    scn_ver = version;
 }
 
 //------------------------------------------------------------------------------
 void ScnMainPlayerData::serializePlayerDataVersion(void)
 {
-  /*if (isOperation(OP_WRITE))
+    /*if (isOperation(OP_WRITE))
   {
     switch (getGameVersion())
     {
@@ -315,11 +315,11 @@ void ScnMainPlayerData::serializePlayerDataVersion(void)
     }
   }*/
 
-  playerDataVersion = scn_plr_data_ver;
-  serialize<float>(playerDataVersion);
-  scn_plr_data_ver = playerDataVersion;
+    playerDataVersion = scn_plr_data_ver;
+    serialize<float>(playerDataVersion);
+    scn_plr_data_ver = playerDataVersion;
 
-  /*if (isOperation(OP_READ))
+    /*if (isOperation(OP_READ))
   {
     if (fabs(playerDataVersion - 1.18) < 0.01)
       setGameVersion(genie::GV_AoK);
@@ -331,5 +331,4 @@ void ScnMainPlayerData::serializePlayerDataVersion(void)
       setGameVersion(genie::GV_AoE);
   }*/
 }
-
 }

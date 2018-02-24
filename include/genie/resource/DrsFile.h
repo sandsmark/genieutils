@@ -30,8 +30,7 @@
 #include "BinaFile.h"
 #include "UIFile.h"
 
-namespace genie
-{
+namespace genie {
 
 class Logger;
 
@@ -42,75 +41,74 @@ class DrsFile : public IFile
 {
 
 public:
-  //----------------------------------------------------------------------------
-  /// Default Constructor.
-  //
-  DrsFile();
+    //----------------------------------------------------------------------------
+    /// Default Constructor.
+    //
+    DrsFile();
 
-  //----------------------------------------------------------------------------
-  /// Destructor
-  //
-  virtual ~DrsFile();
+    //----------------------------------------------------------------------------
+    /// Destructor
+    //
+    virtual ~DrsFile();
 
-  //----------------------------------------------------------------------------
-  /// Get a shared pointer to a slp file.
-  ///
-  /// @param id resource id
-  /// @return slp file pointer or "empty" shared pointer if not found
-  //
-  SlpFilePtr getSlpFile(uint32_t id);
+    //----------------------------------------------------------------------------
+    /// Get a shared pointer to a slp file.
+    ///
+    /// @param id resource id
+    /// @return slp file pointer or "empty" shared pointer if not found
+    //
+    SlpFilePtr getSlpFile(uint32_t id);
 
-  //----------------------------------------------------------------------------
-  /// Get a shared pointer to a color palette file.
-  ///
-  /// @param id resource id
-  /// @return bina file pointer or "empty" shared pointer if not found
-  //
-  PalFilePtr getPalFile(uint32_t id);
-  UIFilePtr getUIFile(uint32_t id);
-  BmpFilePtr getBmpFile(uint32_t id);
-  std::string getScriptFile(uint32_t id);
-  ScnFilePtr getScnFile(uint32_t id);
+    //----------------------------------------------------------------------------
+    /// Get a shared pointer to a color palette file.
+    ///
+    /// @param id resource id
+    /// @return bina file pointer or "empty" shared pointer if not found
+    //
+    PalFilePtr getPalFile(uint32_t id);
+    UIFilePtr getUIFile(uint32_t id);
+    BmpFilePtr getBmpFile(uint32_t id);
+    std::string getScriptFile(uint32_t id);
+    ScnFilePtr getScnFile(uint32_t id);
 
-  std::string idType(uint32_t id);
+    std::string idType(uint32_t id);
 
-  unsigned char* getWavPtr(uint32_t id);
+    unsigned char *getWavPtr(uint32_t id);
 
-  std::vector<uint32_t> binaryFileIds() const;
+    std::vector<uint32_t> binaryFileIds() const;
 
   std::vector<uint32_t> slpFileIds() const;
 
 private:
-  static Logger &log;
+    static Logger &log;
 
-  bool header_loaded_ = false;
+    bool header_loaded_ = false;
 
-  uint32_t num_of_tables_;
-  uint32_t header_offset_;
+    uint32_t num_of_tables_;
+    uint32_t header_offset_;
 
-  std::vector<std::string> table_types_;
-  std::vector<uint32_t> table_num_of_files_;
+    std::vector<std::string> table_types_;
+    std::vector<uint32_t> table_num_of_files_;
 
-  std::vector<uint8_t> wav_file_;
+    std::vector<uint8_t> wav_file_;
 
-  std::unordered_map<uint32_t, SlpFilePtr> slp_map_;
-  std::unordered_map<uint32_t, BinaFilePtr> bina_map_;
-  std::unordered_map<uint32_t, uint32_t> wav_offsets_;
+    std::unordered_map<uint32_t, SlpFilePtr> slp_map_;
+    std::unordered_map<uint32_t, BinaFilePtr> bina_map_;
+    std::unordered_map<uint32_t, uint32_t> wav_offsets_;
 
-  unsigned int getCopyRightHeaderSize(void) const;
+    unsigned int getCopyRightHeaderSize(void) const;
 
-  std::string getSlpTableHeader(void) const;
-  std::string getBinaryTableHeader(void) const;
-  std::string getSoundTableHeader(void) const;
+    std::string getSlpTableHeader(void) const;
+    std::string getBinaryTableHeader(void) const;
+    std::string getSoundTableHeader(void) const;
 
-   //----------------------------------------------------------------------------
-  /// Loads table and resource headers.
-  //
-  void loadHeader();
+    //----------------------------------------------------------------------------
+    /// Loads table and resource headers.
+    //
+    void loadHeader();
 
-  virtual void serializeObject(void);
+    virtual void serializeObject(void);
 };
-
 }
 
 #endif // GENIE_DRSFILE_H

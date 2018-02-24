@@ -20,32 +20,28 @@
 
 #include "genie/dat/unit/AttackOrArmor.h"
 
-namespace genie
-{
+namespace genie {
 
-namespace unit
-{
+namespace unit {
 
-AttackOrArmor::AttackOrArmor()
-{
+    AttackOrArmor::AttackOrArmor()
+    {
+    }
+
+    AttackOrArmor::~AttackOrArmor()
+    {
+    }
+
+    //------------------------------------------------------------------------------
+    void AttackOrArmor::setGameVersion(GameVersion gv)
+    {
+        ISerializable::setGameVersion(gv);
+    }
+
+    void AttackOrArmor::serializeObject(void)
+    {
+        serialize<int16_t>(Class);
+        serialize<int16_t>(Amount);
+    }
 }
-
-AttackOrArmor::~AttackOrArmor()
-{
-}
-
-//------------------------------------------------------------------------------
-void AttackOrArmor::setGameVersion(GameVersion gv)
-{
-  ISerializable::setGameVersion(gv);
-}
-
-void AttackOrArmor::serializeObject(void)
-{
-  serialize<int16_t>(Class);
-  serialize<int16_t>(Amount);
-}
-
-}
-
 }

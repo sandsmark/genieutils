@@ -20,8 +20,7 @@
 
 #include "genie/dat/Techage.h"
 
-namespace genie
-{
+namespace genie {
 
 //------------------------------------------------------------------------------
 Effect::Effect()
@@ -36,32 +35,28 @@ Effect::~Effect()
 //------------------------------------------------------------------------------
 void Effect::setGameVersion(GameVersion gv)
 {
-  ISerializable::setGameVersion(gv);
+    ISerializable::setGameVersion(gv);
 
-  updateGameVersion(EffectCommands);
+    updateGameVersion(EffectCommands);
 }
 
 unsigned short Effect::getNameSize(void)
 {
-  return 31;
+    return 31;
 }
 
 //------------------------------------------------------------------------------
 void Effect::serializeObject(void)
 {
-  GameVersion gv = getGameVersion();
-  if (gv > GV_LatestTap || gv < GV_Tapsa)
-  {
-    serialize(Name, getNameSize());
-  }
-  else
-  {
-    serializeDebugString(Name);
-  }
+    GameVersion gv = getGameVersion();
+    if (gv > GV_LatestTap || gv < GV_Tapsa) {
+        serialize(Name, getNameSize());
+    } else {
+        serializeDebugString(Name);
+    }
 
-  uint16_t command_count;
-  serializeSize<uint16_t>(command_count, EffectCommands.size());
-  serializeSub<EffectCommand>(EffectCommands, command_count);
+    uint16_t command_count;
+    serializeSize<uint16_t>(command_count, EffectCommands.size());
+    serializeSub<EffectCommand>(EffectCommands, command_count);
 }
-
 }

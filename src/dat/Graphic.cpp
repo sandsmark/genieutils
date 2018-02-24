@@ -23,8 +23,7 @@
 
 #include <iostream>
 
-namespace genie
-{
+namespace genie {
 
 Graphic::Graphic()
 {
@@ -37,97 +36,86 @@ Graphic::~Graphic()
 //------------------------------------------------------------------------------
 void Graphic::setGameVersion(GameVersion gv)
 {
-  ISerializable::setGameVersion(gv);
+    ISerializable::setGameVersion(gv);
 
-  updateGameVersion(Deltas);
-  updateGameVersion(AngleSounds);
+    updateGameVersion(Deltas);
+    updateGameVersion(AngleSounds);
 }
 
 unsigned short Graphic::getNameSize()
 {
-  if (getGameVersion() < GV_SWGB)
-    return 21;
-  else
-    return 25;
+    if (getGameVersion() < GV_SWGB)
+        return 21;
+    else
+        return 25;
 }
 
 unsigned short Graphic::getName2Size()
 {
-  if (getGameVersion() < GV_SWGB)
-    return 13;
-  else
-    return 25;
+    if (getGameVersion() < GV_SWGB)
+        return 13;
+    else
+        return 25;
 }
 
 void Graphic::serializeObject(void)
 {
-  GameVersion gv = getGameVersion();
+    GameVersion gv = getGameVersion();
 
-  if (gv > GV_LatestTap || gv < GV_Tapsa)
-  {
-    serialize(Name, getNameSize());
-    serialize(FileName, getName2Size());
-  }
-  else
-  {
-    serializeDebugString(Name);
-    serializeDebugString(FileName);
-    if (gv >= GV_T3)
-    {
-      serialize<uint16_t>(FirstFrame);
-    }
-  }
-
-  if (gv < GV_TEST)
-  {
-    int16_t slp = SLP;
-    serialize<int16_t>(slp);
-    SLP = slp;
-  }
-  else
-  {
-    serialize<int32_t>(SLP);
-  }
-  serialize<int8_t>(IsLoaded); // Unused
-  serialize<int8_t>(OldColorFlag); // Unused
-  serialize<int8_t>(Layer);
-  serialize<int8_t>(PlayerColor);
-  serialize<int8_t>(Rainbow); // 2nd half of player color
-  serialize<int8_t>(TransparentSelection);
-
-  serialize<int16_t>(Coordinates, 4);
-
-  uint16_t delta_count;
-  serializeSize<uint16_t>(delta_count, Deltas.size());
-  serialize<int16_t>(SoundID);
-  serialize<int8_t>(AngleSoundsUsed);
-  serialize<uint16_t>(FrameCount);
-  serialize<uint16_t>(AngleCount);
-  serialize<float>(SpeedMultiplier);
-  serialize<float>(FrameDuration);
-  serialize<float>(ReplayDelay);
-  serialize<int8_t>(SequenceType);
-  serialize<int16_t>(ID);
-  serialize<int8_t>(MirroringMode);
-
-  if (gv >= GV_AoKB) // 10.72
-    serialize<int8_t>(EditorFlag); // A sprite editor thing
-
-  serializeSub<GraphicDelta>(Deltas, delta_count);
-
-  if (AngleSoundsUsed != 0)
-  {
-    if (isOperation(OP_WRITE) && AngleSounds.size() != AngleCount)
-    {
-      std::cerr << "Warning: Size mismatch between angle sounds and angles!"
-                << std::endl;
-      //Be naughty and force the size to be correct.
-      AngleSounds.resize(AngleCount, AngleSounds.front());
+    if (gv > GV_LatestTap || gv < GV_Tapsa) {
+        serialize(Name, getNameSize());
+        serialize(FileName, getName2Size());
+    } else {
+        serializeDebugString(Name);
+        serializeDebugString(FileName);
+        if (gv >= GV_T3) {
+            serialize<uint16_t>(FirstFrame);
+        }
     }
 
-    serializeSub<GraphicAngleSound>(AngleSounds, AngleCount);
-  }
+    if (gv < GV_TEST) {
+        int16_t slp = SLP;
+        serialize<int16_t>(slp);
+        SLP = slp;
+    } else {
+        serialize<int32_t>(SLP);
+    }
+    serialize<int8_t>(IsLoaded); // Unused
+    serialize<int8_t>(OldColorFlag); // Unused
+    serialize<int8_t>(Layer);
+    serialize<int8_t>(PlayerColor);
+    serialize<int8_t>(Rainbow); // 2nd half of player color
+    serialize<int8_t>(TransparentSelection);
 
+    serialize<int16_t>(Coordinates, 4);
+
+    uint16_t delta_count;
+    serializeSize<uint16_t>(delta_count, Deltas.size());
+    serialize<int16_t>(SoundID);
+    serialize<int8_t>(AngleSoundsUsed);
+    serialize<uint16_t>(FrameCount);
+    serialize<uint16_t>(AngleCount);
+    serialize<float>(SpeedMultiplier);
+    serialize<float>(FrameDuration);
+    serialize<float>(ReplayDelay);
+    serialize<int8_t>(SequenceType);
+    serialize<int16_t>(ID);
+    serialize<int8_t>(MirroringMode);
+
+    if (gv >= GV_AoKB) // 10.72
+        serialize<int8_t>(EditorFlag); // A sprite editor thing
+
+    serializeSub<GraphicDelta>(Deltas, delta_count);
+
+    if (AngleSoundsUsed != 0) {
+        if (isOperation(OP_WRITE) && AngleSounds.size() != AngleCount) {
+            std::cerr << "Warning: Size mismatch between angle sounds and angles!"
+                      << std::endl;
+            //Be naughty and force the size to be correct.
+            AngleSounds.resize(AngleCount, AngleSounds.front());
+        }
+
+        serializeSub<GraphicAngleSound>(AngleSounds, AngleCount);
+    }
 }
-
 }

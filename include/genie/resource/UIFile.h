@@ -16,7 +16,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef GENIE_UIFILE_H
 #define GENIE_UIFILE_H
 
@@ -28,9 +27,8 @@
 #include "genie/file/IFile.h"
 #include "genie/resource/Color.h"
 
-namespace genie
-{
-  
+namespace genie {
+
 class Logger;
 class Color;
 
@@ -41,68 +39,68 @@ class UIFile : public IFile
 {
 
 public:
-    struct Background {
+    struct Background
+    {
         std::string category;
         std::string unknown_string;
         uint32_t imageId;
         int32_t unknown_number; // always -1
     };
 
-    struct FileReference {
+    struct FileReference
+    {
         std::string category;
         uint32_t id;
     };
 
-  //----------------------------------------------------------------------------
-  /// Constructor
-  //
-  UIFile();
-  
-  //----------------------------------------------------------------------------
-  /// Destructor
-  //
-  virtual ~UIFile();
+    //----------------------------------------------------------------------------
+    /// Constructor
+    //
+    UIFile();
 
-  Background background1;
-  Background background2;
-  Background background3;
-  FileReference paletteFile;
-  FileReference cursorFile;
-  FileReference buttonFile;
-  FileReference popupDialogFile;
+    //----------------------------------------------------------------------------
+    /// Destructor
+    //
+    virtual ~UIFile();
 
-  uint32_t shadePercent;
-  uint32_t backgroundPosition;
-  uint32_t backgroundColor;
+    Background background1;
+    Background background2;
+    Background background3;
+    FileReference paletteFile;
+    FileReference cursorFile;
+    FileReference buttonFile;
+    FileReference popupDialogFile;
 
-  Color bevelColor1;
-  Color bevelColor2;
+    uint32_t shadePercent;
+    uint32_t backgroundPosition;
+    uint32_t backgroundColor;
 
-  Color textColor1;
-  Color textColor2;
+    Color bevelColor1;
+    Color bevelColor2;
 
-  Color focusColor1;
-  Color focusColor2;
+    Color textColor1;
+    Color textColor2;
 
-  Color stateColor1;
-  Color stateColor2;
+    Color focusColor1;
+    Color focusColor2;
+
+    Color stateColor1;
+    Color stateColor2;
 
 private:
-  bool readBackground(std::istream *istr, Background *background, const std::string &expectedName);
-  bool readFileReference(std::istream *istr, FileReference *fileReference, const std::string &expectedName);
-  bool readValue(std::istream *istr, uint32_t *val, const std::string &expectedName, const std::string &type = std::string());
-  bool readColor(std::istream *istr, Color *color, const std::string &expectedName);
+    bool readBackground(std::istream *istr, Background *background, const std::string &expectedName);
+    bool readFileReference(std::istream *istr, FileReference *fileReference, const std::string &expectedName);
+    bool readValue(std::istream *istr, uint32_t *val, const std::string &expectedName, const std::string &type = std::string());
+    bool readColor(std::istream *istr, Color *color, const std::string &expectedName);
 
-  static Logger &log;
-  
-  std::string windowType;
+    static Logger &log;
 
-  
-  virtual void serializeObject(void);
+    std::string windowType;
+
+    virtual void serializeObject(void);
 };
 
 typedef std::shared_ptr<UIFile> UIFilePtr;
-
 }
 
 #endif // GENIE_UIFILE_H

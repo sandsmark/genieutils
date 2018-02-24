@@ -20,8 +20,7 @@
 
 #include "genie/dat/TechageEffect.h"
 
-namespace genie
-{
+namespace genie {
 
 //------------------------------------------------------------------------------
 EffectCommand::EffectCommand()
@@ -36,17 +35,16 @@ EffectCommand::~EffectCommand()
 //------------------------------------------------------------------------------
 void EffectCommand::setGameVersion(GameVersion gv)
 {
-  ISerializable::setGameVersion(gv);
+    ISerializable::setGameVersion(gv);
 }
 
 //------------------------------------------------------------------------------
 void EffectCommand::serializeObject(void)
 {
-  serialize<int8_t>(Type);
-  serialize<int16_t>(TargetUnit);
-  serialize<int16_t>(UnitClassID);
-  serialize<int16_t>(AttributeID);
-  serialize<float>(Amount);
+    serialize<int8_t>(Type);
+    serialize<int16_t>(TargetUnit);
+    serialize<int16_t>(UnitClassID);
+    serialize<int16_t>(AttributeID);
+    serialize<float>(Amount);
 }
-
 }

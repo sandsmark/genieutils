@@ -22,111 +22,105 @@
 
 #include <cstring>
 
-namespace genie
-{
+namespace genie {
 
 //------------------------------------------------------------------------------
 void ISerializable::readObject(std::istream &istr)
 {
-  setOperation(OP_READ);
-  istr_ = &istr;
+    setOperation(OP_READ);
+    istr_ = &istr;
 
-  istr_->seekg(init_read_pos_);
+    istr_->seekg(init_read_pos_);
 
-  serializeObject();
-
+    serializeObject();
 }
 
 //------------------------------------------------------------------------------
 void ISerializable::writeObject(std::ostream &ostr)
 {
-  setOperation(OP_WRITE);
-  ostr_ = &ostr;
-  serializeObject();
-
+    setOperation(OP_WRITE);
+    ostr_ = &ostr;
+    serializeObject();
 }
 
 //------------------------------------------------------------------------------
 size_t ISerializable::objectSize(void)
 {
-  size_ = 0;
+    size_ = 0;
 
-  setOperation(OP_CALC_SIZE);
-  serializeObject();
+    setOperation(OP_CALC_SIZE);
+    serializeObject();
 
-  return size_;
+    return size_;
 }
 
 //------------------------------------------------------------------------------
-void ISerializable::serializeSubObject(ISerializable * const other)
+void ISerializable::serializeSubObject(ISerializable *const other)
 {
-  istr_ = other->istr_;
-  ostr_ = other->ostr_;
-  operation_ = other->operation_;
-  setGameVersion(other->gameVersion_);
-  serializeObject();
+    istr_ = other->istr_;
+    ostr_ = other->ostr_;
+    operation_ = other->operation_;
+    setGameVersion(other->gameVersion_);
+    serializeObject();
 }
 
 //------------------------------------------------------------------------------
 size_t ISerializable::strnlen(const char *str, size_t maxLen)
 {
-  size_t len = 0;
+    size_t len = 0;
 
-  for (unsigned int i=0; i < maxLen; i++)
-  {
-    if (str[i] == '\0')
-      return len;
+    for (unsigned int i = 0; i < maxLen; i++) {
+        if (str[i] == '\0')
+            return len;
 
-    len ++;
-  }
+        len++;
+    }
 
-  return maxLen;
+    return maxLen;
 }
 
 //------------------------------------------------------------------------------
 std::streampos ISerializable::tellg(void) const
 {
-  if (isOperation(OP_READ))
-    return istr_->tellg();
+    if (isOperation(OP_READ))
+        return istr_->tellg();
 
-  return 0;
+    return 0;
 }
 
 //------------------------------------------------------------------------------
-std::string ISerializable::readString (size_t len)
+std::string ISerializable::readString(size_t len)
 {
-  if (len > 0 && !istr_->eof())
-  {
-    char *buf = 0;
-    serialize<char>(&buf, len);
+    if (len > 0 && !istr_->eof()) {
+        char *buf = 0;
+        serialize<char>(&buf, len);
 
-    size_t tmp_len = ISerializable::strnlen(buf, len);
+        size_t tmp_len = ISerializable::strnlen(buf, len);
 
-    if (tmp_len < len)
-      len = tmp_len;
+        if (tmp_len < len)
+            len = tmp_len;
 
-    std::string ret(buf, len);
-    delete [] buf;
+        std::string ret(buf, len);
+        delete[] buf;
 
-    return ret;
-  }
+        return ret;
+    }
 
-  return "";
+    return "";
 }
 
 //------------------------------------------------------------------------------
 void ISerializable::writeString(std::string str, size_t len)
 {
-  char *buf = new char[len];
+    char *buf = new char[len];
 
-  strncpy(buf, str.c_str(), len);
+    strncpy(buf, str.c_str(), len);
 
-  for (unsigned int i=str.size(); i < len; i++)
-    buf[i] = 0; // fill up with 0
+    for (unsigned int i = str.size(); i < len; i++)
+        buf[i] = 0; // fill up with 0
 
-  ostr_->write(buf, len);
+    ostr_->write(buf, len);
 
-  delete [] buf;
+    delete[] buf;
 }
-
 }

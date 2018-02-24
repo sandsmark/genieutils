@@ -24,26 +24,24 @@
 
 #include <vector>
 
-namespace genie
-{
+namespace genie {
 
 class UnitLine : public ISerializable
 {
 public:
-  UnitLine();
-  virtual ~UnitLine();
-  virtual void setGameVersion(GameVersion gv);
+    UnitLine();
+    virtual ~UnitLine();
+    virtual void setGameVersion(GameVersion gv);
 
-  int16_t ID = -1;
+    int16_t ID = -1;
 
-  std::string Name = "";
+    std::string Name = "";
 
-  std::vector<int16_t> UnitIDs;
+    std::vector<int16_t> UnitIDs;
 
 private:
-  virtual void serializeObject(void);
+    virtual void serializeObject(void);
 };
-
 }
 
 #endif // GENIE_UNITLINE_H

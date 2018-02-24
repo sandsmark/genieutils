@@ -18,8 +18,7 @@
 
 #include "genie/resource/Color.h"
 
-namespace genie
-{
+namespace genie {
 
 //------------------------------------------------------------------------------
 Color::Color()
@@ -28,7 +27,7 @@ Color::Color()
 
 //------------------------------------------------------------------------------
 Color::Color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha) :
-             r(red), g(green), b(blue), a(alpha)
+    r(red), g(green), b(blue), a(alpha)
 {
 }
 
@@ -39,5 +38,4 @@ Color::~Color()
 
 //------------------------------------------------------------------------------
 const Color Color::Transparent(0, 0, 0, 0);
-  
 }

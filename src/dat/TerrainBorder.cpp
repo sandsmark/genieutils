@@ -20,11 +20,11 @@
 
 #include "genie/dat/TerrainBorder.h"
 
-namespace genie
-{
+namespace genie {
 
 //------------------------------------------------------------------------------
-TerrainBorder::TerrainBorder() : Borders(TILE_TYPE_COUNT)
+TerrainBorder::TerrainBorder() :
+    Borders(TILE_TYPE_COUNT)
 {
 }
 
@@ -36,51 +36,50 @@ TerrainBorder::~TerrainBorder()
 //------------------------------------------------------------------------------
 void TerrainBorder::setGameVersion(GameVersion gv)
 {
-  ISerializable::setGameVersion(gv);
+    ISerializable::setGameVersion(gv);
 }
 
 //------------------------------------------------------------------------------
 unsigned short TerrainBorder::getNameSize()
 {
-  return 13;
+    return 13;
 }
 
 //------------------------------------------------------------------------------
 void TerrainBorder::serializeObject(void)
 {
-  GameVersion gv = getGameVersion();
+    GameVersion gv = getGameVersion();
 
-  serialize<int8_t>(Enabled);
-  serialize<int8_t>(Random);
+    serialize<int8_t>(Enabled);
+    serialize<int8_t>(Random);
 
-  serialize(Name, getNameSize());
-  serialize(Name2, getNameSize());
+    serialize(Name, getNameSize());
+    serialize(Name2, getNameSize());
 
-  if (gv >= GV_AoEB)
-    serialize<int32_t>(SLP);
-  serialize<int32_t>(ShapePtr);
-  serialize<int32_t>(SoundID);
-  serialize<uint8_t>(Colors, 3);
+    if (gv >= GV_AoEB)
+        serialize<int32_t>(SLP);
+    serialize<int32_t>(ShapePtr);
+    serialize<int32_t>(SoundID);
+    serialize<uint8_t>(Colors, 3);
 
-  serialize<int8_t>(IsAnimated);
-  serialize<int16_t>(AnimationFrames);
-  serialize<int16_t>(PauseFames);
-  serialize<float>(Interval);
-  serialize<float>(PauseBetweenLoops);
-  serialize<int16_t>(Frame);
-  serialize<int16_t>(DrawFrame);
-  serialize<float>(AnimateLast);
-  serialize<int8_t>(FrameChanged);
-  serialize<int8_t>(Drawn);
+    serialize<int8_t>(IsAnimated);
+    serialize<int16_t>(AnimationFrames);
+    serialize<int16_t>(PauseFames);
+    serialize<float>(Interval);
+    serialize<float>(PauseBetweenLoops);
+    serialize<int16_t>(Frame);
+    serialize<int16_t>(DrawFrame);
+    serialize<float>(AnimateLast);
+    serialize<int8_t>(FrameChanged);
+    serialize<int8_t>(Drawn);
 
-  for (auto &sub: Borders)
-    serializeSub<FrameData>(sub, gv == GV_MIK ? 13 : 12);
+    for (auto &sub : Borders)
+        serializeSub<FrameData>(sub, gv == GV_MIK ? 13 : 12);
 
-  serialize<int16_t>(DrawTerrain);
-  serialize<int16_t>(UnderlayTerrain);
+    serialize<int16_t>(DrawTerrain);
+    serialize<int16_t>(UnderlayTerrain);
 
-  if (gv != GV_MIK)
-    serialize<int16_t>(BorderStyle);
+    if (gv != GV_MIK)
+        serialize<int16_t>(BorderStyle);
 }
-
 }

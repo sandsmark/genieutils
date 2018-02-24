@@ -20,8 +20,7 @@
 
 #include "genie/dat/Sound.h"
 
-namespace genie
-{
+namespace genie {
 
 Sound::Sound()
 {
@@ -34,29 +33,28 @@ Sound::~Sound()
 //------------------------------------------------------------------------------
 void Sound::setGameVersion(GameVersion gv)
 {
-  ISerializable::setGameVersion(gv);
+    ISerializable::setGameVersion(gv);
 
-  updateGameVersion(Items);
+    updateGameVersion(Items);
 }
 
 void Sound::serializeObject(void)
 {
   GameVersion gv = getGameVersion();
+    serialize<int16_t>(ID);
+    serialize<int16_t>(PlayDelay);
 
-  serialize<int16_t>(ID);
-  serialize<int16_t>(PlayDelay);
+    uint16_t file_count;
+    serializeSize<uint16_t>(file_count, Items.size());
 
-  uint16_t file_count;
-  serializeSize<uint16_t>(file_count, Items.size());
+    if (gv >= GV_TEST) {
+        serialize<int32_t>(CacheTime);
 
-  if (gv >= GV_TEST)
-  {
-    serialize<int32_t>(CacheTime);
-    if (gv >= GV_T8 && gv <= GV_LatestTap)
-      serialize<int16_t>(TotalProbability);
-  }
+        if (gv >= GV_T8 && gv <= GV_LatestTap) {
+            serialize<int16_t>(TotalProbability);
+        }
+    }
 
-  serializeSub<SoundItem>(Items, file_count);
+    serializeSub<SoundItem>(Items, file_count);
 }
-
 }

@@ -22,8 +22,7 @@
 #include "genie/script/scn/MapDescription.h"
 #include "genie/script/ScnFile.h"
 
-namespace genie
-{
+namespace genie {
 
 ScnMap::ScnMap()
 {
@@ -35,10 +34,10 @@ ScnMap::~ScnMap()
 
 void ScnMap::serializeObject(void)
 {
-  serialize<uint32_t>(width);
-  serialize<uint32_t>(height);
+    serialize<uint32_t>(width);
+    serialize<uint32_t>(height);
 
-  serializeSub<MapTile>(tiles, width * height);
+    serializeSub<MapTile>(tiles, width * height);
 }
 
 MapTile::MapTile()
@@ -51,9 +50,8 @@ MapTile::~MapTile()
 
 void MapTile::serializeObject(void)
 {
-  serialize<uint8_t>(terrainID);
-  serialize<uint8_t>(elevation);
-  serialize<uint8_t>(unused);
+    serialize<uint8_t>(terrainID);
+    serialize<uint8_t>(elevation);
+    serialize<uint8_t>(unused);
 }
-
 }

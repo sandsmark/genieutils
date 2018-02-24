@@ -22,15 +22,14 @@
 
 #include <iostream>
 
-namespace genie
-{
+namespace genie {
 
 unsigned short TerrainRestriction::terrain_count_ = 0;
 
 //------------------------------------------------------------------------------
 TerrainRestriction::TerrainRestriction() :
-  PassableBuildableDmgMultiplier(terrain_count_),
-  TerrainPassGraphics(terrain_count_)
+    PassableBuildableDmgMultiplier(terrain_count_),
+    TerrainPassGraphics(terrain_count_)
 {
 }
 
@@ -42,27 +41,25 @@ TerrainRestriction::~TerrainRestriction()
 //------------------------------------------------------------------------------
 void TerrainRestriction::setGameVersion(GameVersion gv)
 {
-  ISerializable::setGameVersion(gv);
+    ISerializable::setGameVersion(gv);
 
-  updateGameVersion(TerrainPassGraphics);
+    updateGameVersion(TerrainPassGraphics);
 }
 
 //------------------------------------------------------------------------------
 void TerrainRestriction::setTerrainCount(unsigned short cnt)
 {
-  terrain_count_ = cnt;
+    terrain_count_ = cnt;
 }
 
 //------------------------------------------------------------------------------
 void TerrainRestriction::serializeObject(void)
 {
-  serialize<float>(PassableBuildableDmgMultiplier, terrain_count_);
+    serialize<float>(PassableBuildableDmgMultiplier, terrain_count_);
 
-  GameVersion gv = getGameVersion();
-  if (gv >= GV_AoKA || (gv >= GV_T4 && gv <= GV_LatestTap))
-  {
-    serializeSub<TerrainPassGraphic>(TerrainPassGraphics, terrain_count_);
-  }
+    GameVersion gv = getGameVersion();
+    if (gv >= GV_AoKA || (gv >= GV_T4 && gv <= GV_LatestTap)) {
+        serializeSub<TerrainPassGraphic>(TerrainPassGraphics, terrain_count_);
+    }
 }
-
 }

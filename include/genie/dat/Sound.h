@@ -25,26 +25,24 @@
 #include <vector>
 #include "SoundItem.h"
 
-namespace genie
-{
+namespace genie {
 
 class Sound : public ISerializable
 {
 public:
-  Sound();
-  virtual ~Sound();
-  virtual void setGameVersion(GameVersion gv);
+    Sound();
+    virtual ~Sound();
+    virtual void setGameVersion(GameVersion gv);
 
-  int16_t ID = -1;
-  int16_t PlayDelay = 0;
-  int32_t CacheTime = 300000; // 5 minutes
-  int16_t TotalProbability = 100;
-  std::vector<SoundItem> Items;
+    int16_t ID = -1;
+    int16_t PlayDelay = 0;
+    int32_t CacheTime = 300000; // 5 minutes
+    int16_t TotalProbability = 100;
+    std::vector<SoundItem> Items;
 
 private:
-  virtual void serializeObject(void);
+    virtual void serializeObject(void);
 };
-
 }
 
 #endif // GENIE_SOUND_H

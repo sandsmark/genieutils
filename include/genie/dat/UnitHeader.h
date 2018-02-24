@@ -23,23 +23,21 @@
 #include "genie/file/ISerializable.h"
 #include "UnitCommand.h"
 
-namespace genie
-{
+namespace genie {
 
 class UnitHeader : public ISerializable
 {
 public:
-  UnitHeader();
-  virtual ~UnitHeader();
-  virtual void setGameVersion(GameVersion gv);
+    UnitHeader();
+    virtual ~UnitHeader();
+    virtual void setGameVersion(GameVersion gv);
 
-  int8_t Exists = 1;
-  std::vector<Task> TaskList;
+    int8_t Exists = 1;
+    std::vector<Task> TaskList;
 
 private:
-  virtual void serializeObject(void);
+    virtual void serializeObject(void);
 };
-
 }
 
 #endif // GENIE_UNITHEADER_H

@@ -20,47 +20,43 @@
 
 #include "genie/dat/unit/Moving.h"
 
-namespace genie
-{
+namespace genie {
 
-namespace unit
-{
+namespace unit {
 
-Moving::Moving() //: Unit()
-{
+    Moving::Moving() //: Unit()
+    {
+    }
+
+    Moving::~Moving()
+    {
+    }
+
+    //------------------------------------------------------------------------------
+    void Moving::setGameVersion(GameVersion gv)
+    {
+        ISerializable::setGameVersion(gv);
+    }
+
+    void Moving::serializeObject(void)
+    {
+        serialize<int16_t>(WalkingGraphic);
+        serialize<int16_t>(RunningGraphic);
+        serialize<float>(RotationSpeed);
+        serialize<int8_t>(OldSizeClass);
+        serialize<int16_t>(TrackingUnit);
+        serialize<int8_t>(TrackingUnitMode);
+        serialize<float>(TrackingUnitDensity);
+        serialize<int8_t>(OldMoveAlgorithm);
+
+        if (getGameVersion() >= GV_AoKB) // 10.28
+        {
+            serialize<float>(TurnRadius);
+            serialize<float>(TurnRadiusSpeed);
+            serialize<float>(MaxYawPerSecondMoving);
+            serialize<float>(StationaryYawRevolutionTime);
+            serialize<float>(MaxYawPerSecondStationary);
+        }
+    }
 }
-
-Moving::~Moving()
-{
-}
-
-//------------------------------------------------------------------------------
-void Moving::setGameVersion(GameVersion gv)
-{
-  ISerializable::setGameVersion(gv);
-}
-
-void Moving::serializeObject(void)
-{
-  serialize<int16_t>(WalkingGraphic);
-  serialize<int16_t>(RunningGraphic);
-  serialize<float>(RotationSpeed);
-  serialize<int8_t>(OldSizeClass);
-  serialize<int16_t>(TrackingUnit);
-  serialize<int8_t>(TrackingUnitMode);
-  serialize<float>(TrackingUnitDensity);
-  serialize<int8_t>(OldMoveAlgorithm);
-
-  if (getGameVersion() >= GV_AoKB) // 10.28
-  {
-    serialize<float>(TurnRadius);
-    serialize<float>(TurnRadiusSpeed);
-    serialize<float>(MaxYawPerSecondMoving);
-    serialize<float>(StationaryYawRevolutionTime);
-    serialize<float>(MaxYawPerSecondStationary);
-  }
-}
-
-}
-
 }

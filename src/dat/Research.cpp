@@ -20,11 +20,11 @@
 
 #include "genie/dat/Research.h"
 
-namespace genie
-{
+namespace genie {
 
 //------------------------------------------------------------------------------
-Tech::Tech() : ResourceCosts(3)
+Tech::Tech() :
+    ResourceCosts(3)
 {
 }
 
@@ -35,71 +35,62 @@ Tech::~Tech()
 
 void Tech::setGameVersion(GameVersion gv)
 {
-  ISerializable::setGameVersion(gv);
+    ISerializable::setGameVersion(gv);
 
-  RequiredTechs.resize(getRequiredTechsSize(), -1);
+    RequiredTechs.resize(getRequiredTechsSize(), -1);
 }
 
 //------------------------------------------------------------------------------
 unsigned short Tech::getRequiredTechsSize()
 {
-  if (getGameVersion() >= GV_AoKA)
-    return 6;
-  else
-    return 4;
+    if (getGameVersion() >= GV_AoKA)
+        return 6;
+    else
+        return 4;
 }
 
 //------------------------------------------------------------------------------
 void Tech::serializeObject(void)
 {
-  GameVersion gv = getGameVersion();
+    GameVersion gv = getGameVersion();
 
-  serialize<int16_t>(RequiredTechs, getRequiredTechsSize());
+    serialize<int16_t>(RequiredTechs, getRequiredTechsSize());
 
-  serializeSub<ResearchResourceCost>(ResourceCosts, 3);
-  serialize<int16_t>(RequiredTechCount);
+    serializeSub<ResearchResourceCost>(ResourceCosts, 3);
+    serialize<int16_t>(RequiredTechCount);
 
-  if (gv >= GV_AoKB)
-  {
-    serialize<int16_t>(Civ);// 10.22
-    serialize<int16_t>(FullTechMode); // 10.77
-  }
-
-  serialize<int16_t>(ResearchLocation);
-  if (gv >= GV_MATT)
-  {
-    serialize<uint16_t>(LanguageDLLName);
-    serialize<uint16_t>(LanguageDLLDescription);
-  }
-  serialize<int16_t>(ResearchTime);
-  serialize<int16_t>(EffectID);
-  serialize<int16_t>(Type);
-  serialize<int16_t>(IconID);
-  serialize<int8_t>(ButtonID);
-  if (gv >= GV_AoEB)
-  {
-    serialize<int32_t>(LanguageDLLHelp);
-    serialize<int32_t>(LanguageDLLTechTree);
-    serialize<int32_t>(HotKey);
-  }
-
-  if (gv > GV_LatestTap || gv < GV_Tapsa)
-  {
-    uint16_t name_len;
-    serializeSize<uint16_t>(name_len, Name);
-    serialize(Name, name_len);
-
-    if (gv >= GV_SWGB)
-    {
-      serializeSize<uint16_t>(name_len, Name2);
-      serialize(Name2, name_len);
+    if (gv >= GV_AoKB) {
+        serialize<int16_t>(Civ); // 10.22
+        serialize<int16_t>(FullTechMode); // 10.77
     }
-  }
-  else
-  {
-    serializeDebugString(Name);
-  }
 
+    serialize<int16_t>(ResearchLocation);
+    if (gv >= GV_MATT) {
+        serialize<uint16_t>(LanguageDLLName);
+        serialize<uint16_t>(LanguageDLLDescription);
+    }
+    serialize<int16_t>(ResearchTime);
+    serialize<int16_t>(EffectID);
+    serialize<int16_t>(Type);
+    serialize<int16_t>(IconID);
+    serialize<int8_t>(ButtonID);
+    if (gv >= GV_AoEB) {
+        serialize<int32_t>(LanguageDLLHelp);
+        serialize<int32_t>(LanguageDLLTechTree);
+        serialize<int32_t>(HotKey);
+    }
+
+    if (gv > GV_LatestTap || gv < GV_Tapsa) {
+        uint16_t name_len;
+        serializeSize<uint16_t>(name_len, Name);
+        serialize(Name, name_len);
+
+        if (gv >= GV_SWGB) {
+            serializeSize<uint16_t>(name_len, Name2);
+            serialize(Name2, name_len);
+        }
+    } else {
+        serializeDebugString(Name);
+    }
 }
-
 }

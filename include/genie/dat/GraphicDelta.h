@@ -22,28 +22,26 @@
 #define GENIE_GRAPHICDELTA_H
 #include "genie/file/ISerializable.h"
 
-namespace genie
-{
+namespace genie {
 
 class GraphicDelta : public ISerializable
 {
 public:
-  GraphicDelta();
-  virtual ~GraphicDelta();
-  virtual void setGameVersion(GameVersion gv);
+    GraphicDelta();
+    virtual ~GraphicDelta();
+    virtual void setGameVersion(GameVersion gv);
 
-  int16_t GraphicID = -1;
-  int16_t Padding1 = 0;
-  int32_t SpritePtr = 0;
-  int16_t OffsetX = 0; //In Pixels
-  int16_t OffsetY = 0; //In Pixels
-  int16_t DisplayAngle = -1;
-  int16_t Padding2 = 0;
+    int16_t GraphicID = -1;
+    int16_t Padding1 = 0;
+    int32_t SpritePtr = 0;
+    int16_t OffsetX = 0; //In Pixels
+    int16_t OffsetY = 0; //In Pixels
+    int16_t DisplayAngle = -1;
+    int16_t Padding2 = 0;
 
 private:
-  virtual void serializeObject(void);
+    virtual void serializeObject(void);
 };
-
 }
 
 #endif // GENIE_GRAPHICDELTA_H

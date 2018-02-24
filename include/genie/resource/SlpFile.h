@@ -28,8 +28,7 @@
 #include "PalFile.h"
 #include "SlpFrame.h"
 
-namespace genie
-{
+namespace genie {
 
 //------------------------------------------------------------------------------
 /// A slp file stores one or several images encoded using simple commands.
@@ -40,74 +39,73 @@ class SlpFile : public IFile
 {
 
 public:
-  //----------------------------------------------------------------------------
-  /// Constructor
-  //
-  SlpFile();
+    //----------------------------------------------------------------------------
+    /// Constructor
+    //
+    SlpFile();
 
-  //----------------------------------------------------------------------------
-  /// Destructor
-  //
-  virtual ~SlpFile();
+    //----------------------------------------------------------------------------
+    /// Destructor
+    //
+    virtual ~SlpFile();
 
-  //----------------------------------------------------------------------------
-  /// Frees all content of a slp file.
-  //
-  void unload(void);
+    //----------------------------------------------------------------------------
+    /// Frees all content of a slp file.
+    //
+    void unload(void);
 
-  //----------------------------------------------------------------------------
-  /// Check whether the files content is loaded or not.
-  //
-  bool isLoaded(void) const;
+    //----------------------------------------------------------------------------
+    /// Check whether the files content is loaded or not.
+    //
+    bool isLoaded(void) const;
 
-  //----------------------------------------------------------------------------
-  /// Return number of frames stored in the file. Available after load.
-  ///
-  /// @return number of frames
-  //
-  uint32_t getFrameCount(void);
-  void setFrameCount(uint32_t);
+    //----------------------------------------------------------------------------
+    /// Return number of frames stored in the file. Available after load.
+    ///
+    /// @return number of frames
+    //
+    uint32_t getFrameCount(void);
+    void setFrameCount(uint32_t);
 
-  //----------------------------------------------------------------------------
-  /// Returns the slp frame at given frame index.
-  ///
-  /// @param frame frame index
-  /// @return SlpFrame
-  //
-  SlpFramePtr getFrame(uint32_t frame=0);
-  void setFrame(uint32_t, SlpFramePtr);
+    //----------------------------------------------------------------------------
+    /// Returns the slp frame at given frame index.
+    ///
+    /// @param frame frame index
+    /// @return SlpFrame
+    //
+    SlpFramePtr getFrame(uint32_t frame = 0);
+    void setFrame(uint32_t, SlpFramePtr);
 
-  std::string version;
-  std::string comment;
+    std::string version;
+    std::string comment;
 
 private:
-  static Logger &log;
+    static Logger &log;
 
-  bool loaded_ = false;
+    bool loaded_ = false;
 
-  uint32_t num_frames_ = 0;
+    uint32_t num_frames_ = 0;
 
-  typedef std::vector<SlpFramePtr> FrameVector;
-  FrameVector frames_;
+    typedef std::vector<SlpFramePtr> FrameVector;
+    FrameVector frames_;
 
-  // Used to calculate offsets when saving the SLP.
-  uint32_t slp_offset_;
+    // Used to calculate offsets when saving the SLP.
+    uint32_t slp_offset_;
 
-  //----------------------------------------------------------------------------
-  virtual void serializeObject(void);
+    //----------------------------------------------------------------------------
+    virtual void serializeObject(void);
 
-  //----------------------------------------------------------------------------
-  /// Loads the file and its frames.
-  //
-  void loadFile(void);
-  void saveFile(void);
+    //----------------------------------------------------------------------------
+    /// Loads the file and its frames.
+    //
+    void loadFile(void);
+    void saveFile(void);
 
-  //----------------------------------------------------------------------------
-  void serializeHeader(void);
+    //----------------------------------------------------------------------------
+    void serializeHeader(void);
 };
 
 typedef std::shared_ptr<SlpFile> SlpFilePtr;
-
 }
 
 #endif // GENIE_SLPFILE_H

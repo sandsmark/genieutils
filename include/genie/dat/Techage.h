@@ -18,34 +18,31 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef GENIE_TECHAGE_H
 #define GENIE_TECHAGE_H
 #include "genie/file/ISerializable.h"
 #include "TechageEffect.h"
 
-namespace genie
-{
+namespace genie {
 
 class Effect : public ISerializable
 {
 
 public:
-  Effect();
-  virtual ~Effect();
-  virtual void setGameVersion(GameVersion gv);
+    Effect();
+    virtual ~Effect();
+    virtual void setGameVersion(GameVersion gv);
 
-  static unsigned short getNameSize(void);
+    static unsigned short getNameSize(void);
 
-  /// Internal name, changing doesn't affect anything.
-  std::string Name = "";
+    /// Internal name, changing doesn't affect anything.
+    std::string Name = "";
 
-  std::vector<EffectCommand> EffectCommands;
+    std::vector<EffectCommand> EffectCommands;
 
 private:
-  virtual void serializeObject(void);
+    virtual void serializeObject(void);
 };
-
 }
 
 #endif // GENIE_TECHAGE_H

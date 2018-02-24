@@ -14,50 +14,49 @@
 
 void testLang()
 {
-  genie::LangFile lf;
+    genie::LangFile lf;
 
-  lf.load("language.dll");
+    lf.load("language.dll");
 
-  std::cout << "GetString: " << lf.getString(42320) << std::endl;
+    std::cout << "GetString: " << lf.getString(42320) << std::endl;
 
-  lf.setString(42320, "Test pcrio ftw! U: ö ü ä ÜÄÖ haha");
+    lf.setString(42320, "Test pcrio ftw! U: ö ü ä ÜÄÖ haha");
 
-  std::cout << "GetOtherString: " << lf.getString(4442) << std::endl;
+    std::cout << "GetOtherString: " << lf.getString(4442) << std::endl;
 
-  lf.saveAs("new_lang.dll");
+    lf.saveAs("new_lang.dll");
 
-  lf.load("new_lang.dll");
+    lf.load("new_lang.dll");
 
+    std::cout << "GetSaved String: \"" << lf.getString(42320) << "\"" << std::endl;
 
-  std::cout << "GetSaved String: \"" << lf.getString(42320) << "\"" << std::endl;
+    lf.setString(1, "new one");
+    std::cout << lf.getString(1) << std::endl;
 
-  lf.setString(1, "new one");
-  std::cout << lf.getString(1) << std::endl;
+    std::cout << "Loading aoe lang: " << std::endl;
+    lf.load("lang/aoe/language.dll");
+    lf.getString(54518);
 
-  std::cout << "Loading aoe lang: " << std::endl;
-  lf.load("lang/aoe/language.dll");
-  lf.getString(54518);
+    genie::LangFile *lptr = new genie::LangFile();
 
-  genie::LangFile *lptr = new genie::LangFile();
+    lptr->load("lang/sw/language.dll");
+    lptr->getString(3064);
 
-  lptr->load("lang/sw/language.dll");
-  lptr->getString(3064);
-
-  delete lptr;
+    delete lptr;
 }
 
 int main(int argc, char **argv)
 {
-  genie::Logger::setLogLevel(genie::Logger::L_INFO);
+    genie::Logger::setLogLevel(genie::Logger::L_INFO);
 
-  std::ofstream log_out;
-  log_out.open("log.txt");
+    std::ofstream log_out;
+    log_out.open("log.txt");
 
-  genie::Logger::setGlobalOutputStream(log_out);
+    genie::Logger::setGlobalOutputStream(log_out);
 
-  testLang();
+    testLang();
 
-  /*
+    /*
   std::ifstream ifs;
   std::ofstream ofs;
 
@@ -78,5 +77,5 @@ int main(int argc, char **argv)
   ofs.close();
    */
 
-  return 0;
+    return 0;
 }

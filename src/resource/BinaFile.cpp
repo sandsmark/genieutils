@@ -19,39 +19,38 @@
 #include "genie/resource/BinaFile.h"
 #include "genie/util/Logger.h"
 
-namespace genie
-{
+namespace genie {
 
-Logger& BinaFile::log = Logger::getLogger("genie.BinaFile");
+Logger &BinaFile::log = Logger::getLogger("genie.BinaFile");
 
 BinaFile::BinaFile(uint32_t size) :
     m_size(size)
 {
 }
-  
+
 BinaFile::~BinaFile()
 {
 }
 
 PalFilePtr BinaFile::readPalFile(std::istream *istr)
 {
-  PalFilePtr pal(new PalFile());
-  
-  pal->setInitialReadPosition(getInitialReadPosition());
-  
-  pal->readObject(*istr);
-  
-  return pal;
+    PalFilePtr pal(new PalFile());
+
+    pal->setInitialReadPosition(getInitialReadPosition());
+
+    pal->readObject(*istr);
+
+    return pal;
 }
 
 UIFilePtr BinaFile::readUIFile(std::istream *istr)
 {
-  UIFilePtr uifile(new UIFile());
+    UIFilePtr uifile(new UIFile());
 
-  uifile->setInitialReadPosition(getInitialReadPosition());
-  uifile->readObject(*istr);
+    uifile->setInitialReadPosition(getInitialReadPosition());
+    uifile->readObject(*istr);
 
-  return uifile;
+    return uifile;
 }
 
 BmpFilePtr BinaFile::readBmpFile(std::istream *istr)
@@ -94,13 +93,12 @@ std::string BinaFile::readScriptFile(std::istream *istr)
 
 ScnFilePtr BinaFile::readScnFile(std::istream *istr)
 {
-  ScnFilePtr scnFile(new ScnFile());
+    ScnFilePtr scnFile(new ScnFile());
 
-  scnFile->setInitialReadPosition(getInitialReadPosition());
+    scnFile->setInitialReadPosition(getInitialReadPosition());
 
-  scnFile->readObject(*istr);
-  return scnFile;
-
+    scnFile->readObject(*istr);
+    return scnFile;
 }
 
 std::string BinaFile::filetype(std::istream *istr)
@@ -126,10 +124,7 @@ std::string BinaFile::filetype(std::istream *istr)
         return "bmp";
     }
 
-    if (content[0] >= '0' && content[0] <= '9' &&
-        content[1] == '.' &&
-        content[2] >= '0' && content[2] <= '9' &&
-        content[3] >= '0' && content[3] <= '9') {
+    if (content[0] >= '0' && content[0] <= '9' && content[1] == '.' && content[2] >= '0' && content[2] <= '9' && content[3] >= '0' && content[3] <= '9') {
         return "scenario file version " + std::string(content, 4);
     }
 
@@ -154,5 +149,4 @@ std::string BinaFile::filetype(std::istream *istr)
 void BinaFile::serializeObject(void)
 {
 }
-
 }

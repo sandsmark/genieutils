@@ -24,26 +24,24 @@
 #include "genie/file/ISerializable.h"
 #include "TerrainPassGraphic.h"
 
-namespace genie
-{
+namespace genie {
 
 class TerrainRestriction : public ISerializable
 {
 public:
-  TerrainRestriction();
-  virtual ~TerrainRestriction();
-  virtual void setGameVersion(GameVersion gv);
+    TerrainRestriction();
+    virtual ~TerrainRestriction();
+    virtual void setGameVersion(GameVersion gv);
 
-  std::vector<float> PassableBuildableDmgMultiplier;
-  std::vector<TerrainPassGraphic> TerrainPassGraphics;
+    std::vector<float> PassableBuildableDmgMultiplier;
+    std::vector<TerrainPassGraphic> TerrainPassGraphics;
 
-  static void setTerrainCount(unsigned short cnt);
+    static void setTerrainCount(unsigned short cnt);
 
 private:
-  static unsigned short terrain_count_;
+    static unsigned short terrain_count_;
 
-  virtual void serializeObject(void);
+    virtual void serializeObject(void);
 };
-
 }
 #endif // GENIE_TERRAINRESTRICTION_H

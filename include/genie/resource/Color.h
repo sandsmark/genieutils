@@ -16,42 +16,38 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef GENIE_COLOR_H
 #define GENIE_COLOR_H
 
 #include <stdint.h>
 
-namespace genie
-{
-    
+namespace genie {
+
 //------------------------------------------------------------------------------
 /// Basic RGBA color class.
 //
 class Color
 {
 public:
-  
-  //----------------------------------------------------------------------------
-  /// Creates a basic black color (0, 0, 0, 255)
-  //
-  Color();
-  
-  //----------------------------------------------------------------------------
-  //
-  Color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha = 255); 
-  
-  virtual ~Color();
-  
-  uint8_t r = 0; /// Red
-  uint8_t g = 0; /// Green
-  uint8_t b = 0; /// Blue
-  uint8_t a = 255; /// Alpha
-  
-  //Static members:
-  static const Color Transparent;
-};
+    //----------------------------------------------------------------------------
+    /// Creates a basic black color (0, 0, 0, 255)
+    //
+    Color();
 
+    //----------------------------------------------------------------------------
+    //
+    Color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha = 255);
+
+    virtual ~Color();
+
+    uint8_t r = 0; /// Red
+    uint8_t g = 0; /// Green
+    uint8_t b = 0; /// Blue
+    uint8_t a = 255; /// Alpha
+
+    //Static members:
+    static const Color Transparent;
+};
 }
 
 #endif // GENIE_COLOR_H
