@@ -144,6 +144,10 @@ protected:
     {
         *global_out_ << format << std::endl;
     }
+    void printLog(const char *format, char c)
+    {
+        printLog(format, int(c));
+    }
 
     template <typename ValueType, typename... Types>
     void printLog(const char *format, ValueType value, Types... arguments)
