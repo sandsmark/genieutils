@@ -46,7 +46,8 @@ void Type50::setGameVersion(GameVersion gv)
 void Type50::serializeObject(void)
 {
   GameVersion gv = getGameVersion();
-  if (gv < GV_TC) // 11.52
+  if (gv < GV_TC // 11.52
+  && (gv > GV_LatestTap || gv < GV_T3))
   {
     uint8_t defarmor_byte = BaseArmor;
     serialize<uint8_t>(defarmor_byte);

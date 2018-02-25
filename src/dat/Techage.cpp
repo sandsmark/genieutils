@@ -49,7 +49,15 @@ unsigned short Effect::getNameSize(void)
 //------------------------------------------------------------------------------
 void Effect::serializeObject(void)
 {
-  serialize(Name, getNameSize());
+  GameVersion gv = getGameVersion();
+  if (gv > GV_LatestTap || gv < GV_Tapsa)
+  {
+    serialize(Name, getNameSize());
+  }
+  else
+  {
+    serializeDebugString(Name);
+  }
 
   uint16_t command_count;
   serializeSize<uint16_t>(command_count, EffectCommands.size());

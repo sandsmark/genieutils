@@ -305,6 +305,15 @@ protected:
     serialize(str, size);
   }
 
+  // Serializes a string with debug data.
+  void serializeDebugString(std::string &str)
+  {
+    uint16_t size = 0x0A60;
+    serialize<uint16_t>(size);
+    serializeSize<uint16_t>(size, str.size());
+    serialize(str, size);
+  }
+
   // What abomination is this?
   template <typename T>
   void serializeForcedString(std::string &str)

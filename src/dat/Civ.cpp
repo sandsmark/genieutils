@@ -49,7 +49,14 @@ void Civ::serializeObject(void)
 
   serialize<int8_t>(PlayerType);
 
-  serialize(Name, getNameSize());
+  if (gv > GV_LatestTap || gv < GV_Tapsa)
+  {
+    serialize(Name, getNameSize());
+  }
+  else
+  {
+    serializeDebugString(Name);
+  }
 
   uint16_t count;
   serializeSize<uint16_t>(count, Resources.size());

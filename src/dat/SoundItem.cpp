@@ -49,7 +49,14 @@ void SoundItem::serializeObject(void)
 {
   GameVersion gv = getGameVersion();
 
-  serialize(FileName, getFileNameSize());
+  if (gv > GV_LatestTap || gv < GV_Tapsa)
+  {
+    serialize(FileName, getFileNameSize());
+  }
+  else
+  {
+    serializeDebugString(FileName);
+  }
 
   if (gv < GV_TEST)
   {

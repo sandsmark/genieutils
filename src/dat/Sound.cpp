@@ -41,14 +41,20 @@ void Sound::setGameVersion(GameVersion gv)
 
 void Sound::serializeObject(void)
 {
+  GameVersion gv = getGameVersion();
+
   serialize<int16_t>(ID);
   serialize<int16_t>(PlayDelay);
 
   uint16_t file_count;
   serializeSize<uint16_t>(file_count, Items.size());
 
-  if (getGameVersion() >= GV_TEST)
+  if (gv >= GV_TEST)
+  {
     serialize<int32_t>(CacheTime);
+    if (gv >= GV_T8 && gv <= GV_LatestTap)
+      serialize<int16_t>(TotalProbability);
+  }
 
   serializeSub<SoundItem>(Items, file_count);
 }

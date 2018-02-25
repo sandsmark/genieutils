@@ -63,8 +63,20 @@ void Graphic::serializeObject(void)
 {
   GameVersion gv = getGameVersion();
 
-  serialize(Name, getNameSize());
-  serialize(FileName, getName2Size());
+  if (gv > GV_LatestTap || gv < GV_Tapsa)
+  {
+    serialize(Name, getNameSize());
+    serialize(FileName, getName2Size());
+  }
+  else
+  {
+    serializeDebugString(Name);
+    serializeDebugString(FileName);
+    if (gv >= GV_T3)
+    {
+      serialize<uint16_t>(FirstFrame);
+    }
+  }
 
   if (gv < GV_TEST)
   {

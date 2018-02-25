@@ -35,6 +35,9 @@ public:
   static unsigned short getTerrainCount(GameVersion gv);
   static void setTerrainCount(unsigned short cnt);
 
+  int8_t IsWater = 0;
+  int8_t HideInEditor = 0;
+  int32_t StringID = 0;
   int16_t Phantom = 0;
 
   unsigned short getNameSize(void);

@@ -56,6 +56,8 @@ unsigned short Terrain::getTerrainCount(GameVersion gv)
     return terrain_count_;
   if (gv >= GV_SWGB)
     return 55;
+  if (gv >= GV_T2 && gv <= GV_LatestTap)
+    return 96;
   if (gv == GV_Cysion)
     return 100;
   if (gv == GV_TC)
@@ -80,8 +82,30 @@ void Terrain::serializeObject(void)
   serialize<int8_t>(Enabled);
   serialize<int8_t>(Random);
 
-  serialize(Name, getNameSize());
-  serialize(Name2, getNameSize());
+  if (gv > GV_LatestTap || gv < GV_Tapsa)
+  {
+    serialize(Name, getNameSize());
+    serialize(Name2, getNameSize());
+  }
+  else
+  {
+    if (gv >= GV_T2)
+    {
+      serialize<int8_t>(IsWater);
+      serialize<int8_t>(HideInEditor);
+      serialize<int32_t>(StringID);
+
+      int16_t blend = BlendPriority;
+      serialize<int16_t>(blend);
+      BlendPriority = blend;
+
+      blend = BlendType;
+      serialize<int16_t>(blend);
+      BlendType = blend;
+    }
+    serializeDebugString(Name);
+    serializeDebugString(Name2);
+  }
 
   if (gv >= GV_AoEB)
     serialize<int32_t>(SLP);

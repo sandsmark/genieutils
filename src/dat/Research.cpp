@@ -83,14 +83,21 @@ void Tech::serializeObject(void)
     serialize<int32_t>(HotKey);
   }
 
-  uint16_t name_len;
-  serializeSize<uint16_t>(name_len, Name);
-  serialize(Name, name_len);
-
-  if (gv >= GV_SWGB)
+  if (gv > GV_LatestTap || gv < GV_Tapsa)
   {
-    serializeSize<uint16_t>(name_len, Name2);
-    serialize(Name2, name_len);
+    uint16_t name_len;
+    serializeSize<uint16_t>(name_len, Name);
+    serialize(Name, name_len);
+
+    if (gv >= GV_SWGB)
+    {
+      serializeSize<uint16_t>(name_len, Name2);
+      serialize(Name2, name_len);
+    }
+  }
+  else
+  {
+    serializeDebugString(Name);
   }
 
 }

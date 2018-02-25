@@ -88,7 +88,7 @@ void TerrainBlock::serializeObject(void)
 {
   GameVersion gv = getGameVersion();
 
-  serialize<int32_t>(VirtualFunctionPtr);
+  serialize<int32_t>(VirtualFunctionPtr);// __vfptr
   serialize<int32_t>(MapPointer);
   serialize<int32_t>(MapWidth);
   serialize<int32_t>(MapHeight);

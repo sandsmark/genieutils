@@ -45,10 +45,12 @@ void TerrainPassGraphic::setGameVersion(GameVersion gv)
 //------------------------------------------------------------------------------
 void TerrainPassGraphic::serializeObject()
 {
+  GameVersion gv = getGameVersion();
+
   serialize<int32_t>(ExitTileSpriteID);
   serialize<int32_t>(EnterTileSpriteID);
   serialize<int32_t>(WalkTileSpriteID);
-  if (getGameVersion() < GV_SWGB)
+  if (gv < GV_SWGB && gv > GV_LatestTap)
   {
     int32_t replicationAmount = WalkSpriteRate;
     serialize<int32_t>(replicationAmount);

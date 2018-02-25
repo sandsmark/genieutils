@@ -58,7 +58,8 @@ void TerrainRestriction::serializeObject(void)
 {
   serialize<float>(PassableBuildableDmgMultiplier, terrain_count_);
 
-  if (getGameVersion() >= GV_AoKA)
+  GameVersion gv = getGameVersion();
+  if (gv >= GV_AoKA || (gv >= GV_T4 && gv <= GV_LatestTap))
   {
     serializeSub<TerrainPassGraphic>(TerrainPassGraphics, terrain_count_);
   }

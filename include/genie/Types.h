@@ -2,7 +2,7 @@
     genieutils - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2014 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2014 - 2018  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -34,6 +34,7 @@ enum GameVersion
   GV_AoEB, // 7.04 - 7.11
   GV_AoE, // 7.2
   GV_RoR, // 7.24
+  GV_Tapsa, GV_T2, GV_T3, GV_T4, GV_T5, GV_T6, GV_T7, GV_T8,
   GV_AoKE3, // 9.36
   GV_AoKA, // 10.19
   GV_AoKB, // 11.05
@@ -43,6 +44,8 @@ enum GameVersion
   GV_SWGB, // 1.0
   GV_CC // 1.1
 };
+
+extern GameVersion GV_LatestTap;
 
 struct XYZF
 {

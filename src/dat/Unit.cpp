@@ -58,7 +58,8 @@ void Unit::serializeObject(void)
   if (gv < GV_AoEB && isOperation(OP_READ)) Type *= 10;
 
   uint16_t name_len;
-  serializeSize<uint16_t>(name_len, Name);
+  if (gv > GV_LatestTap || gv < GV_Tapsa)
+    serializeSize<uint16_t>(name_len, Name);
   serialize<int16_t>(ID);
   serialize<uint16_t>(LanguageDLLName);
   if (gv >= GV_MATT)
@@ -78,6 +79,8 @@ void Unit::serializeObject(void)
   if (gv >= GV_AoKE3)
     serialize<int16_t>(DamageSound);
   serialize<int16_t>(DeadUnitID);
+  if (gv >= GV_T6 && gv <= GV_LatestTap)
+    serialize<int16_t>(BloodUnitID);
   serialize<int8_t>(SortNumber);
   serialize<int8_t>(CanBeBuiltOn);
   serialize<int16_t>(IconID);
@@ -130,6 +133,11 @@ void Unit::serializeObject(void)
         }
       }
     }
+    else if (gv >= GV_T7 && gv <= GV_LatestTap)
+    {
+      serialize<int8_t>(ObstructionType);
+      serialize<int8_t>(ObstructionClass);
+    }
 
     serialize<int8_t>(SelectionEffect);
     serialize<uint8_t>(EditorSelectionColour);
@@ -149,15 +157,22 @@ void Unit::serializeObject(void)
   serialize<int8_t>(OldAttackReaction);
   serialize<int8_t>(ConvertTerrain);
 
-  serialize(Name, name_len);
-
-  if (gv >= GV_SWGB)
+  if (gv > GV_LatestTap || gv < GV_Tapsa)
   {
-    serializeSize<uint16_t>(name_len, Name2);
-    serialize(Name2, name_len);
+    serialize(Name, name_len);
 
-    serialize<int16_t>(Unitline);
-    serialize<int8_t>(MinTechLevel);
+    if (gv >= GV_SWGB)
+    {
+      serializeSize<uint16_t>(name_len, Name2);
+      serialize(Name2, name_len);
+
+      serialize<int16_t>(Unitline);
+      serialize<int8_t>(MinTechLevel);
+    }
+  }
+  else
+  {
+    serializeDebugString(Name);
   }
 
   if (gv >= GV_AoE) // 7.12
@@ -165,6 +180,9 @@ void Unit::serializeObject(void)
 
   if (gv >= GV_AoKA) // 9.49
     serialize<int16_t>(BaseID);
+
+  if (gv >= GV_T5 && gv <= GV_LatestTap)
+    serialize<int16_t>(TelemetryID);
 
   if (Type == UT_AoeTrees)
     return;

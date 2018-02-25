@@ -49,6 +49,9 @@ public:
   /// See Name
   std::string FileName = "";
 
+  /// Number of frames to skip
+  uint16_t FirstFrame = 0;
+
   /// SLP resource id
   int32_t SLP = -1;
 

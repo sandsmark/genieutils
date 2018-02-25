@@ -126,6 +126,7 @@ public:
 
   /// ID of the unit to change to when this one dies.
   int16_t DeadUnitID = -1;
+  int16_t BloodUnitID = -1;
 
   /// TODO
   int8_t SortNumber = 0;
@@ -152,7 +153,7 @@ public:
   int8_t FogVisibility = 0;
 
   /// ID of terrain restrictions that are imposed on the unit.
-  int16_t TerrainRestriction = -1;
+  int16_t TerrainRestriction = 0;
 
   /// Bool which determines wheter the unit can fly.
   int8_t FlyMode = 0;
@@ -254,6 +255,7 @@ public:
 
   int16_t CopyID = -1;
   int16_t BaseID = -1;//not in aoe/ror
+  int16_t TelemetryID = -1;
 
 //      Type 20+
 
