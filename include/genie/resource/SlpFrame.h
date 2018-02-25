@@ -212,15 +212,6 @@ private:
     virtual void serializeObject(void);
 
     //----------------------------------------------------------------------------
-    /// Reads the edges of the frame. An edge int is the number of pixels in
-    /// a row which are transparent. There are two 16 bit unsigned integers for
-    /// each side of a row. One starting from left and the other starting from the
-    /// right side.
-    /// Assuming stream pointer is at beginning of edges array.
-    //
-    void readEdges(uint16_t &integrity);
-
-    //----------------------------------------------------------------------------
     /// Reads pixel indexes from file and sets the pixels according to the
     /// colors from the palette.
     /// It is assumed that the stream pointer is at the start of the pixel array.

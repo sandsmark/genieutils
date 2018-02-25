@@ -382,9 +382,23 @@ void SlpFrame::load(std::istream &istr)
         img_data.alpha_channel.resize(width_ * height_, 0);
     }
 
-    uint16_t integrity = 0;
+
+    //----------------------------------------------------------------------------
+    /// Reads the edges of the frame. An edge int is the number of pixels in
+    /// a row which are transparent. There are two 16 bit unsigned integers for
+    /// each side of a row. One starting from left and the other starting from the
+    /// right side.
+    /// Assuming stream pointer is at beginning of edges array.
+    //
     istr.seekg(slp_file_pos_ + std::streampos(outline_table_offset_));
-    readEdges(integrity);
+
+    left_edges_.resize(height_);
+    right_edges_.resize(height_);
+
+    for (uint32_t row = 0; row < height_; ++row) {
+        serialize<uint16_t>(left_edges_[row]);
+        serialize<uint16_t>(right_edges_[row]);
+    }
 
     istr.seekg(slp_file_pos_ + std::streampos(cmd_table_offset_));
     serialize<uint32_t>(cmd_offsets_, height_);
@@ -393,7 +407,7 @@ void SlpFrame::load(std::istream &istr)
     if (properties_ == 0x78) {
         istr.seekg(slp_file_pos_ + std::streampos(palette_offset_));
         img_data.palette.resize(read<uint32_t>());
-        for (auto &rgba : img_data.palette) {
+        for (genie::Color &rgba : img_data.palette) {
             rgba.r = read<uint8_t>();
             rgba.g = read<uint8_t>();
             rgba.b = read<uint8_t>();
@@ -538,19 +552,7 @@ void SlpFrame::load(std::istream &istr)
             }
         }
     }
-}
 
-//------------------------------------------------------------------------------
-void SlpFrame::readEdges(uint16_t &integrity)
-{
-    left_edges_.resize(height_);
-    right_edges_.resize(height_);
-
-    for (uint32_t row = 0; row < height_; ++row) {
-        serialize<uint16_t>(left_edges_[row]);
-        serialize<uint16_t>(right_edges_[row]);
-        integrity |= left_edges_[row];
-    }
 }
 
 //------------------------------------------------------------------------------
