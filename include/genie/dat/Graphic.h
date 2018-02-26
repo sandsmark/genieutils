@@ -97,6 +97,14 @@ public:
     /// Time to wait until the animation sequence is started again.
     float ReplayDelay = 0;
 
+    /** Bit field
+     */
+    enum SequenceTypeFlags {
+        SequenceAnimated = 0x1,
+        SequenceDirectional = 0x2,
+        SequenceRandomized = 0x4,
+        SequenceOnce = 0x8
+    };
     int8_t SequenceType = 0;
     int16_t ID = -1;
     int8_t MirroringMode = 0;
