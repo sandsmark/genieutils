@@ -77,10 +77,32 @@ void ScnUnit::serializeObject(void)
     serialize<float>(positionZ);
     serialize<uint32_t>(spawnID);
     serialize<uint16_t>(objectID); // units with hardcoded behaviour 102, 66, 59, 768, 420, 770, 691
+    if (objectID == 59 || objectID == 66 || objectID == 102) {
+        positionX += 0.5;
+        positionY += 0.5;
+    }
+    if (objectID == 768) {
+        objectID = 420;
+    }
+    if (objectID == 770) {
+        objectID = 691;
+    }
     serialize<uint8_t>(state);
     serialize<float>(rotation);
-    if (scn_ver != "1.14")
+    if (scn_ver != "1.14") {
         serialize<uint16_t>(initAnimationFrame);
+    }
     serialize<uint32_t>(garrisonedInID);
+    if (!garrisonedInID && (
+            scn_ver == "1.13" ||
+            scn_ver == "1.14" ||
+            scn_ver == "1.15" ||
+            scn_ver == "1.16" ||
+            scn_ver == "1.17" ||
+            scn_ver == "1.18" ||
+            scn_ver == "1.19" ||
+            scn_ver == "1.20")) {
+        garrisonedInID = -1;
+    }
 }
 }
