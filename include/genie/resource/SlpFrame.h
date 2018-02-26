@@ -32,6 +32,8 @@
 
 namespace genie {
 
+class SlpTemplate;
+
 struct XY
 {
     uint32_t x;
@@ -165,7 +167,11 @@ public:
 
     std::shared_ptr<SlpFrame> mirrorX(void);
 
+    void readImage();
+
 private:
+    friend class SlpTemplateFile;
+
     enum Commands : uint8_t {
         EndOfRow = 0xF,
         GreaterBlockCopy = 0x2,

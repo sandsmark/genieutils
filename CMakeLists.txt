@@ -119,6 +119,7 @@ set(RESOURCE_SRC
     src/resource/PalFile.cpp
     src/resource/SlpFile.cpp
     src/resource/SlpFrame.cpp
+    src/resource/SlpTemplate.cpp
     src/resource/DrsFile.cpp
     src/resource/Color.cpp
     src/resource/BinaFile.cpp

@@ -60,6 +60,9 @@ uint32_t SlpFrame::getHeight(void) const
 
 void SlpFrame::setSize(const uint32_t width, const uint32_t height)
 {
+
+//    std::cout << "old size: " << width_ << " x " << height_ << std::endl;
+//    std::cout << "new size: " << width << " x " << height << std::endl;
     width_ = width;
     height_ = height;
     if (is32bit()) {
@@ -375,21 +378,11 @@ void SlpFrame::load(std::istream &istr)
 {
     setIStream(istr);
 
-    if (is32bit()) {
-        img_data.bgra_channels.resize(width_ * height_, 0);
-    } else {
-        img_data.pixel_indexes.resize(width_ * height_);
-        img_data.alpha_channel.resize(width_ * height_, 0);
-    }
-
-
     //----------------------------------------------------------------------------
     /// Reads the edges of the frame. An edge int is the number of pixels in
     /// a row which are transparent. There are two 16 bit unsigned integers for
     /// each side of a row. One starting from left and the other starting from the
     /// right side.
-    /// Assuming stream pointer is at beginning of edges array.
-    //
     istr.seekg(slp_file_pos_ + std::streampos(outline_table_offset_));
 
     left_edges_.resize(height_);
@@ -414,9 +407,25 @@ void SlpFrame::load(std::istream &istr)
         }
     }
 
+    readImage();
+}
+
+void SlpFrame::readImage()
+{
+    std::istream &istr = *getIStream();
+
+    if (is32bit()) {
+        img_data.bgra_channels.resize(width_ * height_, 0);
+    } else {
+        img_data.pixel_indexes.resize(width_ * height_);
+        img_data.alpha_channel.resize(width_ * height_, 0);
+    }
+
     // Each row has it's commands, 0x0F signals the end of a rows commands.
     for (uint32_t row = 0; row < height_; ++row) {
         istr.seekg(slp_file_pos_ + std::streampos(cmd_offsets_[row]));
+//        std::cout << "command offset: " << cmd_offsets_[row] << std::endl;
+//        std::cout << "file pos: " << slp_file_pos_ << std::endl;
         assert(!istr.eof());
         // Transparent rows apparently read one byte anyway. NO THEY DO NOT! Ignore and use seekg()
         if (0x8000 == left_edges_[row] || 0x8000 == right_edges_[row]) // Remember signedness!
@@ -459,6 +468,7 @@ void SlpFrame::load(std::istream &istr)
             {
             case GreaterBlockCopy: // Greater block copy
                 pix_cnt = (sub << 4) + read<uint8_t>();
+//                std::cout << "pixcnt: " << pix_cnt << std::endl;
                 if (is32bit())
                     readPixelsToImage32(row, pix_pos, pix_cnt);
                 else
@@ -540,14 +550,14 @@ void SlpFrame::load(std::istream &istr)
                     }
 
                 default:
-                    log.error("Cmd [%X] is unknown", data);
+                    log.error("Cmd [%] is unknown", int(data));
                     return;
                 }
                 break;
 
             default:
-                log.error("Unknown cmd [%X]", data);
-                std::cerr << "SlpFrame: Unknown cmd at " << std::hex << std::endl;
+//                log.error("Unknown cmd [%X]", data);
+                std::cerr << "SlpFrame: Unknown cmd at " << std::hex << tellg() << " " << std::hex << int(data) << std::endl;
                 return;
             }
         }

@@ -17,8 +17,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_SLPFILE_H
-#define GENIE_SLPFILE_H
+#pragma once
 
 #include <istream>
 #include <vector>
@@ -27,27 +26,71 @@
 #include "genie/util/Logger.h"
 #include "PalFile.h"
 #include "SlpFrame.h"
+#include "SlpFile.h"
 
 namespace genie {
 
 //------------------------------------------------------------------------------
-/// A slp file stores one or several images encoded using simple commands.
-/// The image is stored as 8 bits per pixel, that means only the index of a
-/// color in a palette is saved.
+/// Basically a patch for an SLP frame, for sloped terrain
+/// Overwrites the header (size, hotspot and command tables)
 //
-class SlpFile : public IFile
+class SlpTemplateFile : public IFile
 {
+    struct SlpTemplate {
+        uint32_t width_;
+        uint32_t height_;
+
+        int32_t hotspot_x;
+        int32_t hotspot_y;
+
+        int32_t data_size;
+
+        std::vector<unsigned short> left_edges_;
+        std::vector<unsigned short> right_edges_;
+
+        std::vector<uint32_t> cmd_offsets_;
+
+        uint32_t outline_table_offset_;
+        uint32_t cmd_table_offset_;
+    };
 
 public:
+    enum Slope {
+        SlopeFlat        = 0,
+        SlopeSouthUp     = 1,
+        SlopeNorthUp     = 2,
+        SlopeWestUp      = 3,
+        SlopeEastUp      = 4,
+        SlopeSouthWestUp = 5,
+        SlopeNorthWestUp = 6,
+        SlopeSouthEastUp = 7,
+        SlopeNorthEastUp = 8,
+        SLOPE_S_UP2      = 9,    // what are these?
+        SLOPE_N_UP2      = 10,
+        SLOPE_W_UP2      = 11,
+        SLOPE_E_UP2      = 12,
+        SlopeNorthDown   = 13,
+        SlopeSouthDown   = 14,
+        SlopeWestDown    = 15,
+        SlopeEastDown    = 16,
+
+        SlopeCount       = 17,
+
+        SlopeSouthWestEastUp = SlopeNorthDown,
+        SlopeNorthWestEastUp = SlopeSouthDown,
+        SlopeNorthSoutEastUp = SlopeWestDown,
+        SlopeNorthSouthWestUp = SlopeWestDown,
+    };
+
     //----------------------------------------------------------------------------
     /// Constructor
     //
-    SlpFile();
+    SlpTemplateFile();
 
     //----------------------------------------------------------------------------
     /// Destructor
     //
-    virtual ~SlpFile();
+    virtual ~SlpTemplateFile();
 
     //----------------------------------------------------------------------------
     /// Frees all content of a slp file.
@@ -60,39 +103,17 @@ public:
     bool isLoaded(void) const;
 
     //----------------------------------------------------------------------------
-    /// Return number of frames stored in the file. Available after load.
-    ///
-    /// @return number of frames
-    //
-    uint32_t getFrameCount(void);
-    void setFrameCount(uint32_t);
-
-    //----------------------------------------------------------------------------
     /// Returns the slp frame at given frame index.
     ///
     /// @param frame frame index
     /// @return SlpFrame
     //
-    SlpFramePtr getFrame(uint32_t frame = 0);
-    void setFrame(uint32_t, SlpFramePtr);
-
-    std::string version;
-    std::string comment;
+    SlpFramePtr getFrame(const SlpFilePtr &baseFile, const Slope slope);
 
 private:
-    friend class SlpTemplateFile;
-
     static Logger &log;
 
     bool loaded_ = false;
-
-    uint32_t num_frames_ = 0;
-
-    typedef std::vector<SlpFramePtr> FrameVector;
-    FrameVector frames_;
-
-    // Used to calculate offsets when saving the SLP.
-    uint32_t slp_offset_;
 
     //----------------------------------------------------------------------------
     virtual void serializeObject(void);
@@ -103,11 +124,8 @@ private:
     void loadFile(void);
     void saveFile(void);
 
-    //----------------------------------------------------------------------------
-    void serializeHeader(void);
+    std::array<SlpTemplate, SlopeCount> templates_;
 };
 
-typedef std::shared_ptr<SlpFile> SlpFilePtr;
+typedef std::shared_ptr<SlpTemplateFile> SlpTemplateFilePtr;
 }
-
-#endif // GENIE_SLPFILE_H
