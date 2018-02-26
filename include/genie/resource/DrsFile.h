@@ -67,6 +67,7 @@ public:
     //
     PalFilePtr getPalFile(uint32_t id);
     UIFilePtr getUIFile(uint32_t id);
+    UIFilePtr getUIFile(const std::string &knownName);
     BmpFilePtr getBmpFile(uint32_t id);
     std::string getScriptFile(uint32_t id);
     ScnFilePtr getScnFile(uint32_t id);

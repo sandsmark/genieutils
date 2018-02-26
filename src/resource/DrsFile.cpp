@@ -68,7 +68,7 @@ SlpFilePtr DrsFile::getSlpFile(uint32_t id)
 
             return slp;
         } else {
-            log.warn("No slp file with id [%u] found!", id);
+            log.debug("No slp file with id [%u] found!", id);
             return SlpFilePtr();
         }
     }
@@ -96,6 +96,34 @@ UIFilePtr DrsFile::getUIFile(uint32_t id)
     } else {
         log.debug("No bina file with id [%u] found!", id);
         return UIFilePtr();
+    }
+}
+
+UIFilePtr DrsFile::getUIFile(const std::string &knownName)
+{
+    const std::unordered_map<std::string, int> idMap = {
+        { "scr2", 50052    },
+        { "scr5", 50055    },
+        { "scr2", 50052    },
+        { "scr2p", 50084   },
+        { "scr2", 50052    },
+        { "scr2", 50052    },
+        { "scr2", 50052    },
+        { "xmain", 50089   },
+        { "scr1", 50051    },
+        { "scr2", 50052    },
+        { "scr6", 50056    },
+        { "xcredits", 50088},
+        { "scr2", 50052    },
+        { "scr4", 50054    },
+        { "scr2", 50052    },
+    };
+
+    if (idMap.find(knownName) != idMap.end()) {
+        return getUIFile(idMap.at(knownName));
+    } else {
+        log.error("Failed to find known id for filename %", knownName);
+        return nullptr;
     }
 }
 
