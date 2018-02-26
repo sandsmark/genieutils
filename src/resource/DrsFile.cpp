@@ -218,6 +218,16 @@ std::vector<uint32_t> DrsFile::binaryFileIds() const
     return ret;
 }
 
+std::vector<uint32_t> DrsFile::slpFileIds() const
+{
+    std::vector<uint32_t> ret;
+    for (const std::pair<uint32_t, SlpFilePtr> &entry : slp_map_) {
+        ret.push_back(entry.first);
+    }
+
+    return ret;
+}
+
 //------------------------------------------------------------------------------
 void DrsFile::serializeObject(void)
 {

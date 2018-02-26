@@ -78,6 +78,8 @@ public:
 
   std::vector<uint32_t> binaryFileIds() const;
 
+  std::vector<uint32_t> slpFileIds() const;
+
 private:
   static Logger &log;
 
