@@ -40,9 +40,9 @@ void IFile::freelock(void)
 }
 
 //------------------------------------------------------------------------------
-void IFile::setFileName(const char *fileName)
+void IFile::setFileName(const std::string &fileName)
 {
-    fileName_ = std::string(fileName);
+    fileName_ = fileName;
 }
 
 //------------------------------------------------------------------------------
@@ -61,11 +61,11 @@ void IFile::load()
 }
 
 //------------------------------------------------------------------------------
-void IFile::load(const char *fileName)
+void IFile::load(std::string fileName)
 {
     freelock();
 
-    fileName_ = std::string(fileName);
+    fileName_ = fileName;
 
     fileIn_.open(fileName, std::ios::binary | std::ios::in);
 

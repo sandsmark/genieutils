@@ -148,6 +148,10 @@ protected:
     {
         printLog(format, int(c));
     }
+    void printLog(const char *format, uint8_t c)
+    {
+        printLog(format, int(c));
+    }
 
     template <typename ValueType, typename... Types>
     void printLog(const char *format, ValueType value, Types... arguments)

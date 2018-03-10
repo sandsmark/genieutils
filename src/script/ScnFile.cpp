@@ -34,6 +34,26 @@ double ISerializable::scn_trigger_ver = 0.0;
 
 Logger &ScnFile::log = Logger::getLogger("genie.ScnFile");
 
+
+
+
+//////////
+// cpx format:
+// header
+//  - 4 char version
+//  - 5 char name
+//  - 254 bytes total header?
+//  - 40 bytes offset:
+//     - 0xff ff ff ff == separator?
+//  -
+// block header per file
+//  - int32 length
+//  - int32 pos/offset in cpx
+//  - 519 - 256 char == name?
+//  - 256 char = filename
+// Files in plain (.scn etc.)
+//
+
 //------------------------------------------------------------------------------
 ScnFile::ScnFile() :
     IFile(), compressor_(this)
@@ -127,6 +147,7 @@ void ScnFile::serializeObject(void)
         std::cout << "ERROR" << std::endl;
         return;
     }
+    std::cout << "version: " << version << std::endl;
 
     if (isOperation(OP_WRITE)) {
         headerLength_ = 21 + scenarioInstructions.size();
@@ -134,7 +155,10 @@ void ScnFile::serializeObject(void)
 
     serialize<uint32_t>(headerLength_); // Used in AoE 1 lobby
 
+    std::cout << "header length: " << headerLength_ << std::endl;
+
     serialize<int32_t>(saveType);
+    std::cout << "save type: " << headerLength_ << std::endl;
     serialize<uint32_t>(lastSaveTime);
     serializeForcedString<uint32_t>(scenarioInstructions);
     serialize<uint32_t>(victoryType);

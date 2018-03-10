@@ -81,7 +81,7 @@ LangFile::~LangFile()
 }
 
 //------------------------------------------------------------------------------
-void LangFile::load(const char *filename)
+void LangFile::load(std::string filename)
 {
     pcr_error_code errorCode_ = PCR_ERROR_NONE;
 
@@ -93,7 +93,7 @@ void LangFile::load(const char *filename)
     if (pfile_)
         pcr_free(pfile_);
 
-    pfile_ = pcr_read_file(filename, &errorCode_);
+    pfile_ = pcr_read_file(filename.c_str(), &errorCode_);
 
     PcrioError::check(errorCode_); // on error throw
 

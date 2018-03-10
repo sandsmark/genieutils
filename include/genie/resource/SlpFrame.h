@@ -227,7 +227,7 @@ private:
     /// @param count how many pixels should be read
     /// @param player_col if true, pixel will be written to player color image
     //
-    void readPixelsToImage(uint32_t row, uint32_t &col, uint32_t count,
+    bool readPixelsToImage(uint32_t row, uint32_t &col, uint32_t count,
                            bool player_col = false);
     void readPixelsToImage32(uint32_t row, uint32_t &col, uint32_t count,
                              uint8_t special = 0);

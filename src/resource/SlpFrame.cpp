@@ -385,8 +385,8 @@ void SlpFrame::load(std::istream &istr)
     /// right side.
     istr.seekg(slp_file_pos_ + std::streampos(outline_table_offset_));
 
-    left_edges_.resize(height_);
-    right_edges_.resize(height_);
+    left_edges_.resize(height_, 0);
+    right_edges_.resize(height_, 0);
 
     for (uint32_t row = 0; row < height_; ++row) {
         serialize<uint16_t>(left_edges_[row]);
@@ -399,7 +399,7 @@ void SlpFrame::load(std::istream &istr)
     // Read embedded palette
     if (properties_ == 0x78) {
         istr.seekg(slp_file_pos_ + std::streampos(palette_offset_));
-        img_data.palette.resize(read<uint32_t>());
+        img_data.palette.resize(read<uint32_t>(), genie::Color::Transparent);
         for (genie::Color &rgba : img_data.palette) {
             rgba.r = read<uint8_t>();
             rgba.g = read<uint8_t>();
@@ -417,7 +417,7 @@ void SlpFrame::readImage()
     if (is32bit()) {
         img_data.bgra_channels.resize(width_ * height_, 0);
     } else {
-        img_data.pixel_indexes.resize(width_ * height_);
+        img_data.pixel_indexes.resize(width_ * height_, 0);
         img_data.alpha_channel.resize(width_ * height_, 0);
     }
 
@@ -432,6 +432,7 @@ void SlpFrame::readImage()
         {
             continue; // Pretend it does not exist.
         }
+
         uint32_t pix_pos = left_edges_[row]; //pos where to start putting pixels
 
         uint8_t data = 0;
@@ -471,8 +472,11 @@ void SlpFrame::readImage()
 //                std::cout << "pixcnt: " << pix_cnt << std::endl;
                 if (is32bit())
                     readPixelsToImage32(row, pix_pos, pix_cnt);
-                else
-                    readPixelsToImage(row, pix_pos, pix_cnt);
+                else {
+                    if (!readPixelsToImage(row, pix_pos, pix_cnt)) {
+                        return;
+                    }
+                }
                 break;
 
             case GreaterSkip: // Greater skip
@@ -513,12 +517,12 @@ void SlpFrame::readImage()
                 switch (data) {
                 case ForwardDraw: // Forward draw
                 case ReverseDraw: // Reverse draw
-                    log.error("Cmd [%X] is obsolete", data);
+                    log.error("Cmd [%] is obsolete", data);
                     return;
 
                 case NormalTransform: // Normal transform
                 case AlternativeTransform: // Alternative transform
-                    log.error("Cmd [%X] is obsolete", data);
+                    log.error("Cmd [%] is obsolete", data);
                     return;
 
                 case OutlinePlayerColor:
@@ -566,13 +570,17 @@ void SlpFrame::readImage()
 }
 
 //------------------------------------------------------------------------------
-void SlpFrame::readPixelsToImage(uint32_t row, uint32_t &col,
+bool SlpFrame::readPixelsToImage(uint32_t row, uint32_t &col,
                                  uint32_t count, bool player_col)
 {
     uint32_t to_pos = col + count;
     while (col < to_pos) {
         uint8_t color_index = read<uint8_t>();
         assert(row * width_ + col < img_data.pixel_indexes.size());
+        if(row * width_ + col >= img_data.pixel_indexes.size()) {
+            std::cerr << "out of bounds" << std::endl;
+            return false;
+        }
         img_data.pixel_indexes[row * width_ + col] = color_index;
         img_data.alpha_channel[row * width_ + col] = 255;
         if (player_col) {
@@ -580,6 +588,7 @@ void SlpFrame::readPixelsToImage(uint32_t row, uint32_t &col,
         }
         ++col;
     }
+    return true;
 }
 
 //------------------------------------------------------------------------------
@@ -820,9 +829,9 @@ SlpFramePtr SlpFrame::mirrorX(void)
     mirrored->hotspot_y = hotspot_y;
 
     genie::SlpFrameData &new_data = mirrored->img_data;
-    new_data.bgra_channels.resize(img_data.bgra_channels.size());
-    new_data.pixel_indexes.resize(img_data.pixel_indexes.size());
-    new_data.alpha_channel.resize(img_data.alpha_channel.size());
+    new_data.bgra_channels.resize(img_data.bgra_channels.size(), 0);
+    new_data.pixel_indexes.resize(img_data.pixel_indexes.size(), 0);
+    new_data.alpha_channel.resize(img_data.alpha_channel.size(), 0);
 
     for (uint32_t row = 0; row < height_; ++row) {
         for (uint32_t c1 = 0, c2 = width_; c2-- > 0; ++c1) {

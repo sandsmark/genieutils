@@ -55,8 +55,8 @@ public:
     LangFile();
     virtual ~LangFile();
 
-    virtual void load(const char *fileName);
-    virtual void saveAs(const char *fileName);
+    virtual void load(std::string fileName) override;
+    virtual void saveAs(const char *fileName) override;
 
     // get/set strings in default_charset (utf-8)
     std::string getString(unsigned int id);
@@ -67,9 +67,9 @@ public:
     void setDefaultCharset(const char *charset);
 
 protected:
-    virtual void unload(void);
+    virtual void unload(void) override;
 
-    virtual void serializeObject(void) {}
+    virtual void serializeObject(void) override {}
 
 private:
     static Logger &log;

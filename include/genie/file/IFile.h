@@ -48,7 +48,7 @@ public:
     ///
     /// @param fileName.
     //
-    void setFileName(const char *fileName);
+    void setFileName(const std::string &fileName);
 
     //----------------------------------------------------------------------------
     /// Get name of file worked on.
@@ -73,7 +73,7 @@ public:
     /// @exception std::ios_base::failure thrown if file can't be read (file
     ///                                   doesn't exist, insufficient rights...)
     //
-    virtual void load(const char *fileName);
+    virtual void load(std::string fileName);
 
     //----------------------------------------------------------------------------
     /// Saves data to file. Can only be called if fileName is set through set

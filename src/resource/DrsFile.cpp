@@ -274,9 +274,9 @@ void DrsFile::loadHeader()
         //File type
         string file_type = readString(12);
 
-        //    std::cout << "copyright: " << copy_right << std::endl;
-        //    std::cout << "version: " << version << std::endl;
-        //    std::cout << "filetype: " << file_type << std::endl;
+//            std::cout << "copyright: " << copy_right << std::endl;
+//            std::cout << "version: " << version << std::endl;
+//            std::cout << "filetype: " << file_type << std::endl;
 
         num_of_tables_ = read<uint32_t>();
         header_offset_ = read<uint32_t>();
@@ -313,7 +313,9 @@ void DrsFile::loadHeader()
                 } else if (table_types_[i].compare(getSoundTableHeader()) == 0) {
                     wav_offsets_[id] = pos;
                 } else {
-                    log.error("unknown file header: %s", table_types_[i]);
+                    std::cerr << "unknown header " << std::hex << table_types_[i] << std::dec << std::endl;
+                    return;
+//                    log.error("unknown file header: %s", table_types_[i]);
                 }
             }
         }

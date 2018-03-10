@@ -72,12 +72,12 @@ void SlpTemplateFile::loadFile()
 
         serialize(slpTemplate.outline_table_offset_);
         slpTemplate.outline_table_offset_ += templateBegin;
-        std::cout << "outline offset: " << slpTemplate.outline_table_offset_ << std::endl;
-        std::cout << "pos " << tellg() << std::endl;
+//        std::cout << "outline offset: " << slpTemplate.outline_table_offset_ << std::endl;
+//        std::cout << "pos " << tellg() << std::endl;
         serialize(slpTemplate.cmd_table_offset_);
         slpTemplate.cmd_table_offset_ += templateBegin;
-        std::cout << "cmd offset: " << slpTemplate.cmd_table_offset_ << std::endl;
-        std::cout << "pos " << tellg() << std::endl;
+//        std::cout << "cmd offset: " << slpTemplate.cmd_table_offset_ << std::endl;
+//        std::cout << "pos " << tellg() << std::endl;
 
         getIStream()->seekg(nextPos);
     }
@@ -87,18 +87,23 @@ void SlpTemplateFile::loadFile()
 
         slpTemplate.left_edges_.resize(slpTemplate.height_);
         slpTemplate.right_edges_.resize(slpTemplate.height_);
+//        serialize(slpTemplate.left_edges_, slpTemplate.height_);
+//        serialize(slpTemplate.right_edges_, slpTemplate.height_);
         for (uint32_t row = 0; row < slpTemplate.height_; ++row) {
             serialize(slpTemplate.left_edges_[row]);
             serialize(slpTemplate.right_edges_[row]);
+//            std::cout << slpTemplate.left_edges_[row] << std::endl;
         }
 
 //        getIStream()->seekg(slpTemplate.cmd_table_offset_);
         getIStream()->seekg(std::streampos(slpTemplate.cmd_table_offset_));
         serialize(slpTemplate.cmd_offsets_, slpTemplate.height_);
-        for (uint32_t &ofst : slpTemplate.cmd_offsets_) {
-            std::cout << "# " << ofst << std::endl;
-        }
+//        for (uint32_t &ofst : slpTemplate.cmd_offsets_) {
+//            std::cout << "# " << ofst << std::endl;
+//        }
     }
+
+//    std::cout << tellg() << std::endl;
 
     loaded_ = true;
 }
@@ -157,32 +162,32 @@ SlpFramePtr SlpTemplateFile::getFrame(const SlpFilePtr &baseFile, const Slope sl
         log.error("Passed nullptr");
         return nullptr;
     }
+    if (!icmFile) {
+        log.error("No ICM file loaded");
+        return nullptr;
+    }
+    if (!patternmasksFile) {
+        log.error("No pattern masks file loaded");
+        return nullptr;
+    }
+    if (!filtermapFile) {
+        log.error("No filter map file loaded");
+        return nullptr;
+    }
 
-    std::cout << "=================" << std::endl;
     SlpFramePtr frameCopy = std::make_shared<SlpFrame>(*baseFile->getFrame(0));
     frameCopy->setLoadParams(*baseFile->getIStream());
     frameCopy->setSlpFilePos(baseFile->getInitialReadPosition());
+//    std::cout << "================= " << frameCopy->width_ << std::endl;
     frameCopy->setSize(templates_[slope].width_, templates_[slope].height_);
     frameCopy->hotspot_x = templates_[slope].hotspot_x;
     frameCopy->hotspot_y = templates_[slope].hotspot_y;
 
-    for (uint32_t &ofst : frameCopy->cmd_offsets_) {
-        std::cout << ofst << " LOL" << std::endl;
-    }
-    std::cout << "=================" << std::endl;
     frameCopy->cmd_offsets_ = templates_[slope].cmd_offsets_;
-
-    for (uint32_t &ofst : frameCopy->cmd_offsets_) {
-        std::cout << ofst << " LOL" << std::endl;
-    }
-
     frameCopy->left_edges_ = templates_[slope].left_edges_;
     frameCopy->right_edges_ = templates_[slope].right_edges_;
 
-        std::cout << "        --------------        " << std::endl;
     frameCopy->readImage();
-    std::cout << frameCopy->height_ << std::endl;
-        std::cout << "        --------------        " << std::endl;
 
     return frameCopy;
 }
