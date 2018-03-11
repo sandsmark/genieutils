@@ -18,6 +18,7 @@
 */
 
 #include "genie/resource/SlpFrame.h"
+#include "genie/resource/SlpTemplate.h"
 
 #include <iostream>
 //Debug
@@ -567,6 +568,55 @@ void SlpFrame::readImage()
         }
     }
 
+}
+
+SlpFramePtr SlpFrame::filtered(const FiltermapFile &filterFile, uint8_t filterNum, const std::vector<PatternMasksFile::Pattern> patterns, const std::vector<Color> &palette)
+{
+    std::istream &istr = *getIStream();
+
+    SlpFramePtr ret = std::make_shared<SlpFrame>(*this);
+    ret->img_data.pixel_indexes.clear();
+    ret->img_data.alpha_channel.clear();
+
+    ret->img_data.pixel_indexes.resize(width_ * height_, 0);
+    ret->img_data.alpha_channel.resize(width_ * height_, 0);
+
+    assert(filterNum < filterFile.maps.size());
+
+    const FiltermapFile::Filtermap filter = filterFile.maps[filterNum];
+
+    for (uint32_t y=0; y<filter.height; y++) {
+        int xPos = left_edges_[y];
+
+        assert(y < filter.lines.size());
+
+        const FiltermapFile::FilterLine &line = filter.lines[y];
+
+        for (uint32_t x=0; x<line.width; x++, xPos++) {
+            if (x >= line.commands.size()) {
+                std::cerr << "out of bounds: "  << x << " " << line.commands.size() << std::endl;
+            }
+            assert(x < line.commands.size());
+
+            const FiltermapFile::FilterCmd &cmd = line.commands[x];
+
+            int r = 0, g = 0, b = 0;
+            for (const FiltermapFile::SourcePixel source : cmd.sourcePixels) {
+                const uint8_t sourceIndex = img_data.pixel_indexes[source.sourceIndex];
+                const Color sourceColor = palette[sourceIndex];
+                r += int(sourceColor.r) * source.alpha;
+                g += int(sourceColor.g) * source.alpha;
+                b += int(sourceColor.b) * source.alpha;
+            }
+            const IcmFile::InverseColorMap &icm = filterFile.patternmasksFile.getIcm(cmd.lightIndex, patterns);
+            const uint8_t pixelIndex = icm.paletteIndex(r, g, b);
+
+            ret->img_data.pixel_indexes[y * width_ + xPos] = pixelIndex;
+            ret->img_data.alpha_channel[y * width_ + xPos] = 255;
+        }
+    }
+
+    return ret;
 }
 
 //------------------------------------------------------------------------------

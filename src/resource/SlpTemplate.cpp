@@ -22,6 +22,7 @@
 
 #include <stdexcept>
 #include <chrono>
+#include <cassert>
 
 #include "genie/resource/SlpFrame.h"
 #include "genie/resource/PalFile.h"
@@ -152,34 +153,34 @@ void SlpTemplateFile::unload(void)
 bool SlpTemplateFile::isLoaded(void) const
 {
     return loaded_;
+//    return loaded_ && icmFile && patternmasksFile && filtermapFile;
 }
 
-
 //------------------------------------------------------------------------------
-SlpFramePtr SlpTemplateFile::getFrame(const SlpFilePtr &baseFile, const Slope slope)
+SlpFramePtr SlpTemplateFile::getFrame(const SlpFramePtr source, const Slope slope, const std::vector<PatternMasksFile::Pattern> &masks, const std::vector<Color> &palette)
 {
-    if (!baseFile) {
+    if (!source) {
         log.error("Passed nullptr");
         return nullptr;
     }
-    if (!icmFile) {
-        log.error("No ICM file loaded");
-        return nullptr;
-    }
-    if (!patternmasksFile) {
-        log.error("No pattern masks file loaded");
-        return nullptr;
-    }
+//    if (!icmFile) {
+//        log.error("No ICM file loaded");
+//        return nullptr;
+//    }
+//    if (!patternmasksFile) {
+//        log.error("No pattern masks file loaded");
+//        return nullptr;
+//    }
     if (!filtermapFile) {
         log.error("No filter map file loaded");
         return nullptr;
     }
 
-    SlpFramePtr frameCopy = std::make_shared<SlpFrame>(*baseFile->getFrame(0));
-    frameCopy->setLoadParams(*baseFile->getIStream());
-    frameCopy->setSlpFilePos(baseFile->getInitialReadPosition());
+    SlpFramePtr frameCopy = std::make_shared<SlpFrame>(*source);
+    frameCopy->setLoadParams(*source->getIStream());
+    frameCopy->setSlpFilePos(source->getInitialReadPosition());
 //    std::cout << "================= " << frameCopy->width_ << std::endl;
-    frameCopy->setSize(templates_[slope].width_, templates_[slope].height_);
+//    frameCopy->setSize(templates_[slope].width_, templates_[slope].height_);
     frameCopy->hotspot_x = templates_[slope].hotspot_x;
     frameCopy->hotspot_y = templates_[slope].hotspot_y;
 
@@ -187,9 +188,63 @@ SlpFramePtr SlpTemplateFile::getFrame(const SlpFilePtr &baseFile, const Slope sl
     frameCopy->left_edges_ = templates_[slope].left_edges_;
     frameCopy->right_edges_ = templates_[slope].right_edges_;
 
-    frameCopy->readImage();
+    frameCopy = frameCopy->filtered(filtermapFile, slope, masks, palette);
+//    frameCopy->readImage();
 
     return frameCopy;
+}
+
+const IcmFile::InverseColorMap &PatternMasksFile::getIcm(const uint16_t lightIndex, const std::vector<Pattern> &masks) const
+{
+    uint8_t ret = m_masks[masks[0]].pixels[lightIndex];
+    for (const Pattern pattern : masks) {
+        ret = m_masks[pattern].apply(ret, lightIndex);
+    }
+
+    const uint8_t lightmap = ret & 0x1f;
+    assert(lightmap < lightmapFile.lightmaps.size());
+    assert(lightIndex < lightmapFile.lightmaps[lightmap].size());
+
+    return icmFile.maps[lightmapFile.lightmaps[lightmap][lightIndex]];
+}
+
+void FiltermapFile::serializeObject()
+{
+    for (int i=0; i<SlopeCount; i++) {
+        uint32_t dataSize = 0;
+        serialize(dataSize);
+
+        serialize(maps[i].height);
+
+        for (uint32_t y = 0; y<maps[i].height; y++) {
+            FilterLine line;
+            serialize(line.width);
+
+            for (int x=0; x<line.width; x++) {
+                FilterCmd command;
+                serialize(command.sourcePixelCount);
+                command.lightIndex = command.sourcePixelCount >> 4;
+                command.sourcePixelCount = command.sourcePixelCount & 0xF;
+
+                for (uint16_t n=0; n<command.sourcePixelCount; n++) {
+                    SourcePixel sourcePixel;
+
+                    const uint32_t packedCommand = read<uint8_t>() | read<uint16_t>() << 8;
+                    sourcePixel.alpha = packedCommand & 0x1ff;
+                    sourcePixel.sourceIndex = packedCommand >> 9;
+
+                    command.sourcePixels.push_back(std::move(sourcePixel));
+                }
+                line.commands.push_back(std::move(command));
+            }
+
+            maps[i].lines.push_back(std::move(line));
+        }
+    }
+
+    if (getOperation() == OP_READ) {
+        m_loaded = true;
+    }
 }
 
 }

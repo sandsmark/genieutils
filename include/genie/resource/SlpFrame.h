@@ -21,6 +21,7 @@
 #define GENIE_SLPFRAME_H
 
 #include "genie/file/ISerializable.h"
+#include "genie/resource/SlpTemplate.h"
 #include "genie/util/Logger.h"
 
 #include <istream>
@@ -33,6 +34,7 @@
 namespace genie {
 
 class SlpTemplate;
+class FiltermapFile;
 
 struct XY
 {
@@ -82,6 +84,8 @@ struct SlpFrameData
 /// TODO: Check file corruption
 /// TODO: One (or more??) mask for player color and outline (and shadow?)
 //
+class SlpFrame;
+typedef std::shared_ptr<SlpFrame> SlpFramePtr;
 class SlpFrame : protected ISerializable
 {
 
@@ -168,6 +172,8 @@ public:
     std::shared_ptr<SlpFrame> mirrorX(void);
 
     void readImage();
+
+    SlpFramePtr filtered(const FiltermapFile &filterFile, uint8_t filterNum, const std::vector<PatternMasksFile::Pattern> patterns, const std::vector<Color> &palette);
 
 private:
     friend class SlpTemplateFile;
@@ -274,7 +280,6 @@ private:
     void pushPixelsToBuffer(uint32_t row, uint32_t col, uint32_t count);
 };
 
-typedef std::shared_ptr<SlpFrame> SlpFramePtr;
 }
 
 #endif // GENIE_SLPFRAME_H

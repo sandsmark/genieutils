@@ -25,10 +25,12 @@
 #include "genie/file/IFile.h"
 #include "genie/util/Logger.h"
 #include "PalFile.h"
-#include "SlpFrame.h"
-#include "SlpFile.h"
+//#include "SlpFile.h"
 
 namespace genie {
+
+class SlpFrame;
+typedef std::shared_ptr<SlpFrame> SlpFramePtr;
 
 enum Slope {
     SlopeFlat        = 0,
@@ -57,6 +59,33 @@ enum Slope {
     SlopeNorthSouthWestUp = SlopeWestDown,
 };
 
+class LightmapFile : public IFile
+{
+public:
+    std::array<std::array<uint8_t, 4096>, 18> lightmaps;
+
+    operator bool() {
+        return m_loaded;
+    }
+
+private:
+    virtual void serializeObject() override
+    {
+        serialize(lightmaps);
+//        while (!getIStream()->eof()) {
+//            InverseColorMap map;
+//            serialize(map);
+//            maps.push_back(std::move(map));
+//        }
+
+        if (getOperation() == OP_READ) {
+            m_loaded = true;
+        }
+    }
+
+    bool m_loaded = true;
+};
+
 class IcmFile : public IFile
 {
 public:
@@ -65,7 +94,7 @@ public:
         std::array<std::array<std::array<uint8_t, 32>, 32>, 32> map;
 
         inline uint8_t paletteIndex(const int r, const int g, const int b) const {
-            return map[r >> 3][g >> 3][b >> 3];
+            return map[r >> 11][g >> 11][b >> 11];
         }
     };
     std::vector<InverseColorMap> maps;
@@ -96,8 +125,11 @@ private:
 class PatternMasksFile : public IFile
 {
 public:
+    LightmapFile lightmapFile;
+    IcmFile icmFile;
+
     // TODO: find better names for the rest of the values
-    enum PatternMasks {
+    enum Pattern {
         FlatPattern = 0,
         BlackPattern = 1,
         DiagDownPattern = 2,
@@ -141,22 +173,22 @@ public:
     };
 
     struct PatternMask {
-        std::array<uint8_t, 4096> mask;
+        std::array<uint8_t, 4096> pixels;
         inline bool ignore(int index) const {
-            return mask[index] & 0x1;
+            return pixels[index] & 0x1;
         }
         inline bool brighten(const int index) const {
-            return mask[index] & 0x2;
+            return pixels[index] & 0x2;
         }
         inline bool darken(const int index) const {
-            return (mask[index] & 0x2) == 0;
+            return (pixels[index] & 0x2) == 0;
         }
         inline uint8_t apply(uint8_t input, const int index) const {
             if (ignore(index)) {
                 return input;
             }
 
-            const uint8_t icm = mask[index] >> 2;
+            const uint8_t icm = pixels[index] >> 2;
             input = (input >> 2) & 0x1f;
             if (icm & 2 && icm > input) {
                 return icm;
@@ -168,18 +200,20 @@ public:
         }
     };
 
+    const IcmFile::InverseColorMap &getIcm(const uint16_t lightIndex, const std::vector<Pattern> &masks) const;
+
     operator bool() {
-        return m_loaded;
+        return m_loaded && lightmapFile && icmFile;
     }
 
-    std::array<PatternMask, PatternMasksCount> masks;
+    std::array<PatternMask, PatternMasksCount> m_masks;
 
 private:
     virtual void serializeObject() override {
         for (int i=0; i<40; i++) {
             int32_t size = 4096;
             serialize(size);
-            serialize(masks[i].mask);
+            serialize(m_masks[i].pixels);
         }
 
         if (getOperation() == OP_READ) {
@@ -193,29 +227,36 @@ private:
 class FiltermapFile : public IFile
 {
 public:
+    PatternMasksFile patternmasksFile;
+
+    struct SourcePixel {
+        uint8_t alpha;
+        uint16_t sourceIndex;
+    };
+
+    struct FilterCmd {
+        uint16_t sourcePixelCount;
+        uint16_t lightIndex;
+        std::vector<SourcePixel> sourcePixels;
+    };
+
+    struct FilterLine {
+        uint8_t width;
+        std::vector<FilterCmd> commands;
+    };
+
     struct Filtermap {
-        int height;
-        std::vector<uint8_t> commands;
+        uint32_t height;
+        std::vector<FilterLine> lines;
     };
     std::array<Filtermap, SlopeCount> maps;
 
     operator bool() {
-        return m_loaded;
+        return m_loaded && patternmasksFile;
     }
 
 private:
-    virtual void serializeObject() override {
-        for (int i=0; i<SlopeCount; i++) {
-            uint32_t mapSize = 0;
-            serialize(mapSize);
-            serialize(maps[i].height);
-            serialize(maps[i].commands, mapSize - sizeof(maps[i].height));
-//            std::cout << "Loaded " << maps[i].commands.size() << " commands" << std::endl;
-        }
-        if (getOperation() == OP_READ) {
-            m_loaded = true;
-        }
-    }
+    virtual void serializeObject() override;
     bool m_loaded = false;
 };
 
@@ -245,8 +286,6 @@ class SlpTemplateFile : public IFile
 
 public:
     FiltermapFile filtermapFile;
-    PatternMasksFile patternmasksFile;
-    IcmFile icmFile;
 
     //----------------------------------------------------------------------------
     /// Constructor
@@ -274,7 +313,8 @@ public:
     /// @param frame frame index
     /// @return SlpFrame
     //
-    SlpFramePtr getFrame(const SlpFilePtr &baseFile, const Slope slope);
+//    SlpFramePtr getFrame(const SlpFramePtr source, const Slope slope, const std::vector<PatternMasksFile::PatternMask> &masks, const std::vector<Color> &palette);
+    SlpFramePtr getFrame(const SlpFramePtr source, const Slope slope, const std::vector<PatternMasksFile::Pattern> &masks, const std::vector<Color> &palette);
 
 private:
     static Logger &log;
