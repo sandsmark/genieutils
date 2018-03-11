@@ -62,8 +62,6 @@ uint32_t SlpFrame::getHeight(void) const
 void SlpFrame::setSize(const uint32_t width, const uint32_t height)
 {
 
-//    std::cout << "old size: " << width_ << " x " << height_ << std::endl;
-//    std::cout << "new size: " << width << " x " << height << std::endl;
     width_ = width;
     height_ = height;
     if (is32bit()) {
@@ -470,13 +468,10 @@ void SlpFrame::readImage()
             {
             case GreaterBlockCopy: // Greater block copy
                 pix_cnt = (sub << 4) + read<uint8_t>();
-//                std::cout << "pixcnt: " << pix_cnt << std::endl;
                 if (is32bit())
                     readPixelsToImage32(row, pix_pos, pix_cnt);
                 else {
-                    if (!readPixelsToImage(row, pix_pos, pix_cnt)) {
-                        return;
-                    }
+                    readPixelsToImage(row, pix_pos, pix_cnt);
                 }
                 break;
 
@@ -573,17 +568,19 @@ void SlpFrame::readImage()
 SlpFramePtr SlpFrame::filtered(const FiltermapFile &filterFile, uint8_t filterNum, const std::vector<PatternMasksFile::Pattern> patterns, const std::vector<Color> &palette)
 {
     std::istream &istr = *getIStream();
+    std::streampos cmdOffset = slp_file_pos_ + std::streampos(cmd_offsets_[0]);
 
     SlpFramePtr ret = std::make_shared<SlpFrame>(*this);
-    ret->img_data.pixel_indexes.clear();
-    ret->img_data.alpha_channel.clear();
 
+    ret->img_data.pixel_indexes.clear();
     ret->img_data.pixel_indexes.resize(width_ * height_, 0);
+    ret->img_data.alpha_channel.clear();
     ret->img_data.alpha_channel.resize(width_ * height_, 0);
 
     assert(filterNum < filterFile.maps.size());
 
     const FiltermapFile::Filtermap filter = filterFile.maps[filterNum];
+    assert(filter.height == ret->height_);
 
     for (uint32_t y=0; y<filter.height; y++) {
         int xPos = left_edges_[y];
@@ -602,12 +599,14 @@ SlpFramePtr SlpFrame::filtered(const FiltermapFile &filterFile, uint8_t filterNu
 
             int r = 0, g = 0, b = 0;
             for (const FiltermapFile::SourcePixel source : cmd.sourcePixels) {
-                const uint8_t sourceIndex = img_data.pixel_indexes[source.sourceIndex];
+                istr.seekg(cmdOffset + std::streampos(source.sourceIndex));
+                const uint8_t sourceIndex = read<uint8_t>();
                 const Color sourceColor = palette[sourceIndex];
                 r += int(sourceColor.r) * source.alpha;
                 g += int(sourceColor.g) * source.alpha;
                 b += int(sourceColor.b) * source.alpha;
             }
+
             const IcmFile::InverseColorMap &icm = filterFile.patternmasksFile.getIcm(cmd.lightIndex, patterns);
             const uint8_t pixelIndex = icm.paletteIndex(r, g, b);
 
@@ -620,17 +619,13 @@ SlpFramePtr SlpFrame::filtered(const FiltermapFile &filterFile, uint8_t filterNu
 }
 
 //------------------------------------------------------------------------------
-bool SlpFrame::readPixelsToImage(uint32_t row, uint32_t &col,
+void SlpFrame::readPixelsToImage(uint32_t row, uint32_t &col,
                                  uint32_t count, bool player_col)
 {
     uint32_t to_pos = col + count;
     while (col < to_pos) {
         uint8_t color_index = read<uint8_t>();
         assert(row * width_ + col < img_data.pixel_indexes.size());
-        if(row * width_ + col >= img_data.pixel_indexes.size()) {
-            std::cerr << "out of bounds" << std::endl;
-            return false;
-        }
         img_data.pixel_indexes[row * width_ + col] = color_index;
         img_data.alpha_channel[row * width_ + col] = 255;
         if (player_col) {
@@ -638,7 +633,6 @@ bool SlpFrame::readPixelsToImage(uint32_t row, uint32_t &col,
         }
         ++col;
     }
-    return true;
 }
 
 //------------------------------------------------------------------------------

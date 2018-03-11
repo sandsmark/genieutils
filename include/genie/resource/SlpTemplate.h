@@ -230,8 +230,8 @@ public:
     PatternMasksFile patternmasksFile;
 
     struct SourcePixel {
-        uint8_t alpha;
-        uint16_t sourceIndex;
+        uint16_t alpha;
+        uint32_t sourceIndex;
     };
 
     struct FilterCmd {
