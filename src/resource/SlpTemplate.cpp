@@ -173,16 +173,25 @@ SlpFramePtr SlpTemplateFile::getFrame(const SlpFramePtr source, const Slope slop
 
 const IcmFile::InverseColorMap &PatternMasksFile::getIcm(const uint16_t lightIndex, const std::vector<Pattern> &masks) const
 {
+    assert(icmFile);
+
     uint8_t ret = m_masks[masks[0]].pixels[lightIndex];
     for (const Pattern pattern : masks) {
         ret = m_masks[pattern].apply(ret, lightIndex);
     }
 
-    const uint8_t lightmap = ret & 0x1f;
-    assert(lightmap < lightmapFile.lightmaps.size());
-    assert(lightIndex < lightmapFile.lightmaps[lightmap].size());
+    const uint8_t lightmapIndex = ret & 0x1f;
+    assert(lightmapIndex < lightmapFile.lightmaps.size());
 
-    return icmFile.maps[lightmapFile.lightmaps[lightmap][lightIndex]];
+    assert(lightIndex < lightmapFile.lightmaps[lightmapIndex].size());
+    const uint8_t icm = lightmapFile.lightmaps[lightmapIndex][lightIndex];
+    if (icm >= icmFile.maps.size()) {
+        std::cerr << int(lightIndex) << " " << int(ret) << std::endl;
+        std::cerr << int(icm) << " " << icmFile.maps.size() << std::endl;
+        return icmFile.maps[0];
+    }
+    assert(icm < icmFile.maps.size());
+    return icmFile.maps[icm];
 }
 
 void FiltermapFile::serializeObject()

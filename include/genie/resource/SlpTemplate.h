@@ -21,6 +21,7 @@
 
 #include <istream>
 #include <vector>
+#include <cassert>
 
 #include "genie/file/IFile.h"
 #include "genie/util/Logger.h"
@@ -93,13 +94,16 @@ public:
     {
         std::array<std::array<std::array<uint8_t, 32>, 32>, 32> map;
 
-        inline uint8_t paletteIndex(const int r, const int g, const int b) const {
-            return map[r >> 11][g >> 11][b >> 11];
+        inline uint8_t paletteIndex(const uint8_t r, const uint8_t g, const uint8_t b) const {
+            assert(r < map.size());
+            assert(g < map[r].size());
+            assert(b < map[r][g].size());
+            return map[r][g][b];
         }
     };
     std::vector<InverseColorMap> maps;
 
-    operator bool() {
+    operator bool() const {
         return m_loaded;
     }
 

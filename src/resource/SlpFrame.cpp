@@ -608,7 +608,7 @@ SlpFramePtr SlpFrame::filtered(const FiltermapFile &filterFile, uint8_t filterNu
             }
 
             const IcmFile::InverseColorMap &icm = filterFile.patternmasksFile.getIcm(cmd.lightIndex, patterns);
-            const uint8_t pixelIndex = icm.paletteIndex(r, g, b);
+            const uint8_t pixelIndex = icm.paletteIndex(r >> 11, g >> 11, b >> 11);
 
             ret->img_data.pixel_indexes[y * width_ + xPos] = pixelIndex;
             ret->img_data.alpha_channel[y * width_ + xPos] = 255;
