@@ -65,7 +65,7 @@ public:
     /// @param id resource id
     /// @return bina file pointer or "empty" shared pointer if not found
     //
-    PalFilePtr getPalFile(uint32_t id);
+    const PalFile &getPalFile(uint32_t id);
     UIFilePtr getUIFile(uint32_t id);
     UIFilePtr getUIFile(const std::string &knownName);
     BmpFilePtr getBmpFile(uint32_t id);
@@ -92,6 +92,8 @@ private:
     std::vector<uint32_t> table_num_of_files_;
 
     std::vector<uint8_t> wav_file_;
+
+    std::unordered_map<uint32_t, std::shared_ptr<PalFile>> pal_files_;
 
     std::unordered_map<uint32_t, SlpFilePtr> slp_map_;
     std::unordered_map<uint32_t, BinaFilePtr> bina_map_;

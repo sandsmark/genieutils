@@ -75,16 +75,22 @@ SlpFilePtr DrsFile::getSlpFile(uint32_t id)
 }
 
 //------------------------------------------------------------------------------
-PalFilePtr DrsFile::getPalFile(uint32_t id)
+const PalFile &DrsFile::getPalFile(uint32_t id)
 {
-    auto i = bina_map_.find(id);
+    auto i = pal_files_.find(id);
 
-    if (i != bina_map_.end()) {
-        return i->second->readPalFile(getIStream());
-    } else {
-        log.debug("No bina file with id [%u] found!", id);
-        return PalFilePtr();
+    if (i != pal_files_.end()) {
+        return *i->second;
     }
+
+    auto b = bina_map_.find(id);
+    if (b == bina_map_.end()) {
+        log.debug("No bina file with id [%u] found!", id);
+        return PalFile::null;
+    }
+
+    pal_files_[id] = b->second->readPalFile(getIStream());
+    return *pal_files_.find(id)->second;
 }
 
 UIFilePtr DrsFile::getUIFile(uint32_t id)

@@ -29,6 +29,8 @@ namespace genie {
 
 Logger &BlendomaticFile::log = Logger::getLogger("genie.BlendomaticFile");
 
+const BlendMode BlendMode::null;
+
 //------------------------------------------------------------------------------
 BlendomaticFile::BlendomaticFile() :
     IFile()
@@ -46,32 +48,26 @@ void BlendomaticFile::serializeObject(void)
     serialize(modeCount_);
     serialize(tileCount_);
 
+    modes_.resize(modeCount_);
+
     for (uint32_t i = 0; i < modeCount_; i++) {
         log.debug("reading mode %d", i);
 
-        BlendModePtr mode;
-        if (isOperation(OP_READ)) {
-            mode = std::make_unique<BlendMode>();
-            modes_.push_back(mode);
-        } else {
-            mode = modes_[i];
-        }
-
         // number of pixels
-        serialize(mode->pixelCount);
-        if (mode->pixelCount > 3000) {
-            std::cerr << "invalid pixel count " << mode->pixelCount << std::endl;
+        serialize(modes_[i].pixelCount);
+        if (modes_[i].pixelCount > 3000) {
+            std::cerr << "invalid pixel count " << modes_[i].pixelCount << std::endl;
             exit(0);
         }
 
         // TODO:
         // we should check these and skip the alphaValues reading in case any tiles don't have alpha
-        serialize(mode->tileHasAlpha, tileCount_);
+        serialize(modes_[i].tileHasAlpha, tileCount_);
 
-        serialize(mode->alphaBitmap, mode->pixelCount);
+        serialize(modes_[i].alphaBitmap, modes_[i].pixelCount);
 
         // alpha values from 0-128
-        serialize(mode->alphaValues, tileCount_, mode->pixelCount);
+        serialize(modes_[i].alphaValues, tileCount_, modes_[i].pixelCount);
     }
 }
 
@@ -83,7 +79,7 @@ void BlendomaticFile::unload(void)
     tileCount_ = 0;
 }
 
-void BlendomaticFile::setBlendMode(uint32_t number, BlendModePtr mode)
+void BlendomaticFile::setBlendMode(uint32_t number, const BlendMode &mode)
 {
     if (number >= modes_.size()) {
         modes_.resize(number + 1);
@@ -91,11 +87,11 @@ void BlendomaticFile::setBlendMode(uint32_t number, BlendModePtr mode)
     modes_[number] = mode;
 }
 
-BlendModePtr BlendomaticFile::getBlendMode(uint32_t id)
+const BlendMode &BlendomaticFile::getBlendMode(uint32_t id)
 {
     if (id > modes_.size()) {
         log.error("Invalid blendomatic id %d", id);
-        return nullptr;
+        return BlendMode::null;
     }
 
     return modes_[id];

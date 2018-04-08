@@ -31,7 +31,10 @@ namespace genie {
 
 struct BlendMode
 {
-    uint32_t pixelCount;
+    // For passing by reference
+    static const BlendMode null;
+
+    uint32_t pixelCount = 0;
 
     // one per tile, 0 == no alpha, 1 == has alpha
     // apparently all tiles usually have alpha
@@ -45,10 +48,8 @@ struct BlendMode
     // alpha value in 0x0 - 0x80 (0 - 128)
     std::vector<std::vector<uint8_t>> alphaValues;
 
-    uint32_t unknown;
+    uint32_t unknown = 0;
 };
-
-typedef std::shared_ptr<BlendMode> BlendModePtr;
 
 class BlendomaticFile : public IFile
 {
@@ -69,8 +70,8 @@ public:
     //
     void unload(void);
 
-    void setBlendMode(uint32_t number, BlendModePtr mode);
-    BlendModePtr getBlendMode(uint32_t id = 0);
+    void setBlendMode(uint32_t number, const BlendMode &mode);
+    const BlendMode &getBlendMode(uint32_t id = 0);
 
 private:
     static Logger &log;
@@ -81,7 +82,7 @@ private:
     uint32_t modeCount_;
     // 31, apparently ignored by the game
     uint32_t tileCount_;
-    std::vector<BlendModePtr> modes_;
+    std::vector<BlendMode> modes_;
 
     //----------------------------------------------------------------------------
     virtual void serializeObject(void);

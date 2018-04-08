@@ -24,6 +24,7 @@
 #include <stdint.h>
 #include <memory>
 
+#include "genie/resource/Color.h"
 #include "genie/file/IFile.h"
 
 namespace genie {
@@ -38,6 +39,9 @@ class PalFile : public IFile
 {
 
 public:
+    // For passing by reference
+    static const PalFile null;
+
     //----------------------------------------------------------------------------
     /// Constructor
     //
@@ -54,8 +58,12 @@ public:
     /// @param index index of color in palette
     /// @return color object
     //
-    Color &operator[](uint16_t index);
-    std::vector<Color> getColors(void) const;
+    const inline Color &operator[](uint16_t index) const {
+        return colors_[index];
+    }
+
+    const std::vector<Color> &getColors(void) const;
+
 
     //----------------------------------------------------------------------------
     /// Number of colors stored in this palette.
@@ -68,6 +76,8 @@ public:
     /// TODO: Somethings wrong...
     //
     virtual size_t objectSize(void);
+
+    bool isValid() const;
 
 private:
     static Logger &log;
@@ -92,7 +102,6 @@ private:
     size_t numOfChars(uint8_t number);
 };
 
-typedef std::shared_ptr<PalFile> PalFilePtr;
 }
 
 #endif // GENIE_PALFILE_H

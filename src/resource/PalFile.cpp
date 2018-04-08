@@ -22,9 +22,10 @@
 #include <stdexcept>
 
 #include "genie/util/Logger.h"
-#include "genie/resource/Color.h"
 
 namespace genie {
+
+const PalFile PalFile::null;
 
 using std::string;
 
@@ -41,20 +42,8 @@ PalFile::~PalFile()
 }
 
 //------------------------------------------------------------------------------
-Color &PalFile::operator[](uint16_t index)
-{
-    /*
-  if (index < 0 || index >= num_colors_)
-  {
-    log.warn("PalFile::operator[]: index out of range!");
-    throw std::out_of_range("PalFile: out of range");
-  }
-  */
-    return colors_[index];
-}
-
 //------------------------------------------------------------------------------
-std::vector<Color> PalFile::getColors(void) const
+const std::vector<Color> &PalFile::getColors(void) const
 {
     return colors_;
 }
@@ -175,4 +164,10 @@ size_t PalFile::objectSize(void)
 
     return size;
 }
+
+bool PalFile::isValid() const
+{
+    return !colors_.empty();
+}
+
 }

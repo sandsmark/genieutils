@@ -39,7 +39,7 @@ public:
     BinaFile(uint32_t size);
     virtual ~BinaFile();
 
-    PalFilePtr readPalFile(std::istream *istr);
+    std::shared_ptr<PalFile> readPalFile(std::istream *istr);
     UIFilePtr readUIFile(std::istream *istr);
     BmpFilePtr readBmpFile(std::istream *istr);
     std::string readScriptFile(std::istream *istr);

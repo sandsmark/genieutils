@@ -32,9 +32,9 @@ BinaFile::~BinaFile()
 {
 }
 
-PalFilePtr BinaFile::readPalFile(std::istream *istr)
+std::shared_ptr<PalFile> BinaFile::readPalFile(std::istream *istr)
 {
-    PalFilePtr pal(new PalFile());
+    std::shared_ptr<PalFile> pal = std::make_shared<PalFile>();
 
     pal->setInitialReadPosition(getInitialReadPosition());
 
