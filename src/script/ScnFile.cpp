@@ -34,14 +34,12 @@ double ISerializable::scn_trigger_ver = 0.0;
 
 Logger &ScnFile::log = Logger::getLogger("genie.ScnFile");
 
-
-
-
 //////////
 // cpx format:
 // header
 //  - 4 char version
-//  - 5 char name
+//  - 5 char name -- null terminated string?
+//    - padded with 0xCD up to 256 bytes
 //  - 254 bytes total header?
 //  - 40 bytes offset:
 //     - 0xff ff ff ff == separator?
