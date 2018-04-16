@@ -22,10 +22,10 @@
 
 #include <istream>
 #include <vector>
+#include <memory>
 
 #include "genie/file/IFile.h"
 #include "genie/util/Logger.h"
-#include "PalFile.h"
 
 namespace genie {
 
