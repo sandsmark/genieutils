@@ -144,7 +144,7 @@ bool SlpTemplateFile::isLoaded(void) const
 }
 
 //------------------------------------------------------------------------------
-SlpFramePtr SlpTemplateFile::getFrame(const SlpFramePtr source, const Slope slope, const std::vector<PatternMasksFile::Pattern> &masks, const std::vector<Color> &palette)
+SlpFramePtr SlpTemplateFile::getFrame(const SlpFramePtr source, const Slope slope, const std::vector<Pattern> &masks, const std::vector<Color> &palette)
 {
     if (!source) {
         log.error("Passed nullptr");
@@ -171,27 +171,27 @@ SlpFramePtr SlpTemplateFile::getFrame(const SlpFramePtr source, const Slope slop
     return frameCopy;
 }
 
-const IcmFile::InverseColorMap &PatternMasksFile::getIcm(const uint16_t lightIndex, const std::vector<Pattern> &masks) const
+const IcmFile::InverseColorMap &PatternMasksFile::getIcm(const uint16_t lightIndex, const std::vector<Pattern> &patterns) const
 {
-    assert(icmFile);
-
-    uint8_t ret = m_masks[masks[0]].pixels[lightIndex];
-    for (const Pattern pattern : masks) {
-        ret = m_masks[pattern].apply(ret, lightIndex);
+    if (patterns.empty()) {
+        return icmFile.maps[4];
     }
 
-    const uint8_t lightmapIndex = ret & 0x1f;
-    assert(lightmapIndex < lightmapFile.lightmaps.size());
+    uint8_t lightmapIndex = m_masks[patterns[0]].pixels[lightIndex] >> 2;
 
-    assert(lightIndex < lightmapFile.lightmaps[lightmapIndex].size());
-    const uint8_t icm = lightmapFile.lightmaps[lightmapIndex][lightIndex];
-    if (icm >= icmFile.maps.size()) {
-        std::cerr << int(lightIndex) << " " << int(ret) << std::endl;
-        std::cerr << int(icm) << " " << icmFile.maps.size() << std::endl;
-        return icmFile.maps[0];
+    for (size_t i=1; i < patterns.size(); i++) {
+        lightmapIndex = m_masks[patterns[i]].apply(lightmapIndex, lightIndex);
     }
-    assert(icm < icmFile.maps.size());
-    return icmFile.maps[icm];
+
+    const size_t icmIndex = lightmapFile.lightmaps[lightmapIndex][lightIndex];
+
+    if (icmIndex >= icmFile.maps.size()) {
+        std::cerr << "Icm index out of range " << icmIndex << " " << icmFile.maps.size() << std::endl;
+
+        return icmFile.maps[4];
+    }
+
+    return icmFile.maps[icmIndex];
 }
 
 void FiltermapFile::serializeObject()

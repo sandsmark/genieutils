@@ -197,10 +197,10 @@ unsigned char *DrsFile::getWavPtr(uint32_t id)
     if (i != wav_offsets_.end()) {
         wav_file_.clear();
         getIStream()->seekg(std::streampos(i->second));
-        uint32_t type = read<uint32_t>();
+        /*uint32_t type =*/ read<uint32_t>();
         uint32_t size = read<uint32_t>();
 #ifndef NDEBUG
-        log.debug("WAV [%u], type [%X], size [%u]", id, type, size);
+//        log.debug("WAV [%u], type [%X], size [%u]", id, type, size);
 #endif
         getIStream()->seekg(std::streampos(i->second));
         wav_file_.resize(size + 8);

@@ -565,7 +565,7 @@ void SlpFrame::readImage()
 
 }
 
-SlpFramePtr SlpFrame::filtered(const FiltermapFile &filterFile, uint8_t filterNum, const std::vector<PatternMasksFile::Pattern> patterns, const std::vector<Color> &palette)
+SlpFramePtr SlpFrame::filtered(const FiltermapFile &filterFile, uint8_t filterNum, const std::vector<Pattern> patterns, const std::vector<Color> &palette)
 {
     std::istream &istr = *getIStream();
     std::streampos cmdOffset = slp_file_pos_ + std::streampos(cmd_offsets_[0]);
@@ -600,8 +600,8 @@ SlpFramePtr SlpFrame::filtered(const FiltermapFile &filterFile, uint8_t filterNu
             int r = 0, g = 0, b = 0;
             for (const FiltermapFile::SourcePixel source : cmd.sourcePixels) {
                 istr.seekg(cmdOffset + std::streampos(source.sourceIndex));
-                const uint8_t sourceIndex = read<uint8_t>();
-                const Color sourceColor = palette[sourceIndex];
+                const uint8_t sourcePaletteIndex = read<uint8_t>();
+                const Color sourceColor = palette[sourcePaletteIndex];
                 r += int(sourceColor.r) * source.alpha;
                 g += int(sourceColor.g) * source.alpha;
                 b += int(sourceColor.b) * source.alpha;

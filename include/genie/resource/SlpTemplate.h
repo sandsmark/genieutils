@@ -34,6 +34,7 @@ class SlpFrame;
 typedef std::shared_ptr<SlpFrame> SlpFramePtr;
 
 enum Slope {
+    SlopeInvalid     = -1,
     SlopeFlat        = 0,
     SlopeSouthUp     = 1,
     SlopeNorthUp     = 2,
@@ -65,7 +66,7 @@ class LightmapFile : public IFile
 public:
     std::array<std::array<uint8_t, 4096>, 18> lightmaps;
 
-    operator bool() {
+    operator bool() const {
         return m_loaded;
     }
 
@@ -126,55 +127,57 @@ private:
     bool m_loaded = true;
 };
 
+// TODO: find better names for the rest of the values
+enum Pattern {
+    FlatPattern = 0,
+    BlackPattern = 1,
+    DiagDownPattern = 2,
+    DiagUpPattern = 3,
+    HalfDownPattern = 4,
+    HalfUpPattern = 5,
+    HalfLeftPattern = 6,
+    HalfRightPattern = 7,
+    DownPattern = 8,
+    UpPattern = 9,
+    LeftPattern = 10,
+    RightPattern = 11,
+    Pattern12 = 12,
+    Pattern13 = 13,
+    Pattern14 = 14,
+    Pattern15 = 15,
+    Pattern16 = 16,
+    Pattern17 = 17,
+    Pattern18 = 18,
+    Pattern19 = 19,
+    Pattern20 = 20,
+    Pattern21 = 21,
+    Pattern22 = 22,
+    Pattern23 = 24,
+    Pattern24 = 24,
+    Pattern25 = 25,
+    Pattern26 = 26,
+    Pattern27 = 27,
+    Pattern28 = 28,
+    Pattern29 = 29,
+    Pattern30 = 30,
+    Pattern31 = 31,
+    Pattern32 = 32,
+    Pattern33 = 33,
+    Pattern34 = 34,
+    Pattern35 = 35,
+    Pattern36 = 36,
+    Pattern37 = 37,
+    Pattern38 = 38,
+    Pattern39 = 39,
+    PatternMasksCount = 40,
+};
+
 class PatternMasksFile : public IFile
 {
 public:
+
     LightmapFile lightmapFile;
     IcmFile icmFile;
-
-    // TODO: find better names for the rest of the values
-    enum Pattern {
-        FlatPattern = 0,
-        BlackPattern = 1,
-        DiagDownPattern = 2,
-        DiagUpPattern = 3,
-        HalfDownPattern = 4,
-        HalfUpPattern = 5,
-        HalfLeftPattern = 6,
-        HalfRightPattern = 7,
-        DownPattern = 8,
-        UpPattern = 9,
-        LeftPattern = 10,
-        RightPattern = 11,
-        Pattern12 = 12,
-        Pattern13 = 13,
-        Pattern14 = 14,
-        Pattern15 = 15,
-        Pattern16 = 16,
-        Pattern17 = 17,
-        Pattern18 = 18,
-        Pattern19 = 19,
-        Pattern20 = 20,
-        Pattern21 = 21,
-        Pattern22 = 22,
-        Pattern24 = 24,
-        Pattern25 = 25,
-        Pattern26 = 26,
-        Pattern27 = 27,
-        Pattern28 = 28,
-        Pattern29 = 29,
-        Pattern30 = 30,
-        Pattern31 = 31,
-        Pattern32 = 32,
-        Pattern33 = 33,
-        Pattern34 = 34,
-        Pattern35 = 35,
-        Pattern36 = 36,
-        Pattern37 = 37,
-        Pattern38 = 38,
-        Pattern39 = 39,
-        PatternMasksCount = 40,
-    };
 
     struct PatternMask {
         std::array<uint8_t, 4096> pixels;
@@ -192,14 +195,12 @@ public:
                 return input;
             }
 
-            const uint8_t icm = pixels[index] >> 2;
-            input = (input >> 2) & 0x1f;
-            if (icm & 2 && icm > input) {
-                return icm;
-            } else if (icm < input) {
-                return icm;
+            const uint8_t icm = (pixels[index] >> 2) & 0x1f;
+
+            if (brighten(index)) {
+                return std::max(icm, input);
             } else {
-                return input;
+                return std::min(icm, input);
             }
         }
     };
@@ -318,7 +319,7 @@ public:
     /// @return SlpFrame
     //
 //    SlpFramePtr getFrame(const SlpFramePtr source, const Slope slope, const std::vector<PatternMasksFile::PatternMask> &masks, const std::vector<Color> &palette);
-    SlpFramePtr getFrame(const SlpFramePtr source, const Slope slope, const std::vector<PatternMasksFile::Pattern> &masks, const std::vector<Color> &palette);
+    SlpFramePtr getFrame(const SlpFramePtr source, const Slope slope, const std::vector<Pattern> &masks, const std::vector<Color> &palette);
 
 private:
     static Logger &log;

@@ -40,20 +40,6 @@ namespace genie {
 class Unit : public ISerializable
 {
 public:
-    enum MinimapMode : int8_t {
-        MinimapLandscape = 0,
-        MinimapSquare = 1,
-        MinimapDiamond = 2,
-        MinimapDiamondConstant = 3,
-        MinimapBlackSpot = 4,
-        MinimapBlackSpot2 = 5,
-        MinimapHidden2 = 6,
-        MinimapHidden3 = 7,
-        MinimapHidden4 = 8,
-        MinimapHidden5 = 9,
-        MinimapAnimals = 6
-    };
-
     Unit();
     virtual ~Unit();
     virtual void setGameVersion(GameVersion gv);
@@ -106,6 +92,8 @@ public:
 
     /// Class that gives certain properties
     enum UnitClass : int16_t {
+        InvalidClass = -1,
+
         // AoE1-ish
         Archer = 0,
         Artifact = 1,
@@ -172,7 +160,7 @@ public:
         MiscBuilding = 60,
         ControlledAnimal = 61,
     };
-    int16_t Class = -1;
+    int16_t Class = InvalidClass;
     static const std::string &className(const int16_t classId, const GameVersion gameVersion = GV_TC);
     const std::string &className() const { return className(Class); }
 
