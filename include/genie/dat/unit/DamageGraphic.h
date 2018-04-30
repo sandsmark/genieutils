@@ -34,8 +34,15 @@ namespace unit {
         virtual void setGameVersion(GameVersion gv);
 
         int16_t GraphicID = -1;
+
+        /// Percentage damage this appears at
         int8_t DamagePercent = 0;
+
         int8_t OldApplyMode = 0;
+
+        /// 0   Overlay (flames on buildings)
+        /// 1   Overlay randomly
+        /// 2   Replace graphics (damaged walls)
         int8_t ApplyMode = 0;
 
     private:

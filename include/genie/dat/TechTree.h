@@ -133,6 +133,14 @@ public:
     virtual void setGameVersion(GameVersion gv);
 
     int32_t ID = -1;
+
+    /// 0   Nothing
+    /// 1   None
+    /// 2   Available to player
+    /// 3   Not available to player
+    /// 4   Researching or constructing or creating
+    /// 5   Technology researched or building built
+    /// 6   End
     int8_t Status = 2; //always 2
 
     std::vector<int32_t> Buildings;
@@ -142,12 +150,24 @@ public:
     techtree::Common Common;
 
     static const unsigned short AGES = 5;
+
+    /// 0   Hidden
+    /// 1   First
+    /// 2   Second
     int8_t LocationInAge = 0;
     std::vector<int8_t> UnitsTechsTotal;
+
     std::vector<int8_t> UnitsTechsFirst;
 
-    /// 5 One or more connections, 6 No connections.
+    /// 0   Research: First age
+    /// 1   Age
+    /// 2   Unit: First in vertical line
+    /// 3   Unit: Not first
+    /// 4   Research
+    /// 5   Building: One or more connections
+    /// 6   Building: No connections
     int32_t LineMode = 0;
+
     /// Makes available. Used by buildings, which need a research to be available.
     int32_t EnablingResearch = 0;
 

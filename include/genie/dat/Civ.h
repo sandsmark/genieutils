@@ -54,6 +54,10 @@ public:
     /// Resources can easily added and removed using this vector.
     std::vector<float> Resources;
 
+    /// Building icon set (and trade cart graphics?)
+    /// This is actually an offset used to look up SLPs inside the DRS file
+    /// AoE 1: also determines the interface graphics used
+    /// Star Wars: also determines unit and tech icons
     int8_t IconSet = 0;
 
     std::vector<int32_t> UnitPointers;

@@ -33,6 +33,10 @@ public:
 
     int16_t TaskType = 1;
     int16_t ID = -1;
+
+    /// Basically useless
+    /// Used to setup task when discovered,
+    /// but you can directly set it in unit data
     int8_t IsDefault = false;
 
     /// What type of command/action is it
@@ -92,18 +96,50 @@ public:
     int16_t ClassID = -1;
     int16_t UnitID = -1;
     int16_t TerrainID = -1;
+
+    /// Resource gained by gathering
     int16_t ResourceIn = -1;
+
+    /// Prod resource
+    /// Resource that multiplies the amount you gather
     int16_t ResourceMultiplier = -1;
+
+    /// Resource deposited on drop site
     int16_t ResourceOut = -1;
+
     int16_t UnusedResource = -1;
+
+    /// Work rate modifier
+    /// Minimum conversion time
     float WorkValue1 = 0;
+
+    /// Maximum conversion time
     float WorkValue2 = 0;
+
     float WorkRange = 0;
+
+    /// If 1, then auto-search for targets
     int8_t AutoSearchTargets = 0;
+
+    /// Unused
     float SearchWaitTime = 0;
+
+    /// AoE alphas: Target choosing based on combat level
+    /// 0   No targeting
+    /// 1   Allows units to select their targets
     int8_t EnableTargeting = 0;
+
+    /// Unused Flag
     int8_t CombatLevelFlag = false;
+
+    /// Work Flag 1
+    /// AoE 1: Used when farm is dead but still exists
+    /// 0   Plunder from resource
+    /// 1   Plunder from players
+    /// 2   Raider thing?
     int16_t GatherType = 0;
+
+    /// Unused
     int16_t WorkFlag2 = 0;
 
     /// Owner Type
@@ -121,19 +157,31 @@ public:
     };
     int8_t TargetDiplomacy = 0;
 
+    /// Holding Attribute
+    /// 0   Right-click target is defined by the target diplomacy.
+    /// 1   Preceding the above, checks if target has more than 0 resource.
     int8_t CarryCheck = false;
+
+    /// 1   Choose this task if targeting a construction
     int8_t PickForConstruction = false;
 
-    // walking with tool but no resource
+    /// walking with tool but no resource
     int16_t MovingGraphicID = -1;
-    // proceeding resource gathering or attack
+
+    /// proceeding resource gathering or attack
     int16_t ProceedingGraphicID = -1;
-    // actual execution or transformation graphic
+
+    /// Used when actually gathering a resource or attacking/converting
     int16_t WorkingGraphicID = -1;
-    // display resources in hands
+
+    /// Used when carrying a resource
+    /// display resources in hands
     int16_t CarryingGraphicID = -1;
 
+    /// Example: Plays when lumberjack starts chopping wood
     int16_t ResourceGatheringSoundID = -1;
+
+    /// Example: Plays when lumberjack drops his wood into TC
     int16_t ResourceDepositSoundID = -1;
 
 private:

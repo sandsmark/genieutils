@@ -38,7 +38,13 @@ public:
     std::vector<std::vector<FrameData>> Borders;
 
     int16_t DrawTerrain = 0; // always 0
+
+    /// Used for terrain passability check
     int16_t UnderlayTerrain = -1;
+
+    /// This has something to do with all 19 tile types
+    /// Mickey's DAT had this removed and
+    /// instead added one border shape to each 19 tile types
     int16_t BorderStyle = 0;
 
 private:

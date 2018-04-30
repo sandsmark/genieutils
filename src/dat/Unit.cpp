@@ -164,9 +164,9 @@ void Unit::serializeObject(void)
     serialize<int16_t>(HitPoints);
     serialize<float>(LineOfSight);
     serialize<int8_t>(GarrisonCapacity);
-    serialize<float>(CollisionSize.x);
-    serialize<float>(CollisionSize.y);
-    serialize<float>(CollisionSize.z);
+    serialize<float>(CollisionSize.first);
+    serialize<float>(CollisionSize.second);
+    serialize<float>(HPBarHeight1);
     serialize<int16_t>(TrainSound);
     if (gv >= GV_AoKE3)
         serialize<int16_t>(DamageSound);
@@ -232,9 +232,9 @@ void Unit::serializeObject(void)
 
         serialize<int8_t>(SelectionEffect);
         serialize<uint8_t>(EditorSelectionColour);
-        serialize<float>(OutlineSize.x);
-        serialize<float>(OutlineSize.y);
-        serialize<float>(OutlineSize.z);
+        serialize<float>(OutlineSize.first);
+        serialize<float>(OutlineSize.second);
+        serialize<float>(HPBarHeight2);
     }
 
     serializeSub<ResourceStorage>(ResourceStorages, 3);

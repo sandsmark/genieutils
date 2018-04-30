@@ -85,6 +85,13 @@ public:
     int16_t ID = -1;
 
     /// ID of the name string stored in the language.dll file
+    /// Usual Unit File Pattern for The Conquerors
+    /// Name: 5000-5999
+    /// Creation: Name +1000
+    /// Hotkey: Name +11000
+    /// Help: Name +100000, in file Name +21000
+    /// Hotkey Text: Name +150000, in file Name +10000
+    /// Tech tree: Name +9000
     uint16_t LanguageDLLName = 5000;
 
     /// ID of the name string stored in the language.dll file
@@ -165,6 +172,8 @@ public:
     const std::string &className() const { return className(Class); }
 
     /// Default standing graphic
+    /// Half of units in group use 1st,
+    /// the rest use 2nd
     std::pair<int16_t, int16_t> StandingGraphic = { -1, -1 };
 
     /// Graphic shown while the units is dying.
@@ -180,9 +189,11 @@ public:
     int8_t UndeadMode = 0;
 
     /// Unit's hit points
+    /// -1 Instantly dying unit
     int16_t HitPoints = 1;
 
     /// Default line of sight measured in tiles
+    /// Maximum (effective) value is 20
     float LineOfSight = 2;
 
     /// Maximum number of units that can be garrisonned at the same time.
@@ -190,7 +201,11 @@ public:
 
     /// Collision detection area taken by the unit.
     /// No other unit can move into this area except flying units.
-    XYZF CollisionSize = { 0, 0, 0 };
+    std::pair<float, float> CollisionSize = { 0, 0 };
+
+    /// Setting "can be built on" to 1 and this to 0 causes
+    /// farms to be walkable in AoE/RoR.
+    float HPBarHeight1 = 0.f;
 
     /// Sound played when the unit is created
     int16_t TrainSound = -1;
@@ -220,12 +235,24 @@ public:
     /// TODO Unknown
     int16_t OldPortraitPict = -1; // Always -1
 
-    /// Enabled without research
+    /// 0   Requires a technology to be available
+    /// 1   Available without a technology
     int8_t Enabled = 1;
+
+    /// Not scanned but set to 0
+    /// Can change during gameplay
+    /// Mostly for different game modes and disables defined in scenarios
+    /// 0   Default
+    /// 1   Prevents enabling/disabling with a tech
     int8_t Disabled = 0;
 
+    /// Required terrain on some side
+    /// E. g. water for docks
     std::pair<int16_t, int16_t> PlacementSideTerrain = { -1, -1 };
+
+    /// Required terrain underneath
     std::pair<int16_t, int16_t> PlacementTerrain = { -1, -1 };
+
     std::pair<float, float> ClearanceSize = { 0, 0 };
 
     /// Restrictions on placement on hills
@@ -250,6 +277,7 @@ public:
         /// Invertred
         OnlyVisibleInFog = 3,
 
+        /// Replaced by a "doppelganger" unit when in fog (i. e. a dummy unit that is shown until area is visible again)
         DoppelgangerFogVisibility = 4
     };
     int8_t FogVisibility = 0;
@@ -257,15 +285,27 @@ public:
     /// ID of terrain restrictions that are imposed on the unit.
     int16_t TerrainRestriction = 0;
 
-    /// Bool which determines wheter the unit can fly.
+    /// Controls graphic altitude when teleporting
+    /// 0   Stay on ground
+    /// 1   Graphics appear higher than the shadow
     int8_t FlyMode = 0;
 
     /// How much resources this unit is able to carry
     int16_t ResourceCapacity = 0;
 
-    // TODO
+    /// Can alter decay time of corpses\nSet to -1 for never decaying
     float ResourceDecay = 0;
+
+    /// Receive blast damage from units that have lower or same blast attack level
     int8_t BlastDefenseLevel = 0;
+
+    /// Mainly used in trigger conditions
+    /// 0   None
+    /// 1   Base
+    /// 2   Building
+    /// 3   Civilian
+    /// 4   Soldier
+    /// 5   Priest/Monk
     int8_t CombatLevel = 0;
 
     enum InteractionModes : int8_t {
@@ -353,12 +393,35 @@ public:
     int8_t InterfaceKind = 0;
 
     float MultipleAttributeMode = 0;
+
+    /// Minimap modes 3 and 4 allow this to work
     uint8_t MinimapColor = 0;
+
+    /// 100000 + Language File Name
+    /// This is the help text, stored in the language DLL
     int32_t LanguageDLLHelp = 105000;
+
+    /// 150000 + Language File Name
+    /// This seems to be used only in AoE (not RoR)
+    /// This language line has other purposes in SWGB and CC
     int32_t LanguageDLLHotKeyText = 155000;
+
+    /// 10000 + Language File Creation (usually)
     int32_t HotKey = 16000;
+
+    /// Unselectable
+    /// Not scanned but set to 1 for class 11
+    /// Can change during gameplay
     int8_t Recyclable = 0;
+
+    /// Track as Resource
+    /// Allows automatic gathering and handles fog visibility
     int8_t EnableAutoGather = 0;
+
+    /// Create doppelganger on death.
+    /// 0   None
+    /// 1   After death
+    /// 2   When dying
     int8_t CreateDoppelgangerOnDeath = 0;
 
     /// Visible resource group
@@ -468,20 +531,37 @@ public:
     int8_t SelectionEffect = 1;
 
     uint8_t EditorSelectionColour = 52;
-    XYZF OutlineSize = { 0, 0, 0 };
+    std::pair<float, float> OutlineSize = { 0, 0 };
+
+    /// Determines HP bar location
+    /// Vertical half tile (elevation height?) distance from the top corner?
+    float HPBarHeight2 = 0.f;
 
     typedef ResourceUsage<float, int8_t> ResourceStorage;
 
     /// Resource cost of a unit
     std::vector<ResourceStorage> ResourceStorages;
 
+    ///
     std::vector<unit::DamageGraphic> DamageGraphics;
 
     /// Sound that is played when this unit is selected
     int16_t SelectionSound = -1;
     int16_t DyingSound = -1;
+
+    /// 0   None
+    /// 1   Run
+    /// 2   Run work
+    /// 3   Fight
+    /// 4   Fight work
+    /// 5   Fight run
+    /// 6   Fight run work
     int8_t OldAttackReaction = 0;
+
+    /// Some alpha feature that let units change terrain under them.
+    /// Specifically from passable to impassable.
     int8_t ConvertTerrain = 0;
+
     std::string Name = "";
     std::string Name2 = "";
 

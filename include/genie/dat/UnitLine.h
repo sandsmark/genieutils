@@ -26,6 +26,7 @@
 
 namespace genie {
 
+/// Used by AIs
 class UnitLine : public ISerializable
 {
 public:

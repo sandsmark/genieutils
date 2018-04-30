@@ -41,7 +41,7 @@ namespace unit {
         std::vector<ResourceCost> ResourceCosts;
         int16_t TrainTime = 0;
 
-        // ID of unit where this is made
+        /// ID of unit where this is made
         int16_t TrainLocationID = -1;
 
         /// First page (also second in TC) 1-15
@@ -68,13 +68,25 @@ namespace unit {
 
         int8_t HeroMode = 0;
         int32_t GarrisonGraphic = -1;
+
+        /// Total missiles including both normal and duplicated projectiles
         float TotalProjectiles = 0;
+
+        /// Total missiles when garrison capacity is full
         int8_t MaxTotalProjectiles = 0;
 
         /// The area from which projectiles spawn. Size and randomness.
+        /// X: Spawning area's width
+        /// Y: Spawning area's length
+        /// Z: 0   From a single spot
+        ///    1   Totally randomly inside the spawning area
+        ///    1+  Less randomly
         std::vector<float> ProjectileSpawningArea = { 0, 0, 0 };
 
+        /// Uses its own attack values
         int32_t SecondaryProjectileUnit = -1;
+
+        /// Activates depending on special ability
         int32_t SpecialGraphic = -1;
 
         //TODO:
@@ -86,6 +98,30 @@ namespace unit {
     wall end piece, but if a wall is placed between two other walls, it will
     have a different graphic.
    */
+
+        /// Charging mode
+        /// 0   None
+        /// These work only when facing the hit angle.
+        /// 1   Block
+        ///     Activates special graphic when receiving damage and
+        ///     not pursuing the attacker.
+        ///     While idle, blocking decreases damage taken by 1/3.
+        /// 2   Counter Charge
+        ///     Activates special graphic when idle and enemy is near.
+        ///     While idle, attacks back once on first received hit.
+        ///     Enemy must be unit type 70 and have less than 0.2 max range.
+        /// 3   Charge
+        ///     Activates special graphic when closer than two tiles to the target.
+        ///     Deals 2X damage on 1st hit.
+        ///     Planned but never implemented ship special attacks.
+        ///     Read the design document of Age of Empires II.
+        ///     These were supposed to be mutually exclusive technologies.
+        /// 4   Ram
+        ///     Charge against another ship, losing some hit points yourself.
+        /// 5   Greek Fire
+        ///     Fry units on ships passing through your sea of fire.
+        /// 6   Board
+        ///     Attach to another ship, resulting in takeover or sinking.
         int8_t SpecialAbility = 0;
         int16_t DisplayedPierceArmour = 0;
 

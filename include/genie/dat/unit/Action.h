@@ -34,9 +34,16 @@ public:
     virtual ~Action();
     virtual void setGameVersion(GameVersion gv);
 
+    /// Unit task ID executed when idle.
+    /// To get the unit auto-converted to enemy,\nuse unit command 107, which sheep and monument have.
     int16_t DefaultTaskID = -1;
+
+
     float SearchRadius = 0;
     float WorkRate = 0;
+
+    /// Giving to a villager drop site to cart-like unit
+    /// can allow you to have mobile resource-gatherers,\nsimilar to those in Age of Mythology.
     std::pair<int16_t, int16_t> DropSite = { -1, -1 };
 
     /// If activated unit switches villager types

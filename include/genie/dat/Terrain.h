@@ -48,6 +48,8 @@ public:
     int8_t PassableTerrain = -1;
     int8_t ImpassableTerrain = -1;
 
+    /// Tile Graphics: flat, 2 x 8 elevation, 2 x 1:1
+    ///  Frame Count, Animations, Frame Index
     std::vector<FrameData> ElevationGraphics;
 
     int16_t TerrainToDraw = 0;
@@ -62,6 +64,9 @@ public:
 
     /// If two terrain units are to be placed on same spot, this selects which one will prevail others.
     /// 1 = prevails, others don't.
+    /// Centralize
+    /// 0   Place randomly on the tile
+    /// 1   Place in middle of the tile
     std::vector<int8_t> TerrainUnitCentering;
 
     int16_t NumberOfTerrainUnitsUsed = 0;

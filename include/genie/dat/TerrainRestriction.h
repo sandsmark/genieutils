@@ -33,7 +33,19 @@ public:
     virtual ~TerrainRestriction();
     virtual void setGameVersion(GameVersion gv);
 
+    /// Accessibility and Damage Multiplier
+    /// See unit -> terrain defense bonus\nPass-ability:
+    ///  0  Not passable
+    /// > 0  Passable
+    /// Build-ability:
+    /// <= 0.05  You cannot build on it.
+    /// > 0.05  You can build on it.
+    /// Damage Multiplier:
+    /// 0 Damage multiplier is 1.
+    ///  > 0  Damage multipler is as specified.
+    /// Star Wars: < 1  Damage multiplier is 1.
     std::vector<float> PassableBuildableDmgMultiplier;
+
     std::vector<TerrainPassGraphic> TerrainPassGraphics;
 
     static void setTerrainCount(unsigned short cnt);

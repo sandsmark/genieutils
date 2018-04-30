@@ -39,8 +39,15 @@ namespace unit {
         float RotationSpeed = 0;
         int8_t OldSizeClass = 0;
         int16_t TrackingUnit = -1;
+
+        /// 0. Not used
+        /// 1. Appears while moving and at the start of the game
+        /// 2. Appears while moving, based on density
         int8_t TrackingUnitMode = 0;
+
+        /// Only with TrackingUnitMode 2
         float TrackingUnitDensity = 0;
+
         int8_t OldMoveAlgorithm = 0;
 
         // All can change while playing

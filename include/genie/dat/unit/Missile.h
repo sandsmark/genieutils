@@ -33,8 +33,20 @@ namespace unit {
         virtual ~Missile();
         virtual void setGameVersion(GameVersion gv);
 
+        /// 0. Straight
+        /// 1. Homing?, projectile falls vertically to the bottom of the map
+        /// 2. Velocity homing?
+        /// 3. Teleporting projectile
         int8_t ProjectileType = 0;
+
+        /// Effect attribute 19 changes this
+        /// 0. Shoot where the target is now
+        /// 1. Shoot where the target is going to be
         int8_t SmartMode = 0;
+
+        /// 0. Continue after hitting an obstacle
+        /// 1. Disappear once an obstacle is hit
+        /// 2. Hit all. Damages target and resting position?
         int8_t HitMode = 0;
 
         /// Affects the graphics so that they pass through the target instead of stopping
@@ -42,6 +54,9 @@ namespace unit {
         /// Only affects graphic not pass through damage.
         int8_t VanishMode = 0;
 
+        /// 0 Normal
+        /// 1 Random (bullets)
+        /// 2 Random explosions
         int8_t AreaEffectSpecials = 0;
 
         /// Determines the arc a projectile follows.
