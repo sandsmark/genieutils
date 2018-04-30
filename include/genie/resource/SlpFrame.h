@@ -173,7 +173,7 @@ public:
 
     void readImage();
 
-    SlpFramePtr filtered(const FiltermapFile &filterFile, uint8_t filterNum, const std::vector<Pattern> patterns, const std::vector<Color> &palette);
+    void filter(const FiltermapFile &filterFile, uint8_t filterNum, const std::vector<Pattern> patterns, const std::vector<Color> &palette);
 
 private:
     friend class SlpTemplateFile;

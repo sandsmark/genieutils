@@ -166,7 +166,7 @@ SlpFramePtr SlpTemplateFile::getFrame(const SlpFramePtr source, const Slope slop
     frameCopy->left_edges_ = templates_[slope].left_edges_;
     frameCopy->right_edges_ = templates_[slope].right_edges_;
 
-    frameCopy = frameCopy->filtered(filtermapFile, slope, masks, palette);
+    frameCopy->filter(filtermapFile, slope, masks, palette);
 
     return frameCopy;
 }

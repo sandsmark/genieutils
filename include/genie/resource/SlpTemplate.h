@@ -318,7 +318,6 @@ public:
     /// @param frame frame index
     /// @return SlpFrame
     //
-//    SlpFramePtr getFrame(const SlpFramePtr source, const Slope slope, const std::vector<PatternMasksFile::PatternMask> &masks, const std::vector<Color> &palette);
     SlpFramePtr getFrame(const SlpFramePtr source, const Slope slope, const std::vector<Pattern> &masks, const std::vector<Color> &palette);
 
 private:
