@@ -33,7 +33,7 @@ namespace genie {
 class SlpFrame;
 typedef std::shared_ptr<SlpFrame> SlpFramePtr;
 
-enum Slope {
+enum Slope : int8_t {
     SlopeInvalid     = -1,
     SlopeFlat        = 0,
     SlopeSouthUp     = 1,
@@ -57,8 +57,8 @@ enum Slope {
 
     SlopeSouthWestEastUp = SlopeNorthDown,
     SlopeNorthWestEastUp = SlopeSouthDown,
-    SlopeNorthSoutEastUp = SlopeWestDown,
-    SlopeNorthSouthWestUp = SlopeWestDown,
+    SlopeNorthSouthEastUp = SlopeWestDown,
+    SlopeNorthSouthWestUp = SlopeEastDown,
 };
 
 class LightmapFile : public IFile
