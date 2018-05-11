@@ -64,6 +64,7 @@ set(FILE_SRC
     src/file/ISerializable.cpp
     src/file/IFile.cpp
     src/file/Compressor.cpp
+    src/file/CabFile.cpp
     )
 
 if (${GU_LANG_SUPPORT})
