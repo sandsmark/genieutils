@@ -41,6 +41,10 @@
 /* opaque state structure */
 struct LZXstate;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* create an lzx state object */
 struct LZXstate *LZXinit(int window);
 
@@ -56,5 +60,10 @@ int LZXdecompress(struct LZXstate *pState,
                   unsigned char *outpos,
                   int inlen,
                   int outlen);
+
+# ifdef __cplusplus
+} // extern "C"
+using LZXStatePtr = std::unique_ptr<LZXstate, decltype(&::LZXteardown)>;
+#endif
 
 #endif /* INCLUDED_LZX_H */

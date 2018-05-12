@@ -23,6 +23,7 @@
 
 #include <string>
 #include <iostream>
+#include <unordered_map>
 
 #include "genie/Types.h"
 #include "genie/file/IFile.h"
@@ -33,10 +34,35 @@ namespace genie {
 class CabFile : public IFile
 {
 public:
-    enum CompressionTypes {
-        None = 0x0,
+    enum CompressionTypes : uint16_t {
+        Uncompressed = 0x0,
         MsZip = 0x1,
         Lzx = 0x1503
+    };
+
+    struct File {
+        uint32_t size;
+        uint32_t offsetInFolder;
+        uint16_t folder;
+        uint16_t date;
+        uint16_t time;
+        uint16_t attributes;
+        std::string filename;
+    };
+
+    struct Block {
+        uint32_t checksum;
+        uint16_t compressedSize;
+        uint16_t uncompressedSize;
+        uint32_t uncompressedOffset;
+        std::streampos streamOffset;
+    };
+
+    struct Folder {
+        uint32_t dataOffset;
+        uint16_t blockCount;
+        uint16_t compression;
+        std::vector<Block> blocks;
     };
 
     //----------------------------------------------------------------------------
@@ -56,6 +82,8 @@ public:
     //
     void setVerboseMode(bool verbose);
 
+    void readFile(std::string filename);
+
 private:
     bool seekToHeader();
     // if true print debug messages
@@ -72,6 +100,9 @@ private:
     virtual void unload(void);
 
     virtual void serializeObject(void);
+
+    std::vector<Folder> m_folders;
+    std::unordered_map<std::string, File> m_files;
 };
 }
 

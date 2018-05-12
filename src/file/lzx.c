@@ -328,6 +328,7 @@ int LZXreset(struct LZXstate *pState)
 #define READ_LENGTHS(tbl,first,last) do { \
   lb.bb = bitbuf; lb.bl = bitsleft; lb.ip = inpos; \
   if (lzx_read_lens(pState, LENTABLE(tbl),(first),(last),&lb)) { \
+    printf("Failed to read lengths\n"); \
     return DECR_ILLEGALDATA; \
   } \
   bitbuf = lb.bb; bitsleft = lb.bl; inpos = lb.ip; \
@@ -402,7 +403,10 @@ static int make_decode_table(ULONG nsyms, ULONG nbits, UBYTE *length, UWORD *tab
                     }
                     table[leaf] = sym;
 
-                    if ((pos += bit_mask) > table_mask) return 1; /* table overflow */
+                    if ((pos += bit_mask) > table_mask){
+                        printf("table overflow");
+                        return 1; /* table overflow */
+                    }
                 }
             }
             bit_mask >>= 1;
@@ -414,7 +418,11 @@ static int make_decode_table(ULONG nsyms, ULONG nbits, UBYTE *length, UWORD *tab
     if (pos == table_mask) return 0;
 
     /* either erroneous table, or all elements are 0 - let's find out. */
-    for (sym = 0; sym < nsyms; sym++) if (length[sym]) return 1;
+    for (sym = 0; sym < nsyms; sym++) if (length[sym]){
+        printf("sym %d has length %d\n", sym, length[sym]);
+        return 1;
+    }
+    printf("all elements 0\n");
     return 0;
 }
 
@@ -433,13 +441,17 @@ static int lzx_read_lens(struct LZXstate *pState, UBYTE *lens, ULONG first, ULON
     UBYTE *inpos = lb->ip;
     UWORD *hufftbl;
 
+    printf("reading bits\n");
     for (x = 0; x < 20; x++) {
         READ_BITS(y, 4);
         LENTABLE(PRETREE)[x] = y;
     }
+    printf("building table\n");
     BUILD_TABLE(PRETREE);
+    printf("Built table\n");
 
     for (x = first; x < last; ) {
+        printf("reading bits #%d\n", x);
         READ_HUFFSYM(PRETREE, z);
         if (z == 17) {
             READ_BITS(y, 4); y += 4;
@@ -468,6 +480,7 @@ static int lzx_read_lens(struct LZXstate *pState, UBYTE *lens, ULONG first, ULON
 }
 
 int LZXdecompress(struct LZXstate *pState, unsigned char *inpos, unsigned char *outpos, int inlen, int outlen) {
+    printf("decoding\n");
     UBYTE *endinp = inpos + inlen;
     UBYTE *window = pState->window;
     UBYTE *runsrc, *rundest;
@@ -488,21 +501,26 @@ int LZXdecompress(struct LZXstate *pState, unsigned char *inpos, unsigned char *
     int match_length, length_footer, extra, verbatim_bits;
     int copy_length;
 
+    printf("initializing bitstream\n");
     INIT_BITSTREAM;
 
     /* read header if necessary */
     if (!pState->header_read) {
         i = j = 0;
         READ_BITS(k, 1); if (k) { READ_BITS(i,16); READ_BITS(j,16); }
+        printf("intel filesize: %d\n", (i << 16));
         pState->intel_filesize = (i << 16) | j; /* or 0 if not encoded */
         pState->header_read = 1;
     }
+    printf("read header\n");
 
     /* main decoding loop */
     while (togo > 0) {
+        printf("to go: %d\n", togo);
         /* last block finished, new block expected */
         if (pState->block_remaining == 0) {
             if (pState->block_type == LZX_BLOCKTYPE_UNCOMPRESSED) {
+                printf("uncompressed block\n");
                 if (pState->block_length & 1) inpos++; /* realign bitstream to word */
                 INIT_BITSTREAM;
             }
@@ -512,6 +530,7 @@ int LZXdecompress(struct LZXstate *pState, unsigned char *inpos, unsigned char *
             READ_BITS(j, 8);
             pState->block_remaining = pState->block_length = (i << 8) | j;
 
+            printf("block type %d\n", pState->block_type);
             switch (pState->block_type) {
                 case LZX_BLOCKTYPE_ALIGNED:
                     for (i = 0; i < 8; i++) { READ_BITS(j, 3); LENTABLE(ALIGNED)[i] = j; }
@@ -538,6 +557,7 @@ int LZXdecompress(struct LZXstate *pState, unsigned char *inpos, unsigned char *
                     break;
 
                 default:
+                    printf("Invalid blocktype %d\n", pState->block_type);
                     return DECR_ILLEGALDATA;
             }
         }
@@ -552,7 +572,10 @@ int LZXdecompress(struct LZXstate *pState, unsigned char *inpos, unsigned char *
              * remaining - in this boundary case they aren't really part of
              * the compressed data)
              */
-            if (inpos > (endinp+2) || bitsleft < 16) return DECR_ILLEGALDATA;
+            if (inpos > (endinp+2) || bitsleft < 16) {
+                printf("buffer exhausted\n");
+                return DECR_ILLEGALDATA;
+            }
         }
 
         while ((this_run = pState->block_remaining) > 0 && togo > 0) {
@@ -563,8 +586,10 @@ int LZXdecompress(struct LZXstate *pState, unsigned char *inpos, unsigned char *
             /* apply 2^x-1 mask */
             window_posn &= window_size - 1;
             /* runs can't straddle the window wraparound */
-            if ((window_posn + this_run) > window_size)
+            if ((window_posn + this_run) > window_size) {
+                printf("straddled window wraparound\n");
                 return DECR_DATAFORMAT;
+            }
 
             switch (pState->block_type) {
 
@@ -733,19 +758,27 @@ int LZXdecompress(struct LZXstate *pState, unsigned char *inpos, unsigned char *
                     break;
 
                 case LZX_BLOCKTYPE_UNCOMPRESSED:
-                    if ((inpos + this_run) > endinp) return DECR_ILLEGALDATA;
+                    if ((inpos + this_run) > endinp) {
+                        printf("Overrun %d\n", ((inpos + this_run) - endinp));
+                        return DECR_ILLEGALDATA;
+                    }
                     memcpy(window + window_posn, inpos, (size_t) this_run);
                     inpos += this_run; window_posn += this_run;
                     break;
 
                 default:
+                    printf("unknown block type %d\n", pState->block_type);
                     return DECR_ILLEGALDATA; /* might as well */
             }
 
         }
     }
+    printf("finished decoding\n");
 
-    if (togo != 0) return DECR_ILLEGALDATA;
+    if (togo != 0){
+        printf("Leftover data %d\n", togo);
+        return DECR_ILLEGALDATA;
+    }
     memcpy(outpos, window + ((!window_posn) ? window_size : window_posn) - outlen, (size_t) outlen);
 
     pState->window_posn = window_posn;
@@ -782,6 +815,7 @@ int LZXdecompress(struct LZXstate *pState, unsigned char *inpos, unsigned char *
             }
         }
     }
+    printf("OK\n");
     return DECR_OK;
 }
 

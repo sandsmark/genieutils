@@ -65,6 +65,7 @@ set(FILE_SRC
     src/file/IFile.cpp
     src/file/Compressor.cpp
     src/file/CabFile.cpp
+    src/file/lzx.c
     )
 
 if (${GU_LANG_SUPPORT})
