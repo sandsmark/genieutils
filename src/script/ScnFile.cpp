@@ -34,23 +34,6 @@ double ISerializable::scn_trigger_ver = 0.0;
 
 Logger &ScnFile::log = Logger::getLogger("genie.ScnFile");
 
-//////////
-// cpx format:
-// header
-//  - 4 char version
-//  - 5 char name -- null terminated string?
-//    - padded with 0xCD up to 256 bytes
-//  - 254 bytes total header?
-//  - 40 bytes offset:
-//     - 0xff ff ff ff == separator?
-//  -
-// block header per file
-//  - int32 length
-//  - int32 pos/offset in cpx
-//  - 519 - 256 char == name?
-//  - 256 char = filename
-// Files in plain (.scn etc.)
-//
 
 //------------------------------------------------------------------------------
 ScnFile::ScnFile() :
@@ -87,10 +70,6 @@ void ScnFile::extractRaw(const char *from, const char *to)
     ofs.write(header, headerLen);
 
     Compressor::decompress(ifs, ofs);
-
-    //   std::shared_ptr<std::istream> dec = compressor_.startDecompression(&ifs);
-
-    //   compressor_.stopDecompression();
 
     ifs.close();
     ofs.close();
@@ -161,6 +140,7 @@ void ScnFile::serializeObject(void)
     serializeForcedString<uint32_t>(scenarioInstructions);
     serialize<uint32_t>(victoryType);
     serialize<uint32_t>(playerCount);
+    std::cout << scenarioInstructions << std::endl;
 
     compressor_.beginCompression();
 
@@ -169,6 +149,10 @@ void ScnFile::serializeObject(void)
     serialize<uint32_t>(nextUnitID);
 
     serialize<ISerializable>(playerData);
+    std::cout << playerData.backgroundFilename << std::endl;
+    std::cout << playerData.originalFileName << std::endl;
+    std::cout << playerData.instructions << std::endl;
+    std::cout << playerData.hints << std::endl;
 
     serialize<ISerializable>(map);
 
@@ -353,4 +337,56 @@ void ScnMainPlayerData::serializePlayerDataVersion(void)
       setGameVersion(genie::GV_AoE);
   }*/
 }
+
+CpxFile::CpxFile()
+{
+
+}
+
+void CpxFile::serializeObject()
+{
+    serialize(version, 4);
+    serialize(name, 256);
+    serialize(filecount);
+    serializeSub(m_files, filecount);
+}
+
+std::vector<std::string> CpxFile::getFilenames() const
+{
+    std::vector<std::string> ret;
+
+    for (const CpxIncludedFile &f : m_files) {
+        ret.push_back(f.filename);
+    }
+
+    return ret;
+}
+
+ScnFilePtr CpxFile::getScnFile(const std::string &filename)
+{
+    for (CpxIncludedFile &f : m_files) {
+        if (f.filename == filename) {
+            return f.getScnFile();
+        }
+    }
+
+    return nullptr;
+}
+
+ScnFilePtr CpxIncludedFile::getScnFile()
+{
+    ScnFilePtr ret = std::make_shared<ScnFile>();
+    ret->setInitialReadPosition(offset);
+    ret->readObject(*getIStream());
+    return ret;
+}
+
+void CpxIncludedFile::serializeObject()
+{
+    serialize(size);
+    serialize(offset);
+    serialize(identifier, 255);
+    serialize(filename, 257);
+}
+
 }

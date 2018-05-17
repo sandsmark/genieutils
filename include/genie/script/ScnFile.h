@@ -35,6 +35,7 @@ namespace genie {
 
 class Logger;
 
+
 class ScnIncludedFile : public ISerializable
 {
 public:
@@ -122,6 +123,41 @@ private:
 };
 
 typedef std::shared_ptr<ScnFile> ScnFilePtr;
+
+// CPN files are basically identical it seems, but with a different compression in the scn files (which breaks)
+// Might also have more data in the header
+class CpxIncludedFile : public ISerializable
+{
+public:
+    std::string identifier;
+    std::string filename;
+    uint32_t size;
+    uint32_t offset;
+
+    ScnFilePtr getScnFile();
+
+private:
+    void serializeObject(void) override;
+};
+
+
+class CpxFile : public IFile
+{
+public:
+    CpxFile();
+    void serializeObject(void) override;
+
+    std::vector<std::string> getFilenames() const;
+    ScnFilePtr getScnFile(const std::string &filename);
+
+    std::string version;
+    std::string name;
+
+private:
+    uint32_t filecount = 0;
+    std::vector<CpxIncludedFile> m_files;
+};
+
 }
 
 #endif // GENIE_SCNFILE_H
