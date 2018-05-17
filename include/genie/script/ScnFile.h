@@ -35,6 +35,25 @@ namespace genie {
 
 class Logger;
 
+// Used for blending between screens in the cutscenes/cinematics in the campaigns
+class BlnFile : public IFile
+{
+public:
+    struct Palette {
+        std::vector<uint8_t> colors;
+    };
+    struct Frame {
+        std::array<Palette, 256> palettes;
+    };
+    BlnFile();
+
+    float version = 0.f;
+    std::array<Frame, 20> frames;
+
+private:
+    void serializeObject() override;
+    Compressor compressor_;
+};
 
 class ScnIncludedFile : public ISerializable
 {

@@ -389,4 +389,24 @@ void CpxIncludedFile::serializeObject()
     serialize(filename, 257);
 }
 
+BlnFile::BlnFile() :
+    compressor_(this)
+{
+}
+
+void BlnFile::serializeObject()
+{
+    compressor_.beginCompression();
+
+    serialize(version);
+    std::cout << "version: " << version << std::endl;
+    for (int frame=0; frame<20; frame++) {
+        for (int palette=0; palette<256; palette++) {
+            serialize(frames[frame].palettes[palette].colors, 256);
+        }
+    }
+
+    compressor_.endCompression();
+}
+
 }
