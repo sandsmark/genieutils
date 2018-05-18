@@ -42,7 +42,7 @@ void Task::setGameVersion(GameVersion gv)
 
 const std::string &Task::actionTypeName(const int16_t type)
 {
-    const std::unordered_map<int16_t, std::string> knownNames = {
+    static const std::unordered_map<int16_t, std::string> knownNames = {
         { 0, "None" },
         { 1, "Move to" },
         { 2, "Follow" },
@@ -69,7 +69,7 @@ const std::string &Task::actionTypeName(const int16_t type)
         { 106, "Repair" },
         { 107, "Get Auto-converted" },
         { 108, "Discovery Artifact" },
-        { 109, "Shooting range retreat" },
+        { 109, "Retreat to attack range" },
         { 110, "Hunt" },
         { 111, "Trade" },
         { 120, "Generate Wonder Victory" },

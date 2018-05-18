@@ -31,7 +31,9 @@ public:
     virtual ~Task();
     virtual void setGameVersion(GameVersion gv);
 
+    // Always 1?
     int16_t TaskType = 1;
+
     int16_t ID = -1;
 
     /// Basically useless
