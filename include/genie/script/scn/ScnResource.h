@@ -34,15 +34,15 @@ public:
     ScnUnit();
     virtual ~ScnUnit();
 
-    float positionX;
-    float positionY;
-    float positionZ;
-    uint32_t spawnID;
-    uint16_t objectID;
-    uint8_t state;
-    float rotation;
-    uint16_t initAnimationFrame;
-    uint32_t garrisonedInID;
+    float positionX = 0.f;
+    float positionY = 0.f;
+    float positionZ = 0.f;
+    uint32_t spawnID = 0;
+    uint16_t objectID = 0;
+    uint8_t state = 0;
+    float rotation = 0.f;
+    uint16_t initAnimationFrame = 0;
+    uint32_t garrisonedInID = 0;
 
 private:
     virtual void serializeObject(void);

@@ -201,11 +201,9 @@ public:
 
     /// Collision detection area taken by the unit.
     /// No other unit can move into this area except flying units.
-    std::pair<float, float> CollisionSize = { 0, 0 };
-
-    /// Setting "can be built on" to 1 and this to 0 causes
+    /// Setting "can be built on" to 1 and height to 0 causes
     /// farms to be walkable in AoE/RoR.
-    float HPBarHeight1 = 0.f;
+    std::array<float, 3> Size = { 0, 0, 0 };
 
     /// Sound played when the unit is created
     int16_t TrainSound = -1;
@@ -440,6 +438,12 @@ public:
     /// 1 Outline shown (bit 0)
     /// 2 Occludes others (bit 1)
     /// 4 Outline shown while constructing (bit 2)
+    enum OcclusionTypes {
+        NoOcclusion = 0,
+        ShowOutline = 1 << 0,
+        OccludeOthers = 1 << 1,
+        OcclusionWhileConstructing = 1 << 1
+    };
     int8_t OcclusionMode = 0;
 
     /// values for ObstructionType
@@ -535,7 +539,7 @@ public:
 
     /// Determines HP bar location
     /// Vertical half tile (elevation height?) distance from the top corner?
-    float HPBarHeight2 = 0.f;
+    float HPBarHeight = 0.f;
 
     typedef ResourceUsage<float, int8_t> ResourceStorage;
 
