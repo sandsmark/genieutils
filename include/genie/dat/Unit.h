@@ -203,7 +203,7 @@ public:
     /// No other unit can move into this area except flying units.
     /// Setting "can be built on" to 1 and height to 0 causes
     /// farms to be walkable in AoE/RoR.
-    std::array<float, 3> Size = { 0, 0, 0 };
+    XYZF Size;
 
     /// Sound played when the unit is created
     int16_t TrainSound = -1;
@@ -251,7 +251,7 @@ public:
     /// Required terrain underneath
     std::pair<int16_t, int16_t> PlacementTerrain = { -1, -1 };
 
-    std::pair<float, float> ClearanceSize = { 0, 0 };
+    XYF ClearanceSize;
 
     /// Restrictions on placement on hills
     enum HillModes : int8_t {
@@ -535,7 +535,7 @@ public:
     int8_t SelectionEffect = 1;
 
     uint8_t EditorSelectionColour = 52;
-    std::pair<float, float> OutlineSize = { 0, 0 };
+    XYF OutlineSize;
 
     /// Determines HP bar location
     /// Vertical half tile (elevation height?) distance from the top corner?

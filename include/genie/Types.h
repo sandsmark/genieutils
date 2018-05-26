@@ -47,7 +47,12 @@ extern GameVersion GV_LatestTap;
 
 struct XYZF
 {
-    float x, y, z;
+    float x = 0.f, y = 0.f, z = 0.f;
+};
+
+struct XYF
+{
+    float x = 0.f, y = 0.f;
 };
 }
 

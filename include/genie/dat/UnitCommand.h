@@ -90,6 +90,10 @@ public:
         Shear = 149,
         HDRegeneration = 150,
         HDFeitoria = 151,
+
+        Stop = 10000,
+        AboutFace = 10001,
+        Wheel = 10002,
     };
     int16_t ActionType = 0;
     static const std::string &actionTypeName(const int16_t type);

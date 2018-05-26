@@ -32,7 +32,7 @@ public:
     virtual void setGameVersion(GameVersion gv);
 
     int32_t ID = -1;
-    int32_t MinimapColour = 0;
+    int32_t PaletteBase = 0;
 
     // AoE 2 variables
 

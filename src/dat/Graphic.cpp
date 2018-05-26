@@ -50,7 +50,7 @@ unsigned short Graphic::getNameSize()
         return 25;
 }
 
-unsigned short Graphic::getName2Size()
+unsigned short Graphic::getFilenameSize()
 {
     if (getGameVersion() < GV_SWGB)
         return 13;
@@ -64,7 +64,7 @@ void Graphic::serializeObject(void)
 
     if (gv > GV_LatestTap || gv < GV_Tapsa) {
         serialize(Name, getNameSize());
-        serialize(FileName, getName2Size());
+        serialize(FileName, getFilenameSize());
     } else {
         serializeDebugString(Name);
         serializeDebugString(FileName);

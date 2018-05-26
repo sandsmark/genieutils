@@ -48,9 +48,9 @@ void PlayerColour::serializeObject(void)
 
         serialize<int16_t>(ResourceID);
 
-        uint8_t col_byte = MinimapColour;
+        uint8_t col_byte = PaletteBase;
         serialize<uint8_t>(col_byte);
-        MinimapColour = col_byte;
+        PaletteBase = col_byte;
 
         serialize<uint8_t>(Type);
     } else {
@@ -59,7 +59,7 @@ void PlayerColour::serializeObject(void)
         serialize<int32_t>(UnitOutlineColor);
         serialize<int32_t>(UnitSelectionColor1);
         serialize<int32_t>(UnitSelectionColor2);
-        serialize<int32_t>(MinimapColour);
+        serialize<int32_t>(PaletteBase);
         serialize<int32_t>(MinimapColor2);
         serialize<int32_t>(MinimapColor3);
         serialize<int32_t>(StatisticsText);

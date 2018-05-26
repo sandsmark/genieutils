@@ -164,9 +164,9 @@ void Unit::serializeObject(void)
     serialize<int16_t>(HitPoints);
     serialize<float>(LineOfSight);
     serialize<int8_t>(GarrisonCapacity);
-    serialize<float>(Size[0]);
-    serialize<float>(Size[1]);
-    serialize<float>(Size[2]);
+    serialize<float>(Size.x);
+    serialize<float>(Size.y);
+    serialize<float>(Size.z);
     serialize<int16_t>(TrainSound);
     if (gv >= GV_AoKE3)
         serialize<int16_t>(DamageSound);
@@ -186,7 +186,8 @@ void Unit::serializeObject(void)
     if (gv >= GV_MIK)
         serializePair<int16_t>(PlacementSideTerrain);
     serializePair<int16_t>(PlacementTerrain); // Before AoE, this also contains side terrain.
-    serializePair<float>(ClearanceSize);
+    serialize<float>(ClearanceSize.x);
+    serialize<float>(ClearanceSize.y);
     serialize<int8_t>(HillMode);
     serialize<int8_t>(FogVisibility);
     serialize<int16_t>(TerrainRestriction);
@@ -232,8 +233,8 @@ void Unit::serializeObject(void)
 
         serialize<int8_t>(SelectionEffect);
         serialize<uint8_t>(EditorSelectionColour);
-        serialize<float>(OutlineSize.first);
-        serialize<float>(OutlineSize.second);
+        serialize<float>(OutlineSize.x);
+        serialize<float>(OutlineSize.y);
         serialize<float>(HPBarHeight);
     }
 

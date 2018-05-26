@@ -36,16 +36,14 @@ public:
     /// Returns the size of Name
     unsigned short getNameSize(void);
 
+    /// Returns the size of FileName
+    unsigned short getFilenameSize(void);
+
     /// These two name strings appear to be equal in all graphics, so the
     /// second one's use is unknown. Like the genie unit's internal name value,
     /// they are heavily abbreviated, such as "ARRG2NNE" meaning "Archery
     /// Range Fuedal Age (orth) European"
     std::string Name = "";
-
-    /// Returns the size of FileName
-    unsigned short getName2Size(void);
-
-    /// See Name
     std::string FileName = "";
 
     /// Number of frames to skip

@@ -107,22 +107,27 @@ UIFilePtr DrsFile::getUIFile(uint32_t id)
 
 UIFilePtr DrsFile::getUIFile(const std::string &knownName)
 {
-    const std::unordered_map<std::string, int> idMap = {
-        { "scr2", 50052    },
-        { "scr5", 50055    },
-        { "scr2", 50052    },
-        { "scr2p", 50084   },
-        { "scr2", 50052    },
-        { "scr2", 50052    },
-        { "scr2", 50052    },
-        { "xmain", 50089   },
+    static const std::unordered_map<std::string, int> idMap = {
+        { "dlg_gam", 50018 },
+        { "dlg_dip", 50014 },
+        { "dlg_men.sin", 50015 },
+        { "dlg_obj", 50016 },
+        { "2logos.slp", 53012 },
+        { "map1280.bmp", 50409},
+        { "map1024.bmp", 50408},
+        { "map800.bmp.bmp", 50411},
+        { "main", 50081    },
         { "scr1", 50051    },
         { "scr2", 50052    },
-        { "scr6", 50056    },
-        { "xcredits", 50088},
-        { "scr2", 50052    },
+        { "scr3", 50053    },
+        { "scr2p", 50084   },
         { "scr4", 50054    },
-        { "scr2", 50052    },
+        { "scr5", 50055    },
+        { "scr6", 50056    },
+        { "scr_cred", 50059},
+        { "scr_stms", 50085},
+        { "xcredits", 50088},
+        { "xmain", 50089   },
     };
 
     if (idMap.find(knownName) != idMap.end()) {
@@ -273,16 +278,13 @@ void DrsFile::loadHeader()
     if (header_loaded_)
         log.warn("Trying to load header again!");
     else {
-        string copy_right = readString(getCopyRightHeaderSize());
-
+        string copyright = readString(getCopyRightHeaderSize());
         string version = readString(4);
+        string filetype = readString(12);
 
-        //File type
-        string file_type = readString(12);
-
-//            std::cout << "copyright: " << copy_right << std::endl;
-//            std::cout << "version: " << version << std::endl;
-//            std::cout << "filetype: " << file_type << std::endl;
+        log.debug("copyright: %s", copyright);
+        log.debug("version: %s", version);
+        log.debug("filetype: %s", filetype);
 
         num_of_tables_ = read<uint32_t>();
         header_offset_ = read<uint32_t>();
