@@ -15,7 +15,7 @@ find_library(iconv REQUIRED)
 
 # dependencies:
 
-find_package(ZLIB REQUIRED)
+find_package(ZLIB QUIET)
 
 if (GUTILS_TOOLS)
   find_package(Boost 1.55 COMPONENTS program_options REQUIRED)
@@ -150,6 +150,15 @@ set(BINCOMP_SRC src/tools/bincompare/bincomp.cpp
                 src/tools/bincompare/main.cpp)
                 
 
+
+if (NOT ZLIB_FOUND)
+    message(WARNING "zlib not found, falling back to bundled miniz. This might hurt performance, especially on 32bit")
+
+    set(DAT_SRC ${DAT_SRC}
+        extern/miniz/miniz.c
+    )
+    include_directories(extern/miniz)
+endif()
 
 #------------------------------------------------------------------------------#
 # Executeable:
