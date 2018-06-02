@@ -60,7 +60,7 @@ SlpFilePtr DrsFile::getSlpFile(uint32_t id)
 #ifndef NDEBUG
             log.debug("Loading SLP file [%u] from bina", id);
 #endif
-            SlpFilePtr slp(new SlpFile());
+            SlpFilePtr slp(new SlpFile(i->second->size()));
 
             slp->setInitialReadPosition(i->second->getInitialReadPosition());
 
@@ -309,7 +309,7 @@ void DrsFile::loadHeader()
                 uint32_t len = read<uint32_t>();
 
                 if (table_types_[i].compare(getSlpTableHeader()) == 0) {
-                    SlpFilePtr slp(new SlpFile());
+                    SlpFilePtr slp(new SlpFile(len));
                     slp->setInitialReadPosition(pos);
 
                     slp_map_[id] = slp;

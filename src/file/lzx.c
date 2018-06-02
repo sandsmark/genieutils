@@ -759,7 +759,7 @@ int LZXdecompress(struct LZXstate *pState, unsigned char *inpos, unsigned char *
 
                 case LZX_BLOCKTYPE_UNCOMPRESSED:
                     if ((inpos + this_run) > endinp) {
-                        printf("Overrun %d\n", ((inpos + this_run) - endinp));
+                        printf("Overrun %ld\n", ((inpos + this_run) - endinp));
                         return DECR_ILLEGALDATA;
                     }
                     memcpy(window + window_posn, inpos, (size_t) this_run);

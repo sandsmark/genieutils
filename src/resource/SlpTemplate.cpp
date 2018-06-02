@@ -27,6 +27,10 @@
 #include "genie/resource/SlpFrame.h"
 #include "genie/resource/PalFile.h"
 #include "genie/resource/Color.h"
+#include "genie/resource/SlpFile.h"
+
+#define IS_LIKELY(x)      __builtin_expect(!!(x), 1)
+#define IS_UNLIKELY(x)    __builtin_expect(!!(x), 0)
 
 namespace genie {
 
@@ -144,7 +148,7 @@ bool SlpTemplateFile::isLoaded(void) const
 }
 
 //------------------------------------------------------------------------------
-SlpFramePtr SlpTemplateFile::getFrame(const SlpFramePtr source, const Slope slope, const std::vector<Pattern> &masks, const std::vector<Color> &palette)
+SlpFramePtr SlpTemplateFile::getFrame(const SlpFramePtr source, const Slope slope, const std::vector<Pattern> &masks, const std::vector<Color> &palette, const SlpFilePtr &slpFile)
 {
     if (!source) {
         log.error("Passed nullptr");
@@ -157,6 +161,7 @@ SlpFramePtr SlpTemplateFile::getFrame(const SlpFramePtr source, const Slope slop
     }
 
     SlpFramePtr frameCopy = std::make_shared<SlpFrame>(*source);
+
     frameCopy->setSize(templates_[slope].width_, templates_[slope].height_);
     frameCopy->hotspot_x = templates_[slope].hotspot_x;
     frameCopy->hotspot_y = templates_[slope].hotspot_y;
@@ -166,13 +171,14 @@ SlpFramePtr SlpTemplateFile::getFrame(const SlpFramePtr source, const Slope slop
     frameCopy->left_edges_ = templates_[slope].left_edges_;
     frameCopy->right_edges_ = templates_[slope].right_edges_;
 
-    frameCopy->filter(filtermapFile, slope, masks, palette);
+    frameCopy->filter(filtermapFile, slope, masks, palette, slpFile->fileData());
 
     return frameCopy;
 }
 
 const IcmFile::InverseColorMap &PatternMasksFile::getIcm(const uint16_t lightIndex, const std::vector<Pattern> &patterns) const
 {
+    assert(!patterns.empty());
     if (patterns.empty()) {
         return icmFile.maps[4];
     }
@@ -186,7 +192,7 @@ const IcmFile::InverseColorMap &PatternMasksFile::getIcm(const uint16_t lightInd
     const size_t icmIndex = lightmapFile.lightmaps[lightmapIndex][lightIndex];
 
     if (icmIndex >= icmFile.maps.size()) {
-        std::cerr << "Icm index out of range " << icmIndex << " " << icmFile.maps.size() << std::endl;
+//        std::cerr << "Icm index out of range " << icmIndex << " " << icmFile.maps.size() << std::endl;
 
         return icmFile.maps[4];
     }

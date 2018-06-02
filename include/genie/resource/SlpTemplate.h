@@ -26,10 +26,11 @@
 #include "genie/file/IFile.h"
 #include "genie/util/Logger.h"
 #include "PalFile.h"
-//#include "SlpFile.h"
 
 namespace genie {
 
+class SlpFile;
+typedef std::shared_ptr<SlpFile> SlpFilePtr;
 class SlpFrame;
 typedef std::shared_ptr<SlpFrame> SlpFramePtr;
 
@@ -318,7 +319,7 @@ public:
     /// @param frame frame index
     /// @return SlpFrame
     //
-    SlpFramePtr getFrame(const SlpFramePtr source, const Slope slope, const std::vector<Pattern> &masks, const std::vector<Color> &palette);
+    SlpFramePtr getFrame(const SlpFramePtr source, const Slope slope, const std::vector<Pattern> &masks, const std::vector<Color> &palette, const genie::SlpFilePtr &slpFile);
 
 private:
     static Logger &log;

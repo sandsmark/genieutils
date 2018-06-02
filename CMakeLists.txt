@@ -11,10 +11,9 @@ project(genieutils)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake/)
 
-find_library(iconv REQUIRED)
-
 # dependencies:
 
+find_library(iconv REQUIRED)
 find_package(ZLIB QUIET)
 
 if (GUTILS_TOOLS)

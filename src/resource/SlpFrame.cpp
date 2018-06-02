@@ -565,10 +565,12 @@ void SlpFrame::readImage()
 
 }
 
-void SlpFrame::filter(const FiltermapFile &filterFile, uint8_t filterNum, const std::vector<Pattern> patterns, const std::vector<Color> &palette)
+void SlpFrame::filter(const FiltermapFile &filterFile, const uint8_t filterNum, const std::vector<Pattern> &patterns, const std::vector<Color> &palette, const std::string &cmds)
 {
-    std::istream &istr = *getIStream();
-    std::streampos cmdOffset = slp_file_pos_ + std::streampos(cmd_offsets_[0]);
+    uint32_t cmdOffset = cmd_offsets_[0];
+
+    assert(width_ < 500);
+    assert(height_ < 500);
 
     img_data.pixel_indexes.clear();
     img_data.pixel_indexes.resize(width_ * height_, 0);
@@ -579,6 +581,7 @@ void SlpFrame::filter(const FiltermapFile &filterFile, uint8_t filterNum, const 
 
     const FiltermapFile::Filtermap filter = filterFile.maps[filterNum];
     assert(filter.height == height_);
+    const PatternMasksFile &patternmasksFile = filterFile.patternmasksFile;
 
     for (uint32_t y=0; y<filter.height; y++) {
         int xPos = left_edges_[y];
@@ -597,15 +600,14 @@ void SlpFrame::filter(const FiltermapFile &filterFile, uint8_t filterNum, const 
 
             int r = 0, g = 0, b = 0;
             for (const FiltermapFile::SourcePixel source : cmd.sourcePixels) {
-                istr.seekg(cmdOffset + std::streampos(source.sourceIndex));
-                const uint8_t sourcePaletteIndex = read<uint8_t>();
+                const uint8_t sourcePaletteIndex = cmds[cmdOffset + source.sourceIndex];
                 const Color sourceColor = palette[sourcePaletteIndex];
                 r += int(sourceColor.r) * source.alpha;
                 g += int(sourceColor.g) * source.alpha;
                 b += int(sourceColor.b) * source.alpha;
             }
 
-            const IcmFile::InverseColorMap &icm = filterFile.patternmasksFile.getIcm(cmd.lightIndex, patterns);
+            const IcmFile::InverseColorMap &icm = patternmasksFile.getIcm(cmd.lightIndex, patterns);
             const uint8_t pixelIndex = icm.paletteIndex(r >> 11, g >> 11, b >> 11);
 
             img_data.pixel_indexes[y * width_ + xPos] = pixelIndex;

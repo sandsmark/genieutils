@@ -22,6 +22,8 @@
 
 #include <istream>
 #include <vector>
+#include <sstream>
+#include <map>
 
 #include "genie/file/IFile.h"
 #include "genie/util/Logger.h"
@@ -42,7 +44,7 @@ public:
     //----------------------------------------------------------------------------
     /// Constructor
     //
-    SlpFile();
+    SlpFile(const size_t size);
 
     //----------------------------------------------------------------------------
     /// Destructor
@@ -73,17 +75,20 @@ public:
     /// @param frame frame index
     /// @return SlpFrame
     //
-    SlpFramePtr getFrame(uint32_t frame = 0);
+    const SlpFramePtr &getFrame(uint32_t frame = 0);
     void setFrame(uint32_t, SlpFramePtr);
 
     std::string version;
     std::string comment;
+
+    const std::string &fileData() const {return m_graphicsFileData; }
 
 private:
     friend class SlpTemplateFile;
 
     static Logger &log;
 
+    size_t size_ = 0;
     bool loaded_ = false;
 
     uint32_t num_frames_ = 0;
@@ -105,6 +110,12 @@ private:
 
     //----------------------------------------------------------------------------
     void serializeHeader(void);
+
+    std::string m_graphicsFileData;
+//    static std::map<std::string, std::string> m_graphicsFileData;
+//    static std::map<std::string, std::string> m_graphicsFileData;
+//    std::string m_graphicsFileData;
+//    std::istringstream m_graphicsFileStream;
 };
 
 typedef std::shared_ptr<SlpFile> SlpFilePtr;

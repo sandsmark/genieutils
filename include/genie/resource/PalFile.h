@@ -79,10 +79,11 @@ public:
 
     bool isValid() const;
 
+    std::vector<Color> colors_;
+
 private:
     static Logger &log;
 
-    std::vector<Color> colors_;
 
     uint32_t num_colors_ = 0;
 

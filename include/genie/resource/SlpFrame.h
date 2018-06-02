@@ -33,7 +33,7 @@
 
 namespace genie {
 
-class SlpTemplate;
+//class SlpTemplate;
 class FiltermapFile;
 
 struct XY
@@ -173,7 +173,7 @@ public:
 
     void readImage();
 
-    void filter(const FiltermapFile &filterFile, uint8_t filterNum, const std::vector<Pattern> patterns, const std::vector<Color> &palette);
+    void filter(const FiltermapFile &filterFile, const uint8_t filterNum, const std::vector<Pattern> &patterns, const std::vector<Color> &palette, const std::string &cmds);
 
 private:
     friend class SlpTemplateFile;

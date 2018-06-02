@@ -30,8 +30,9 @@ namespace genie {
 Logger &SlpFile::log = Logger::getLogger("genie.SlpFile");
 
 //------------------------------------------------------------------------------
-SlpFile::SlpFile() :
-    IFile()
+SlpFile::SlpFile(const size_t size) :
+    IFile(),
+    size_(size)
 {
 }
 
@@ -58,9 +59,23 @@ void SlpFile::loadFile()
 
     frames_.resize(num_frames_);
 
+
+    if (m_graphicsFileData.empty()) {
+        m_graphicsFileData.resize(size_, 0);
+        std::cout << "reading " << size_ << " bytes for " << getFileName() << std::endl;
+        std::streampos orig = getIStream()->tellg();
+        getIStream()->seekg(getInitialReadPosition());
+        getIStream()->read(m_graphicsFileData.data(), size_);
+        getIStream()->seekg(orig);
+    } else {
+        std::cerr << "already loaded data" << std::endl;
+    }
+
     // Load frame headers
     for (uint32_t i = 0; i < num_frames_; ++i) {
         frames_[i] = SlpFramePtr(new SlpFrame());
+        frames_[i]->setSlpFilePos(std::streampos(0));
+//        frames_[i]->setLoadParams(m_graphicsFileStream);
         frames_[i]->setLoadParams(*getIStream());
         frames_[i]->serializeHeader();
         frames_[i]->setSlpFilePos(getInitialReadPosition());
@@ -68,6 +83,7 @@ void SlpFile::loadFile()
 
     // Load frame content
     for (uint32_t i = 0; i < num_frames_; ++i) {
+//        frames_[i]->load(m_graphicsFileStream);
         frames_[i]->load(*getIStream());
     }
 
@@ -131,7 +147,7 @@ void SlpFile::setFrameCount(uint32_t count)
 }
 
 //------------------------------------------------------------------------------
-SlpFramePtr SlpFile::getFrame(uint32_t frame)
+const SlpFramePtr &SlpFile::getFrame(uint32_t frame)
 {
     if (frame >= frames_.size()) {
         if (!loaded_) {

@@ -47,6 +47,8 @@ public:
 
     std::string filetype(std::istream *istr);
 
+    uint32_t size() const { return m_size; }
+
 private:
     static Logger &log;
 
