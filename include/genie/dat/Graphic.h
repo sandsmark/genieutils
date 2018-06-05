@@ -62,16 +62,31 @@ public:
     /// layer. If graphics share the same layer, graphics will be displayed
     /// dependend on their map positions.
     ///
+    /// Draw Level
+    /// 0   Terrain
+    /// 5   Shadows, farms
+    /// 6   Rubble
+    /// 10   Constructions, corpses, shadows, flowers, ruins
+    /// 11   Fish
+    /// 19   Rugs, craters
+    /// 20   Buildings, units, damage flames, mill animation
+    /// 21   Blacksmith smoke
+    /// 22   Hawk
+    /// 30   Projectiles, explosions
     int8_t Layer = 0;
 
     /// Setting this to 0 forces the player color to be blue.
     int8_t PlayerColor = -1;
+
+    /// Makes the graphic change its player color according to nearby units
     int8_t Rainbow = -1;
 
-    /// .
+    /// 0   Not selectable
+    /// 1   Select only on pixels
+    /// 2   Select in box
     int8_t TransparentSelection = 0;
 
-    /// TODO: What kind of coordinates?
+    /// Bounding Box Coordinates (X1, Y1, X2, Y2)
     std::vector<int16_t> Coordinates = { 0, 0, 0, 0 };
 
     int16_t SoundID = -1;
