@@ -16,6 +16,11 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake/)
 find_library(iconv REQUIRED)
 find_package(ZLIB QUIET)
 
+if (ICONV_SECOND_ARGUMENT_IS_CONST)
+    add_definitions(-DICONV_SECOND_ARGUMENT_IS_CONST)
+endif()
+
+
 if (GUTILS_TOOLS)
   find_package(Boost 1.55 COMPONENTS program_options REQUIRED)
 endif(GUTILS_TOOLS)
