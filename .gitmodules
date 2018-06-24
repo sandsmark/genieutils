@@ -3,4 +3,4 @@
 	url = https://github.com/apreiml/pcrio.git
 [submodule "extern/zstr"]
 	path = extern/zstr
-	url = git@github.com:sandsmark/zstr.git
+	url = https://github.com/sandsmark/zstr.git
