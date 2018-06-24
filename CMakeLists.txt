@@ -13,13 +13,17 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake/)
 
 # dependencies:
 
-find_library(iconv REQUIRED)
 find_package(ZLIB QUIET)
 
-if (ICONV_SECOND_ARGUMENT_IS_CONST)
-    add_definitions(-DICONV_SECOND_ARGUMENT_IS_CONST)
-endif()
+if (NOT WIN32)
+    find_package(Iconv REQUIRED)
 
+    if (ICONV_SECOND_ARGUMENT_IS_CONST)
+        add_definitions(-DICONV_SECOND_ARGUMENT_IS_CONST)
+    endif()
+else()
+    message(STATUS "Using bundled win-iconv")
+endif()
 
 if (GUTILS_TOOLS)
   find_package(Boost 1.55 COMPONENTS program_options REQUIRED)
@@ -31,19 +35,13 @@ if (GUTILS_TEST)
   find_package(SFML COMPONENTS SYSTEM WINDOW GRAPHICS REQUIRED)
 endif (GUTILS_TEST)
 
-find_package(Iconv)
-
-if (${ICONV_FOUND})
-  message(STATUS "Iconv found! Language file support: ENABLED")
-  set(GU_LANG_SUPPORT true)
-else (${ICONV_FOUND})
-  message(STATUS "Iconv not found: Language file support: DISABLED")
-  set(GU_LANG_SUPPORT false)
-endif (${ICONV_FOUND})
-
 # include directories:
 
 set(GU_INCLUDE_DIRS include/ extern/zstr/src/ ../)
+
+if(WIN32)
+  set(GU_INCLUDE_DIRS ${GU_INCLUDE_DIRS} extern/win-iconv)
+endif()
 
 if (${ICONV_FOUND})
   set(GU_INCLUDE_DIRS ${GU_INCLUDE_DIRS} ${ICONV_INCLUDE_DIR})
@@ -66,18 +64,20 @@ set(FILE_SRC
     src/file/Compressor.cpp
     src/file/CabFile.cpp
     src/file/lzx.c
+)
+
+set(PCRIO_SRC ../pcrio/pcrio.c)
+
+set(LANG_SRC ${PCRIO_SRC}
+    src/lang/LangFile.cpp
+)
+
+if (WIN32)
+    set(LANG_SRC ${LANG_SRC}
+        extern/win-iconv/win_iconv.c
     )
-
-if (${GU_LANG_SUPPORT})
-  set(PCRIO_SRC ../pcrio/pcrio.c)
-
-  set(LANG_SRC ${PCRIO_SRC}
-      src/lang/LangFile.cpp
-     )
-else (${GU_LANG_SUPPORT})
-  set(LANG_SRC)
-endif (${GU_LANG_SUPPORT})
-    
+    set(ICONV_LIBRARIES)
+endif()
 
 set(DAT_SRC
     src/dat/Research.cpp 

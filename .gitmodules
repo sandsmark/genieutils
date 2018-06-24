@@ -4,3 +4,6 @@
 [submodule "extern/zstr"]
 	path = extern/zstr
 	url = https://github.com/sandsmark/zstr.git
+[submodule "extern/win-iconv"]
+	path = extern/win-iconv
+	url = https://github.com/win-iconv/win-iconv.git
