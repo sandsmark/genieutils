@@ -168,8 +168,19 @@ endif()
 # Executeable:
 #------------------------------------------------------------------------------#
 
-add_library(${Genieutils_LIBRARY} SHARED ${FILE_SRC} ${LANG_SRC} ${DAT_SRC} 
-                                  ${RESOURCE_SRC} ${UTIL_SRC} ${SCRIPT_SRC} )
+set(ALL_SRC
+    ${FILE_SRC} ${LANG_SRC} ${DAT_SRC}
+    ${RESOURCE_SRC} ${UTIL_SRC} ${SCRIPT_SRC}
+)
+
+if (GENIEUTILS_STATIC_BUILD)
+    message(STATUS "Building static library")
+    add_library(${Genieutils_LIBRARY} STATIC ${ALL_SRC})
+else()
+    add_library(${Genieutils_LIBRARY} SHARED ${ALL_SRC})
+endif()
+
+
 target_link_libraries(${Genieutils_LIBRARY} ${ZLIB_LIBRARIES} ${ICONV_LIBRARIES})
 
 #add_executable(main main.cpp)
