@@ -23,6 +23,8 @@ if (NOT WIN32)
     endif()
 else()
     message(STATUS "Using bundled win-iconv")
+    add_definitions(-DICONV_SECOND_ARGUMENT_IS_CONST)
+    include_directories(extern/win-iconv/)
 endif()
 
 if (GUTILS_TOOLS)
@@ -40,7 +42,7 @@ endif (GUTILS_TEST)
 set(GU_INCLUDE_DIRS include/ extern/zstr/src/ ../)
 
 if(WIN32)
-  set(GU_INCLUDE_DIRS ${GU_INCLUDE_DIRS} extern/win-iconv)
+  set(GU_INCLUDE_DIRS ${GU_INCLUDE_DIRS})
 endif()
 
 if (${ICONV_FOUND})
@@ -53,7 +55,11 @@ endif (${GUTILS_TEST})
 
 include_directories(${GU_INCLUDE_DIRS})
 
-add_definitions(-Wall -Wsign-compare)
+if(NOT MSVC)
+    add_definitions(-Wall -Wsign-compare)
+else()
+    add_definitions(/wd4244 /wd4018 /wd4267 /wd4996)
+endif()
 
 #------------------------------------------------------------------------------#
 # Source files: 
@@ -155,13 +161,16 @@ set(BINCOMP_SRC src/tools/bincompare/bincomp.cpp
                 
 
 
-if (NOT ZLIB_FOUND)
+if (ZLIB_FOUND)
+    set(ZLIB_LIBRARIES ZLIB::ZLIB)
+else()
     message(WARNING "zlib not found, falling back to bundled miniz. This might hurt performance, especially on 32bit")
 
     set(DAT_SRC ${DAT_SRC}
         extern/miniz/miniz.c
     )
     include_directories(extern/miniz)
+    set(ZLIB_LIBRARIES)
 endif()
 
 #------------------------------------------------------------------------------#
@@ -174,7 +183,7 @@ set(ALL_SRC
 )
 
 if (GENIEUTILS_STATIC_BUILD)
-    message(STATUS "Building static library")
+    message(STATUS "Building genieutils as static library")
     add_library(${Genieutils_LIBRARY} STATIC ${ALL_SRC})
 else()
     add_library(${Genieutils_LIBRARY} SHARED ${ALL_SRC})

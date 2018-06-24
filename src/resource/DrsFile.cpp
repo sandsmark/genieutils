@@ -289,11 +289,11 @@ void DrsFile::loadHeader()
         num_of_tables_ = read<uint32_t>();
         header_offset_ = read<uint32_t>();
 
-        std::vector<uint32_t> table_offsets;
+        std::vector<std::streampos> table_offsets;
         // Load table data
         for (uint32_t i = 0; i < num_of_tables_; ++i) {
             table_types_.push_back(readString(4));
-            table_offsets.push_back(read<uint32_t>());
+            table_offsets.push_back(std::streampos(read<uint32_t>()));
             table_num_of_files_.push_back(read<uint32_t>());
         }
 

@@ -75,20 +75,20 @@ std::string BinaFile::readScriptFile(std::istream *istr)
 {
     istr->seekg(getInitialReadPosition());
 
-    char content[m_size];
-    istr->read(content, m_size);
+    std::vector<char> content(m_size);
+    istr->read(content.data(), m_size);
     size_t readCount = istr->gcount();
 
     if (!readCount) {
         log.error("Invalid file, it was empty");
-        return content;
+        return std::string();
     }
 
     if (content[0] != ';' && content[0] != '/' && content[0] != '(' && content[0] != ' ' && content[0] != '\t' && content[0] != '#') {
         log.error("This doesn't look like a valid script file, starts with %d", int(content[0]));
     }
 
-    return std::string(content, readCount);
+    return std::string(content.data(), readCount);
 }
 
 ScnFilePtr BinaFile::readScnFile(std::istream *istr)
