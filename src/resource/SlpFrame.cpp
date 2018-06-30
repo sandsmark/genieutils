@@ -546,9 +546,8 @@ void SlpFrame::readImage()
                     pix_cnt = read<uint8_t>();
                     if (is32bit()) {
                         readPixelsToImage32(row, pix_pos, pix_cnt, 2);
-                        break;
                     }
-
+                    break;
                 default:
                     log.error("Cmd [%] is unknown", int(data));
                     return;

@@ -167,23 +167,31 @@ void DatFile::serializeObject(void)
         serializeSubWithPointers<Graphic>(Graphics, count16, GraphicPointers);
     }
 
-    auto pos_cnt = tellg();
+//    auto pos_cnt = tellg();
     if (verbose_) {
         std::cout << "Graphics: " << Graphics.size() << std::endl;
     }
     serialize<ISerializable>(TerrainBlock);
 
     if (verbose_) {
-        pos_cnt = tellg() - pos_cnt;
-        std::cout << "Terrain block "
-                  << "(0x" << std::hex << pos_cnt;
-        std::cout << " to 0x" << tellg() << std::dec << ") size " << pos_cnt << std::endl;
+        std::cout << "Tile sizes: " << TerrainBlock.TileSizes.size() << std::endl;
+        std::cout << "Terrains: " << TerrainBlock.Terrains.size() << std::endl;
+        std::cout << "Borders: " << TerrainBlock.TerrainBorders.size() << std::endl;
+        std::cout << "Some bytes: " << TerrainBlock.SomeBytes.size() << std::endl;
+        std::cout << "Some ints: " << TerrainBlock.SomeInt32.size() << std::endl;
+//        pos_cnt = tellg() - pos_cnt;
+//        std::cout << "Terrain block "
+//                  << "(0x" << std::hex << pos_cnt;
+//        std::cout << " to 0x" << tellg() << std::dec << ") size " << pos_cnt << std::endl;
     }
 
     // This data seems to be needed only in AoE and RoR.
     // In later games it is removable.
     // It exists in Star Wars games too, but is not used.
     serialize<ISerializable>(RandomMaps);
+
+    if (verbose_)
+        std::cout << "Random maps: " << RandomMaps.Maps.size() << std::endl;
 
     serializeSize<uint32_t>(count32, Effects.size());
 
@@ -224,10 +232,10 @@ void DatFile::serializeObject(void)
 
     serializeSub<Tech>(Techs, count16);
 
-    if (verbose_) {
-        pos_cnt = tellg();
-        std::cout << "TechTrees (before eof) (0x" << std::hex << pos_cnt;
-    }
+//    if (verbose_) {
+//        pos_cnt = tellg();
+//        std::cout << "TechTrees (before eof) (0x" << std::hex << pos_cnt;
+//    }
 
     if (gv >= GV_SWGB)
         serialize<int8_t>(SUnknown8);
@@ -245,10 +253,10 @@ void DatFile::serializeObject(void)
         serialize<ISerializable>(TechTree);
     }
 
-    if (verbose_) {
-        pos_cnt = tellg() - pos_cnt;
-        std::cout << " to 0x" << tellg() << std::dec << ") size " << pos_cnt << std::endl;
-    }
+//    if (verbose_) {
+//        pos_cnt = tellg() - pos_cnt;
+//        std::cout << " to 0x" << tellg() << std::dec << ") size " << pos_cnt << std::endl;
+//    }
 
     compressor_.endCompression();
 }

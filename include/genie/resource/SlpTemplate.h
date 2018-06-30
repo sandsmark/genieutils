@@ -97,6 +97,7 @@ public:
         std::array<std::array<std::array<uint8_t, 32>, 32>, 32> map;
 
         inline uint8_t paletteIndex(const uint8_t r, const uint8_t g, const uint8_t b) const {
+
             assert(r < map.size());
             assert(g < map[r].size());
             assert(b < map[r][g].size());

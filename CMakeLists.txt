@@ -58,7 +58,7 @@ include_directories(${GU_INCLUDE_DIRS})
 if(NOT MSVC)
     add_definitions(-Wall -Wsign-compare)
 else()
-    add_definitions(/wd4244 /wd4018 /wd4267 /wd4996)
+    add_definitions(/wd4244 /wd4018 /wd4267 /wd4996 /wd4800)
 endif()
 
 #------------------------------------------------------------------------------#

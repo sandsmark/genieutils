@@ -62,7 +62,6 @@ void SlpFile::loadFile()
 
     if (m_graphicsFileData.empty()) {
         m_graphicsFileData.resize(size_, 0);
-        std::cout << "reading " << size_ << " bytes for " << getFileName() << std::endl;
         std::streampos orig = getIStream()->tellg();
         getIStream()->seekg(getInitialReadPosition());
         getIStream()->read(m_graphicsFileData.data(), size_);

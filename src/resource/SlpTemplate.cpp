@@ -77,6 +77,7 @@ void SlpTemplateFile::loadFile()
 
         serialize(slpTemplate.outline_table_offset_);
         slpTemplate.outline_table_offset_ += templateBegin;
+
         serialize(slpTemplate.cmd_table_offset_);
         slpTemplate.cmd_table_offset_ += templateBegin;
 
@@ -221,7 +222,12 @@ void FiltermapFile::serializeObject()
                 for (uint16_t n=0; n<command.sourcePixelCount; n++) {
                     SourcePixel sourcePixel;
 
-                    const uint32_t packedCommand = (read<uint8_t>() | read<uint16_t>() << 8) & 0xFFFFFF;
+                    // this dumb fucking way is only way to get msvc to work
+                    const uint8_t b1 = read<uint8_t>();
+                    const uint8_t b2 = read<uint8_t>();
+                    const uint8_t b3 = read<uint8_t>();
+                    const uint32_t packedCommand = (b3 << 16) | (b2 << 8) | b1;
+
                     sourcePixel.alpha = packedCommand & 0x1ff;
                     sourcePixel.sourceIndex = packedCommand >> 9;
 
