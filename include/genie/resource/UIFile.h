@@ -41,16 +41,16 @@ class UIFile : public IFile
 public:
     struct Background
     {
-        std::string category;
-        std::string unknown_string;
-        uint32_t imageId;
-        int32_t unknown_number; // always -1
+        std::string filename;
+        std::string alternateFilename; //always none?
+        int32_t fileId;
+        int32_t alternateFileId; // always -1
     };
 
     struct FileReference
     {
-        std::string category;
-        uint32_t id;
+        std::string filename;
+        int32_t id;
     };
 
     //----------------------------------------------------------------------------
@@ -63,9 +63,12 @@ public:
     //
     virtual ~UIFile();
 
-    Background background1;
-    Background background2;
-    Background background3;
+    /// width < 800
+    Background backgroundSmall;
+    /// width < 1024
+    Background backgroundMedium;
+    /// width >= 1024
+    Background backgroundLarge;
     FileReference paletteFile;
     FileReference cursorFile;
     FileReference buttonFile;

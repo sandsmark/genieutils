@@ -45,13 +45,13 @@ void UIFile::serializeObject(void)
     if (isOperation(OP_READ)) {
         std::istream *istr = getIStream();
 
-        if (!readBackground(istr, &background1, "background1_files")) {
+        if (!readBackground(istr, &backgroundSmall, "background1_files")) {
             return;
         }
-        if (!readBackground(istr, &background2, "background2_files")) {
+        if (!readBackground(istr, &backgroundMedium, "background2_files")) {
             return;
         }
-        if (!readBackground(istr, &background3, "background3_files")) {
+        if (!readBackground(istr, &backgroundLarge, "background3_files")) {
             return;
         }
         if (!readFileReference(istr, &paletteFile, "palette_file")) {
@@ -130,10 +130,10 @@ bool UIFile::readBackground(std::istream *istr, UIFile::Background *background, 
         return false;
     }
 
-    *istr >> background->category;
-    *istr >> background->unknown_string;
-    *istr >> background->imageId;
-    *istr >> background->unknown_number;
+    *istr >> background->filename;
+    *istr >> background->alternateFilename;
+    *istr >> background->fileId;
+    *istr >> background->alternateFileId;
 
     return true;
 }
@@ -146,7 +146,7 @@ bool UIFile::readFileReference(std::istream *istr, UIFile::FileReference *fileRe
         log.error("Expected name %s, got %s!", expectedName.c_str(), name.c_str());
         return false;
     }
-    *istr >> fileReference->category;
+    *istr >> fileReference->filename;
     *istr >> fileReference->id;
     return true;
 }
