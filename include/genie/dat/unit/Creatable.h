@@ -36,7 +36,7 @@ namespace unit {
 
         static unsigned short getResourceCostsSize();
 
-        typedef ResourceUsage<int16_t, int16_t> ResourceCost;
+        typedef Resource<int16_t, int16_t> ResourceCost;
 
         std::vector<ResourceCost> ResourceCosts;
         int16_t TrainTime = 0;

@@ -541,7 +541,7 @@ public:
     /// Vertical half tile (elevation height?) distance from the top corner?
     float HPBarHeight = 0.f;
 
-    typedef ResourceUsage<float, int8_t> ResourceStorage;
+    typedef Resource<float, int8_t> ResourceStorage;
 
     /// Resource cost of a unit
     std::vector<ResourceStorage> ResourceStorages;
