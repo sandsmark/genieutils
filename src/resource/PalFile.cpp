@@ -89,21 +89,10 @@ void PalFile::serializeObject(void)
 
         *istr >> num_colors_;
 
-        colors_.resize(num_colors_);
-
         for (uint32_t i = 0; i < num_colors_; i++) {
-            uint32_t color_in;
-
-            *istr >> color_in;
-            colors_[i].r = color_in;
-
-            *istr >> color_in;
-            colors_[i].g = color_in;
-
-            *istr >> color_in;
-            colors_[i].b = color_in;
-
-            colors_[i].a = 255; //transparency off
+            uint32_t r, g, b;
+            *istr >> r >> g >> b;
+            colors_.push_back(Color(r, g, b));
         }
     } else {
         std::ostream *ostr = getOStream();

@@ -30,20 +30,19 @@ class Color
 {
 public:
     //----------------------------------------------------------------------------
-    /// Creates a basic black color (0, 0, 0, 255)
+    /// Creates a basic black color (0, 0, 0)
     //
     Color();
 
     //----------------------------------------------------------------------------
     //
-    Color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha = 255);
+    Color(uint8_t red, uint8_t green, uint8_t blue);
 
     virtual ~Color();
 
     uint8_t r = 0; /// Red
     uint8_t g = 0; /// Green
     uint8_t b = 0; /// Blue
-    uint8_t a = 255; /// Alpha
 
     //Static members:
     static const Color Transparent;
