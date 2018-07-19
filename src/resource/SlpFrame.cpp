@@ -620,9 +620,21 @@ void SlpFrame::readPixelsToImage(uint32_t row, uint32_t &col,
                                  uint32_t count, bool player_col)
 {
     uint32_t to_pos = col + count;
+
+    // optimizzzze
+    if (!player_col) {
+        getIStream()->read((char*)&img_data.pixel_indexes.data()[row * width_ + col], count);
+        memset(&img_data.alpha_channel[row * width_ + col], 255, count);
+        col += count;
+        return;
+    }
+
+    char bgras[count];
+    getIStream()->read(bgras, count);
+    int i=0;
     while (col < to_pos) {
-        uint8_t color_index = read<uint8_t>();
-        assert(row * width_ + col < img_data.pixel_indexes.size());
+        const uint8_t color_index = bgras[i++];
+
         img_data.pixel_indexes[row * width_ + col] = color_index;
         img_data.alpha_channel[row * width_ + col] = 255;
         if (player_col) {
