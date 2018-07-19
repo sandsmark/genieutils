@@ -179,7 +179,6 @@ SlpFramePtr SlpTemplateFile::getFrame(const SlpFramePtr source, const Slope slop
 
 const IcmFile::InverseColorMap &PatternMasksFile::getIcm(const uint16_t lightIndex, const std::vector<Pattern> &patterns) const
 {
-    assert(!patterns.empty());
     if (patterns.empty()) {
         return icmFile.maps[4];
     }
