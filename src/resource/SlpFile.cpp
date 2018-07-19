@@ -59,7 +59,6 @@ void SlpFile::loadFile()
 
     frames_.resize(num_frames_);
 
-
     if (m_graphicsFileData.empty()) {
         m_graphicsFileData.resize(size_, 0);
         std::streampos orig = getIStream()->tellg();
@@ -74,16 +73,14 @@ void SlpFile::loadFile()
     for (uint32_t i = 0; i < num_frames_; ++i) {
         frames_[i] = SlpFramePtr(new SlpFrame());
         frames_[i]->setSlpFilePos(std::streampos(0));
-//        frames_[i]->setLoadParams(m_graphicsFileStream);
         frames_[i]->setLoadParams(*getIStream());
         frames_[i]->serializeHeader();
-        frames_[i]->setSlpFilePos(getInitialReadPosition());
     }
 
+    std::istringstream istr(m_graphicsFileData);
     // Load frame content
     for (uint32_t i = 0; i < num_frames_; ++i) {
-//        frames_[i]->load(m_graphicsFileStream);
-        frames_[i]->load(*getIStream());
+        frames_[i]->load(istr);
     }
 
     loaded_ = true;
