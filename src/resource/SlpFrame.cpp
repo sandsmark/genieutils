@@ -629,8 +629,8 @@ void SlpFrame::readPixelsToImage(uint32_t row, uint32_t &col,
         return;
     }
 
-    char bgras[count];
-    getIStream()->read(bgras, count);
+    std::vector<char> bgras(count);
+    getIStream()->read(bgras.data(), count);
     int i=0;
     while (col < to_pos) {
         const uint8_t color_index = bgras[i++];
