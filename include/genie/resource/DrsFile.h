@@ -74,7 +74,7 @@ public:
 
     std::string idType(uint32_t id);
 
-    unsigned char *getWavPtr(uint32_t id);
+    std::shared_ptr<uint8_t> getWavPtr(uint32_t id);
 
     std::vector<uint32_t> binaryFileIds() const;
 
@@ -90,8 +90,6 @@ private:
 
     std::vector<std::string> table_types_;
     std::vector<uint32_t> table_num_of_files_;
-
-    std::vector<uint8_t> wav_file_;
 
     std::unordered_map<uint32_t, std::shared_ptr<PalFile>> pal_files_;
 
