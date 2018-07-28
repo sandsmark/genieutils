@@ -49,12 +49,12 @@ const std::string &Task::actionTypeName(const int16_t type)
         { 3, "Garrison" },
         { 4, "Explore" },
         { 5, "Gather/Rebuild" },
-        { 6, "Graze, deleted?" },
+        { 6, "Graze" },
         { 7, "Combat" },
         { 8, "Shoot" },
         { 9, "Attack" },
         { 10, "Fly" },
-        { 11, "Scare/Hunt, deleted?" },
+        { 11, "Scare/Hunt" },
         { 12, "Unload (Boat-Like)" },
         { 13, "Guard" },
         { 14, "HD Siege Tower Ability" },
@@ -74,7 +74,7 @@ const std::string &Task::actionTypeName(const int16_t type)
         { 111, "Trade" },
         { 120, "Generate Wonder Victory" },
         { 121, "Deselect when Tasked (Farm)" },
-        { 122, "Loot (Gather)" },
+        { 122, "Loot" },
         { 123, "Housing" },
         { 124, "Pack" },
         { 125, "Unpack & Attack" },
@@ -88,6 +88,9 @@ const std::string &Task::actionTypeName(const int16_t type)
         { 149, "Shear" },
         { 150, "HD Regeneration" },
         { 151, "HD Feitoria Ability" },
+        { 10000, "Stop" },
+        { 10001, "About face" },
+        { 10002, "Wheel" },
     };
 
     if (knownNames.find(type) == knownNames.end()) {

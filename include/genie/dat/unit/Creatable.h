@@ -44,11 +44,12 @@ namespace unit {
         /// ID of unit where this is made
         int16_t TrainLocationID = -1;
 
-        /// First page (also second in TC) 1-15
-        /// Second (dock) page 21-35
-        /// Third page same as first (Star Wars)
-        /// First page in AoE/RoR 1-10
-        /// Second page in AoE/RoR 11-20
+        /// Position in UI
+        // First page (also second in TC) 1-15
+        // Second (dock) page 21-35
+        // Third page same as first (Star Wars)
+        // First page in AoE/RoR 1-10
+        // Second page in AoE/RoR 11-20
         int8_t ButtonID = 0;
 
         float RearAttackModifier = 0;
@@ -64,7 +65,7 @@ namespace unit {
             MonkType = 6,
             TransportShipType = 21
         };
-        int8_t CreatableType = 0;
+        int8_t CreatableType = 0; // obsolete according to AGE, but still set for units
 
         int8_t HeroMode = 0;
         int32_t GarrisonGraphic = -1;

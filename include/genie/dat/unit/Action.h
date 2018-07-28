@@ -55,6 +55,7 @@ public:
     /// 2   Female villager
     /// 3+ Free slots
     int8_t TaskSwapGroup = 0;
+
     int16_t AttackSound = -1;
     int16_t MoveSound = -1;
 

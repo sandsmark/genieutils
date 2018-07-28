@@ -543,7 +543,7 @@ public:
 
     typedef Resource<float, int8_t> ResourceStorage;
 
-    /// Resource cost of a unit
+    /// Resources unit contains
     std::vector<ResourceStorage> ResourceStorages;
 
     ///

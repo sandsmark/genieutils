@@ -99,7 +99,7 @@ void MapInfo::serializeObject(void)
     serialize<int32_t>(LandCoverage);
     serialize<int32_t>(UnusedID);
 
-    uint32_t count;
+    uint32_t count = 0;
     serializeSize<uint32_t>(count, MapLands.size());
     serialize<int32_t>(MapLandsPtr);
 
