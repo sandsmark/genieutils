@@ -118,7 +118,7 @@ public:
         SequenceRandomized = 0x4,
         SequenceOnce = 0x8
     };
-    int8_t SequenceType = 0;
+    uint8_t SequenceType = 0;
     int16_t ID = -1;
     int8_t MirroringMode = 0;
     int8_t EditorFlag = 0;

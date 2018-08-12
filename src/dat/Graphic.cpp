@@ -98,7 +98,7 @@ void Graphic::serializeObject(void)
     serialize<float>(SpeedMultiplier);
     serialize<float>(FrameDuration);
     serialize<float>(ReplayDelay);
-    serialize<int8_t>(SequenceType);
+    serialize<uint8_t>(SequenceType);
     serialize<int16_t>(ID);
     serialize<int8_t>(MirroringMode);
 

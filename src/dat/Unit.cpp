@@ -213,7 +213,7 @@ void Unit::serializeObject(void)
 
         if (gv >= GV_AoKE3) // 9.15
         {
-            serialize<int8_t>(OcclusionMode);
+            serialize<uint8_t>(OcclusionMode);
             if (gv >= GV_AoKA) // 9.53
             {
                 serialize<int8_t>(ObstructionType);

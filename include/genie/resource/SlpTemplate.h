@@ -130,6 +130,7 @@ private:
 };
 
 // TODO: find better names for the rest of the values
+// https://github.com/aap/geniedoc/blob/master/patternmasks.bmp
 enum Pattern {
     FlatPattern = 0,
     BlackPattern = 1,

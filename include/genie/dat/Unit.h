@@ -444,7 +444,7 @@ public:
         OccludeOthers = 1 << 1,
         OcclusionWhileConstructing = 1 << 1
     };
-    int8_t OcclusionMode = 0;
+    uint8_t OcclusionMode = 0;
 
     /// values for ObstructionType
     enum ObstructionTypes : int8_t {
