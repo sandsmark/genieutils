@@ -6,6 +6,7 @@
 cmake_minimum_required(VERSION 3.7)
 
 set(Genieutils_LIBRARY genieutils)
+set(CMAKE_CXX_STANDARD 17)
 
 project(genieutils)
 
@@ -37,9 +38,19 @@ if (GUTILS_TEST)
   find_package(SFML COMPONENTS SYSTEM WINDOW GRAPHICS REQUIRED)
 endif (GUTILS_TEST)
 
+# TODO: write proper cmake config for pcrio
+if(NOT EXISTS ../pcrio/pcrio.c)
+    set(PCRIO_LIBRARIES pcrio)
+    set(PCRIO_SRC)
+else()
+    set(PCRIO_LIBRARIES)
+    set(PCRIO_SRC ../pcrio/pcrio.c)
+    include_directories(../pcrio)
+endif()
+
 # include directories:
 
-set(GU_INCLUDE_DIRS include/ extern/zstr/src/ ../)
+set(GU_INCLUDE_DIRS include/ extern/zstr/src/)
 
 if(WIN32)
   set(GU_INCLUDE_DIRS ${GU_INCLUDE_DIRS})
@@ -72,7 +83,7 @@ set(FILE_SRC
     src/file/lzx.c
 )
 
-set(PCRIO_SRC ../pcrio/pcrio.c)
+
 
 set(LANG_SRC ${PCRIO_SRC}
     src/lang/LangFile.cpp
@@ -190,7 +201,7 @@ else()
 endif()
 
 
-target_link_libraries(${Genieutils_LIBRARY} ${ZLIB_LIBRARIES} ${ICONV_LIBRARIES})
+target_link_libraries(${Genieutils_LIBRARY} ${ZLIB_LIBRARIES} ${ICONV_LIBRARIES} ${PCRIO_LIBRARIES})
 
 INSTALL(TARGETS ${Genieutils_LIBRARY}
         LIBRARY DESTINATION lib

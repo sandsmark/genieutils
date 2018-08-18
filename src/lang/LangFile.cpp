@@ -25,7 +25,7 @@
 #include <errno.h>
 
 extern "C" {
-#include "pcrio/pcrio.h"
+#include <pcrio.h>
 }
 
 namespace genie {
