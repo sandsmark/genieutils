@@ -192,6 +192,17 @@ endif()
 
 target_link_libraries(${Genieutils_LIBRARY} ${ZLIB_LIBRARIES} ${ICONV_LIBRARIES})
 
+INSTALL(TARGETS ${Genieutils_LIBRARY}
+        LIBRARY DESTINATION lib
+)
+
+install (
+    DIRECTORY ${CMAKE_SOURCE_DIR}/include/
+    DESTINATION include
+    FILES_MATCHING PATTERN "*.h*"
+)
+
+
 #add_executable(main main.cpp)
 #target_link_libraries(main ${Genieutils_LIBRARY})
 
