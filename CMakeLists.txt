@@ -39,20 +39,21 @@ if (GUTILS_TEST)
 endif (GUTILS_TEST)
 
 # TODO: write proper cmake config for pcrio
-if(NOT EXISTS ../pcrio/pcrio.c)
-    set(PCRIO_LIBRARIES pcrio)
-    set(PCRIO_SRC)
-else()
+if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/../pcrio/pcrio.c)
+    message(STATUS "Using bundled pcrio")
     set(PCRIO_LIBRARIES)
     set(PCRIO_SRC ../pcrio/pcrio.c)
-    include_directories(../pcrio)
+    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../pcrio/)
+else()
+    set(PCRIO_LIBRARIES pcrio)
+    set(PCRIO_SRC)
 endif()
 
 # include directories:
 
-if(EXISTS extern/zstr/src/zstr.hpp)
-    include_directories(extern/zstr/src/)
+if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/extern/zstr/src/zstr.hpp)
     message(STATUS "Using bundled zstr")
+    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/extern/zstr/src/)
 endif()
 
 set(GU_INCLUDE_DIRS include/)
@@ -203,20 +204,20 @@ if (GENIEUTILS_STATIC_BUILD)
     add_library(${Genieutils_LIBRARY} STATIC ${ALL_SRC})
 else()
     add_library(${Genieutils_LIBRARY} SHARED ${ALL_SRC})
+
+    INSTALL(TARGETS ${Genieutils_LIBRARY}
+        LIBRARY DESTINATION lib
+        )
+
+    install (
+        DIRECTORY ${CMAKE_SOURCE_DIR}/include/
+        DESTINATION include
+        FILES_MATCHING PATTERN "*.h*"
+        )
 endif()
 
 
 target_link_libraries(${Genieutils_LIBRARY} ${ZLIB_LIBRARIES} ${ICONV_LIBRARIES} ${PCRIO_LIBRARIES})
-
-INSTALL(TARGETS ${Genieutils_LIBRARY}
-        LIBRARY DESTINATION lib
-)
-
-install (
-    DIRECTORY ${CMAKE_SOURCE_DIR}/include/
-    DESTINATION include
-    FILES_MATCHING PATTERN "*.h*"
-)
 
 
 #add_executable(main main.cpp)
