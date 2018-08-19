@@ -50,7 +50,12 @@ endif()
 
 # include directories:
 
-set(GU_INCLUDE_DIRS include/ extern/zstr/src/)
+if(EXISTS extern/zstr/src/zstr.hpp)
+    include_directories(extern/zstr/src/)
+    message(STATUS "Using bundled zstr")
+endif()
+
+set(GU_INCLUDE_DIRS include/)
 
 if(WIN32)
   set(GU_INCLUDE_DIRS ${GU_INCLUDE_DIRS})
