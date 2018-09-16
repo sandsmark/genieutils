@@ -204,6 +204,9 @@ std::shared_ptr<uint8_t> DrsFile::getWavPtr(uint32_t id)
         getIStream()->seekg(std::streampos(i->second));
         /*uint32_t type =*/ read<uint32_t>();
         uint32_t size = read<uint32_t>();
+        if (!size)  {
+            return nullptr;
+        }
 #ifndef NDEBUG
 //        log.debug("WAV [%u], type [%X], size [%u]", id, type, size);
 #endif
