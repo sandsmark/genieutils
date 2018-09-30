@@ -373,6 +373,18 @@ ScnFilePtr CpxFile::getScnFile(const std::string &filename)
     return nullptr;
 }
 
+ScnFilePtr CpxFile::getScnFile(size_t index)
+{
+    if (m_files.empty()) {
+        return nullptr;
+    }
+
+    if (index >= m_files.size()) {
+        index = 0;
+    }
+    return m_files[index].getScnFile();
+}
+
 ScnFilePtr CpxIncludedFile::getScnFile()
 {
     ScnFilePtr ret = std::make_shared<ScnFile>();

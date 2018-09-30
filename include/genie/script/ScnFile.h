@@ -168,6 +168,7 @@ public:
 
     std::vector<std::string> getFilenames() const;
     ScnFilePtr getScnFile(const std::string &filename);
+    ScnFilePtr getScnFile(size_t index);
 
     std::string version;
     std::string name;
