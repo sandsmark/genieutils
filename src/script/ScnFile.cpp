@@ -135,7 +135,7 @@ void ScnFile::serializeObject(void)
     serialize<uint32_t>(lastSaveTime);
     serializeForcedString<uint32_t>(scenarioInstructions);
     serialize<uint32_t>(victoryType);
-    serialize<uint32_t>(playerCount);
+    serialize<uint32_t>(enabledPlayerCount);
 
     compressor_.beginCompression();
    #if 0
@@ -167,15 +167,16 @@ void ScnFile::serializeObject(void)
     else
         std::cerr << "unhandled version " << scn_ver << std::endl;
 
-    serializeSize<uint32_t>(playerCount1_, playerUnits.size());
+    serializeSize<uint32_t>(playerUnitsCount, playerUnits.size());
     if (scn_internal_ver > 1.06f)
         serializeSub<ScnPlayerResources>(playerResources, 8);
     else {
         // A lot of data is read here.
     }
 
-    serializeSub<ScnPlayerUnits>(playerUnits, playerCount1_);
+    serializeSub<ScnPlayerUnits>(playerUnits, playerUnitsCount);
 
+    // You would think this would be the size of the player data, but no
     serialize<uint32_t>(playerCount2_);
     serializeSub<ScnMorePlayerData>(players, 8);
 
@@ -197,25 +198,25 @@ void ScnFile::serializeObject(void)
             serialize<uint32_t>(perError, 99);
         if (includeFiles) {
             serializeSize<uint32_t>(fileCount_, includedFiles.size());
-            serializeSub<ScnIncludedFile>(includedFiles, fileCount_);
+            serializeSub<ScnPersonalityScript>(includedFiles, fileCount_);
         }
     }
 
     compressor_.endCompression();
 }
 
-ScnIncludedFile::ScnIncludedFile()
+ScnPersonalityScript::ScnPersonalityScript()
 {
 }
 
-ScnIncludedFile::~ScnIncludedFile()
+ScnPersonalityScript::~ScnPersonalityScript()
 {
 }
 
-void ScnIncludedFile::serializeObject(void)
+void ScnPersonalityScript::serializeObject(void)
 {
     serializeSizedString<uint32_t>(perFileName, false);
-    serializeSizedString<uint32_t>(someString, false);
+    serializeSizedString<uint32_t>(fileContent, false);
 }
 
 //------------------------------------------------------------------------------

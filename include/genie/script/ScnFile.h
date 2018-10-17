@@ -55,14 +55,14 @@ private:
     Compressor compressor_;
 };
 
-class ScnIncludedFile : public ISerializable
+class ScnPersonalityScript : public ISerializable
 {
 public:
-    ScnIncludedFile();
-    virtual ~ScnIncludedFile();
+    ScnPersonalityScript();
+    virtual ~ScnPersonalityScript();
 
-    std::string perFileName;
-    std::string someString;
+    std::string filename;
+    std::string content;
 
 private:
     virtual void serializeObject(void);
@@ -98,7 +98,7 @@ public:
 
     uint32_t victoryType;
 
-    uint32_t playerCount;
+    uint32_t enabledPlayerCount;
 
     // Compressed header:
 
@@ -122,14 +122,14 @@ public:
     uint32_t includeFiles;
     uint32_t perErrorIncluded;
     std::vector<uint32_t> perError;
-    std::vector<ScnIncludedFile> includedFiles;
+    std::vector<ScnPersonalityScript> includedFiles;
 
 private:
     static Logger &log;
     bool verifyVersion();
 
     uint32_t headerLength_; //starting after this
-    uint32_t playerCount1_;
+    uint32_t playerUnitsCount;
     uint32_t playerCount2_;
     uint32_t numTriggers_;
     uint32_t fileCount_;
