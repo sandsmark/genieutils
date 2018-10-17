@@ -208,8 +208,8 @@ public:
 
     uint16_t bitmapByteSize = 0;
 
-    char *bmpHeader = 0;
-    char *bitmap = 0;
+    char *bmpHeader = nullptr;
+    char *bitmap = nullptr;
 
     std::vector<std::string> aiNames;
     std::vector<std::string> cityNames;
@@ -258,6 +258,7 @@ public:
     std::vector<uint8_t> unknown3; // found in Grand Theft Empires
     std::vector<uint8_t> unknown4;
     int32_t unknown5;
+    int32_t playerID;
 
 private:
     uint16_t playerCount_;

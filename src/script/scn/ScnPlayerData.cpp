@@ -358,5 +358,9 @@ void ScnMorePlayerData::serializeObject(void)
     serialize<uint8_t>(unknown3, unknownCount_ * 44);
     serialize<uint8_t>(unknown4, 7);
     serialize<int32_t>(unknown5);
+
+    if (scn_internal_ver > 1.14f) {
+        serialize<int32_t>(playerID);
+    }
 }
 }

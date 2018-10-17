@@ -124,7 +124,6 @@ void ScnFile::serializeObject(void)
         std::cout << "ERROR" << std::endl;
         return;
     }
-    std::cout << "version: " << version << std::endl;
 
     if (isOperation(OP_WRITE)) {
         headerLength_ = 21 + scenarioInstructions.size();
@@ -132,27 +131,28 @@ void ScnFile::serializeObject(void)
 
     serialize<uint32_t>(headerLength_); // Used in AoE 1 lobby
 
-    std::cout << "header length: " << headerLength_ << std::endl;
-
     serialize<int32_t>(saveType);
-    std::cout << "save type: " << headerLength_ << std::endl;
     serialize<uint32_t>(lastSaveTime);
     serializeForcedString<uint32_t>(scenarioInstructions);
     serialize<uint32_t>(victoryType);
     serialize<uint32_t>(playerCount);
-    std::cout << scenarioInstructions << std::endl;
 
     compressor_.beginCompression();
+   #if 0
+    std::ofstream dump("/tmp/decompressed");
+    while (getIStream()->good()) {
+        dump.put(getIStream()->get());
+    }
+    dump.close();
+    exit(0);
+#endif
+
 
     // Compressed header:
 
     serialize<uint32_t>(nextUnitID);
 
     serialize<ISerializable>(playerData);
-    std::cout << playerData.backgroundFilename << std::endl;
-    std::cout << playerData.originalFileName << std::endl;
-    std::cout << playerData.instructions << std::endl;
-    std::cout << playerData.hints << std::endl;
 
     serialize<ISerializable>(map);
 
@@ -162,6 +162,10 @@ void ScnFile::serializeObject(void)
         scn_internal_ver = 1.13f;
     else if (scn_ver == "1.14" || scn_ver == "1.15" || scn_ver == "1.16")
         scn_internal_ver = 1.12f;
+    else if (scn_ver == "1.22")
+        scn_internal_ver = 1.15f;
+    else
+        std::cerr << "unhandled version " << scn_ver << std::endl;
 
     serializeSize<uint32_t>(playerCount1_, playerUnits.size());
     if (scn_internal_ver > 1.06f)
@@ -169,6 +173,7 @@ void ScnFile::serializeObject(void)
     else {
         // A lot of data is read here.
     }
+
     serializeSub<ScnPlayerUnits>(playerUnits, playerCount1_);
 
     serialize<uint32_t>(playerCount2_);
@@ -185,7 +190,7 @@ void ScnFile::serializeObject(void)
     if (scn_trigger_ver > 1.3f)
         serialize<int32_t>(triggerDisplayOrder, numTriggers_);
 
-    if (scn_ver == "1.21" || scn_ver == "1.20" || scn_ver == "1.19" || scn_ver == "1.18") {
+    if (scn_ver == "1.22" || scn_ver == "1.21" || scn_ver == "1.20" || scn_ver == "1.19" || scn_ver == "1.18") {
         serialize<uint32_t>(includeFiles);
         serialize<uint32_t>(perErrorIncluded);
         if (perErrorIncluded)
@@ -376,12 +381,14 @@ ScnFilePtr CpxFile::getScnFile(const std::string &filename)
 ScnFilePtr CpxFile::getScnFile(size_t index)
 {
     if (m_files.empty()) {
+        std::cerr << "no files available" << std::endl;
         return nullptr;
     }
-
     if (index >= m_files.size()) {
+        std::cerr << "index out of range: " << index << " " << m_files.size() << std::endl;
         index = 0;
     }
+
     return m_files[index].getScnFile();
 }
 
@@ -411,7 +418,6 @@ void BlnFile::serializeObject()
     compressor_.beginCompression();
 
     serialize(version);
-    std::cout << "version: " << version << std::endl;
     for (int frame=0; frame<20; frame++) {
         for (int palette=0; palette<256; palette++) {
             serialize(frames[frame].palettes[palette].colors, 256);

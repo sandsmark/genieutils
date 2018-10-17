@@ -61,6 +61,7 @@ public:
     float ore = 0;
     float goods = 0;
     float popLimit = 75;
+    uint32_t playerId = 0;
 
 private:
     virtual void serializeObject(void);
