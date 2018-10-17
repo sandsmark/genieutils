@@ -215,8 +215,8 @@ ScnPersonalityScript::~ScnPersonalityScript()
 
 void ScnPersonalityScript::serializeObject(void)
 {
-    serializeSizedString<uint32_t>(perFileName, false);
-    serializeSizedString<uint32_t>(fileContent, false);
+    serializeSizedString<uint32_t>(filename, false);
+    serializeSizedString<uint32_t>(content, false);
 }
 
 //------------------------------------------------------------------------------
