@@ -696,11 +696,11 @@ void SlpFrame::handleColors(cnt_type count_type, uint32_t row, uint32_t col, uin
     case CNT_TRANSPARENT:
         if (count > 0x3F) // Greater skip.
         {
-            commands_[row].push_back(0x3 | (count & 0xF00) >> 4);
+            commands_[row].push_back(GreaterSkip | (count & 0xF00) >> 4);
             commands_[row].push_back(count);
         } else // Lesser skip.
         {
-            commands_[row].push_back(0x1 | count << 2);
+            commands_[row].push_back(LesserSkip | count << 2);
         }
         break;
     case CNT_SAME:
@@ -709,17 +709,17 @@ void SlpFrame::handleColors(cnt_type count_type, uint32_t row, uint32_t col, uin
     case CNT_DIFF:
         if (count > 0x3F) // Greater copy.
         {
-            commands_[row].push_back(0x2 | (count & 0xF00) >> 4);
+            commands_[row].push_back(GreaterBlockCopy | (count & 0xF00) >> 4);
             commands_[row].push_back(count);
             pushPixelsToBuffer(row, col, count);
         } else // Lesser copy.
         {
-            commands_[row].push_back(count << 2);
+            commands_[row].push_back(LesserBlockCopy | count << 2);
             pushPixelsToBuffer(row, col, count);
         }
         break;
     case CNT_FEATHERING:
-        commands_[row].push_back(0x9E);
+        commands_[row].push_back(PremultipliedAlpha);
         commands_[row].push_back(count);
         pushPixelsToBuffer(row, col, count);
         break;
@@ -728,22 +728,22 @@ void SlpFrame::handleColors(cnt_type count_type, uint32_t row, uint32_t col, uin
         break;
     case CNT_SHIELD:
         if (count == 1) {
-            commands_[row].push_back(0x6E);
+            commands_[row].push_back(OutlineShieldColor);
         } else {
-            commands_[row].push_back(0x7E);
+            commands_[row].push_back(OutlineShieldColorSpan);
             commands_[row].push_back(count);
         }
         break;
     case CNT_PC_OUTLINE:
         if (count == 1) {
-            commands_[row].push_back(0x4E);
+            commands_[row].push_back(OutlinePlayerColor);
         } else {
-            commands_[row].push_back(0x5E);
+            commands_[row].push_back(OutlinePlayerColorSpan);
             commands_[row].push_back(count);
         }
         break;
     case CNT_SHADOW:
-        handleSpecial(0xB, row, col, count, 0);
+        handleSpecial(Shadow, row, col, count, 0);
         break;
     default:
         break;

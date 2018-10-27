@@ -43,6 +43,7 @@ public:
     uint8_t r = 0; /// Red
     uint8_t g = 0; /// Green
     uint8_t b = 0; /// Blue
+    uint8_t a = 255;
 
     //Static members:
     static const Color Transparent;
