@@ -76,12 +76,14 @@ public:
     /// @return SlpFrame
     //
     const SlpFramePtr &getFrame(uint32_t frame = 0);
+    const SlpFramePtr &getUnloadedFrame(uint32_t frame);
+
     void setFrame(uint32_t, SlpFramePtr);
 
     std::string version;
     std::string comment;
 
-    const std::string &fileData() const {return m_graphicsFileData; }
+    const std::string &fileData() const { return m_graphicsFileData; }
 
 private:
     friend class SlpTemplateFile;

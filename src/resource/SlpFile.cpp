@@ -157,7 +157,32 @@ const SlpFramePtr &SlpFile::getFrame(uint32_t frame)
         throw std::out_of_range("getFrame()");
     }
 
+    if (frames_[frame]->img_data.pixel_indexes.empty()) {
+        std::istringstream istr(m_graphicsFileData);
+        frames_[frame]->setLoadParams(istr);
+        frames_[frame]->readImage();
+        frames_[frame]->setLoadParams(*getIStream());
+    }
+
     return frames_[frame];
+}
+
+const SlpFramePtr &SlpFile::getUnloadedFrame(uint32_t frame)
+{
+    if (frame >= frames_.size()) {
+        if (!loaded_) {
+#ifndef NDEBUG
+            log.debug("Reloading SLP, seeking frame [%u]", frame);
+#endif
+            readObject(*getIStream());
+            return getFrame(frame);
+        }
+        log.error("Trying to get frame [%u] from index out of range!", frame);
+        throw std::out_of_range("getFrame()");
+    }
+
+    return frames_[frame];
+
 }
 
 //------------------------------------------------------------------------------

@@ -405,8 +405,6 @@ void SlpFrame::load(std::istream &istr)
             rgba.b = read<uint8_t>();
         }
     }
-
-    readImage();
 }
 
 void SlpFrame::readImage()

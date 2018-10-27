@@ -62,7 +62,7 @@ void SlpTemplateFile::serializeObject(void)
 void SlpTemplateFile::loadFile()
 {
 //    std::streampos beginning = tellg();
-    for (SlpTemplate &slpTemplate : templates_) {
+    for (SlpTemplate &slpTemplate : templates) {
 
         uint32_t stemplSize;
         serialize(stemplSize);
@@ -84,7 +84,7 @@ void SlpTemplateFile::loadFile()
         getIStream()->seekg(nextPos);
     }
 
-    for (SlpTemplate &slpTemplate : templates_) {
+    for (SlpTemplate &slpTemplate : templates) {
         getIStream()->seekg(std::streampos(slpTemplate.outline_table_offset_));
 
         slpTemplate.left_edges_.resize(slpTemplate.height_);
@@ -132,7 +132,7 @@ void SlpTemplateFile::unload(void)
     if (!loaded_)
         log.warn("Trying to unload a not loaded slpfile!");
 
-    for (SlpTemplate &slpTemplate : templates_) {
+    for (SlpTemplate &slpTemplate : templates) {
         slpTemplate.cmd_offsets_.clear();
         slpTemplate.left_edges_.clear();
         slpTemplate.right_edges_.clear();
@@ -163,14 +163,14 @@ SlpFramePtr SlpTemplateFile::getFrame(const SlpFramePtr source, const Slope slop
 
     SlpFramePtr frameCopy = std::make_shared<SlpFrame>(*source);
 
-    frameCopy->setSize(templates_[slope].width_, templates_[slope].height_);
-    frameCopy->hotspot_x = templates_[slope].hotspot_x;
-    frameCopy->hotspot_y = templates_[slope].hotspot_y;
+    frameCopy->setSize(templates[slope].width_, templates[slope].height_);
+    frameCopy->hotspot_x = templates[slope].hotspot_x;
+    frameCopy->hotspot_y = templates[slope].hotspot_y;
 
     // Not really sure what the point of these command offsets are, they don't work when filtering
 //    frameCopy->cmd_offsets_ = templates_[slope].cmd_offsets_;
-    frameCopy->left_edges_ = templates_[slope].left_edges_;
-    frameCopy->right_edges_ = templates_[slope].right_edges_;
+    frameCopy->left_edges_ = templates[slope].left_edges_;
+    frameCopy->right_edges_ = templates[slope].right_edges_;
 
     frameCopy->filter(filtermapFile, slope, masks, palette, slpFile->fileData());
 

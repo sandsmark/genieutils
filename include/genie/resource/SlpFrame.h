@@ -174,6 +174,10 @@ public:
     void readImage();
 
     void filter(const FiltermapFile &filterFile, const uint8_t filterNum, const std::vector<Pattern> &patterns, const std::vector<Color> &palette, const std::string &cmds);
+    std::vector<uint32_t> cmd_offsets_;
+
+    std::vector<uint16_t> left_edges_;
+    uint32_t outline_table_offset_;
 
 private:
     friend class SlpTemplateFile;
@@ -208,17 +212,14 @@ private:
     std::streampos slp_file_pos_;
 
     uint32_t cmd_table_offset_;
-    uint32_t outline_table_offset_;
     uint32_t palette_offset_;
     uint32_t properties_;
 
     uint32_t width_;
     uint32_t height_;
 
-    std::vector<uint16_t> left_edges_;
     std::vector<uint16_t> right_edges_;
 
-    std::vector<uint32_t> cmd_offsets_;
     std::vector<std::vector<uint8_t>> commands_; // Don't you dare use std::list here!
 
     virtual void serializeObject(void);

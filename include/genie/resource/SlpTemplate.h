@@ -274,6 +274,7 @@ private:
 //
 class SlpTemplateFile : public IFile
 {
+public:
     struct SlpTemplate {
         uint32_t width_;
         uint32_t height_;
@@ -292,7 +293,6 @@ class SlpTemplateFile : public IFile
         uint32_t cmd_table_offset_;
     };
 
-public:
     FiltermapFile filtermapFile;
 
     //----------------------------------------------------------------------------
@@ -323,6 +323,8 @@ public:
     //
     SlpFramePtr getFrame(const SlpFramePtr source, const Slope slope, const std::vector<Pattern> &masks, const std::vector<Color> &palette, const genie::SlpFilePtr &slpFile);
 
+    std::array<SlpTemplate, SlopeCount> templates;
+
 private:
     static Logger &log;
 
@@ -337,7 +339,6 @@ private:
     void loadFile(void);
     void saveFile(void);
 
-    std::array<SlpTemplate, SlopeCount> templates_;
 };
 
 typedef std::shared_ptr<SlpTemplateFile> SlpTemplateFilePtr;
