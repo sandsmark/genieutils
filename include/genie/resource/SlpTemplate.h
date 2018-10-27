@@ -178,7 +178,6 @@ enum Pattern {
 class PatternMasksFile : public IFile
 {
 public:
-
     LightmapFile lightmapFile;
     IcmFile icmFile;
 
@@ -211,7 +210,7 @@ public:
     const IcmFile::InverseColorMap &getIcm(const uint16_t lightIndex, const std::vector<Pattern> &masks) const;
 
     operator bool() {
-        return m_loaded && lightmapFile && icmFile;
+        return m_loaded;
     }
 
     std::array<PatternMask, PatternMasksCount> m_masks;
@@ -235,8 +234,6 @@ private:
 class FiltermapFile : public IFile
 {
 public:
-    PatternMasksFile patternmasksFile;
-
     struct SourcePixel {
         uint16_t alpha;
         uint32_t sourceIndex;
@@ -260,7 +257,7 @@ public:
     std::array<Filtermap, SlopeCount> maps;
 
     operator bool() {
-        return m_loaded && patternmasksFile;
+        return m_loaded;
     }
 
 private:
@@ -292,8 +289,6 @@ public:
         uint32_t outline_table_offset_;
         uint32_t cmd_table_offset_;
     };
-
-    FiltermapFile filtermapFile;
 
     //----------------------------------------------------------------------------
     /// Constructor

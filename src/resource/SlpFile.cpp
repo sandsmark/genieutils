@@ -170,30 +170,51 @@ const SlpFramePtr &SlpFile::getFrame(uint32_t frame)
     return frames_[frame];
 }
 
-const SlpFramePtr &SlpFile::getUnloadedFrame(uint32_t frame)
-{
-    if (frame >= frames_.size()) {
-        if (!loaded_) {
-#ifndef NDEBUG
-            log.debug("Reloading SLP, seeking frame [%u]", frame);
-#endif
-            readObject(*getIStream());
-            return getFrame(frame);
-        }
-        log.error("Trying to get frame [%u] from index out of range!", frame);
-        throw std::out_of_range("getFrame()");
-    }
-
-    return frames_[frame];
-
-}
-
 //------------------------------------------------------------------------------
 void SlpFile::setFrame(uint32_t frame, SlpFramePtr data)
 {
     if (frame < frames_.size()) {
         frames_[frame] = data;
     }
+}
+
+int SlpFile::frameCommandsOffset(const size_t frame, const int row)
+{
+    if (!loaded_) {
+        readObject(*getIStream());
+    }
+    if (frame >= frames_.size()) {
+        log.error("Trying to get frame [%u] from index out of range!", frame);
+        throw std::out_of_range("getFrame()");
+    }
+
+    return frames_[frame]->commandsOffset(row);
+}
+
+int SlpFile::frameHeight(const size_t frame)
+{
+    if (!loaded_) {
+        readObject(*getIStream());
+    }
+    if (frame >= frames_.size()) {
+        log.error("Trying to get frame [%u] from index out of range!", frame);
+        throw std::out_of_range("getFrame()");
+    }
+
+    return frames_[frame]->getHeight();
+}
+
+int SlpFile::frameWidth(const size_t frame)
+{
+    if (!loaded_) {
+        readObject(*getIStream());
+    }
+    if (frame >= frames_.size()) {
+        log.error("Trying to get frame [%u] from index out of range!", frame);
+        throw std::out_of_range("getFrame()");
+    }
+
+    return frames_[frame]->getWidth();
 }
 
 //------------------------------------------------------------------------------

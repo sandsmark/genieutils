@@ -170,13 +170,14 @@ public:
 
     void readImage();
 
-    std::vector<uint32_t> cmd_offsets_;
+    uint32_t commandsOffset(const int row) {
+        return cmd_offsets_[row];
+    }
 
-    std::vector<uint16_t> left_edges_;
-    uint32_t outline_table_offset_;
 
 private:
-    friend class SlpTemplateFile;
+    std::vector<uint16_t> left_edges_;
+    uint32_t outline_table_offset_;
 
     enum Commands : uint8_t {
         EndOfRow = 0xF,
@@ -207,6 +208,7 @@ private:
 
     std::streampos slp_file_pos_;
 
+    std::vector<uint32_t> cmd_offsets_;
     uint32_t cmd_table_offset_;
     uint32_t palette_offset_;
     uint32_t properties_;

@@ -76,7 +76,6 @@ public:
     /// @return SlpFrame
     //
     const SlpFramePtr &getFrame(uint32_t frame = 0);
-    const SlpFramePtr &getUnloadedFrame(uint32_t frame);
 
     void setFrame(uint32_t, SlpFramePtr);
 
@@ -84,6 +83,10 @@ public:
     std::string comment;
 
     const std::vector<uint8_t> &fileData() const { return m_graphicsFileData; }
+
+    int frameCommandsOffset(const size_t frame, const int row);
+    int frameHeight(const size_t frame);
+    int frameWidth(const size_t frame);
 
 private:
     friend class SlpTemplateFile;
