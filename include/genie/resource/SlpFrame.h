@@ -33,9 +33,6 @@
 
 namespace genie {
 
-//class SlpTemplate;
-class FiltermapFile;
-
 struct XY
 {
     uint32_t x;
@@ -173,7 +170,6 @@ public:
 
     void readImage();
 
-    void filter(const FiltermapFile &filterFile, const uint8_t filterNum, const std::vector<Pattern> &patterns, const std::vector<Color> &palette, const std::string &cmds);
     std::vector<uint32_t> cmd_offsets_;
 
     std::vector<uint16_t> left_edges_;

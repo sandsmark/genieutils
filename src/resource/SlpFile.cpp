@@ -63,7 +63,8 @@ void SlpFile::loadFile()
         m_graphicsFileData.resize(size_, 0);
         std::streampos orig = getIStream()->tellg();
         getIStream()->seekg(getInitialReadPosition());
-        getIStream()->read(m_graphicsFileData.data(), size_);
+        char *data = reinterpret_cast<char*>(m_graphicsFileData.data());
+        getIStream()->read(data, size_);
         getIStream()->seekg(orig);
     } else {
         std::cerr << "already loaded data" << std::endl;
@@ -77,8 +78,9 @@ void SlpFile::loadFile()
         frames_[i]->serializeHeader();
     }
 
-    std::istringstream istr(m_graphicsFileData);
-    // Load frame content
+    const char *data = reinterpret_cast<const char*>(m_graphicsFileData.data());
+    std::istringstream istr(std::string(data, m_graphicsFileData.size()));
+    // Load frame header
     for (uint32_t i = 0; i < num_frames_; ++i) {
         frames_[i]->load(istr);
     }
@@ -158,7 +160,8 @@ const SlpFramePtr &SlpFile::getFrame(uint32_t frame)
     }
 
     if (frames_[frame]->img_data.pixel_indexes.empty()) {
-        std::istringstream istr(m_graphicsFileData);
+        const char *data = reinterpret_cast<const char*>(m_graphicsFileData.data());
+        std::istringstream istr(std::string(data, m_graphicsFileData.size()));
         frames_[frame]->setLoadParams(istr);
         frames_[frame]->readImage();
         frames_[frame]->setLoadParams(*getIStream());

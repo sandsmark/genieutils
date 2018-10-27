@@ -83,7 +83,7 @@ public:
     std::string version;
     std::string comment;
 
-    const std::string &fileData() const { return m_graphicsFileData; }
+    const std::vector<uint8_t> &fileData() const { return m_graphicsFileData; }
 
 private:
     friend class SlpTemplateFile;
@@ -113,7 +113,7 @@ private:
     //----------------------------------------------------------------------------
     void serializeHeader(void);
 
-    std::string m_graphicsFileData;
+    std::vector<uint8_t> m_graphicsFileData;
 //    static std::map<std::string, std::string> m_graphicsFileData;
 //    static std::map<std::string, std::string> m_graphicsFileData;
 //    std::string m_graphicsFileData;

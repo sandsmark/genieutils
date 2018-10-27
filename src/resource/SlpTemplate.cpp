@@ -148,35 +148,6 @@ bool SlpTemplateFile::isLoaded(void) const
 //    return loaded_ && icmFile && patternmasksFile && filtermapFile;
 }
 
-//------------------------------------------------------------------------------
-SlpFramePtr SlpTemplateFile::getFrame(const SlpFramePtr source, const Slope slope, const std::vector<Pattern> &masks, const std::vector<Color> &palette, const SlpFilePtr &slpFile)
-{
-    if (!source) {
-        log.error("Passed nullptr");
-        return nullptr;
-    }
-
-    if (!filtermapFile) {
-        log.error("No filter map file loaded");
-        return nullptr;
-    }
-
-    SlpFramePtr frameCopy = std::make_shared<SlpFrame>(*source);
-
-    frameCopy->setSize(templates[slope].width_, templates[slope].height_);
-    frameCopy->hotspot_x = templates[slope].hotspot_x;
-    frameCopy->hotspot_y = templates[slope].hotspot_y;
-
-    // Not really sure what the point of these command offsets are, they don't work when filtering
-//    frameCopy->cmd_offsets_ = templates_[slope].cmd_offsets_;
-    frameCopy->left_edges_ = templates[slope].left_edges_;
-    frameCopy->right_edges_ = templates[slope].right_edges_;
-
-    frameCopy->filter(filtermapFile, slope, masks, palette, slpFile->fileData());
-
-    return frameCopy;
-}
-
 const IcmFile::InverseColorMap &PatternMasksFile::getIcm(const uint16_t lightIndex, const std::vector<Pattern> &patterns) const
 {
     if (patterns.empty()) {

@@ -562,57 +562,6 @@ void SlpFrame::readImage()
 
 }
 
-void SlpFrame::filter(const FiltermapFile &filterFile, const uint8_t filterNum, const std::vector<Pattern> &patterns, const std::vector<Color> &palette, const std::string &cmds)
-{
-    uint32_t cmdOffset = cmd_offsets_[0];
-
-    assert(width_ < 500);
-    assert(height_ < 500);
-
-    img_data.pixel_indexes.clear();
-    img_data.pixel_indexes.resize(width_ * height_, 0);
-    img_data.alpha_channel.clear();
-    img_data.alpha_channel.resize(width_ * height_, 0);
-
-    assert(filterNum < filterFile.maps.size());
-
-    const FiltermapFile::Filtermap filter = filterFile.maps[filterNum];
-    assert(filter.height == height_);
-    const PatternMasksFile &patternmasksFile = filterFile.patternmasksFile;
-
-    for (uint32_t y=0; y<filter.height; y++) {
-        int xPos = left_edges_[y];
-
-        assert(y < filter.lines.size());
-
-        const FiltermapFile::FilterLine &line = filter.lines[y];
-
-        for (uint32_t x=0; x<line.width; x++, xPos++) {
-            if (x >= line.commands.size()) {
-                std::cerr << "out of bounds: "  << x << " " << line.commands.size() << std::endl;
-            }
-            assert(x < line.commands.size());
-
-            const FiltermapFile::FilterCmd &cmd = line.commands[x];
-
-            int r = 0, g = 0, b = 0;
-            for (const FiltermapFile::SourcePixel source : cmd.sourcePixels) {
-                const uint8_t sourcePaletteIndex = cmds[cmdOffset + source.sourceIndex];
-                const Color sourceColor = palette[sourcePaletteIndex];
-                r += int(sourceColor.r) * source.alpha;
-                g += int(sourceColor.g) * source.alpha;
-                b += int(sourceColor.b) * source.alpha;
-            }
-
-            const IcmFile::InverseColorMap &icm = patternmasksFile.getIcm(cmd.lightIndex, patterns);
-            const uint8_t pixelIndex = icm.paletteIndex(r >> 11, g >> 11, b >> 11);
-
-            img_data.pixel_indexes[y * width_ + xPos] = pixelIndex;
-            img_data.alpha_channel[y * width_ + xPos] = 255;
-        }
-    }
-}
-
 //------------------------------------------------------------------------------
 void SlpFrame::readPixelsToImage(uint32_t row, uint32_t &col,
                                  uint32_t count, bool player_col)
