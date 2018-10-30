@@ -61,9 +61,7 @@ void SlpTemplateFile::serializeObject(void)
 //------------------------------------------------------------------------------
 void SlpTemplateFile::loadFile()
 {
-//    std::streampos beginning = tellg();
     for (SlpTemplate &slpTemplate : templates) {
-
         uint32_t stemplSize;
         serialize(stemplSize);
         std::streampos templateBegin = tellg();
@@ -104,26 +102,6 @@ void SlpTemplateFile::loadFile()
 //------------------------------------------------------------------------------
 void SlpTemplateFile::saveFile()
 {
-//#ifndef NDEBUG
-//    std::chrono::time_point<std::chrono::system_clock> startTime = std::chrono::system_clock::now();
-//#endif
-//    serializeHeader();
-//    slp_offset_ = 32 + 32 * num_frames_;
-
-//    // Write frame headers
-//    for (uint32_t i = 0; i < num_frames_; ++i) {
-//        frames_[i]->setSaveParams(*getOStream(), slp_offset_);
-//        frames_[i]->serializeHeader();
-//    }
-
-//    // Write frame content
-//    for (uint32_t i = 0; i < num_frames_; ++i) {
-//        frames_[i]->save(*getOStream());
-//    }
-//#ifndef NDEBUG
-//    std::chrono::time_point<std::chrono::system_clock> endTime = std::chrono::system_clock::now();
-//    log.debug("SLP (%u bytes) saving took [%u] milliseconds", slp_offset_, std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count());
-//#endif
 }
 
 //------------------------------------------------------------------------------
@@ -145,13 +123,12 @@ void SlpTemplateFile::unload(void)
 bool SlpTemplateFile::isLoaded(void) const
 {
     return loaded_;
-//    return loaded_ && icmFile && patternmasksFile && filtermapFile;
 }
 
 const IcmFile::InverseColorMap &PatternMasksFile::getIcm(const uint16_t lightIndex, const std::vector<Pattern> &patterns) const
 {
     if (patterns.empty()) {
-        return icmFile.maps[4];
+        return icmFile.maps[IcmFile::Neutral];
     }
 
     uint8_t lightmapIndex = m_masks[patterns[0]].pixels[lightIndex] >> 2;
@@ -163,9 +140,7 @@ const IcmFile::InverseColorMap &PatternMasksFile::getIcm(const uint16_t lightInd
     const size_t icmIndex = lightmapFile.lightmaps[lightmapIndex][lightIndex];
 
     if (icmIndex >= icmFile.maps.size()) {
-//        std::cerr << "Icm index out of range " << icmIndex << " " << icmFile.maps.size() << std::endl;
-
-        return icmFile.maps[4];
+        return icmFile.maps[IcmFile::Neutral];
     }
 
     return icmFile.maps[icmIndex];

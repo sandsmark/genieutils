@@ -92,6 +92,19 @@ private:
 class IcmFile : public IFile
 {
 public:
+    enum {
+        Darkest = 0,
+        Darker = 1,
+        Dark = 2,
+        Darkened = 3,
+        Neutral = 4,
+        Brightened = 5,
+        Bright = 6,
+        Brighter = 7,
+        Brightest = 8,
+        AokNeutral = 9
+    };
+
     struct InverseColorMap
     {
         std::array<std::array<std::array<uint8_t, 32>, 32>, 32> map;
