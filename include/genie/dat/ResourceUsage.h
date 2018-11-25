@@ -264,14 +264,14 @@ public:
     A Amount = 0;
 
     /// Bool that determines whether it is paid or only needed.
-    E Flag = 0;
+    E Paid = 0;
 
 private:
     virtual void serializeObject(void)
     {
         serialize<int16_t>(Type);
         serialize<A>(Amount);
-        serialize<E>(Flag);
+        serialize<E>(Paid);
     }
 };
 }

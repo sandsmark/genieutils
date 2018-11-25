@@ -21,9 +21,10 @@
 #ifndef GENIE_ISERIALIZABLE_H
 #define GENIE_ISERIALIZABLE_H
 
+#include "genie/Types.h"
+
 #include <iostream>
 
-#include "genie/Types.h"
 #include <array>
 #include <vector>
 #include <string.h>
