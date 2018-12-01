@@ -98,7 +98,7 @@ void ScnUnit::serializeObject(void)
     if (scn_ver != "1.14") {
         serialize<uint16_t>(initAnimationFrame);
     }
-    serialize<uint32_t>(garrisonedInID);
+    serialize<int32_t>(garrisonedInID);
     if (!garrisonedInID && (
             scn_ver == "1.13" ||
             scn_ver == "1.14" ||

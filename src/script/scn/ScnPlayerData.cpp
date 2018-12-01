@@ -209,7 +209,7 @@ void ScnMainPlayerData::serializeBitmap(void)
 
     serialize<uint32_t>(bitmapWidth);
     serialize<uint32_t>(bitmapHeigth);
-    serialize<int16_t>(unknown1);
+    serialize<int16_t>(hasBitmap);
 
     if (bitmapIncluded == 0)
         return;

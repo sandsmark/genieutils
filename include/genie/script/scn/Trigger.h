@@ -35,6 +35,34 @@ struct MapPoint
 class TriggerCondition : public ISerializable
 {
 public:
+    enum Type {
+        None,
+        BringObjectToArea,
+        BringObjectToObject,
+        OwnObjects,
+        OwnFewerObjects,
+        ObjectsInArea,
+        DestroyObject,
+        CaptureObject,
+        AccumulateAttribute,
+        ResearchTehcnology,
+        Timer,
+        ObjectSelected,
+        AISignal,
+        PlayerDefeated,
+        ObjectHasTarget,
+        ObjectVisible,
+        ObjectNotVisible,
+        ResearchingTechnology,
+        UnitsGarrisoned,
+        DifficultyLevel,
+        SWGB_OwnFewerFoundations,
+        HD_Chance = SWGB_OwnFewerFoundations,
+        SWGB_SelectedObjectsInArea,
+        SWGB_PoweredObjectsInArea,
+        SWGB_UnitsQueuedPastPopCap,
+    };
+
     TriggerCondition();
     virtual ~TriggerCondition();
 
@@ -62,6 +90,60 @@ private:
 class TriggerEffect : public ISerializable
 {
 public:
+    enum Type {
+        None = 0,
+        ChangeDiplomacy = 1,
+        ResearchTechnology = 2,
+        SendChat = 3,
+        Sound = 4,
+        SendTribute = 5,
+        UnlockGate = 6,
+        LockGate = 7,
+        ActivateTrigger = 8,
+        DeactivateTrigger = 9,
+        AIScriptGoal = 10,
+        CreateObject = 11,
+        TaskObject = 12,
+        DeclareVictory = 13,
+        KillObject = 14,
+        RemoveObject = 15,
+        ChangeView = 16,
+        Unload = 17,
+        ChangeOwnership = 18,
+        Patrol = 19,
+        DisplayInstructions = 20,
+        ClearInstructions = 21,
+        FreezeUnit = 22,
+        UseAdvancedButtons = 23,
+        DamageObject = 24,
+        PlaceFoundation = 25,
+        ChangeObjectName = 26,
+        ChangeObjectHP = 27,
+        ChangeObjectAttack = 28,
+        StopUnit = 29,
+        UserPatch_ChangeSpeed,
+        SWGB_SnapView = UserPatch_ChangeSpeed,
+        HD_AttackMove = UserPatch_ChangeSpeed,
+        UserPatch_ChangeRange,
+        SWGB_DisableAdvancedButtons = UserPatch_ChangeRange,
+        HD_ChangeArmor = UserPatch_ChangeRange,
+        UserPatch_ChangeMeleArmor,
+        HD_ChangeRange = UserPatch_ChangeMeleArmor,
+        SWGB_EnableTech = UserPatch_ChangeMeleArmor,
+        UserPatch_ChangePiercingArmor,
+        HD_ChangeSpeed = UserPatch_ChangePiercingArmor,
+        SWGB_DisableTech = UserPatch_ChangePiercingArmor,
+        SWGB_EnableUnit,
+        HD_HealObject = SWGB_EnableUnit,
+        SWGB_DisableUnit,
+        HD_TeleportObject = SWGB_DisableUnit,
+        SWGB_FlashUnit,
+        HD_ChangeUnitStance = SWGB_FlashUnit,
+        SWGBCC_InputOff,
+        SWGBCC_InputOn,
+    };
+
+
     TriggerEffect();
     virtual ~TriggerEffect();
 

@@ -34,6 +34,13 @@ public:
     ScnUnit();
     virtual ~ScnUnit();
 
+    enum States {
+        Ready,
+        Placed,
+        Alive,
+        Dying
+    };
+
     float positionX = 0.f;
     float positionY = 0.f;
     float positionZ = 0.f;
@@ -42,7 +49,7 @@ public:
     uint8_t state = 0;
     float rotation = 0.f;
     uint16_t initAnimationFrame = 0;
-    uint32_t garrisonedInID = 0;
+    int32_t garrisonedInID = 0;
 
 private:
     virtual void serializeObject(void);

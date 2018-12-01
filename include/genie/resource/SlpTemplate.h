@@ -65,7 +65,7 @@ enum Slope : int8_t {
 class LightmapFile : public IFile
 {
 public:
-    std::array<std::array<uint8_t, 4096>, 18> lightmaps;
+    uint8_t lightmaps[18][4096];
 
     operator bool() const {
         return m_loaded;
@@ -74,12 +74,7 @@ public:
 private:
     virtual void serializeObject() override
     {
-        serialize(lightmaps);
-//        while (!getIStream()->eof()) {
-//            InverseColorMap map;
-//            serialize(map);
-//            maps.push_back(std::move(map));
-//        }
+        getIStream()->read((char*)&lightmaps, 18 * 4096);
 
         if (getOperation() == OP_READ) {
             m_loaded = true;
@@ -107,13 +102,9 @@ public:
 
     struct InverseColorMap
     {
-        std::array<std::array<std::array<uint8_t, 32>, 32>, 32> map;
+        uint8_t map[32][32][32];
 
         inline uint8_t paletteIndex(const uint8_t r, const uint8_t g, const uint8_t b) const {
-
-            assert(r < map.size());
-            assert(g < map[r].size());
-            assert(b < map[r][g].size());
             return map[r][g][b];
         }
     };
@@ -128,7 +119,7 @@ private:
     {
         while (!getIStream()->eof()) {
             InverseColorMap map;
-            serialize(map);
+            getIStream()->read((char*)&map.map, 32 * 32 * 32);
             maps.push_back(std::move(map));
         }
 
@@ -195,8 +186,9 @@ public:
     IcmFile icmFile;
 
     struct PatternMask {
-        std::array<uint8_t, 4096> pixels;
-        inline bool ignore(int index) const {
+        uint8_t pixels[4096];
+
+        inline bool ignore(const int index) const {
             return pixels[index] & 0x1;
         }
         inline bool brighten(const int index) const {
@@ -205,7 +197,7 @@ public:
         inline bool darken(const int index) const {
             return (pixels[index] & 0x2) == 0;
         }
-        inline uint8_t apply(uint8_t input, const int index) const {
+        inline uint8_t apply(const uint8_t input, const int index) const {
             if (ignore(index)) {
                 return input;
             }
@@ -220,20 +212,20 @@ public:
         }
     };
 
-    const IcmFile::InverseColorMap &getIcm(const uint16_t lightIndex, const std::vector<Pattern> &masks) const;
+    const IcmFile::InverseColorMap &getIcm(const uint16_t lightIndex, const std::vector<Pattern> &patterns) const;
 
     operator bool() {
         return m_loaded;
     }
 
-    std::array<PatternMask, PatternMasksCount> m_masks;
+    PatternMask m_masks[PatternMasksCount];
 
 private:
     virtual void serializeObject() override {
         for (int i=0; i<40; i++) {
             int32_t size = 4096;
             serialize(size);
-            serialize(m_masks[i].pixels);
+            getIStream()->read((char*)&m_masks[i].pixels, 4096);
         }
 
         if (getOperation() == OP_READ) {

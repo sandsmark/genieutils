@@ -141,11 +141,11 @@ public:
     ScnMainPlayerData();
     virtual ~ScnMainPlayerData();
 
-    float playerDataVersion;
+    float playerDataVersion = 0.f;
     static float version;
     std::vector<std::string> playerNames;
     std::vector<uint32_t> playerNamesStringTable;
-    uint8_t conquestVictory;
+    uint8_t conquestVictory = 0;
     UnknownData1 unknownData;
     std::string originalFileName = "";
 
@@ -169,30 +169,30 @@ public:
 
     // Messages
 
-    std::string instructions = "";
+    std::string instructions;
 
-    std::string hints = "";
+    std::string hints;
 
-    std::string victory = "";
+    std::string victory;
 
-    std::string loss = "";
+    std::string loss;
 
-    std::string history = "";
+    std::string history;
 
     /// GV >= TC
-    std::string scouts = "";
+    std::string scouts;
 
-    std::string oldFilename1 = "";
-    std::string oldFilename2 = "";
-    std::string oldFilename3 = "";
+    std::string oldFilename1;
+    std::string oldFilename2;
+    std::string oldFilename3;
 
-    std::string pregameCinematicFilename = "";
+    std::string pregameCinematicFilename;
 
-    std::string victoryCinematicFilename = "";
+    std::string victoryCinematicFilename;
 
-    std::string lossCinematicFilename = "";
+    std::string lossCinematicFilename;
 
-    std::string backgroundFilename = "";
+    std::string backgroundFilename;
 
     // Bitmap
 
@@ -204,7 +204,7 @@ public:
     uint32_t bitmapHeigth = 0;
 
     /// -1 if there's a bitmap, 1 otherwise
-    int16_t unknown1 = 1;
+    int16_t hasBitmap = 1;
 
     uint16_t bitmapByteSize = 0;
 
@@ -223,16 +223,16 @@ public:
     ScnDiplomacy diplomacy;
     std::vector<uint32_t> alliedVictory;
     ScnDisables disables;
-    uint32_t unused1;
-    uint32_t unused2;
-    uint32_t allTechs;
+    uint32_t unused1 = 0;
+    uint32_t unused2 = 0;
+    uint32_t allTechs = 0;
     std::vector<uint32_t> startingAge;
-    int32_t player1CameraX;
-    int32_t player1CameraY;
-    int32_t aiType;
+    int32_t player1CameraX = 0;
+    int32_t player1CameraY= 0;
+    int32_t aiType = 0;
 
 private:
-    uint32_t separator_;
+    uint32_t separator_ = 0;
     void serializePlayerDataVersion(void);
     virtual void serializeObject(void);
     void serializeBitmap(void);
@@ -245,20 +245,20 @@ public:
     virtual ~ScnMorePlayerData();
 
     std::string playerName;
-    float initCameraX;
-    float initCameraY;
-    int16_t initCameraX2;
-    int16_t initCameraY2;
-    uint8_t alliedVictory;
+    float initCameraX = 0.f;
+    float initCameraY = 0.f;
+    int16_t initCameraX2 = 0;
+    int16_t initCameraY2 = 0;
+    uint8_t alliedVictory = 0;
     std::vector<uint8_t> diplomacy1;
     std::vector<uint32_t> diplomacy2;
-    uint32_t playerColor;
-    float unknown1;
+    uint32_t playerColor = 0;
+    float unknown1 = 0.f;
     std::vector<uint8_t> unknown2;
     std::vector<uint8_t> unknown3; // found in Grand Theft Empires
     std::vector<uint8_t> unknown4;
-    int32_t unknown5;
-    int32_t playerID;
+    int32_t unknown5 = 0;
+    int32_t playerID = 0;
 
 private:
     uint16_t playerCount_;
