@@ -207,6 +207,7 @@ else()
 
     INSTALL(TARGETS ${Genieutils_LIBRARY}
         LIBRARY DESTINATION lib
+        RUNTIME DESTINATION lib
         )
 
     install (
