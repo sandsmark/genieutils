@@ -244,6 +244,15 @@ enum class ResourceType : int16_t {
     NumberOfTypes = 211
 };
 
+enum ResourceStoreMode {
+    DecayableResourceType = 0, // Keep. Decayable resource.
+    GiveResourceType = 1, // Give. Stored after death also.
+    GiveAndTakeResourceType = 2, // Give and take. Resets on dying, enables instantly.
+    BuildingResourceType = 4, // Building. Resets on dying, enables on completion.
+    UpResourceType = 8 // Stored on completion and stays after death
+};
+
+
 //------------------------------------------------------------------------------
 /// Template class describing quantities of Resources.
 /// It is a template class because different objects need different datatypes
@@ -261,6 +270,7 @@ public:
     {
         ISerializable::setGameVersion(gv);
     }
+
     int16_t Type = -1;
 
     /// Amount of the resource available/required/used

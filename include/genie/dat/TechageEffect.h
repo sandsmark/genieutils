@@ -51,6 +51,8 @@ public:
 
 
     int16_t TargetUnit = -1;
+
+    // For ResourceModifier, 0 means absolute and 1 means relative
     int16_t UnitClassID = -1;
 
     /// -1 No Attribute/Invalid Attribute
