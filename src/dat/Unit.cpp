@@ -207,7 +207,7 @@ void Unit::serializeObject(void)
         serialize<int32_t>(LanguageDLLHotKeyText);
         serialize<int32_t>(HotKey);
         serialize<int8_t>(Recyclable);
-        serialize<int8_t>(EnableAutoGather);
+        serialize<int8_t>(CanBeGathered);
         serialize<int8_t>(CreateDoppelgangerOnDeath);
         serialize<int8_t>(ResourceGatherGroup);
 

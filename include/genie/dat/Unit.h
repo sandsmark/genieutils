@@ -414,7 +414,7 @@ public:
 
     /// Track as Resource
     /// Allows automatic gathering and handles fog visibility
-    int8_t EnableAutoGather = 0;
+    int8_t CanBeGathered = 0;
 
     /// Create doppelganger on death.
     /// 0   None
@@ -535,6 +535,8 @@ public:
     int8_t SelectionEffect = 1;
 
     uint8_t EditorSelectionColour = 52;
+
+    /// Selection size according to AGE
     XYF OutlineSize;
 
     /// Determines HP bar location
