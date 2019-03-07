@@ -241,6 +241,7 @@ enum class ResourceType : int16_t {
     AKFeitoriaGoldProductivity = 208,
     RRRevealEnemyTownCenters = 209,
     RRRelicsVisibleonMap = 210,
+
     NumberOfTypes = 211
 };
 

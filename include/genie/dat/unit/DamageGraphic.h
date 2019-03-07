@@ -40,6 +40,13 @@ namespace unit {
 
         int8_t OldApplyMode = 0;
 
+
+        enum GraphicApplyMode {
+            OverlayGraphic = 0,
+            OverlayRandomly = 1,
+            ReplaceGraphic = 2
+        };
+
         /// 0   Overlay (flames on buildings)
         /// 1   Overlay randomly
         /// 2   Replace graphics (damaged walls)

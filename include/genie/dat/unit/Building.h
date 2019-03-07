@@ -92,6 +92,7 @@ namespace unit {
         /// Causes that technology to be researched when the building is created
         int16_t TechID = -1;
 
+        /// Unused in AoC?
         int8_t CanBurn = 0;
 
         static const unsigned short BUILDING_ANNEXES_SIZE = 4;
