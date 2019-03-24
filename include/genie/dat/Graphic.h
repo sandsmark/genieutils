@@ -84,6 +84,12 @@ public:
     /// 0   Not selectable
     /// 1   Select only on pixels
     /// 2   Select in box
+    enum SelectionType {
+        NotSelectable = 0,
+        SelectOnPixels = 1,
+        SelectInBox = 2
+    };
+
     int8_t TransparentSelection = 0;
 
     /// Bounding Box Coordinates (X1, Y1, X2, Y2)
