@@ -127,8 +127,8 @@ private:
     // if true print debug messages
     bool verbose_ = false;
 
-    std::string file_name_ = "";
-    std::fstream *file_ = 0;
+    std::string file_name_;
+    std::fstream *file_ = nullptr;
 
     Compressor compressor_;
 
