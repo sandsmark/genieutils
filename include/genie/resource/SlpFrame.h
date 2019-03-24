@@ -44,6 +44,11 @@ inline bool operator<(const XY &l, const XY &r)
     return l.y == r.y ? l.x < r.x : l.y < r.y;
 }
 
+inline bool operator==(const XY &l, const XY &r)
+{
+    return l.y == r.y && l.x == r.x;
+}
+
 // Element for player_color vector, the vector stores position (x, y) of
 // a player color pixel and the palette index for the color
 struct PlayerColorXY
