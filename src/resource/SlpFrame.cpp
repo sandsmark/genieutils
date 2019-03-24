@@ -418,6 +418,8 @@ void SlpFrame::readImage()
         img_data.alpha_channel.resize(width_ * height_, 0);
     }
 
+    size_t pixelsRead = 0;
+
     // Each row has it's commands, 0x0F signals the end of a rows commands.
     for (uint32_t row = 0; row < height_; ++row) {
         istr.seekg(slp_file_pos_ + std::streampos(cmd_offsets_[row]));
@@ -450,11 +452,14 @@ void SlpFrame::readImage()
                 } else {
                     readPixelsToImage(row, pix_pos, pix_cnt);
                 }
+                pixelsRead += pix_cnt;
 
                 continue;
             } else if (low_bits == 1) { // Lesser skip (making pixels transparent)
                 pix_cnt = (data & 0xFC) >> 2;
                 pix_pos += pix_cnt;
+
+                pixelsRead += pix_cnt;
 
                 continue;
             }
@@ -557,7 +562,13 @@ void SlpFrame::readImage()
                 std::cerr << "SlpFrame: Unknown cmd at " << std::hex << tellg() << " " << std::hex << int(data) << std::endl;
                 return;
             }
+            pixelsRead += pix_cnt;
         }
+    }
+
+    if (pixelsRead == 0) {
+        width_ = 0;
+        height_ = 0;
     }
 
 }

@@ -164,6 +164,9 @@ const SlpFramePtr &SlpFile::getFrame(uint32_t frame)
         std::istringstream istr(std::string(data, m_graphicsFileData.size()));
         frames_[frame]->setLoadParams(istr);
         frames_[frame]->readImage();
+        if (frames_[frame]->getWidth() == 0) {
+            log.debug("Got null frame");
+        }
         frames_[frame]->setLoadParams(*getIStream());
     }
 
