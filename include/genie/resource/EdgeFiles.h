@@ -45,7 +45,7 @@ template<int EdgeCount>
 class EdgeFile : public IFile
 {
 public:
-    const VisibilityMask visibilityMask(const Slope slope, const int edges) {
+    const VisibilityMask &visibilityMask(const Slope slope, const int edges) const {
         if (edges >= EdgeCount) {
             log.error("Invalid edge");
             return VisibilityMask::null;
