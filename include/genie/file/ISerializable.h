@@ -29,6 +29,7 @@
 #include <vector>
 #include <string.h>
 #include <stdint.h>
+#include <cassert>
 
 namespace genie {
 
@@ -132,6 +133,7 @@ public:
 
 protected:
     enum Operation {
+        OP_INVALID = -1,
         OP_READ = 0,
         OP_WRITE = 1,
         OP_CALC_SIZE = 2
@@ -172,6 +174,7 @@ protected:
     //
     inline bool isOperation(Operation op) const
     {
+        assert(operation_ != OP_INVALID);
         return (op == operation_);
     }
 
@@ -314,6 +317,8 @@ protected:
     template <typename T>
     void serializeForcedString(std::string &str)
     {
+        assert(operation_ != OP_INVALID);
+
         T size;
         if (isOperation(OP_WRITE)) {
             size = str.size() + 1;
@@ -326,6 +331,8 @@ protected:
     void serializeSizedStrings(std::vector<std::string> &vec, size_t size,
                                bool cString = true)
     {
+        assert(operation_ != OP_INVALID);
+
         if (isOperation(OP_READ)) {
             vec.resize(size);
         }
@@ -341,6 +348,8 @@ protected:
     template <typename T>
     void serialize(T &data)
     {
+        assert(operation_ != OP_INVALID);
+
         switch (getOperation()) {
         case OP_WRITE:
             write<T>(data);
@@ -351,12 +360,16 @@ protected:
         case OP_CALC_SIZE:
             size_ += sizeof(T);
             break;
+        default:
+            break;
         }
     }
 
     template <typename T>
     void serialize(ISerializable &data)
     {
+        assert(operation_ != OP_INVALID);
+
         data.serializeSubObject(this);
 
         if (isOperation(OP_CALC_SIZE))
@@ -369,6 +382,8 @@ protected:
     template <typename T>
     void serialize(T **data, size_t len)
     {
+        assert(operation_ != OP_INVALID);
+
         switch (getOperation()) {
         case OP_WRITE:
             write<T>(data, len);
@@ -379,6 +394,8 @@ protected:
         case OP_CALC_SIZE:
             size_ += sizeof(T) * len;
             break;
+        default:
+            break;
         }
     }
 
@@ -387,6 +404,8 @@ protected:
     //
     void serialize(std::string &str, size_t len)
     {
+        assert(operation_ != OP_INVALID);
+
         if (len > 0) {
             switch (getOperation()) {
             case OP_WRITE:
@@ -398,6 +417,8 @@ protected:
             case OP_CALC_SIZE:
                 size_ += sizeof(char) * len;
                 break;
+            default:
+                break;
             }
         }
     }
@@ -408,6 +429,8 @@ protected:
     template <typename T>
     void serialize(std::vector<T> &vec, size_t size)
     {
+        assert(operation_ != OP_INVALID);
+
         switch (getOperation()) {
         case OP_WRITE:
             if (vec.size() != size)
@@ -429,6 +452,9 @@ protected:
         case OP_CALC_SIZE:
             size_ += size * sizeof(T);
             break;
+
+        default:
+            break;
         }
     }
 
@@ -438,6 +464,8 @@ protected:
     template <typename T>
     void serialize(std::vector<std::vector<T>> &vec, size_t size, size_t size2)
     {
+        assert(operation_ != OP_INVALID);
+
         switch (getOperation()) {
         case OP_WRITE:
             if (vec.size() != size)
@@ -463,6 +491,9 @@ protected:
         case OP_CALC_SIZE:
             size_ += size * size2 * sizeof(T);
             break;
+
+        default:
+            break;
         }
     }
 
@@ -472,6 +503,8 @@ protected:
     template <typename T>
     void serializeSub(std::vector<T> &vec, size_t size)
     {
+        assert(operation_ != OP_INVALID);
+
         if (isOperation(OP_WRITE) || isOperation(OP_CALC_SIZE)) {
             if (vec.size() != size)
                 std::cerr << "Warning!: vector size differs size!" << vec.size() << " " << size << std::endl;
@@ -501,6 +534,7 @@ protected:
     template <typename T>
     void serializeSize(T &data, size_t size)
     {
+        assert(operation_ != OP_INVALID);
         if (isOperation(OP_WRITE))
             data = size;
 
@@ -517,6 +551,7 @@ protected:
     template <typename T>
     void serializeSize(T &data, std::string str, bool cString = true)
     {
+        assert(operation_ != OP_INVALID);
         // calculate new size
         if (isOperation(OP_WRITE)) {
             size_t size = str.size();
@@ -539,6 +574,7 @@ protected:
     void serializeSubWithPointers(std::vector<T> &vec, size_t size,
                                   std::vector<int32_t> &pointers)
     {
+        assert(operation_ != OP_INVALID);
         if (isOperation(OP_WRITE) || isOperation(OP_CALC_SIZE)) {
             for (size_t i = 0; i < size; ++i) {
                 if (pointers[i]) {
@@ -569,6 +605,8 @@ protected:
     template <typename T>
     void serializePair(std::pair<T, T> &p, bool only_first = false)
     {
+        assert(operation_ != OP_INVALID);
+
         switch (getOperation()) {
         case OP_WRITE:
             write<T>(p.first);
@@ -590,6 +628,8 @@ protected:
             if (!only_first)
                 size_ += sizeof(T);
             break;
+        default:
+            break;
         }
     }
 
@@ -599,7 +639,7 @@ private:
 
     std::streampos init_read_pos_ = 0;
 
-    Operation operation_;
+    Operation operation_ = OP_INVALID;
 
     GameVersion gameVersion_ = GV_None;
 
