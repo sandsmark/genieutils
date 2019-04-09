@@ -26,6 +26,7 @@
 #include "genie/file/IFile.h"
 #include "genie/util/Logger.h"
 #include "PalFile.h"
+#include "Slope.h"
 
 namespace genie {
 
@@ -33,34 +34,6 @@ class SlpFile;
 typedef std::shared_ptr<SlpFile> SlpFilePtr;
 class SlpFrame;
 typedef std::shared_ptr<SlpFrame> SlpFramePtr;
-
-enum Slope : int8_t {
-    SlopeInvalid     = -1,
-    SlopeFlat        = 0,
-    SlopeSouthUp     = 1,
-    SlopeNorthUp     = 2,
-    SlopeWestUp      = 3,
-    SlopeEastUp      = 4,
-    SlopeSouthWestUp = 5,
-    SlopeNorthWestUp = 6,
-    SlopeSouthEastUp = 7,
-    SlopeNorthEastUp = 8,
-    SLOPE_S_UP2      = 9,    // what are these?
-    SLOPE_N_UP2      = 10,
-    SLOPE_W_UP2      = 11,
-    SLOPE_E_UP2      = 12,
-    SlopeNorthDown   = 13,
-    SlopeSouthDown   = 14,
-    SlopeWestDown    = 15,
-    SlopeEastDown    = 16,
-
-    SlopeCount       = 17,
-
-    SlopeSouthWestEastUp = SlopeNorthDown,
-    SlopeNorthWestEastUp = SlopeSouthDown,
-    SlopeNorthSouthEastUp = SlopeWestDown,
-    SlopeNorthSouthWestUp = SlopeEastDown,
-};
 
 class LightmapFile : public IFile
 {

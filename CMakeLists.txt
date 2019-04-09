@@ -150,6 +150,7 @@ set(RESOURCE_SRC
     src/resource/BinaFile.cpp
     src/resource/UIFile.cpp
     src/resource/BlendomaticFile.cpp
+    src/resource/EdgeFiles.cpp
     )
 
 set(SCRIPT_SRC
