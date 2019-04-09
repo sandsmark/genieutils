@@ -30,9 +30,9 @@ namespace genie {
 
 struct TileSpan
 {
-    char y;
-    char xStart;
-    char xEnd;
+    int8_t y;
+    int8_t xStart;
+    int8_t xEnd;
 };
 
 struct VisibilityMask
