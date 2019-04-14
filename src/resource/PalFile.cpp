@@ -82,7 +82,7 @@ void PalFile::serializeObject()
     } else {
         std::ostream *ostr = getOStream();
 
-        static const std::string_view lineEnding("\r\n"); // windows line ending
+        static const std::string lineEnding("\r\n"); // windows line ending
 
         *ostr << fileHeader;
         *ostr << fileVersionHeader;
