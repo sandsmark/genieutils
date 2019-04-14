@@ -77,7 +77,7 @@ public:
 
     std::string idType(uint32_t id);
 
-    std::shared_ptr<uint8_t> getWavPtr(uint32_t id);
+    std::shared_ptr<uint8_t[]> getWavPtr(uint32_t id);
 
     std::vector<uint32_t> binaryFileIds() const;
 

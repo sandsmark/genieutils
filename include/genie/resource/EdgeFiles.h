@@ -91,9 +91,6 @@ private:
                 return {};
             }
         }
-        if (mask.lines.empty()) {
-            std::cout << "crap shit" << std::endl;
-        }
 
         return mask;
     }

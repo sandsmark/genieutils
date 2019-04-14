@@ -195,7 +195,7 @@ std::string DrsFile::idType(uint32_t id)
 }
 
 //------------------------------------------------------------------------------
-std::shared_ptr<uint8_t> DrsFile::getWavPtr(uint32_t id)
+std::shared_ptr<uint8_t[]> DrsFile::getWavPtr(uint32_t id)
 {
     auto i = wav_offsets_.find(id);
 
@@ -211,11 +211,9 @@ std::shared_ptr<uint8_t> DrsFile::getWavPtr(uint32_t id)
 //        log.debug("WAV [%u], type [%X], size [%u]", id, type, size);
 #endif
         getIStream()->seekg(std::streampos(i->second));
-        std::shared_ptr<uint8_t> ptr ((uint8_t*)::operator new (size + 32));
+        std::shared_ptr<uint8_t[]> ptr (new uint8_t[size + 32]);
         uint8_t *data = ptr.get();
-        for (uint32_t i=0; i<size; i++) {
-            data[i] = read<uint8_t>();
-        }
+        read(&data, size);
         return ptr;
     } else {
         log.warn("No sound file with id [%u] found!", id);
