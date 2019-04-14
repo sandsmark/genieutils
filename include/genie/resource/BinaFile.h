@@ -52,7 +52,7 @@ public:
 private:
     static Logger &log;
 
-    virtual void serializeObject(void);
+    void serializeObject() override;
     uint32_t m_size;
 };
 

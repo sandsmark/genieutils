@@ -34,7 +34,7 @@ IFile::~IFile()
 }
 
 //------------------------------------------------------------------------------
-void IFile::freelock(void)
+void IFile::freelock()
 {
     fileIn_.close();
 }
@@ -61,7 +61,7 @@ void IFile::load()
 }
 
 //------------------------------------------------------------------------------
-void IFile::load(std::string fileName)
+void IFile::load(const std::string &fileName)
 {
     freelock();
 
@@ -104,7 +104,7 @@ void IFile::saveAs(const char *fileName)
 }
 
 //------------------------------------------------------------------------------
-void IFile::unload(void)
+void IFile::unload()
 {
 }
 }

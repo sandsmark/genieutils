@@ -43,7 +43,7 @@ BlendomaticFile::~BlendomaticFile()
 }
 
 //------------------------------------------------------------------------------
-void BlendomaticFile::serializeObject(void)
+void BlendomaticFile::serializeObject()
 {
     serialize(modeCount_);
     serialize(tileCount_);
@@ -72,7 +72,7 @@ void BlendomaticFile::serializeObject(void)
 }
 
 //------------------------------------------------------------------------------
-void BlendomaticFile::unload(void)
+void BlendomaticFile::unload()
 {
     modes_.clear();
     modeCount_ = 0;

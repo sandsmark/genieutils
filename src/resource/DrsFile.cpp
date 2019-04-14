@@ -219,14 +219,14 @@ std::shared_ptr<uint8_t> DrsFile::getWavPtr(uint32_t id)
         return ptr;
     } else {
         log.warn("No sound file with id [%u] found!", id);
-        return NULL;
+        return nullptr;
     }
 }
 
 std::vector<uint32_t> DrsFile::binaryFileIds() const
 {
     std::vector<uint32_t> ret;
-    for (const std::pair<uint32_t, BinaFilePtr> &entry : bina_map_) {
+    for (const std::pair<const uint32_t, BinaFilePtr> &entry : bina_map_) {
         ret.push_back(entry.first);
     }
 
@@ -236,7 +236,7 @@ std::vector<uint32_t> DrsFile::binaryFileIds() const
 std::vector<uint32_t> DrsFile::slpFileIds() const
 {
     std::vector<uint32_t> ret;
-    for (const std::pair<uint32_t, SlpFilePtr> &entry : slp_map_) {
+    for (const std::pair<const uint32_t, SlpFilePtr> &entry : slp_map_) {
         ret.push_back(entry.first);
     }
 
@@ -244,36 +244,19 @@ std::vector<uint32_t> DrsFile::slpFileIds() const
 }
 
 //------------------------------------------------------------------------------
-void DrsFile::serializeObject(void)
+void DrsFile::serializeObject()
 {
     loadHeader();
 }
 
 //------------------------------------------------------------------------------
-unsigned int DrsFile::getCopyRightHeaderSize(void) const
+size_t DrsFile::copyrightHeaderSize() const
 {
-    if (getGameVersion() >= GV_SWGB)
+    if (getGameVersion() >= GV_SWGB) {
         return 0x3C;
-    else
+    } else {
         return 0x28;
-}
-
-//------------------------------------------------------------------------------
-std::string DrsFile::getSlpTableHeader(void) const
-{
-    return " pls";
-}
-
-//------------------------------------------------------------------------------
-std::string DrsFile::getBinaryTableHeader(void) const
-{
-    return "anib";
-}
-
-//------------------------------------------------------------------------------
-std::string DrsFile::getSoundTableHeader(void) const
-{
-    return " vaw";
+    }
 }
 
 //------------------------------------------------------------------------------
@@ -282,7 +265,7 @@ void DrsFile::loadHeader()
     if (header_loaded_)
         log.warn("Trying to load header again!");
     else {
-        string copyright = readString(getCopyRightHeaderSize());
+        string copyright = readString(copyrightHeaderSize());
         string version = readString(4);
         string filetype = readString(12);
 
@@ -312,17 +295,17 @@ void DrsFile::loadHeader()
                 uint32_t pos = read<uint32_t>();
                 uint32_t len = read<uint32_t>();
 
-                if (table_types_[i].compare(getSlpTableHeader()) == 0) {
+                if (table_types_[i].compare(slpTableHeader) == 0) {
                     SlpFilePtr slp(new SlpFile(len));
                     slp->setInitialReadPosition(pos);
 
                     slp_map_[id] = slp;
-                } else if (table_types_[i].compare(getBinaryTableHeader()) == 0) {
+                } else if (table_types_[i].compare(binaryTableHeader) == 0) {
                     BinaFilePtr bina(new BinaFile(len));
                     bina->setInitialReadPosition(pos);
 
                     bina_map_[id] = bina;
-                } else if (table_types_[i].compare(getSoundTableHeader()) == 0) {
+                } else if (table_types_[i].compare(soundTableHeader) == 0) {
                     wav_offsets_[id] = pos;
                 } else {
                     std::cerr << "unknown header " << std::hex << table_types_[i] << std::dec << std::endl;

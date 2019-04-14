@@ -32,60 +32,45 @@ using std::string;
 Logger &PalFile::log = Logger::getLogger("genie.PalFile");
 
 //------------------------------------------------------------------------------
-PalFile::PalFile()
-{
-}
-
-//------------------------------------------------------------------------------
 PalFile::~PalFile()
 {
 }
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-const std::vector<Color> &PalFile::getColors(void) const
+const std::vector<Color> &PalFile::getColors() const
 {
     return colors_;
 }
 
 //------------------------------------------------------------------------------
-size_t PalFile::size(void) const
+size_t PalFile::size() const
 {
     return colors_.size();
 }
 
 //------------------------------------------------------------------------------
-std::string PalFile::getHeader(void) const
-{
-    return "JASC-PAL";
-}
-
-//------------------------------------------------------------------------------
-std::string PalFile::getHeader2(void) const
-{
-    return "0100";
-}
-
-//------------------------------------------------------------------------------
-void PalFile::serializeObject(void)
+void PalFile::serializeObject()
 {
     if (isOperation(OP_READ)) {
         std::istream *istr = getIStream();
 
-        std::string header;
+        std::string header(fileHeader.size(), 0);
 
-        *istr >> header;
+        istr->read(header.data(), header.size());
 
-        if (header.compare(getHeader()) != 0) {
+        if (header != fileHeader) {
             log.error("Not a color palette!");
             //TODO: Exception
             return;
         }
 
-        *istr >> header;
+        std::string versionHeader(fileVersionHeader.size(), 0);
+        istr->read(versionHeader.data(), versionHeader.size());
 
-        if (header.compare(getHeader2()) != 0)
-            log.warn("Different header2 in PalFile");
+        if (versionHeader != fileVersionHeader) {
+            log.warn("Invalid file version %", versionHeader);
+        }
 
         *istr >> num_colors_;
 
@@ -97,20 +82,20 @@ void PalFile::serializeObject(void)
     } else {
         std::ostream *ostr = getOStream();
 
-        std::string CR_LF = "\r\n"; // windows line ending
+        static const std::string_view lineEnding("\r\n"); // windows line ending
 
-        *ostr << getHeader() << CR_LF;
-        *ostr << getHeader2() << CR_LF;
+        *ostr << fileHeader;
+        *ostr << fileVersionHeader;
 
         if (colors_.size() > 256)
             log.error("Too much colors (>256)");
 
-        *ostr << colors_.size() << CR_LF;
+        *ostr << colors_.size() << lineEnding;
 
         for (uint32_t i = 0; i < colors_.size(); i++) {
             *ostr << (int)colors_[i].r << " ";
             *ostr << (int)colors_[i].g << " ";
-            *ostr << (int)colors_[i].b << CR_LF;
+            *ostr << (int)colors_[i].b << lineEnding;
         }
     }
 }
@@ -128,19 +113,19 @@ size_t PalFile::numOfChars(uint8_t number)
 }
 
 //------------------------------------------------------------------------------
-size_t PalFile::objectSize(void)
+size_t PalFile::objectSize()
 {
-    int CL_LF_SIZE = 2;
-
     size_t size = 0;
 
-    size += getHeader().size() + CL_LF_SIZE;
-    size += getHeader2().size() + CL_LF_SIZE;
+    constexpr size_t lineEndingSize = std::string_view("\r\n").size();
+
+    size += fileHeader.size();
+    size += fileVersionHeader.size();
 
     if (colors_.size() > 256)
         log.error("Too much colors (>256)");
 
-    size += numOfChars(colors_.size()) + CL_LF_SIZE;
+    size += numOfChars(colors_.size()) + lineEndingSize;
 
     for (uint32_t i = 0; i < colors_.size(); i++) {
         size += numOfChars(colors_[i].r);
@@ -148,7 +133,7 @@ size_t PalFile::objectSize(void)
         size += numOfChars(colors_[i].b);
 
         size += 2; // spaces
-        size += CL_LF_SIZE;
+        size += lineEndingSize;
     }
 
     return size;

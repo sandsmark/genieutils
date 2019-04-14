@@ -100,7 +100,7 @@ private:
 
     std::string windowType;
 
-    virtual void serializeObject(void);
+    void serializeObject() override;
 };
 
 typedef std::shared_ptr<UIFile> UIFilePtr;

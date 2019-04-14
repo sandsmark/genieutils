@@ -68,7 +68,7 @@ public:
     //----------------------------------------------------------------------------
     /// Frees all content of a slp file.
     //
-    void unload(void);
+    void unload() override;
 
     void setBlendMode(uint32_t number, const BlendMode &mode);
     const BlendMode &getBlendMode(uint32_t id = 0);
@@ -85,7 +85,7 @@ private:
     std::vector<BlendMode> modes_;
 
     //----------------------------------------------------------------------------
-    virtual void serializeObject(void);
+    void serializeObject() override;
 };
 
 typedef std::shared_ptr<BlendomaticFile> BlendomaticFilePtr;

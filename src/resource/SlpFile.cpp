@@ -42,7 +42,7 @@ SlpFile::~SlpFile()
 }
 
 //------------------------------------------------------------------------------
-void SlpFile::serializeObject(void)
+void SlpFile::serializeObject()
 {
     if (isOperation(OP_READ) && !loaded_) {
         loadFile();
@@ -114,7 +114,7 @@ void SlpFile::saveFile()
 }
 
 //------------------------------------------------------------------------------
-void SlpFile::unload(void)
+void SlpFile::unload()
 {
     if (!loaded_)
         log.warn("Trying to unload a not loaded slpfile!");
@@ -126,13 +126,13 @@ void SlpFile::unload(void)
 }
 
 //------------------------------------------------------------------------------
-bool SlpFile::isLoaded(void) const
+bool SlpFile::isLoaded() const
 {
     return loaded_;
 }
 
 //------------------------------------------------------------------------------
-uint32_t SlpFile::getFrameCount(void)
+uint32_t SlpFile::getFrameCount()
 {
     return frames_.size();
 }

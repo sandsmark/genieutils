@@ -54,15 +54,13 @@ void PcrioError::check(int error)
 }
 
 //------------------------------------------------------------------------------
-LangFile::LangFile()
+LangFile::LangFile() :
+    pfile_(nullptr),
+    toDefaultCharsetCd_(nullptr),
+    fromDefaultCharsetCd_(nullptr)
 {
-    pfile_ = 0;
-
     defaultCultureId_ = 0;
     defaultCodepage_ = 0;
-
-    toDefaultCharsetCd_ = (iconv_t)0;
-    fromDefaultCharsetCd_ = (iconv_t)0;
 
     systemDefaultCharset_ = CONV_DEFAULT_CHARSET;
 }
@@ -81,7 +79,7 @@ LangFile::~LangFile()
 }
 
 //------------------------------------------------------------------------------
-void LangFile::load(std::string filename)
+void LangFile::load(const std::string &filename)
 {
     pcr_error_code errorCode_ = PCR_ERROR_NONE;
 
@@ -138,7 +136,7 @@ void LangFile::load(std::string filename)
 
         if (toDefaultCharsetCd_ == (iconv_t)-1 || fromDefaultCharsetCd_ == (iconv_t)-1) {
             log.error("Can't open default converter");
-            throw IconvError("Can't open default converter.");
+            throw std::iostream::failure("Can't open default converter.");
         }
     }
 }
@@ -148,9 +146,10 @@ void LangFile::saveAs(const char *filename)
 {
     pcr_error_code errorCode = PCR_ERROR_NONE;
 
-    if (pfile_ == 0)
+    if (!pfile_) {
         throw std::ios_base::failure("Save: Can't save unloaded file: "
                                      + std::string(filename));
+    }
 
     pcr_write_file(filename, pfile_, &errorCode);
 
@@ -197,7 +196,7 @@ std::string LangFile::getString(unsigned int id)
 }
 
 //----------------------------------------------------------------------------
-void LangFile::setString(unsigned int id, std::string str)
+void LangFile::setString(unsigned int id, const std::string &str)
 {
     std::string encodedStr;
 
@@ -233,16 +232,17 @@ void LangFile::setDefaultCharset(const char *charset)
 }
 
 //----------------------------------------------------------------------------
-void LangFile::unload(void)
+void LangFile::unload()
 {
-    if (pfile_)
+    if (pfile_) {
         pcr_free(pfile_);
+    }
 
-    pfile_ = 0;
+    pfile_ = nullptr;
 }
 
 //----------------------------------------------------------------------------
-std::string LangFile::convertTo(std::string in, uint32_t codepage)
+std::string LangFile::convertTo(const std::string &in, uint32_t codepage)
 {
     iconv_t cd;
     std::string encodedStr;
@@ -274,7 +274,7 @@ std::string LangFile::convertTo(std::string in, uint32_t codepage)
 }
 
 //----------------------------------------------------------------------------
-std::string LangFile::convertFrom(std::string in, uint32_t codepage)
+std::string LangFile::convertFrom(const std::string &in, uint32_t codepage)
 {
     iconv_t cd;
     std::string decodedStr;
@@ -306,7 +306,7 @@ std::string LangFile::convertFrom(std::string in, uint32_t codepage)
 }
 
 //----------------------------------------------------------------------------
-std::string LangFile::convert(iconv_t cd, std::string input)
+std::string LangFile::convert(iconv_t cd, const std::string &input)
 {
     size_t inleft = input.size();
     char *inbuf = new char[inleft];

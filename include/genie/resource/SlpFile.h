@@ -54,19 +54,19 @@ public:
     //----------------------------------------------------------------------------
     /// Frees all content of a slp file.
     //
-    void unload(void);
+    void unload() override;
 
     //----------------------------------------------------------------------------
     /// Check whether the files content is loaded or not.
     //
-    bool isLoaded(void) const;
+    bool isLoaded() const;
 
     //----------------------------------------------------------------------------
     /// Return number of frames stored in the file. Available after load.
     ///
     /// @return number of frames
     //
-    uint32_t getFrameCount(void);
+    uint32_t getFrameCount();
     void setFrameCount(uint32_t);
 
     //----------------------------------------------------------------------------
@@ -105,22 +105,18 @@ private:
     uint32_t slp_offset_;
 
     //----------------------------------------------------------------------------
-    virtual void serializeObject(void);
+    void serializeObject() override;
 
     //----------------------------------------------------------------------------
     /// Loads the file and its frames.
     //
-    void loadFile(void);
-    void saveFile(void);
+    void loadFile();
+    void saveFile();
 
     //----------------------------------------------------------------------------
-    void serializeHeader(void);
+    void serializeHeader();
 
     std::vector<uint8_t> m_graphicsFileData;
-//    static std::map<std::string, std::string> m_graphicsFileData;
-//    static std::map<std::string, std::string> m_graphicsFileData;
-//    std::string m_graphicsFileData;
-//    std::istringstream m_graphicsFileStream;
 };
 
 typedef std::shared_ptr<SlpFile> SlpFilePtr;

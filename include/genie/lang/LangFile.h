@@ -32,19 +32,12 @@ class PcrioError : public std::ios::failure
 {
 public:
     explicit PcrioError(int error);
-    int getError(void) const { return error_; }
+    int getError() const { return error_; }
 
     static void check(int error);
 
 private:
     int error_;
-};
-
-class IconvError : public std::ios::failure
-{
-public:
-    explicit IconvError(const std::string &str) :
-        std::ios::failure(str){};
 };
 
 /// TODO Proper error handling
@@ -55,21 +48,21 @@ public:
     LangFile();
     virtual ~LangFile();
 
-    virtual void load(std::string fileName) override;
-    virtual void saveAs(const char *fileName) override;
+    void load(const std::string &fileName) override;
+    void saveAs(const char *fileName) override;
 
     // get/set strings in default_charset (utf-8)
     std::string getString(unsigned int id);
-    void setString(unsigned int id, std::string str);
+    void setString(unsigned int id, const std::string &str);
 
     /// Change the default charset. See libiconv doc for available ones.
     /// If not set, default = UTF8.
     void setDefaultCharset(const char *charset);
 
 protected:
-    virtual void unload(void) override;
+    void unload() override;
 
-    virtual void serializeObject(void) override {}
+    void serializeObject() override {}
 
 private:
     static Logger &log;
@@ -88,12 +81,12 @@ private:
     iconv_t fromDefaultCharsetCd_;
 
     /// Convert a utf8 string to codepage
-    std::string convertTo(std::string in, uint32_t codepage);
+    std::string convertTo(const std::string &in, uint32_t codepage);
 
     /// Convert a string from codepage to utf8
-    std::string convertFrom(std::string in, uint32_t codepage);
+    std::string convertFrom(const std::string &in, uint32_t codepage);
 
-    std::string convert(iconv_t cd, std::string input); //char *in_ptr, size_t in_size);
+    std::string convert(iconv_t cd, const std::string &input);
 };
 }
 

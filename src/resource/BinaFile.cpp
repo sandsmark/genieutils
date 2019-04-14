@@ -146,7 +146,7 @@ std::string BinaFile::filetype(std::istream *istr)
     return "unknown (" + std::string(content, readCount) + ")";
 }
 
-void BinaFile::serializeObject(void)
+void BinaFile::serializeObject()
 {
 }
 }

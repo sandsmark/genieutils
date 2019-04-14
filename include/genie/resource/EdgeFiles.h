@@ -37,6 +37,18 @@ struct TileSpan
 
 struct VisibilityMask
 {
+    enum Visibility {
+        None = 0,
+        East = 1,
+        NorthEast = 2,
+        North = 4,
+        NorthWest = 8,
+        West = 16,
+        SouthWest = 32,
+        South = 64,
+        SouthEast = 128,
+    };
+
     static const VisibilityMask null;
     std::vector<TileSpan> lines;
 };
@@ -79,6 +91,9 @@ private:
                 return {};
             }
         }
+        if (mask.lines.empty()) {
+            std::cout << "crap shit" << std::endl;
+        }
 
         return mask;
     }
@@ -89,13 +104,13 @@ private:
         serialize(slopeOffsets, SlopeCount);
 
         for (int slope = 0; slope < SlopeCount; slope++) {
-            getIStream()->seekg(start + slopeOffsets[slope]);
+            getIStream()->seekg(start + std::istream::pos_type(slopeOffsets[slope]));
 
             std::vector<int> maskOffsets;
             serialize(maskOffsets, EdgeCount);
 
             for (int edge = 0; edge < EdgeCount; edge++) {
-                getIStream()->seekg(start + maskOffsets[edge]);
+                getIStream()->seekg(start + std::istream::pos_type(maskOffsets[edge]));
                 edgeSlopes[slope].tileMasks[edge] = readMask();
             }
         }

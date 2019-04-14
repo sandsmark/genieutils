@@ -37,18 +37,12 @@ namespace genie {
 Logger &SlpTemplateFile::log = Logger::getLogger("genie.SlpTemplate");
 
 //------------------------------------------------------------------------------
-SlpTemplateFile::SlpTemplateFile() :
-    IFile()
-{
-}
-
-//------------------------------------------------------------------------------
 SlpTemplateFile::~SlpTemplateFile()
 {
 }
 
 //------------------------------------------------------------------------------
-void SlpTemplateFile::serializeObject(void)
+void SlpTemplateFile::serializeObject()
 {
     if (isOperation(OP_READ) && !loaded_) {
         loadFile();
@@ -105,7 +99,7 @@ void SlpTemplateFile::saveFile()
 }
 
 //------------------------------------------------------------------------------
-void SlpTemplateFile::unload(void)
+void SlpTemplateFile::unload()
 {
     if (!loaded_)
         log.warn("Trying to unload a not loaded slpfile!");
@@ -120,7 +114,7 @@ void SlpTemplateFile::unload(void)
 }
 
 //------------------------------------------------------------------------------
-bool SlpTemplateFile::isLoaded(void) const
+bool SlpTemplateFile::isLoaded() const
 {
     return loaded_;
 }

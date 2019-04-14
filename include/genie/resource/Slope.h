@@ -18,6 +18,8 @@
 
 #pragma once
 
+#include <cstdint>
+
 namespace genie {
 
 enum Slope : int8_t {
@@ -31,10 +33,12 @@ enum Slope : int8_t {
     SlopeNorthWestUp = 6,
     SlopeSouthEastUp = 7,
     SlopeNorthEastUp = 8,
-    SLOPE_S_UP2      = 9,    // what are these?
-    SLOPE_N_UP2      = 10,
-    SLOPE_W_UP2      = 11,
-    SLOPE_E_UP2      = 12,
+
+    SlopeSouthUp2    = 9,    // `
+    SlopeNorthUp2    = 10,   // | what are these?
+    SlopeWestUp2     = 11,   // |
+    SlopeEastUp2     = 12,   // ,
+
     SlopeNorthDown   = 13,
     SlopeSouthDown   = 14,
     SlopeWestDown    = 15,
@@ -42,6 +46,7 @@ enum Slope : int8_t {
 
     SlopeCount       = 17,
 
+    // For convenvience
     SlopeSouthWestEastUp = SlopeNorthDown,
     SlopeNorthWestEastUp = SlopeSouthDown,
     SlopeNorthSouthEastUp = SlopeWestDown,

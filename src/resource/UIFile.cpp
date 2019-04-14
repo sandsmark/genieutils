@@ -40,7 +40,7 @@ UIFile::~UIFile()
 }
 
 //------------------------------------------------------------------------------
-void UIFile::serializeObject(void)
+void UIFile::serializeObject()
 {
     if (isOperation(OP_READ)) {
         std::istream *istr = getIStream();

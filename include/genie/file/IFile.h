@@ -41,7 +41,7 @@ public:
 
     //----------------------------------------------------------------------------
     virtual ~IFile();
-    void freelock(void);
+    void freelock();
 
     //----------------------------------------------------------------------------
     /// Sets name of file to work with.
@@ -73,7 +73,7 @@ public:
     /// @exception std::ios_base::failure thrown if file can't be read (file
     ///                                   doesn't exist, insufficient rights...)
     //
-    virtual void load(std::string fileName);
+    virtual void load(const std::string &fileName);
 
     //----------------------------------------------------------------------------
     /// Saves data to file. Can only be called if fileName is set through set
@@ -98,7 +98,7 @@ protected:
     /// The unload method will be called before loading an object, but only
     /// if the object was already loaded once.
     //
-    virtual void unload(void);
+    virtual void unload();
 
 private:
     std::string fileName_;

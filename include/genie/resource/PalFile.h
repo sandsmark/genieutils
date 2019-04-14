@@ -37,15 +37,12 @@ class Color;
 //
 class PalFile : public IFile
 {
+    static constexpr std::string_view fileHeader = "JASC-PAL\r\n";
+    static constexpr std::string_view fileVersionHeader = "0100\r\n";
 
 public:
     // For passing by reference
     static const PalFile null;
-
-    //----------------------------------------------------------------------------
-    /// Constructor
-    //
-    PalFile();
 
     //----------------------------------------------------------------------------
     /// Destructor
@@ -62,7 +59,7 @@ public:
         return colors_[index];
     }
 
-    const std::vector<Color> &getColors(void) const;
+    const std::vector<Color> &getColors() const;
 
 
     //----------------------------------------------------------------------------
@@ -70,12 +67,12 @@ public:
     ///
     /// @return size
     //
-    size_t size(void) const;
+    size_t size() const;
 
     //----------------------------------------------------------------------------
     /// TODO: Somethings wrong...
     //
-    virtual size_t objectSize(void);
+    size_t objectSize() override;
 
     bool isValid() const;
 
@@ -90,12 +87,7 @@ private:
     std::string type_;
     std::string unknown_;
 
-    std::string getHeader() const;
-    std::string getHeader2() const; //TODO Unknown
-
-    virtual void serializeObject(void);
-
-    // TODO: Not implemented yet
+    void serializeObject() override;
 
     //----------------------------------------------------------------------------
     /// Get number of characters of a number serialized as a string.

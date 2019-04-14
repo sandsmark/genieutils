@@ -39,6 +39,9 @@ class Logger;
 //
 class DrsFile : public IFile
 {
+    static constexpr char binaryTableHeader[] = "anib";
+    static constexpr char soundTableHeader[] = " vaw";
+    static constexpr char slpTableHeader[] = " pls";
 
 public:
     //----------------------------------------------------------------------------
@@ -97,18 +100,14 @@ private:
     std::unordered_map<uint32_t, BinaFilePtr> bina_map_;
     std::unordered_map<uint32_t, uint32_t> wav_offsets_;
 
-    unsigned int getCopyRightHeaderSize(void) const;
-
-    std::string getSlpTableHeader(void) const;
-    std::string getBinaryTableHeader(void) const;
-    std::string getSoundTableHeader(void) const;
+    size_t copyrightHeaderSize() const;
 
     //----------------------------------------------------------------------------
     /// Loads table and resource headers.
     //
     void loadHeader();
 
-    virtual void serializeObject(void);
+    virtual void serializeObject() override;
 };
 }
 

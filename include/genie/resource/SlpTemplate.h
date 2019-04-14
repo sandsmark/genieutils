@@ -269,11 +269,6 @@ public:
     };
 
     //----------------------------------------------------------------------------
-    /// Constructor
-    //
-    SlpTemplateFile();
-
-    //----------------------------------------------------------------------------
     /// Destructor
     //
     virtual ~SlpTemplateFile();
@@ -281,12 +276,12 @@ public:
     //----------------------------------------------------------------------------
     /// Frees all content of a slp file.
     //
-    void unload(void);
+    void unload() override;
 
     //----------------------------------------------------------------------------
     /// Check whether the files content is loaded or not.
     //
-    bool isLoaded(void) const;
+    bool isLoaded() const;
 
     //----------------------------------------------------------------------------
     /// Returns the slp frame at given frame index.
@@ -304,13 +299,13 @@ private:
     bool loaded_ = false;
 
     //----------------------------------------------------------------------------
-    virtual void serializeObject(void);
+    void serializeObject() override;
 
     //----------------------------------------------------------------------------
     /// Loads the file and its frames.
     //
-    void loadFile(void);
-    void saveFile(void);
+    void loadFile();
+    void saveFile();
 
 };
 
