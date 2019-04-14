@@ -21,6 +21,8 @@
 #include <iostream>
 #include <stdexcept>
 
+#include <string_view>
+
 #include "genie/util/Logger.h"
 
 namespace genie {
