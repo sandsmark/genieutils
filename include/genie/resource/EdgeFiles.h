@@ -59,11 +59,11 @@ class EdgeFile : public IFile
 public:
     const VisibilityMask &visibilityMask(const Slope slope, const int edges) const {
         if (edges >= EdgeCount) {
-            log.error("Invalid edge");
+            log.error("Invalid edge %", edges);
             return VisibilityMask::null;
         }
         if (slope >= SlopeCount) {
-            log.error("Invalid slope");
+            log.error("Invalid slope %", slope);
             return VisibilityMask::null;
         }
         return edgeSlopes[slope].tileMasks[edges];
