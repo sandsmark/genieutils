@@ -354,8 +354,11 @@ void ScnMorePlayerData::serializeObject(void)
     serialize<uint32_t>(playerColor);
     serialize<float>(unknown1);
     serializeSize<uint16_t>(unknownCount_, unknown3.size() / 44);
-    serialize<uint8_t>(unknown2, 8);
+    if (unknown1 == 2.f) {
+        serialize<uint8_t>(unknown2, 8);
+    }
     serialize<uint8_t>(unknown3, unknownCount_ * 44);
+
     serialize<uint8_t>(unknown4, 7);
     serialize<int32_t>(unknown5);
 
