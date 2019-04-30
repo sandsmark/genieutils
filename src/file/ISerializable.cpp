@@ -67,13 +67,16 @@ void ISerializable::serializeSubObject(ISerializable *const other)
 //------------------------------------------------------------------------------
 size_t ISerializable::strnlen(const char *str, size_t maxLen)
 {
+    if (!str) {
+        return 0;
+    }
+
     size_t len = 0;
 
-    for (unsigned int i = 0; i < maxLen; i++) {
-        if (str[i] == '\0')
+    for (len = 0; len < maxLen; len++) {
+        if (str[len] == '\0') {
             return len;
-
-        len++;
+        }
     }
 
     return maxLen;
