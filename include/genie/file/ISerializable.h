@@ -236,7 +236,7 @@ protected:
     /// @param str string to write
     /// @param len number of chars to write.
     //
-    void writeString(std::string str, size_t len);
+    void writeString(const std::string &str, size_t len);
 
     //----------------------------------------------------------------------------
     /// Generic read method for basic data types.

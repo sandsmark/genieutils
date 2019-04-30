@@ -110,7 +110,7 @@ std::string ISerializable::readString(size_t len)
 }
 
 //------------------------------------------------------------------------------
-void ISerializable::writeString(std::string str, size_t len)
+void ISerializable::writeString(const std::string &str, size_t len)
 {
     char *buf = new char[len];
 
