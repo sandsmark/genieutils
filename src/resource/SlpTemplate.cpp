@@ -170,9 +170,9 @@ void FiltermapFile::serializeObject() noexcept
                     sourcePixel.alpha = packedCommand & 0x1ff;
                     sourcePixel.sourceIndex = packedCommand >> 9;
 
-                    command.sourcePixels.push_back(std::move(sourcePixel));
+                    command.sourcePixels.push_back(sourcePixel);
                 }
-                line.commands.push_back(std::move(command));
+                line.commands.push_back(command);
             }
 
             maps[i].lines.push_back(std::move(line));

@@ -177,7 +177,7 @@ const SlpFramePtr &SlpFile::getFrame(uint32_t frame)
 void SlpFile::setFrame(uint32_t frame, SlpFramePtr data)
 {
     if (frame < frames_.size()) {
-        frames_[frame] = data;
+        frames_[frame] = std::move(data);
     }
 }
 
