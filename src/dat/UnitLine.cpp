@@ -43,7 +43,7 @@ void UnitLine::serializeObject(void)
 {
     serialize<int16_t>(ID);
 
-    uint16_t name_len;
+    uint16_t name_len{};
     serializeSize<uint16_t>(name_len, Name, false);
     serialize(Name, name_len);
 

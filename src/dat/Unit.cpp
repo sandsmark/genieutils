@@ -148,7 +148,7 @@ void Unit::serializeObject(void)
     if (gv < GV_AoEB && isOperation(OP_READ))
         Type *= 10;
 
-    uint16_t name_len;
+    uint16_t name_len{};
     if (gv > GV_LatestTap || gv < GV_Tapsa)
         serializeSize<uint16_t>(name_len, Name);
 
@@ -240,7 +240,7 @@ void Unit::serializeObject(void)
 
     serializeSub<ResourceStorage>(ResourceStorages, 3);
 
-    uint8_t damage_graphic_count;
+    uint8_t damage_graphic_count{};
     serializeSize<uint8_t>(damage_graphic_count, DamageGraphics.size());
     serializeSub<unit::DamageGraphic>(DamageGraphics, damage_graphic_count);
 

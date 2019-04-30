@@ -307,7 +307,7 @@ protected:
     template <typename T>
     void serializeSizedString(std::string &str, bool cString = true)
     {
-        T size;
+        T size{};
 
         serializeSize<T>(size, str, cString);
         serialize(str, size);
@@ -319,7 +319,7 @@ protected:
     {
         assert(operation_ != OP_INVALID);
 
-        T size;
+        T size{};
         if (isOperation(OP_WRITE)) {
             size = str.size() + 1;
         }

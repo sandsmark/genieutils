@@ -89,7 +89,7 @@ void Graphic::serializeObject(void)
 
     serialize<int16_t>(Coordinates, 4);
 
-    uint16_t delta_count;
+    uint16_t delta_count{};
     serializeSize<uint16_t>(delta_count, Deltas.size());
     serialize<int16_t>(SoundID);
     serialize<int8_t>(AngleSoundsUsed);

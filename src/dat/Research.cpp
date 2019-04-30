@@ -81,7 +81,7 @@ void Tech::serializeObject(void)
     }
 
     if (gv > GV_LatestTap || gv < GV_Tapsa) {
-        uint16_t name_len;
+        uint16_t name_len{};
         serializeSize<uint16_t>(name_len, Name);
         serialize(Name, name_len);
 

@@ -108,8 +108,8 @@ void DatFile::serializeObject(void)
     }
 
     GameVersion gv = getGameVersion();
-    uint16_t count16;
-    uint32_t count32;
+    uint16_t count16{};
+    uint32_t count32{};
 
     if (gv >= GV_SWGB) {
         serializeSize<uint16_t>(count16, Civs.size());

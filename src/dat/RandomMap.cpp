@@ -42,7 +42,7 @@ void RandomMaps::setGameVersion(GameVersion gv)
 //------------------------------------------------------------------------------
 void RandomMaps::serializeObject()
 {
-    uint32_t random_map_count;
+    uint32_t random_map_count{};
     if (getGameVersion() < GV_AoEB) {
         serializeSize<uint32_t>(random_map_count, OldMaps.size());
 

@@ -54,7 +54,7 @@ void Civ::serializeObject(void)
         serializeDebugString(Name);
     }
 
-    uint16_t count;
+    uint16_t count{};
     serializeSize<uint16_t>(count, Resources.size());
 
     if (gv >= GV_MIK) {

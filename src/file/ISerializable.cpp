@@ -92,7 +92,7 @@ std::streampos ISerializable::tellg(void) const
 std::string ISerializable::readString(size_t len)
 {
     if (len > 0 && !istr_->eof()) {
-        char *buf = 0;
+        char *buf = nullptr;
         serialize<char>(&buf, len);
 
         size_t tmp_len = ISerializable::strnlen(buf, len);

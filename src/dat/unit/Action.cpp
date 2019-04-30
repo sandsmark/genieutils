@@ -56,7 +56,7 @@ namespace unit {
 
         if (gv < GV_AoK) // 11.24
         {
-            uint16_t task_count;
+            uint16_t task_count{};
             serializeSize<uint16_t>(task_count, TaskList.size());
             serializeSub<Task>(TaskList, task_count);
         }

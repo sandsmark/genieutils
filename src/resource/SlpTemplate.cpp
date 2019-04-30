@@ -53,10 +53,10 @@ void SlpTemplateFile::serializeObject()
 }
 
 //------------------------------------------------------------------------------
-void SlpTemplateFile::loadFile()
+void SlpTemplateFile::loadFile() noexcept
 {
     for (SlpTemplate &slpTemplate : templates) {
-        uint32_t stemplSize;
+        uint32_t stemplSize{};
         serialize(stemplSize);
         std::streampos templateBegin = tellg();
         std::streampos nextPos = tellg() + std::streampos(stemplSize);

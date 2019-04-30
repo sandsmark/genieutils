@@ -53,7 +53,7 @@ namespace unit {
             serialize<int16_t>(BaseArmor);
         }
 
-        uint16_t attack_count;
+        uint16_t attack_count{};
         serializeSize<uint16_t>(attack_count, Attacks.size());
         serializeSub<unit::AttackOrArmor>(Attacks, attack_count);
 

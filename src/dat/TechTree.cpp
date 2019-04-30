@@ -119,7 +119,7 @@ void TechTreeAge::serializeObject(void)
     serialize<int8_t>(Status);
 
     // All of these need rework. Used + actual? Fix actual!
-    uint8_t count;
+    uint8_t count{};
     if (getGameVersion() < GV_AoKB) // < 10.84
     {
         serialize<uint8_t>(count);
@@ -177,7 +177,7 @@ void BuildingConnection::serializeObject(void)
     serialize<int32_t>(ID);
     serialize<int8_t>(Status);
 
-    uint8_t count;
+    uint8_t count{};
     if (getGameVersion() < GV_AoKB) // < 10.84
     {
         serialize<uint8_t>(count);
@@ -240,7 +240,7 @@ void UnitConnection::serializeObject(void)
     {
         serialize<int32_t>(VerticalLine);
 
-        uint8_t count;
+        uint8_t count{};
         if (getGameVersion() < GV_AoKB) // < 10.84
         {
             serialize<uint8_t>(count);
@@ -280,7 +280,7 @@ void ResearchConnection::serializeObject(void)
     serialize<int8_t>(Status);
     serialize<int32_t>(UpperBuilding);
 
-    uint8_t count;
+    uint8_t count{};
     if (getGameVersion() < GV_AoKB) // < 10.84
     {
         serialize<uint8_t>(count);

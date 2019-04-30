@@ -44,7 +44,7 @@ void Sound::serializeObject(void)
     serialize<int16_t>(ID);
     serialize<int16_t>(PlayDelay);
 
-    uint16_t file_count;
+    uint16_t file_count{};
     serializeSize<uint16_t>(file_count, Items.size());
 
     if (gv >= GV_TEST) {
