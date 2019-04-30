@@ -360,7 +360,8 @@ protected:
         case OP_CALC_SIZE:
             size_ += sizeof(T);
             break;
-        default:
+        case OP_INVALID:
+            assert(operation_ != OP_INVALID);
             break;
         }
     }
@@ -382,7 +383,6 @@ protected:
     template <typename T>
     void serialize(T **data, size_t len)
     {
-        assert(operation_ != OP_INVALID);
 
         switch (getOperation()) {
         case OP_WRITE:
@@ -394,7 +394,8 @@ protected:
         case OP_CALC_SIZE:
             size_ += sizeof(T) * len;
             break;
-        default:
+        case OP_INVALID:
+            assert(operation_ != OP_INVALID);
             break;
         }
     }
@@ -417,7 +418,8 @@ protected:
             case OP_CALC_SIZE:
                 size_ += sizeof(char) * len;
                 break;
-            default:
+            case OP_INVALID:
+                assert(operation_ != OP_INVALID);
                 break;
             }
         }
@@ -429,8 +431,6 @@ protected:
     template <typename T>
     void serialize(std::vector<T> &vec, size_t size)
     {
-        assert(operation_ != OP_INVALID);
-
         switch (getOperation()) {
         case OP_WRITE:
             if (vec.size() != size)
@@ -453,7 +453,8 @@ protected:
             size_ += size * sizeof(T);
             break;
 
-        default:
+        case OP_INVALID:
+            assert(operation_ != OP_INVALID);
             break;
         }
     }
@@ -464,8 +465,6 @@ protected:
     template <typename T>
     void serialize(std::vector<std::vector<T>> &vec, size_t size, size_t size2)
     {
-        assert(operation_ != OP_INVALID);
-
         switch (getOperation()) {
         case OP_WRITE:
             if (vec.size() != size)
@@ -492,7 +491,8 @@ protected:
             size_ += size * size2 * sizeof(T);
             break;
 
-        default:
+        case OP_INVALID:
+            assert(operation_ != OP_INVALID);
             break;
         }
     }
@@ -628,7 +628,8 @@ protected:
             if (!only_first)
                 size_ += sizeof(T);
             break;
-        default:
+        case OP_INVALID:
+            assert(operation_ != OP_INVALID);
             break;
         }
     }
