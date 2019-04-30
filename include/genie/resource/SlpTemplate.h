@@ -40,12 +40,12 @@ class LightmapFile : public IFile
 public:
     uint8_t lightmaps[18][4096];
 
-    operator bool() const {
+    operator bool() const noexcept {
         return m_loaded;
     }
 
 private:
-    virtual void serializeObject() override
+    virtual void serializeObject() noexcept override
     {
         getIStream()->read((char*)&lightmaps, 18 * 4096);
 
@@ -77,18 +77,18 @@ public:
     {
         uint8_t map[32][32][32];
 
-        inline uint8_t paletteIndex(const uint8_t r, const uint8_t g, const uint8_t b) const {
+        inline uint8_t paletteIndex(const uint8_t r, const uint8_t g, const uint8_t b) const noexcept {
             return map[r][g][b];
         }
     };
     std::vector<InverseColorMap> maps;
 
-    operator bool() const {
+    operator bool() const noexcept {
         return m_loaded;
     }
 
 private:
-    virtual void serializeObject() override
+    virtual void serializeObject() noexcept override
     {
         while (!getIStream()->eof()) {
             InverseColorMap map;
@@ -161,16 +161,16 @@ public:
     struct PatternMask {
         uint8_t pixels[4096];
 
-        inline bool ignore(const int index) const {
+        inline bool ignore(const int index) const noexcept {
             return pixels[index] & 0x1;
         }
-        inline bool brighten(const int index) const {
+        inline bool brighten(const int index) const noexcept {
             return pixels[index] & 0x2;
         }
-        inline bool darken(const int index) const {
+        inline bool darken(const int index) const noexcept {
             return (pixels[index] & 0x2) == 0;
         }
-        inline uint8_t apply(const uint8_t input, const int index) const {
+        inline uint8_t apply(const uint8_t input, const int index) const noexcept {
             if (ignore(index)) {
                 return input;
             }
@@ -185,16 +185,16 @@ public:
         }
     };
 
-    const IcmFile::InverseColorMap &getIcm(const uint16_t lightIndex, const std::vector<Pattern> &patterns) const;
+    const IcmFile::InverseColorMap &getIcm(const uint16_t lightIndex, const std::vector<Pattern> &patterns) const noexcept;
 
-    operator bool() {
+    operator bool() noexcept {
         return m_loaded;
     }
 
     PatternMask m_masks[PatternMasksCount];
 
 private:
-    virtual void serializeObject() override {
+    virtual void serializeObject() noexcept override {
         for (int i=0; i<40; i++) {
             int32_t size = 4096;
             serialize(size);
@@ -234,12 +234,12 @@ public:
     };
     std::array<Filtermap, SlopeCount> maps;
 
-    operator bool() {
+    operator bool() noexcept {
         return m_loaded;
     }
 
 private:
-    virtual void serializeObject() override;
+    virtual void serializeObject() noexcept override;
     bool m_loaded = false;
 };
 
@@ -276,12 +276,12 @@ public:
     //----------------------------------------------------------------------------
     /// Frees all content of a slp file.
     //
-    void unload() override;
+    void unload() noexcept override;
 
     //----------------------------------------------------------------------------
     /// Check whether the files content is loaded or not.
     //
-    bool isLoaded() const;
+    bool isLoaded() const noexcept;
 
     //----------------------------------------------------------------------------
     /// Returns the slp frame at given frame index.
@@ -289,7 +289,7 @@ public:
     /// @param frame frame index
     /// @return SlpFrame
     //
-    SlpFramePtr getFrame(const SlpFramePtr source, const Slope slope, const std::vector<Pattern> &masks, const std::vector<Color> &palette, const genie::SlpFilePtr &slpFile);
+    SlpFramePtr getFrame(const SlpFramePtr source, const Slope slope, const std::vector<Pattern> &masks, const std::vector<Color> &palette, const genie::SlpFilePtr &slpFile) noexcept;
 
     std::array<SlpTemplate, SlopeCount> templates;
 
@@ -304,8 +304,8 @@ private:
     //----------------------------------------------------------------------------
     /// Loads the file and its frames.
     //
-    void loadFile();
-    void saveFile();
+    void loadFile() noexcept;
+    void saveFile() noexcept;
 
 };
 

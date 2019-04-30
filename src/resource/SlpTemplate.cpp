@@ -94,12 +94,12 @@ void SlpTemplateFile::loadFile() noexcept
 }
 
 //------------------------------------------------------------------------------
-void SlpTemplateFile::saveFile()
+void SlpTemplateFile::saveFile() noexcept
 {
 }
 
 //------------------------------------------------------------------------------
-void SlpTemplateFile::unload()
+void SlpTemplateFile::unload() noexcept
 {
     if (!loaded_)
         log.warn("Trying to unload a not loaded slpfile!");
@@ -114,12 +114,12 @@ void SlpTemplateFile::unload()
 }
 
 //------------------------------------------------------------------------------
-bool SlpTemplateFile::isLoaded() const
+bool SlpTemplateFile::isLoaded() const noexcept
 {
     return loaded_;
 }
 
-const IcmFile::InverseColorMap &PatternMasksFile::getIcm(const uint16_t lightIndex, const std::vector<Pattern> &patterns) const
+const IcmFile::InverseColorMap &PatternMasksFile::getIcm(const uint16_t lightIndex, const std::vector<Pattern> &patterns) const noexcept
 {
     if (patterns.empty()) {
         return icmFile.maps[IcmFile::Neutral];
@@ -140,7 +140,7 @@ const IcmFile::InverseColorMap &PatternMasksFile::getIcm(const uint16_t lightInd
     return icmFile.maps[icmIndex];
 }
 
-void FiltermapFile::serializeObject()
+void FiltermapFile::serializeObject() noexcept
 {
     for (int i=0; i<SlopeCount; i++) {
         uint32_t dataSize = 0;
