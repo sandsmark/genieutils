@@ -94,11 +94,6 @@ private:
     CabFile(const CabFile &other);
     CabFile &operator=(const CabFile &other);
 
-    //----------------------------------------------------------------------------
-    /// Clears all data.
-    //
-    virtual void unload(void);
-
     virtual void serializeObject(void);
 
     std::vector<Folder> m_folders;

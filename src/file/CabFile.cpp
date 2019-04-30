@@ -306,13 +306,10 @@ void CabFile::serializeObject(void)
 //            std::cout << "compressed size: " << block.compressedSize << std::endl;
 //            std::cout << "uncompressed size: " << block.uncompressedSize << std::endl;
 
-            folder.blocks.push_back(std::move(block));
+            folder.blocks.push_back(block);
         }
     }
 }
 
 //------------------------------------------------------------------------------
-void CabFile::unload()
-{
-}
 }
