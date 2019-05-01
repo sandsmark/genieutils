@@ -71,7 +71,8 @@ void IFile::load(const std::string &fileName)
 
     if (fileIn_.fail()) {
         fileIn_.close();
-        throw std::ios_base::failure("Cant read file: \"" + fileName_ + "\"");
+        std::string errnoString(strerror(errno));
+        throw std::ios_base::failure("Can't read file \"" + fileName_ + "\": " + errnoString);
     } else {
         readObject(fileIn_);
         loaded_ = true;
@@ -96,7 +97,7 @@ void IFile::saveAs(const char *fileName)
 
     if (file.fail()) {
         file.close();
-        throw std::ios_base::failure("Cant write to file: \"" + std::string(fileName) + "\"");
+        throw std::ios_base::failure("Can't write to file: \"" + std::string(fileName) + "\"");
     } else
         writeObject(file);
 
