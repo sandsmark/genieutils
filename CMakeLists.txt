@@ -3,7 +3,7 @@
 # GUTILS_TOOLS:BOOL     if true to enable compilation of gutils tools
 # GUTILS_TEST:BOOL      if true some debug/test classes will be compiled
 
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.9)
 
 set(Genieutils_LIBRARY genieutils)
 set(CMAKE_CXX_STANDARD 17)
@@ -11,6 +11,20 @@ set(CMAKE_CXX_STANDARD 17)
 project(genieutils)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake/)
+
+
+if (ENABLE_IPO)
+    include(CheckIPOSupported)
+    check_ipo_supported(RESULT IPO_AVAILABLE OUTPUT IPO_ERROR)
+    if (IPO_AVAILABLE)
+        set(CMAKE_INTERPROCEDURAL_OPTIMIZATION True)
+    else()
+        message(STATUS "IPO / LTO not supported: <${IPO_ERROR}>")
+    endif()
+else()
+    message(STATUS "Not enabling IPO/LTO")
+endif()
+
 
 # dependencies:
 
