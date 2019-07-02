@@ -165,11 +165,11 @@ public:
     void enlarge(const uint32_t width, const uint32_t height, const int32_t offset_x, const int32_t offset_y);
     void enlargeForMerge(const SlpFrame &frame, int32_t &os_x, int32_t &os_y);
 
-    //----------------------------------------------------------------------------
-    /// Returns a pixel array containing the indexes of a color in a palette.
-    ///
-    /// @return pixel array size of (width * height)
-    //
+    // 0x00 = use default palette
+    // 0x08 = only 1 pcs in TC, seems to be useless leftover from AoE 1, mostly containing player colors.
+    // 0x10 = tree SLPs 147 and 152 in RoR have two shadows, mask and black pixels. Has pure black shadow? No
+    // 0x18 = use default palette, 0x08 uses outline? No
+    // 0x78 = has embedded palette at palette offset: 4 bytes tell RGB count, then 3 bytes per each RGB
     uint32_t getProperties(void) const;
     uint32_t getPaletteOffset(void) const;
     bool is32bit(void) const;
@@ -197,6 +197,12 @@ public:
 
     int32_t hotspot_x;
     int32_t hotspot_y;
+
+    //----------------------------------------------------------------------------
+    /// Returns a pixel array containing the indexes of a color in a palette.
+    ///
+    /// @return pixel array size of (width * height)
+    //
     SlpFrameData img_data;
 
     std::shared_ptr<SlpFrame> mirrorX(void);

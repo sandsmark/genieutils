@@ -76,7 +76,10 @@ public:
 
     uint32_t shadePercent;
     uint32_t backgroundPosition;
-    uint32_t backgroundColor;
+
+    // This color is used for masking out the background (i. e. making it transparent)
+    // Think greenscreen, only usually pink
+    uint32_t backgroundMaskColor;
 
     Color bevelColor1;
     Color bevelColor2;

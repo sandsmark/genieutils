@@ -73,7 +73,7 @@ void UIFile::serializeObject()
         if (!readValue(istr, &backgroundPosition, "background_position")) {
             return;
         }
-        if (!readValue(istr, &backgroundColor, "background_color")) {
+        if (!readValue(istr, &backgroundMaskColor, "background_color")) {
             return;
         }
 
