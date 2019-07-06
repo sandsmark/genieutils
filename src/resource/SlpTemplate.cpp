@@ -119,26 +119,7 @@ bool SlpTemplateFile::isLoaded() const noexcept
     return loaded_;
 }
 
-const IcmFile::InverseColorMap &PatternMasksFile::getIcm(const uint16_t lightIndex, const std::vector<Pattern> &patterns) const noexcept
-{
-    if (patterns.empty()) {
-        return icmFile.maps[IcmFile::Neutral];
-    }
 
-    uint8_t lightmapIndex = m_masks[patterns[0]].pixels[lightIndex] >> 2;
-
-    for (size_t i=1; i < patterns.size(); i++) {
-        lightmapIndex = m_masks[patterns[i]].apply(lightmapIndex, lightIndex);
-    }
-
-    const size_t icmIndex = lightmapFile.lightmaps[lightmapIndex][lightIndex];
-
-    if (icmIndex >= icmFile.maps.size()) {
-        return icmFile.maps[IcmFile::Neutral];
-    }
-
-    return icmFile.maps[icmIndex];
-}
 
 void FiltermapFile::serializeObject() noexcept
 {
@@ -178,6 +159,43 @@ void FiltermapFile::serializeObject() noexcept
             maps[i].lines.push_back(std::move(line));
         }
     }
+
+    if (getOperation() == OP_READ) {
+        m_loaded = true;
+    }
+}
+
+void PatternMasksFile::serializeObject() noexcept
+{
+    for (int i=0; i<40; i++) {
+        int32_t size = 4096;
+        serialize(size);
+        getIStream()->read((char*)&m_masks[i].pixels, 4096);
+    }
+
+    if (getOperation() == OP_READ) {
+        m_loaded = true;
+    }
+}
+
+void IcmFile::serializeObject() noexcept
+{
+    while (!getIStream()->eof()) {
+        InverseColorMap map;
+        getIStream()->read((char*)&map.map, 32 * 32 * 32);
+        maps.push_back(std::move(map));
+    }
+
+    if (getOperation() == OP_READ) {
+        m_loaded = true;
+    }
+
+    std::cout << "Loaded " << maps.size() << " inverse color maps" << std::endl;
+}
+
+void LightmapFile::serializeObject() noexcept
+{
+    getIStream()->read((char*)&lightmaps, 18 * 4096);
 
     if (getOperation() == OP_READ) {
         m_loaded = true;

@@ -45,14 +45,7 @@ public:
     }
 
 private:
-    virtual void serializeObject() noexcept override
-    {
-        getIStream()->read((char*)&lightmaps, 18 * 4096);
-
-        if (getOperation() == OP_READ) {
-            m_loaded = true;
-        }
-    }
+    virtual void serializeObject() noexcept override;
 
     bool m_loaded = true;
 };
@@ -77,7 +70,7 @@ public:
     {
         uint8_t map[32][32][32];
 
-        inline uint8_t paletteIndex(const uint8_t r, const uint8_t g, const uint8_t b) const noexcept {
+        inline constexpr uint8_t paletteIndex(const uint8_t r, const uint8_t g, const uint8_t b) const noexcept {
             return map[r][g][b];
         }
     };
@@ -88,20 +81,7 @@ public:
     }
 
 private:
-    virtual void serializeObject() noexcept override
-    {
-        while (!getIStream()->eof()) {
-            InverseColorMap map;
-            getIStream()->read((char*)&map.map, 32 * 32 * 32);
-            maps.push_back(std::move(map));
-        }
-
-        if (getOperation() == OP_READ) {
-            m_loaded = true;
-        }
-
-        std::cout << "Loaded " << maps.size() << " inverse color maps" << std::endl;
-    }
+    virtual void serializeObject() noexcept override;
 
     bool m_loaded = true;
 };
@@ -161,16 +141,16 @@ public:
     struct PatternMask {
         uint8_t pixels[4096];
 
-        inline bool ignore(const int index) const noexcept {
+        inline constexpr bool ignore(const int index) const noexcept {
             return pixels[index] & 0x1;
         }
-        inline bool brighten(const int index) const noexcept {
+        inline constexpr bool brighten(const int index) const noexcept {
             return pixels[index] & 0x2;
         }
-        inline bool darken(const int index) const noexcept {
+        inline constexpr bool darken(const int index) const noexcept {
             return (pixels[index] & 0x2) == 0;
         }
-        inline uint8_t apply(const uint8_t input, const int index) const noexcept {
+        inline constexpr uint8_t apply(const uint8_t input, const int index) const noexcept {
             if (ignore(index)) {
                 return input;
             }
@@ -185,7 +165,29 @@ public:
         }
     };
 
-    const IcmFile::InverseColorMap &getIcm(const uint16_t lightIndex, const std::vector<Pattern> &patterns) const noexcept;
+    const IcmFile::InverseColorMap &getIcm(const uint16_t lightIndex, const std::vector<Pattern> &patterns) const noexcept
+    {
+        // .empty() is very slow with libstdc++; it compares iterators,
+        // .size() just compares memory addresses, so this is faster.
+        // And this is a very hot path, so yes it matters
+        if (patterns.size() == 0) {
+            return icmFile.maps[IcmFile::Neutral];
+        }
+
+        uint8_t lightmapIndex = m_masks[patterns[0]].pixels[lightIndex] >> 2;
+
+        for (size_t i=1; i < patterns.size(); i++) {
+            lightmapIndex = m_masks[patterns[i]].apply(lightmapIndex, lightIndex);
+        }
+
+        const size_t icmIndex = lightmapFile.lightmaps[lightmapIndex][lightIndex];
+
+        if (icmIndex >= icmFile.maps.size()) {
+            return icmFile.maps[IcmFile::Neutral];
+        }
+
+        return icmFile.maps[icmIndex];
+    }
 
     operator bool() noexcept {
         return m_loaded;
@@ -194,17 +196,7 @@ public:
     PatternMask m_masks[PatternMasksCount];
 
 private:
-    virtual void serializeObject() noexcept override {
-        for (int i=0; i<40; i++) {
-            int32_t size = 4096;
-            serialize(size);
-            getIStream()->read((char*)&m_masks[i].pixels, 4096);
-        }
-
-        if (getOperation() == OP_READ) {
-            m_loaded = true;
-        }
-    }
+    virtual void serializeObject() noexcept override;
 
     bool m_loaded = false;
 };
