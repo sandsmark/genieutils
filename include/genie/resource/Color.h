@@ -47,6 +47,10 @@ public:
 
     //Static members:
     static const Color Transparent;
+
+    inline uint32_t constexpr toUint32() const noexcept { // how many funny keywords can we get in!
+        return (0xffu << 24) | ((b & 0xffu) << 16) | ((g & 0xffu) << 8) | (r & 0xffu);
+    }
 };
 }
 
