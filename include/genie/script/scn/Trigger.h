@@ -36,22 +36,22 @@ class TriggerCondition : public ISerializable
 {
 public:
     enum Type {
-        None,
-        BringObjectToArea,
-        BringObjectToObject,
-        OwnObjects,
-        OwnFewerObjects,
-        ObjectsInArea,
-        DestroyObject,
-        CaptureObject,
-        AccumulateAttribute,
-        ResearchTehcnology,
-        Timer,
-        ObjectSelected,
-        AISignal,
-        PlayerDefeated,
-        ObjectHasTarget,
-        ObjectVisible,
+        None, // 0
+        BringObjectToArea, // 1
+        BringObjectToObject, // 2
+        OwnObjects, // 3
+        OwnFewerObjects, // 4
+        ObjectsInArea, // 5
+        DestroyObject, // 6
+        CaptureObject, // 7
+        AccumulateAttribute, // 8
+        ResearchTehcnology, // 9
+        Timer, // 10
+        ObjectSelected, // 11
+        AISignal, // 12
+        PlayerDefeated, // 13
+        ObjectHasTarget, // 14
+        ObjectVisible, //
         ObjectNotVisible,
         ResearchingTechnology,
         UnitsGarrisoned,
