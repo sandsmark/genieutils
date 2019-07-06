@@ -141,23 +141,25 @@ public:
     struct PatternMask {
         uint8_t pixels[4096];
 
-        inline constexpr bool ignore(const int index) const noexcept {
-            return pixels[index] & 0x1;
+        inline static constexpr bool isIgnore(const uint8_t pixel) noexcept {
+            return pixel & 0x1;
         }
-        inline constexpr bool brighten(const int index) const noexcept {
-            return pixels[index] & 0x2;
+        inline static constexpr bool isBrighten(const uint8_t pixel) noexcept {
+            return pixel & 0x2;
         }
-        inline constexpr bool darken(const int index) const noexcept {
-            return (pixels[index] & 0x2) == 0;
+        inline static constexpr bool isDarken(const uint8_t pixel) noexcept {
+            return (pixel & 0x2) == 0;
         }
+
         inline constexpr uint8_t apply(const uint8_t input, const int index) const noexcept {
-            if (ignore(index)) {
+            const uint8_t pixel = pixels[index];
+            if (isIgnore(pixel)) {
                 return input;
             }
 
-            const uint8_t icm = (pixels[index] >> 2) & 0x1f;
+            const uint8_t icm = (pixel >> 2) & 0x1f;
 
-            if (brighten(index)) {
+            if (isBrighten(pixel)) {
                 return std::max(icm, input);
             } else {
                 return std::min(icm, input);
@@ -174,10 +176,21 @@ public:
             return icmFile.maps[IcmFile::Neutral];
         }
 
-        uint8_t lightmapIndex = m_masks[patterns[0]].pixels[lightIndex] >> 2;
+        uint8_t lightmapIndex = m_masks[patterns[0]].pixels[lightIndex] >> 2 & 0x1F;
 
         for (size_t i=1; i < patterns.size(); i++) {
-            lightmapIndex = m_masks[patterns[i]].apply(lightmapIndex, lightIndex);
+            const uint8_t pixel = m_masks[patterns[i]].pixels[lightIndex];
+            if (PatternMask::isIgnore(pixel)) {
+                continue;
+            }
+
+            const uint8_t newLightmapIndex = (pixel >> 2) & 0x1F;
+
+            if (PatternMask::isBrighten(pixel)) {
+                lightmapIndex = std::max(newLightmapIndex, lightmapIndex);
+            } else {
+                lightmapIndex = std::min(newLightmapIndex, lightmapIndex);
+            }
         }
 
         const size_t icmIndex = lightmapFile.lightmaps[lightmapIndex][lightIndex];
@@ -274,14 +287,6 @@ public:
     /// Check whether the files content is loaded or not.
     //
     bool isLoaded() const noexcept;
-
-    //----------------------------------------------------------------------------
-    /// Returns the slp frame at given frame index.
-    ///
-    /// @param frame frame index
-    /// @return SlpFrame
-    //
-    SlpFramePtr getFrame(const SlpFramePtr source, const Slope slope, const std::vector<Pattern> &masks, const std::vector<Color> &palette, const genie::SlpFilePtr &slpFile) noexcept;
 
     std::array<SlpTemplate, SlopeCount> templates;
 
