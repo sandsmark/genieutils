@@ -61,6 +61,8 @@ public:
         SWGB_SelectedObjectsInArea,
         SWGB_PoweredObjectsInArea,
         SWGB_UnitsQueuedPastPopCap,
+
+        ConditionsTypeCount
     };
 
     TriggerCondition();
@@ -80,7 +82,19 @@ public:
     MapPoint areaFrom = { -1, -1 };
     MapPoint areaTo = { -1, -1 };
     int32_t objectGroup = -1;
+
+    // same as Unit
+    enum ObjectType {
+        Undefined = -1,
+        Other = 0,
+        Base = 1,
+        Building = 2,
+        Civilian = 3,
+        Military = 4,
+        MonkNoRelic = 5,
+    };
     int32_t objectType = -1; //Civilian, Military, Building, Other
+
     int32_t aiSignal = -1;
 
 private:
