@@ -13,7 +13,7 @@ because of possible bugs.
  *   reading/writing of empires*.dat and genie*.dat files
  *   reading (and some writing) of drs, slp, blendomatic, and pal files
  *   reading of scn, scx, cpx, bln files
- *   reading/writing of lagnuage*.dll files
+ *   reading/writing of language*.dll files
 
 
 ## Dependencies ##
