@@ -41,15 +41,22 @@ void ScnMainPlayerData::serializeObject(void)
 {
     serializePlayerDataVersion();
     if (scn_plr_data_ver > 1.13f) {
-        for (unsigned int i = 0; i < 16; ++i)
+        for (unsigned int i = 0; i < 16; ++i) {
             serialize(playerNames[i], 256); // 1.14 <-- this is read much later in AoE 1
-        if (scn_plr_data_ver > 1.15f)
+        }
+
+        if (scn_plr_data_ver > 1.15f) {
             serialize<uint32_t>(playerNamesStringTable, 16);
+        }
+
         CombinedResources::playerInfo = true;
         serializeSub<CombinedResources>(resourcesPlusPlayerInfo, 16);
     }
-    if (scn_plr_data_ver > 1.06f)
+
+    if (scn_plr_data_ver > 1.06f) {
         serialize<uint8_t>(conquestVictory);
+    }
+
     serialize<ISerializable>(timeline);
     serializeSizedString<uint16_t>(originalFileName, false);
 
@@ -59,20 +66,23 @@ void ScnMainPlayerData::serializeObject(void)
         serialize<uint32_t>(victoryStringTable);
         serialize<uint32_t>(lossStringTable);
         serialize<uint32_t>(historyStringTable);
+    }
 
-        if (scn_plr_data_ver > 1.21f)
-            serialize<uint32_t>(scoutsStringTable);
+    if (scn_plr_data_ver > 1.21f) {
+        serialize<uint32_t>(scoutsStringTable);
     }
 
     serializeSizedString<uint16_t>(instructions, false);
+
     if (scn_plr_data_ver > 1.1f) {
         serializeSizedString<uint16_t>(hints, false);
         serializeSizedString<uint16_t>(victory, false);
         serializeSizedString<uint16_t>(loss, false);
         serializeSizedString<uint16_t>(history, false);
+    }
 
-        if (scn_plr_data_ver > 1.21f)
-            serializeSizedString<uint16_t>(scouts, false);
+    if (scn_plr_data_ver > 1.21f) {
+        serializeSizedString<uint16_t>(scouts, false);
     }
 
     if (scn_plr_data_ver < 1.03f) {
@@ -84,63 +94,93 @@ void ScnMainPlayerData::serializeObject(void)
     serializeSizedString<uint16_t>(pregameCinematicFilename, false);
     serializeSizedString<uint16_t>(victoryCinematicFilename, false);
     serializeSizedString<uint16_t>(lossCinematicFilename, false);
-    if (scn_plr_data_ver > 1.08f)
+
+    if (scn_plr_data_ver > 1.08f) {
         serializeSizedString<uint16_t>(backgroundFilename, false);
-    if (scn_plr_data_ver > 1.0f)
+    }
+
+    if (scn_plr_data_ver > 1.0f) {
         serializeBitmap();
+    }
 
     serializeSizedStrings<uint16_t>(aiNames, 16, false);
     serializeSizedStrings<uint16_t>(cityNames, 16, false);
-    if (scn_plr_data_ver > 1.07f)
+
+    if (scn_plr_data_ver > 1.07f) {
         serializeSizedStrings<uint16_t>(personalityNames, 16, false);
+    }
+
     serializeSub(aiFiles, 16);
-    if (scn_plr_data_ver > 1.1f)
+
+    if (scn_plr_data_ver > 1.1f) {
         serialize<uint8_t>(aiTypes, 16);
-    if (scn_plr_data_ver > 1.01f)
+    }
+
+    if (scn_plr_data_ver > 1.01f) {
         serialize<uint32_t>(separator_);
+    }
+
     // <- here actually switches the reading function in exe
 
     if (scn_plr_data_ver < 1.14f) {
-        for (unsigned int i = 0; i < 16; ++i)
+        for (unsigned int i = 0; i < 16; ++i) {
             serialize(playerNames[i], 256);
+        }
         serializeSub<CombinedResources>(resourcesPlusPlayerInfo, 16);
     } else {
         CombinedResources::playerInfo = false;
         serializeSub<CombinedResources>(resourcesPlusPlayerInfo, 16);
     }
-    if (scn_plr_data_ver > 1.01f)
+
+    if (scn_plr_data_ver > 1.01f) {
         serialize<uint32_t>(separator_);
+    }
+
     serialize<ISerializable>(victoryConditions);
     serialize<ISerializable>(diplomacy);
-    if (scn_plr_data_ver > 1.01f)
+
+    if (scn_plr_data_ver > 1.01f) {
         serialize<uint32_t>(separator_);
-    serialize<uint32_t>(alliedVictory, scn_plr_data_ver < 1.02f ? 16 * 16 : 16);
-    if (scn_plr_data_ver > 1.03f) {
-        if (scn_plr_data_ver > 1.22f)
-            serialize<uint32_t>(unused1);
-        serialize<ISerializable>(disables);
-        if (scn_plr_data_ver > 1.04f) {
-            serialize<uint32_t>(unused1);
-            if (scn_plr_data_ver > 1.11f) {
-                serialize<uint32_t>(unused2);
-                serialize<uint32_t>(allTechs);
-            }
-            if (scn_plr_data_ver > 1.05f)
-                serialize<uint32_t>(startingAge, 16);
-        }
     }
-    if (scn_plr_data_ver > 1.01f)
+
+    serialize<uint32_t>(alliedVictory, scn_plr_data_ver < 1.02f ? 16 * 16 : 16);
+
+    if (scn_plr_data_ver > 1.22f) {
+        serialize<uint32_t>(unused1);
+    }
+
+    if (scn_plr_data_ver > 1.03f) {
+        serialize<ISerializable>(disables);
+    }
+
+    if (scn_plr_data_ver > 1.04f) {
+        serialize<uint32_t>(unused1);
+    }
+
+    if (scn_plr_data_ver > 1.11f) {
+        serialize<uint32_t>(unused2);
+        serialize<uint32_t>(allTechs);
+    }
+
+    if (scn_plr_data_ver > 1.05f) {
+        serialize<uint32_t>(startingAge, 16);
+    }
+
+    if (scn_plr_data_ver > 1.01f) {
         serialize<uint32_t>(separator_);
+    }
+
     if (scn_plr_data_ver > 1.18f) {
         serialize<int32_t>(player1CameraX);
         serialize<int32_t>(player1CameraY);
-        if (scn_plr_data_ver > 1.2f) {
-            serialize<int32_t>(aiType);
-            if (scn_plr_data_ver > 1.23f)
-                serialize<uint8_t>(aiTypes, 16);
-        }
     }
-    // <- here actually switches the reading function in exe
+    if (scn_plr_data_ver > 1.2f) {
+        serialize<int32_t>(aiType);
+    }
+
+    if (scn_plr_data_ver > 1.23f) {
+        serialize<uint8_t>(aiTypes, 16);
+    }
 }
 
 CombinedResources::CombinedResources()
