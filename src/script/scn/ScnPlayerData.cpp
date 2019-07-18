@@ -50,7 +50,7 @@ void ScnMainPlayerData::serializeObject(void)
     }
     if (scn_plr_data_ver > 1.06f)
         serialize<uint8_t>(conquestVictory);
-    serialize<ISerializable>(unknownData);
+    serialize<ISerializable>(timeline);
     serializeSizedString<uint16_t>(originalFileName, false);
 
     if (scn_plr_data_ver > 1.15f) {
@@ -174,33 +174,54 @@ void CombinedResources::serializeObject(void)
     }
 }
 
-UnknownData1::UnknownData1()
+Timeline::Timeline()
 {
 }
 
-UnknownData1::~UnknownData1()
+Timeline::~Timeline()
 {
 }
 
-void UnknownData1::serializeObject(void)
+void Timeline::serializeObject(void)
 {
-    serialize<uint16_t>(unknownCount);
-    serialize<uint16_t>(unknown2);
-    serialize<float>(unknown3);
+    serializeSize<uint16_t>(entryCount, events.size());
+    serialize<uint16_t>(availableId);
+    serialize<float>(time);
+
+    serializeSub<TimelineEvent>(events, entryCount);
+}
+
+void TimelineEvent::serializeObject(void)
+{
+    serialize<float>(timestamp);
+    serialize<uint8_t>(command);
+    serialize<uint16_t>(objectType);
+    serialize<uint8_t>(playerId);
+
+    serialize<float>(x);
+    serialize<float>(y);
+    serialize<float>(z);
+
+    serialize<uint16_t>(task);
+
+    serialize<uint16_t>(objectId);
+
+    serialize<uint16_t>(targetId);
+    serialize<uint16_t>(targetPlayerId);
 
     /*/ 48 bytes? Lots of data if count is over 0
-  ReadData((HANDLE)_hScenFile, hUnknown, 4u);
-  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 4, 1u);
-  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 6, 2u);
-  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 8, 1u);
-  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 12, 4u);
-  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 16, 4u);
-  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 20, 4u);
-  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 24, 2u);
-  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 32, 2u);
-  ReadData((HANDLE)_hScenFile, &hScenFile, 2u);
-  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 40, 2u);
-  ReadData((HANDLE)_hScenFile, &v15, 2u);*/
+  ReadData((HANDLE)_hScenFile, hUnknown, 4u); // int
+  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 4, 1u); // char
+  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 6, 2u); // float?
+  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 8, 1u); // char
+  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 12, 4u); // int
+  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 16, 4u); // int
+  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 20, 4u); // in
+  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 24, 2u); // int16
+  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 32, 2u); // int16
+  ReadData((HANDLE)_hScenFile, &hScenFile,            2u); // int16
+  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 40, 2u); // int16
+  ReadData((HANDLE)_hScenFile, &v15, 2u);*/                // int16
 }
 
 void ScnMainPlayerData::serializeBitmap(void)

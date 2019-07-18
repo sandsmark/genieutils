@@ -53,15 +53,46 @@ private:
     virtual void serializeObject(void);
 };
 
-class UnknownData1 : public ISerializable
+class TimelineEvent : public ISerializable
 {
 public:
-    UnknownData1();
-    virtual ~UnknownData1();
+    float timestamp; // 0
 
-    uint16_t unknownCount;
-    uint16_t unknown2;
-    float unknown3;
+    enum TimelineCommands {
+        Attack = 0,
+        MakeObject = 1,
+        MoveObject = 2,
+        DestroyObject = 4
+    };
+
+    uint8_t command; // 4
+    uint16_t objectType; // 6
+    uint8_t playerId; // 7
+    float x; // 8
+    float y; // 12
+    float z; // 16
+
+    uint16_t task; // 20
+
+    uint16_t objectId; // 22
+    uint16_t targetId; // 24
+    uint16_t targetPlayerId; // 28
+
+private:
+    virtual void serializeObject(void);
+};
+
+class Timeline : public ISerializable
+{
+public:
+    Timeline();
+    virtual ~Timeline();
+
+    uint16_t entryCount;
+    uint16_t availableId;
+    float time;
+
+    std::vector<TimelineEvent> events;
 
 private:
     virtual void serializeObject(void);
@@ -146,7 +177,7 @@ public:
     std::vector<std::string> playerNames;
     std::vector<uint32_t> playerNamesStringTable;
     uint8_t conquestVictory = 0;
-    UnknownData1 unknownData;
+    Timeline timeline;
     std::string originalFileName = "";
 
     /// GV >= AoK
