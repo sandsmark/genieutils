@@ -26,8 +26,7 @@ namespace genie {
 
 bool CombinedResources::playerInfo = false;
 
-ScnMainPlayerData::ScnMainPlayerData() :
-    playerNames(16)
+ScnMainPlayerData::ScnMainPlayerData()
 {
 }
 
@@ -411,20 +410,90 @@ void ScnMorePlayerData::serializeObject(void)
     serialize<uint8_t>(alliedVictory);
     serializeSize<uint16_t>(playerCount_, diplomacy1.size());
     serialize<uint8_t>(diplomacy1, playerCount_);
-    serialize<uint32_t>(diplomacy2, playerCount_);
-    serialize<uint32_t>(playerColor);
-    serialize<float>(unknown1);
-    serializeSize<uint16_t>(unknownCount_, unknown3.size() / 44);
-    if (unknown1 == 2.f) {
-        serialize<uint8_t>(unknown2, 8);
+    if (scn_internal_ver >= 1.08) {
+        serialize<uint32_t>(diplomacy2, playerCount_);
     }
-    serialize<uint8_t>(unknown3, unknownCount_ * 44);
 
-    serialize<uint8_t>(unknown4, 7);
-    serialize<int32_t>(unknown5);
+    serialize<uint32_t>(playerColor);
+
+    // victory condition version
+    if (scn_internal_ver >= 1.09) {
+        serialize<float>(victoryConditionVersion);
+    } else {
+        victoryConditionVersion = 0;
+    }
+//    printf("victory condition version: %f\n", victoryConditionVersion);
+
+    // I think this is some victory condition stuff
+    serializeSize<uint32_t>(victoryConditionsCount, victoryConditions.size());
+//    printf("conditions count: %d\n", victoryConditionsCount);
+
+    serialize<uint8_t>(victory);
+//    printf("victory: %d\n", victory);
+
+    serializeSub<ScnPlayerVictoryCondition>(victoryConditions, victoryConditionsCount);
+
+    if (victoryConditionVersion < 1.0) {
+        totalVictoryPoints = 0;
+    } else {
+        serialize<uint32_t>(pointConditionsCount);
+        serialize<uint32_t>(totalVictoryPoints);
+//        printf("total victory points: %u\n", totalVictoryPoints);
+//        printf("victory points count: %u\n", victoryPointsCount);
+    }
+
+    // Might have fucked up the size above
+    // Haven't found more scenario files to test with that have victory conditions here, that aren't also 2.0
+    if (victoryConditionVersion > 1.0f) {
+        serialize<int32_t>(unknown1);
+        serialize<int32_t>(unknown2);
+//        printf("unknown 1: %d\n", unknown1);
+//        printf("unknown 2: %d\n", unknown2);
+    }
 
     if (scn_internal_ver > 1.14f) {
         serialize<int32_t>(playerID);
     }
 }
+
+void ScnPlayerVictoryCondition::serializeObject()
+{
+//    printf("\n---\n");
+    serialize<uint8_t>(type);
+//    printf("type: %d\n", type);
+    serialize<int32_t>(objectType);
+//    printf("object type: %d\n", objectType);
+    serialize<int32_t>(targetPlayer);
+//    printf("target player: %d\n", targetPlayer);
+
+//    serialize<uint32_t>(x0);
+//    serialize<uint32_t>(y0);
+//    serialize<uint32_t>(x1);
+//    serialize<uint32_t>(y1);
+    serialize<float>(x0);
+    serialize<float>(y0);
+    serialize<float>(x1);
+    serialize<float>(y1);
+
+//    printf("%fx%f, %fx%f\n", x0, y0, x1, y1);
+//    printf("%x %x, %x %x\n", x0, y0, x1, y1);
+
+    serialize<int32_t>(number);
+//    printf("number: %d\n", number);
+    serialize<int32_t>(count);
+//    printf("count: %d\n", count);
+    serialize<int32_t>(object);
+//    printf("object: %d\n", object);
+    serialize<int32_t>(target);
+//    printf("target: %d\n", target);
+
+    serialize<uint8_t>(victoryGroup);
+//    printf("victory group: %d\n", target);
+    serialize<uint8_t>(allyFlag);
+//    printf("ally: %d\n", allyFlag);
+    serialize<uint8_t>(state);
+//    printf("state: %d\n", state);
+//    printf("\n---\n");
+}
+
 }

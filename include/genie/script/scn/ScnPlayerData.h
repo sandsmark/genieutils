@@ -118,6 +118,13 @@ private:
 class ScnVictory : public ISerializable
 {
 public:
+    enum VictoryModes {
+        Standard,
+        Conquest,
+        Score,
+        Timed,
+        Custom
+    };
     ScnVictory();
     virtual ~ScnVictory();
 
@@ -128,9 +135,9 @@ public:
     uint32_t exploredPerCentRequired;
     uint32_t unused3;
     uint32_t allConditionsRequired;
-    uint32_t victoryMode;
-    uint32_t scoreRequired;
-    uint32_t timeForTimedGame;
+    uint32_t victoryMode = 0;
+    uint32_t scoreRequired = 0;
+    uint32_t timeForTimedGame = 0;
 
 private:
     virtual void serializeObject(void);
@@ -174,7 +181,7 @@ public:
 
     float playerDataVersion = 0.f;
     static float version;
-    std::vector<std::string> playerNames;
+    std::array<std::string, 16> playerNames;
     std::vector<uint32_t> playerNamesStringTable;
     uint8_t conquestVictory = 0;
     Timeline timeline;
@@ -269,6 +276,59 @@ private:
     void serializeBitmap(void);
 };
 
+class ScnPlayerVictoryCondition : public ISerializable
+{
+    enum PointState {
+        PointsInactive,
+        PointsAbove,
+        PointsBelow
+    };
+
+    enum VictoryPointCondition {
+        AttributeAmount,
+        AttributeFirst,
+        HighestAttribte,
+        HighAttributeOnce,
+        HighAttributeAmount
+    };
+
+public:
+    enum VictoryConditionCommand : uint8_t {
+        Capture = 0,
+        Create = 1,
+        Destroy = 2,
+        DestroyMultiple = 3,
+        BringToArea = 4,
+        BringObject = 5,
+        Attribute = 6,
+        Explore = 7,
+        CreateInArea = 8,
+        DestroyAll = 9,
+        DestroyPlayer = 10,
+        VictoryPoints = 12
+    };
+
+    uint8_t type;
+    int32_t objectType; // for create, create in area, destroy, destroy multiple,  destroy all
+    int32_t targetPlayer;
+
+    float x0;
+    float y0;
+    float x1;
+    float y1;
+
+    int32_t number; // for an Attribute condition, this is the attribute type, and count is the amount
+    int32_t count;
+    int32_t object;
+    int32_t target;
+    uint8_t victoryGroup;
+    uint8_t allyFlag;
+    uint8_t state;
+
+private:
+    virtual void serializeObject(void);
+};
+
 class ScnMorePlayerData : public ISerializable
 {
 public:
@@ -284,16 +344,22 @@ public:
     std::vector<uint8_t> diplomacy1;
     std::vector<uint32_t> diplomacy2;
     uint32_t playerColor = 0;
-    float unknown1 = 0.f;
-    std::vector<uint8_t> unknown2;
-    std::vector<uint8_t> unknown3; // found in Grand Theft Empires
-    std::vector<uint8_t> unknown4;
-    int32_t unknown5 = 0;
+
+    float victoryConditionVersion = 0.f;
+    std::vector<ScnPlayerVictoryCondition> victoryConditions; // found in Grand Theft Empires, and the aztec campaign
     int32_t playerID = 0;
+    uint8_t victory;
+
+    int32_t unknown1;
+    int32_t unknown2;
+
+    uint32_t totalVictoryPoints;
+    uint32_t victoryPointsCount;
 
 private:
     uint16_t playerCount_;
-    uint16_t unknownCount_;
+    uint32_t victoryConditionsCount;
+    uint32_t pointConditionsCount;
     virtual void serializeObject(void);
 };
 }
