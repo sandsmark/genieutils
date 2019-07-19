@@ -294,7 +294,7 @@ class ScnPlayerVictoryCondition : public ISerializable
     };
 
 public:
-    enum VictoryConditionCommand : uint8_t {
+    enum Type : uint8_t {
         Capture = 0,
         Create = 1,
         Destroy = 2,
