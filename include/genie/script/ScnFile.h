@@ -96,7 +96,7 @@ public:
 
     std::string scenarioInstructions;
 
-    uint32_t victoryType;
+    int32_t victoryType = 0;
 
     uint32_t enabledPlayerCount;
 

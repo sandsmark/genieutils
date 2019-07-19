@@ -162,7 +162,7 @@ void ScnMainPlayerData::serializeObject(void)
     }
 
     if (scn_plr_data_ver > 1.05f) {
-        serialize<uint32_t>(startingAge, 16);
+        serialize<int32_t>(startingAge, 16);
     }
 
     if (scn_plr_data_ver > 1.01f) {
@@ -193,7 +193,7 @@ CombinedResources::~CombinedResources()
 void CombinedResources::serializeObject(void)
 {
     if (playerInfo || scn_plr_data_ver < 1.14f)
-        serialize<uint32_t>(state);
+        serialize<uint32_t>(enabled);
     if (!playerInfo || scn_plr_data_ver < 1.14f) {
         serialize<uint32_t>(gold);
         serialize<uint32_t>(wood);
@@ -201,7 +201,7 @@ void CombinedResources::serializeObject(void)
         serialize<uint32_t>(stone);
     }
     if (playerInfo || scn_plr_data_ver < 1.14f) {
-        serialize<uint32_t>(type);
+        serialize<uint32_t>(isHuman);
         serialize<uint32_t>(civilizationID);
         serialize<uint32_t>(unknown1);
     }

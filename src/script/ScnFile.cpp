@@ -134,7 +134,7 @@ void ScnFile::serializeObject(void)
     serialize<int32_t>(saveType);
     serialize<uint32_t>(lastSaveTime);
     serializeForcedString<uint32_t>(scenarioInstructions);
-    serialize<uint32_t>(victoryType);
+    serialize<int32_t>(victoryType);
     serialize<uint32_t>(enabledPlayerCount);
 
     compressor_.beginCompression();

@@ -35,9 +35,9 @@ public:
     CombinedResources();
     virtual ~CombinedResources();
 
-    uint32_t state;
-    uint32_t type;
-    uint32_t civilizationID;
+    uint32_t enabled;
+    uint32_t isHuman;
+    uint32_t civilizationID = 0;
     uint32_t unknown1;
 
     uint32_t gold;
@@ -264,7 +264,7 @@ public:
     uint32_t unused1 = 0;
     uint32_t unused2 = 0;
     uint32_t allTechs = 0;
-    std::vector<uint32_t> startingAge;
+    std::vector<int32_t> startingAge;
     int32_t player1CameraX = 0;
     int32_t player1CameraY= 0;
     int32_t aiType = 0;
@@ -278,6 +278,7 @@ private:
 
 class ScnPlayerVictoryCondition : public ISerializable
 {
+    // Need to find a scenario file with the matching struct filled in to use these enums
     enum PointState {
         PointsInactive,
         PointsAbove,
@@ -347,14 +348,13 @@ public:
 
     float victoryConditionVersion = 0.f;
     std::vector<ScnPlayerVictoryCondition> victoryConditions; // found in Grand Theft Empires, and the aztec campaign
-    int32_t playerID = 0;
+    int32_t playerID = -1;
     uint8_t victory;
 
     int32_t unknown1;
     int32_t unknown2;
 
     uint32_t totalVictoryPoints;
-    uint32_t victoryPointsCount;
 
 private:
     uint16_t playerCount_;
