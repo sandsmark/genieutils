@@ -19,7 +19,37 @@ because of possible bugs.
 ## Dependencies ##
 
  - A modern C++ Compiler (i. e. supports C++17)
+ - [PCRIO](https://github.com/sandsmark/pcrio) - clone this _next to_ the genieutils folder.
 
 This assumes that you do a recursive clone of the repo or remember to update
 the submodules, otherwise you need to install zstr, and winiconv when building
 for Windows.
+
+You can update submodules after cloning the repo or pulling new commits by doing:
+
+```
+git submodule update --init --recursive
+```
+
+## Building ##
+
+The build uses CMake.
+```
+mkdir build && cd build
+cmake ..
+cmake --build .
+```
+
+This creates a `genieutils.dll` or `libgenieutils.so` file.
+
+To create a static library instead, use the `GENIEUTILS_STATIC_BUILD` flag:
+```
+cmake .. -DGENIEUTILS_STATIC_BUILD=YES
+cmake --build .
+```
+
+Optionally, enable link-time optimization:
+```
+cmake .. -DCMAKE_BUILD_TYPE=Release -DENABLE_IPO=YES
+cmake --build .
+```
