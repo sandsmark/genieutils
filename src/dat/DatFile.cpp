@@ -166,7 +166,7 @@ void DatFile::serializeObject(void)
         serializeSubWithPointers<Graphic>(Graphics, count16, GraphicPointers);
     }
 
-//    auto pos_cnt = tellg();
+//    std::pos pos_cnt = tellg();
     if (verbose_) {
         std::cout << "Graphics: " << Graphics.size() << std::endl;
     }

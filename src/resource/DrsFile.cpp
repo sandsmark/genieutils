@@ -45,7 +45,7 @@ DrsFile::~DrsFile()
 //------------------------------------------------------------------------------
 SlpFilePtr DrsFile::getSlpFile(uint32_t id)
 {
-    auto i = slp_map_.find(id);
+    std::unordered_map<uint32_t, SlpFilePtr>::iterator i = slp_map_.find(id);
 
     if (i != slp_map_.end()) {
 #ifndef NDEBUG
@@ -54,7 +54,7 @@ SlpFilePtr DrsFile::getSlpFile(uint32_t id)
         i->second->readObject(*getIStream());
         return i->second;
     } else {
-        auto i = bina_map_.find(id);
+        std::unordered_map<uint32_t, BinaFilePtr>::iterator i = bina_map_.find(id);
 
         if (i != bina_map_.end()) {
 #ifndef NDEBUG
@@ -77,13 +77,13 @@ SlpFilePtr DrsFile::getSlpFile(uint32_t id)
 //------------------------------------------------------------------------------
 const PalFile &DrsFile::getPalFile(uint32_t id)
 {
-    auto i = pal_files_.find(id);
+    std::unordered_map<uint32_t, std::shared_ptr<PalFile>>::iterator i = pal_files_.find(id);
 
     if (i != pal_files_.end()) {
         return *i->second;
     }
 
-    auto b = bina_map_.find(id);
+    std::unordered_map<uint32_t, BinaFilePtr>::iterator b = bina_map_.find(id);
     if (b == bina_map_.end()) {
         log.debug("No bina file with id [%u] found!", id);
         return PalFile::null;
@@ -95,7 +95,7 @@ const PalFile &DrsFile::getPalFile(uint32_t id)
 
 UIFilePtr DrsFile::getUIFile(uint32_t id)
 {
-    auto i = bina_map_.find(id);
+    std::unordered_map<uint32_t, BinaFilePtr>::iterator i = bina_map_.find(id);
 
     if (i != bina_map_.end()) {
         return i->second->readUIFile(getIStream());
@@ -140,7 +140,7 @@ UIFilePtr DrsFile::getUIFile(const std::string &knownName)
 
 BmpFilePtr DrsFile::getBmpFile(uint32_t id)
 {
-    auto i = bina_map_.find(id);
+    std::unordered_map<uint32_t, BinaFilePtr>::iterator i = bina_map_.find(id);
 
     if (i != bina_map_.end()) {
         return i->second->readBmpFile(getIStream());
@@ -152,7 +152,7 @@ BmpFilePtr DrsFile::getBmpFile(uint32_t id)
 
 std::string DrsFile::getScriptFile(uint32_t id)
 {
-    auto i = bina_map_.find(id);
+    std::unordered_map<uint32_t, BinaFilePtr>::iterator i = bina_map_.find(id);
 
     if (i != bina_map_.end()) {
         return i->second->readScriptFile(getIStream());
@@ -164,7 +164,7 @@ std::string DrsFile::getScriptFile(uint32_t id)
 
 ScnFilePtr DrsFile::getScnFile(uint32_t id)
 {
-    auto i = bina_map_.find(id);
+    std::unordered_map<uint32_t, BinaFilePtr>::iterator i = bina_map_.find(id);
 
     if (i != bina_map_.end()) {
         return i->second->readScnFile(getIStream());
@@ -186,7 +186,7 @@ std::string DrsFile::idType(uint32_t id)
         return "slp";
     }
 
-    auto i = bina_map_.find(id);
+    std::unordered_map<uint32_t, BinaFilePtr>::iterator i = bina_map_.find(id);
     if (i == bina_map_.end()) {
         return "unknown";
     }
@@ -197,7 +197,7 @@ std::string DrsFile::idType(uint32_t id)
 //------------------------------------------------------------------------------
 std::shared_ptr<uint8_t[]> DrsFile::getWavPtr(uint32_t id)
 {
-    auto i = wav_offsets_.find(id);
+    std::unordered_map<uint32_t, uint32_t>::iterator i = wav_offsets_.find(id);
 
     if (i != wav_offsets_.end()) {
         // FIXME: this gets cleared when it loads the next

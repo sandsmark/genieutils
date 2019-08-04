@@ -98,19 +98,19 @@ void SlpFrame::enlarge(const uint32_t width, const uint32_t height, const int32_
     }
 
     // You better not crop the frame.
-    for (auto &xy : img_data.shadow_mask) {
+    for (XY &xy : img_data.shadow_mask) {
         xy.x += offset_x;
         xy.y += offset_y;
     }
-    for (auto &xy : img_data.shield_mask) {
+    for (XY &xy : img_data.shield_mask) {
         xy.x += offset_x;
         xy.y += offset_y;
     }
-    for (auto &xy : img_data.outline_pc_mask) {
+    for (XY &xy : img_data.outline_pc_mask) {
         xy.x += offset_x;
         xy.y += offset_y;
     }
-    for (auto &xy : img_data.player_color_mask) {
+    for (PlayerColorXY &xy : img_data.player_color_mask) {
         xy.x += offset_x;
         xy.y += offset_y;
     }
@@ -200,15 +200,15 @@ void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
     uint32_t outline_pc_slot = 0;
     uint32_t transparent_slot = 0;
     // Ensure that all 8-bit masks get saved.
-    for (auto const &pixel : img_data.outline_pc_mask)
+    for (const XY &pixel : img_data.outline_pc_mask)
         img_data.alpha_channel[pixel.y * width_ + pixel.x] = 255;
-    for (auto const &pixel : img_data.shield_mask)
+    for (const XY &pixel : img_data.shield_mask)
         img_data.alpha_channel[pixel.y * width_ + pixel.x] = 255;
     {
         std::vector<XY> new_shadow_mask;
         new_shadow_mask.reserve(img_data.shadow_mask.size());
-        for (auto const &pixel : img_data.shadow_mask) {
-            auto loc = pixel.y * width_ + pixel.x;
+        for (const XY &pixel : img_data.shadow_mask) {
+            uint32_t loc = pixel.y * width_ + pixel.x;
             if (img_data.alpha_channel[loc] == 0) {
                 new_shadow_mask.emplace_back(pixel);
                 img_data.alpha_channel[loc] = 255;
@@ -434,9 +434,8 @@ void SlpFrame::readImage()
 
         uint32_t pix_pos = left_edges_[row]; //pos where to start putting pixels
 
-        uint8_t data = 0;
         while (true) {
-            data = read<uint8_t>();
+            uint8_t data = read<uint8_t>();
 
             if (data == EndOfRow) {
                 break;
@@ -654,7 +653,7 @@ void SlpFrame::setPixelsToColor32(uint32_t row, uint32_t &col, uint32_t count,
 }
 
 //------------------------------------------------------------------------------
-void SlpFrame::setPixelsToShadow(uint32_t row, uint32_t &col, uint32_t count)
+void SlpFrame::setPixelsToShadow(const uint32_t row, uint32_t &col, const uint32_t count)
 {
     uint32_t to_pos = col + count;
     while (col < to_pos) {
@@ -664,7 +663,7 @@ void SlpFrame::setPixelsToShadow(uint32_t row, uint32_t &col, uint32_t count)
 }
 
 //------------------------------------------------------------------------------
-void SlpFrame::setPixelsToShield(uint32_t row, uint32_t &col, uint32_t count)
+void SlpFrame::setPixelsToShield(const uint32_t row, uint32_t &col, const uint32_t count)
 {
     uint32_t to_pos = col + count;
     while (col < to_pos) {
@@ -674,7 +673,7 @@ void SlpFrame::setPixelsToShield(uint32_t row, uint32_t &col, uint32_t count)
 }
 
 //------------------------------------------------------------------------------
-void SlpFrame::setPixelsToPcOutline(uint32_t row, uint32_t &col, uint32_t count)
+void SlpFrame::setPixelsToPcOutline(const uint32_t row, uint32_t &col, const uint32_t count)
 {
     uint32_t to_pos = col + count;
     while (col < to_pos) {
@@ -816,9 +815,11 @@ void SlpFrame::save(std::ostream &ostr)
     serialize<uint32_t>(cmd_offsets_, height_);
     cmd_offsets_.clear();
 
-    for (auto &commands : commands_)
-        for (auto &col : commands)
+    for (std::vector<uint8_t> &commands : commands_) {
+        for (uint8_t &col : commands) {
             serialize<uint8_t>(col);
+        }
+    }
 
     commands_.clear();
 #ifndef NDEBUG

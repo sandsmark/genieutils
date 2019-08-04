@@ -23,7 +23,7 @@
 namespace genie {
 
 unsigned short Terrain::terrain_count_ = 0;
-;
+
 //------------------------------------------------------------------------------
 Terrain::Terrain() :
     ElevationGraphics(TILE_TYPE_COUNT),

@@ -105,7 +105,7 @@ public:
     template <typename T>
     static void updateGameVersion(GameVersion gv, std::vector<T> &vec)
     {
-        for (auto &it : vec) {
+        for (T &it : vec) {
             ISerializable *item = dynamic_cast<ISerializable *>(&it);
             item->setGameVersion(gv);
         }
@@ -436,8 +436,9 @@ protected:
             if (vec.size() != size)
                 std::cerr << "Warning!: vector size differs len!" << vec.size() << " " << size << std::endl;
 
-            for (auto it = vec.begin(); it != vec.end(); ++it)
+            for (typename std::vector<T>::iterator it = vec.begin(); it != vec.end(); ++it) {
                 write<T>(*it);
+            }
 
             break;
 
@@ -471,7 +472,7 @@ protected:
                 std::cerr << "Warning!: vector size differs len!" << vec.size() << " " << size << std::endl;
 
             for (size_t i = 0; i < size; ++i)
-                for (auto it = vec[i].begin(); it != vec[i].end(); ++it)
+                for (typename std::vector<T>::iterator it = vec[i].begin(); it != vec[i].end(); ++it)
                     write<T>(*it);
 
             break;
@@ -509,7 +510,7 @@ protected:
             if (vec.size() != size)
                 std::cerr << "Warning!: vector size differs size!" << vec.size() << " " << size << std::endl;
 
-            for (auto it = vec.begin(); it != vec.end(); ++it) {
+            for (typename std::vector<T>::iterator it = vec.begin(); it != vec.end(); ++it) {
                 ISerializable *data = dynamic_cast<ISerializable *>(&(*it));
 
                 data->serializeSubObject(this);
@@ -635,8 +636,8 @@ protected:
     }
 
 private:
-    std::istream *istr_ = 0;
-    std::ostream *ostr_ = 0;
+    std::istream *istr_ = nullptr;
+    std::ostream *ostr_ = nullptr;
 
     std::streampos init_read_pos_ = 0;
 

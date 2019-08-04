@@ -267,9 +267,9 @@ private:
 
     //----------------------------------------------------------------------------
     /// Sets the next count of pixels to shadow without reading from stream.
-    void setPixelsToShadow(uint32_t row, uint32_t &col, uint32_t count);
-    void setPixelsToShield(uint32_t row, uint32_t &col, uint32_t count);
-    void setPixelsToPcOutline(uint32_t row, uint32_t &col, uint32_t count);
+    void setPixelsToShadow(const uint32_t row, uint32_t &col, const uint32_t count);
+    void setPixelsToShield(const uint32_t row, uint32_t &col, const uint32_t count);
+    void setPixelsToPcOutline(const uint32_t row, uint32_t &col, const uint32_t count);
 
     //----------------------------------------------------------------------------
     /// This method returns either the count stored in command byte or (if not

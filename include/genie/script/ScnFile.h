@@ -36,6 +36,17 @@ namespace genie {
 class Logger;
 
 // Used for blending between screens in the cutscenes/cinematics in the campaigns
+// This is just based on some random post on aokheaven, but I haven't found a better description
+// http://aok.heavengames.com/cgi-bin/forums/display.cgi?action=ct&f=9,44036,0,30
+
+//   BLN files are used for fading the Multimedia Cinematic Screens.
+//   This type of file is compressed from start to end (does not contain uncompressed header, ect).
+//   I have named them "Blender" files since they are used for fading the color indices.
+//    - Offset 0x0000 { (float) Version [1.0] }
+//    - Offset 0x0004 { 20 Frames * 256 Indexes * 256 Palettes }
+//   The total inflated length of these files (as of the currently used Version 1.0) should measure 4+(20*256*256)=1,310,724 bytes.
+// --
+// AOHH
 class BlnFile : public IFile
 {
 public:

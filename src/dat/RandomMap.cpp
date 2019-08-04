@@ -46,10 +46,12 @@ void RandomMaps::serializeObject()
     if (getGameVersion() < GV_AoEB) {
         serializeSize<uint32_t>(random_map_count, OldMaps.size());
 
-        if (isOperation(OP_READ))
+        if (isOperation(OP_READ)) {
             OldMaps.resize(random_map_count);
-        for (auto &sub : OldMaps)
+        }
+        for (std::vector<int32_t> &sub : OldMaps) {
             serialize<int32_t>(sub, 852);
+        }
     } else {
         serializeSize<uint32_t>(random_map_count, Maps.size());
 
