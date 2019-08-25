@@ -1,6 +1,6 @@
 [submodule "extern/pcrio"]
 	path = extern/pcrio
-	url = https://github.com/apreiml/pcrio.git
+	url = https://github.com/sandsmark/pcrio.git
 [submodule "extern/zstr"]
 	path = extern/zstr
 	url = https://github.com/sandsmark/zstr.git

@@ -19,7 +19,6 @@ because of possible bugs.
 ## Dependencies ##
 
  - A modern C++ Compiler (i. e. supports C++17)
- - [PCRIO](https://github.com/sandsmark/pcrio) - clone this _next to_ the genieutils folder.
 
 This assumes that you do a recursive clone of the repo or remember to update
 the submodules, otherwise you need to install zstr, and winiconv when building
