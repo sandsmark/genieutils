@@ -115,6 +115,7 @@ bool ScnFile::verifyVersion()
 void ScnFile::serializeObject(void)
 {
     serializeVersion();
+
     if (isOperation(OP_READ) && !verifyVersion()) {
         std::cout << "ERROR" << std::endl;
         return;
@@ -133,11 +134,13 @@ void ScnFile::serializeObject(void)
     serialize<uint32_t>(enabledPlayerCount);
 
     compressor_.beginCompression();
-   #if 0
+#if 0
     std::ofstream dump("/tmp/decompressed");
+
     while (getIStream()->good()) {
         dump.put(getIStream()->get());
     }
+
     dump.close();
     exit(0);
 #endif
@@ -164,6 +167,7 @@ void ScnFile::serializeObject(void)
     }
 
     serializeSize<uint32_t>(playerUnitsCount, playerUnits.size());
+
     if (scn_internal_ver > 1.06f) {
         serialize(playerResources, 8);
     } else {
@@ -183,8 +187,10 @@ void ScnFile::serializeObject(void)
     if (scn_trigger_ver > 1.4f) {
         serialize<int8_t>(objectivesStartingState);
     }
+
     serializeSize<uint32_t>(numTriggers_, triggers.size());
     serialize(triggers, numTriggers_);
+
     if (scn_trigger_ver > 1.3f) {
         serialize<int32_t>(triggerDisplayOrder, numTriggers_);
     }
@@ -192,9 +198,11 @@ void ScnFile::serializeObject(void)
     if (scn_ver == "1.22" || scn_ver == "1.21" || scn_ver == "1.20" || scn_ver == "1.19" || scn_ver == "1.18") {
         serialize<uint32_t>(includeFiles);
         serialize<uint32_t>(perErrorIncluded);
+
         if (perErrorIncluded) {
             serialize<uint32_t>(perError, 99);
         }
+
         if (includeFiles) {
             serializeSize<uint32_t>(fileCount_, includedFiles.size());
             serialize(includedFiles, fileCount_);
@@ -214,28 +222,28 @@ void ScnPersonalityScript::serializeObject(void)
 void ScnFile::serializeVersion(void)
 {
     /* Internal versions
-1.01 - 1.00
-1.02 - 1.03
-1.03 - 1.03
-1.04 - 1.04
-1.05 - 1.04
-1.06 - 1.06
-1.07 - 1.07
-1.08 - 1.08
-1.09 - 1.11
-1.10 - 1.11
-1.11 - 1.11
-1.12 - 1.12
-1.13 - 1.12
-1.14 - 1.12
-1.15 - 1.12
-1.16 - 1.12
-1.17 - 1.14 (CORE BUG: should be 1.13)
-1.18 - 1.13
-1.19 - 1.13
-1.20 - 1.14
-1.21 - 1.14
-*/
+    1.01 - 1.00
+    1.02 - 1.03
+    1.03 - 1.03
+    1.04 - 1.04
+    1.05 - 1.04
+    1.06 - 1.06
+    1.07 - 1.07
+    1.08 - 1.08
+    1.09 - 1.11
+    1.10 - 1.11
+    1.11 - 1.11
+    1.12 - 1.12
+    1.13 - 1.12
+    1.14 - 1.12
+    1.15 - 1.12
+    1.16 - 1.12
+    1.17 - 1.14 (CORE BUG: should be 1.13)
+    1.18 - 1.13
+    1.19 - 1.13
+    1.20 - 1.14
+    1.21 - 1.14
+    */
 
     // "1.01"
     // "1.02"
@@ -260,7 +268,7 @@ void ScnFile::serializeVersion(void)
     // "1.21" The Conquerors?
 
     /*if (isOperation(OP_WRITE))
-  {
+    {
     switch (getGameVersion())
     {
       case genie::GV_AoE:
@@ -281,7 +289,7 @@ void ScnFile::serializeVersion(void)
       default:
         break;
     }
-  }*/
+    }*/
 
     version = scn_ver;
     serialize(version, 4);
@@ -292,12 +300,12 @@ void ScnFile::serializeVersion(void)
 void ScnMainPlayerData::serializePlayerDataVersion(void)
 {
     /*if (isOperation(OP_WRITE))
-  {
+    {
     switch (getGameVersion())
     {
       case genie::GV_AoE:
       case genie::GV_RoR:
-//         playerDataVersion = ; //TODO
+    //         playerDataVersion = ; //TODO
         break;
 
       case genie::GV_AoK:
@@ -316,14 +324,14 @@ void ScnMainPlayerData::serializePlayerDataVersion(void)
       default:
         break;
     }
-  }*/
+    }*/
 
     playerDataVersion = scn_plr_data_ver;
     serialize<float>(playerDataVersion);
     scn_plr_data_ver = playerDataVersion;
 
     /*if (isOperation(OP_READ))
-  {
+    {
     if (fabs(playerDataVersion - 1.18) < 0.01)
       setGameVersion(genie::GV_AoK);
     else if (fabs(playerDataVersion - 1.22) < 0.01)
@@ -332,7 +340,7 @@ void ScnMainPlayerData::serializePlayerDataVersion(void)
       setGameVersion(genie::GV_SWGB);
     else
       setGameVersion(genie::GV_AoE);
-  }*/
+    }*/
 }
 
 void CpxFile::serializeObject()
@@ -371,6 +379,7 @@ ScnFilePtr CpxFile::getScnFile(size_t index)
         std::cerr << "no files available" << std::endl;
         return nullptr;
     }
+
     if (index >= m_files.size()) {
         std::cerr << "index out of range: " << index << " " << m_files.size() << std::endl;
         index = 0;
@@ -405,8 +414,9 @@ void BlnFile::serializeObject()
     compressor_.beginCompression();
 
     serialize(version);
-    for (int frame=0; frame<20; frame++) {
-        for (int palette=0; palette<256; palette++) {
+
+    for (int frame = 0; frame < 20; frame++) {
+        for (int palette = 0; palette < 256; palette++) {
             serialize(frames[frame].palettes[palette].colors, 256);
         }
     }

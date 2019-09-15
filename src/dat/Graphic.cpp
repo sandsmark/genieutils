@@ -36,18 +36,20 @@ void Graphic::setGameVersion(GameVersion gv)
 
 unsigned short Graphic::getNameSize()
 {
-    if (getGameVersion() < GV_SWGB)
+    if (getGameVersion() < GV_SWGB) {
         return 21;
-    else
+    } else {
         return 25;
+}
 }
 
 unsigned short Graphic::getFilenameSize()
 {
-    if (getGameVersion() < GV_SWGB)
+    if (getGameVersion() < GV_SWGB) {
         return 13;
-    else
+    } else {
         return 25;
+}
 }
 
 void Graphic::serializeObject(void)
@@ -94,8 +96,9 @@ void Graphic::serializeObject(void)
     serialize<int16_t>(ID);
     serialize<int8_t>(MirroringMode);
 
-    if (gv >= GV_AoKB) // 10.72
+    if (gv >= GV_AoKB) { // 10.72
         serialize<int8_t>(EditorFlag); // A sprite editor thing
+}
 
     serialize(Deltas, delta_count);
 

@@ -40,26 +40,32 @@ void Terrain::setTerrainCount(unsigned short cnt)
 //------------------------------------------------------------------------------
 unsigned short Terrain::getTerrainCount(GameVersion gv)
 {
-    if (terrain_count_)
+    if (terrain_count_) {
         return terrain_count_;
-    if (gv >= GV_SWGB)
+}
+    if (gv >= GV_SWGB) {
         return 55;
-    if (gv >= GV_T2 && gv <= GV_LatestTap)
+}
+    if (gv >= GV_T2 && gv <= GV_LatestTap) {
         return 96;
-    if (gv == GV_Cysion)
+}
+    if (gv == GV_Cysion) {
         return 100;
-    if (gv == GV_TC)
+}
+    if (gv == GV_TC) {
         return 42;
+}
     return 32;
 }
 
 //------------------------------------------------------------------------------
 unsigned short Terrain::getNameSize()
 {
-    if (getGameVersion() >= GV_SWGB)
+    if (getGameVersion() >= GV_SWGB) {
         return 17;
-    else
+    } else {
         return 13;
+}
 }
 
 //------------------------------------------------------------------------------
@@ -91,8 +97,9 @@ void Terrain::serializeObject(void)
         serializeDebugString(Name2);
     }
 
-    if (gv >= GV_AoEB)
+    if (gv >= GV_AoEB) {
         serialize<int32_t>(SLP);
+}
     serialize<int32_t>(ShapePtr);
     serialize<int32_t>(SoundID);
 

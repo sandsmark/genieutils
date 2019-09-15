@@ -38,10 +38,11 @@ void Tech::setGameVersion(GameVersion gv)
 //------------------------------------------------------------------------------
 unsigned short Tech::getRequiredTechsSize()
 {
-    if (getGameVersion() >= GV_AoKA)
+    if (getGameVersion() >= GV_AoKA) {
         return 6;
-    else
+    } else {
         return 4;
+}
 }
 
 //------------------------------------------------------------------------------

@@ -49,8 +49,9 @@ const char *IFile::getFileName(void) const
 //------------------------------------------------------------------------------
 void IFile::load()
 {
-    if (fileName_.empty())
+    if (fileName_.empty()) {
         throw std::ios_base::failure("Load: File name not set");
+}
 
     load(fileName_.c_str());
 }
@@ -77,8 +78,9 @@ void IFile::load(const std::string &fileName)
 //------------------------------------------------------------------------------
 void IFile::save()
 {
-    if (fileName_.empty())
+    if (fileName_.empty()) {
         throw std::ios_base::failure("Save: File name not set");
+}
 
     saveAs(fileName_.c_str());
 }
@@ -93,8 +95,9 @@ void IFile::saveAs(const char *fileName)
     if (file.fail()) {
         file.close();
         throw std::ios_base::failure("Can't write to file: \"" + std::string(fileName) + "\"");
-    } else
+    } else {
         writeObject(file);
+}
 
     file.close();
 }

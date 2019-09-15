@@ -131,20 +131,24 @@ void Unit::serializeObject(void)
     GameVersion gv = getGameVersion();
 
     //Type 10+
-    if (gv < GV_AoEB && isOperation(OP_WRITE))
+    if (gv < GV_AoEB && isOperation(OP_WRITE)) {
         Type /= 10;
+}
     serialize<int8_t>(Type); // 7 = 70 in AoE alphas etc
-    if (gv < GV_AoEB && isOperation(OP_READ))
+    if (gv < GV_AoEB && isOperation(OP_READ)) {
         Type *= 10;
+}
 
     uint16_t name_len{};
-    if (gv > GV_LatestTap || gv < GV_Tapsa)
+    if (gv > GV_LatestTap || gv < GV_Tapsa) {
         serializeSize<uint16_t>(name_len, Name);
+}
 
     serialize<int16_t>(ID);
     serialize<uint16_t>(LanguageDLLName);
-    if (gv >= GV_MATT)
+    if (gv >= GV_MATT) {
         serialize<uint16_t>(LanguageDLLCreation);
+}
     serialize<int16_t>(Class);
     serializePair<int16_t>(StandingGraphic, (gv >= GV_AoKB) ? false : true);
     serialize<int16_t>(DyingGraphic);
@@ -157,11 +161,13 @@ void Unit::serializeObject(void)
     serialize<float>(Size.y);
     serialize<float>(Size.z);
     serialize<int16_t>(TrainSound);
-    if (gv >= GV_AoKE3)
+    if (gv >= GV_AoKE3) {
         serialize<int16_t>(DamageSound);
+}
     serialize<int16_t>(DeadUnitID);
-    if (gv >= GV_T6 && gv <= GV_LatestTap)
+    if (gv >= GV_T6 && gv <= GV_LatestTap) {
         serialize<int16_t>(BloodUnitID);
+}
     serialize<int8_t>(SortNumber);
     serialize<int8_t>(CanBeBuiltOn);
     serialize<int16_t>(IconID);
@@ -169,11 +175,13 @@ void Unit::serializeObject(void)
     serialize<int16_t>(OldPortraitPict);
     serialize<int8_t>(Enabled);
 
-    if (gv >= GV_AoK) // 11.48
+    if (gv >= GV_AoK) { // 11.48
         serialize<int8_t>(Disabled);
+}
 
-    if (gv >= GV_MIK)
+    if (gv >= GV_MIK) {
         serializePair<int16_t>(PlacementSideTerrain);
+}
     serializePair<int16_t>(PlacementTerrain); // Before AoE, this also contains side terrain.
     serialize<float>(ClearanceSize.x);
     serialize<float>(ClearanceSize.y);
@@ -251,40 +259,51 @@ void Unit::serializeObject(void)
         serializeDebugString(Name);
     }
 
-    if (gv >= GV_AoE) // 7.12
+    if (gv >= GV_AoE) { // 7.12
         serialize<int16_t>(CopyID);
+}
 
-    if (gv >= GV_AoKA) // 9.49
+    if (gv >= GV_AoKA) { // 9.49
         serialize<int16_t>(BaseID);
+}
 
-    if (gv >= GV_T5 && gv <= GV_LatestTap)
+    if (gv >= GV_T5 && gv <= GV_LatestTap) {
         serialize<int16_t>(TelemetryID);
+}
 
 
-    if (Type == AoeTreeType)
+    if (Type == AoeTreeType) {
         return;
+}
 
-    if (Type >= FlagType)
+    if (Type >= FlagType) {
         serialize<float>(Speed);
-    else
+    } else {
         return;
+}
 
-    if (Type >= MovingType)
+    if (Type >= MovingType) {
         serialize<ISerializable>(Moving);
+}
 
-    if (Type >= ActionType)
+    if (Type >= ActionType) {
         serialize<ISerializable>(Action);
+}
 
-    if (Type >= CombatantType)
+    if (Type >= CombatantType) {
         serialize<ISerializable>(Combat);
+}
 
-    if (Type == MissileType)
+    if (Type == MissileType) {
         serialize<ISerializable>(Missile);
+}
 
-    if (Type >= CreatableType)
+    if (Type >= CreatableType) {
         serialize<ISerializable>(Creatable);
+}
 
-    if (Type == BuildingType)
+    if (Type == BuildingType) {
         serialize<ISerializable>(Building);
+}
 }
 } // namespace genie

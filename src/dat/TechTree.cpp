@@ -36,10 +36,11 @@ void TechTree::setGameVersion(GameVersion gv)
 //------------------------------------------------------------------------------
 unsigned short TechTree::getCount() //GameVersion gv) // used before 10.84 (GV_AoKB)
 {
-    if (false) // 10.38 - <10.84
+    if (false) { // 10.38 - <10.84
         return 100;
-    else
+    } else {
         return 40;
+}
 }
 
 //------------------------------------------------------------------------------
@@ -54,9 +55,9 @@ void TechTree::serializeObject(void)
 
     serializeSize<uint8_t>(building_count, BuildingConnections.size());
 
-    if (getGameVersion() >= GV_SWGB)
+    if (getGameVersion() >= GV_SWGB) {
         serializeSize<uint16_t>(unit_count, UnitConnections.size());
-    else {
+    } else {
         uint8_t tbc = unit_count;
         serializeSize<uint8_t>(tbc, UnitConnections.size());
         unit_count = tbc;
@@ -84,12 +85,13 @@ void TechTreeAge::setGameVersion(GameVersion gv)
 //------------------------------------------------------------------------------
 unsigned short TechTreeAge::getZoneCount()
 {
-    if (getGameVersion() >= GV_SWGB)
+    if (getGameVersion() >= GV_SWGB) {
         return 20;
-    else if (getGameVersion() >= GV_AoKB) // 10.38
+    } else if (getGameVersion() >= GV_AoKB) { // 10.38
         return 10;
-    else
+    } else {
         return 3;
+}
 }
 
 //------------------------------------------------------------------------------

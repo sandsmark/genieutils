@@ -62,14 +62,17 @@ LangFile::LangFile() :
 //------------------------------------------------------------------------------
 LangFile::~LangFile()
 {
-    if (toDefaultCharsetCd_)
+    if (toDefaultCharsetCd_) {
         iconv_close(toDefaultCharsetCd_);
+}
 
-    if (fromDefaultCharsetCd_)
+    if (fromDefaultCharsetCd_) {
         iconv_close(fromDefaultCharsetCd_);
+}
 
-    if (pfile_)
+    if (pfile_) {
         pcr_free(pfile_);
+}
 }
 
 //------------------------------------------------------------------------------
@@ -82,8 +85,9 @@ void LangFile::load(const std::string &filename)
     log.info("-------");
     log.info("Loading \"%s\"", filename);
 
-    if (pfile_)
+    if (pfile_) {
         pcr_free(pfile_);
+}
 
     pfile_ = pcr_read_file(filename.c_str(), &errorCode_);
 
@@ -98,15 +102,18 @@ void LangFile::load(const std::string &filename)
 
         const struct language_info_array *linfos = pcr_get_language_info(pfile_);
 
-        if (linfos->count == 0)
+        if (linfos->count == 0) {
             throw std::string("Not supported: There are no resources in dll file");
+}
 
         struct language_info *linfo = &linfos->array[0];
 
         // Get most common language desc
-        for (unsigned int i = 1; i < linfos->count; i++)
-            if (linfo->item_count < linfos->array[i].item_count)
+        for (unsigned int i = 1; i < linfos->count; i++) {
+            if (linfo->item_count < linfos->array[i].item_count) {
                 linfo = &linfos->array[i];
+}
+}
 
         defaultCultureId_ = linfo->lang.id;
         defaultCodepage_ = linfo->lang.codepage;
@@ -206,9 +213,9 @@ void LangFile::setString(unsigned int id, const std::string &str)
 
     int err = pcr_set_stringC(pfile_, id, lang, encodedStr.c_str());
 
-    if (err > 0)
+    if (err > 0) {
         PcrioError::check(err);
-    else if (err == -1) // wrong codepage
+    } else if (err == -1) // wrong codepage
     {
         log.info("Trying to rewrite string converted to wrong codepage");
 
@@ -241,12 +248,13 @@ std::string LangFile::convertTo(const std::string &in, uint32_t codepage)
     iconv_t cd;
     std::string encodedStr;
 
-    if (codepage == 0)
+    if (codepage == 0) {
         return in;
+}
 
-    if (codepage == defaultCodepage_)
+    if (codepage == defaultCodepage_) {
         cd = fromDefaultCharsetCd_;
-    else {
+    } else {
 
         std::stringstream conv_name;
 
@@ -261,8 +269,9 @@ std::string LangFile::convertTo(const std::string &in, uint32_t codepage)
 
     encodedStr = convert(cd, in);
 
-    if (codepage != defaultCodepage_)
+    if (codepage != defaultCodepage_) {
         iconv_close(cd);
+}
 
     return encodedStr;
 }
@@ -273,12 +282,13 @@ std::string LangFile::convertFrom(const std::string &in, uint32_t codepage)
     iconv_t cd;
     std::string decodedStr;
 
-    if (codepage == 0)
+    if (codepage == 0) {
         return in;
+}
 
-    if (codepage == defaultCodepage_)
+    if (codepage == defaultCodepage_) {
         cd = toDefaultCharsetCd_;
-    else {
+    } else {
 
         std::stringstream conv_name;
 
@@ -293,8 +303,9 @@ std::string LangFile::convertFrom(const std::string &in, uint32_t codepage)
 
     decodedStr = convert(cd, in);
 
-    if (codepage != defaultCodepage_)
+    if (codepage != defaultCodepage_) {
         iconv_close(cd);
+}
 
     return decodedStr;
 }
@@ -332,17 +343,20 @@ std::string LangFile::convert(iconv_t cd, const std::string &input)
 
                 std::string error("Error in converting characters: ");
 
-                if (errno == EILSEQ)
+                if (errno == EILSEQ) {
                     error += "EILSEQ";
-                if (errno == EINVAL)
+}
+                if (errno == EINVAL) {
                     error += "EINVAL";
+}
 
                 log.error("%s", error.c_str());
 
                 throw error;
             }
-        } else
+        } else {
             decodedStr += std::string(buf, CONV_BUF_SIZE - outleft);
+}
     }
 
     delete[] inbuf;

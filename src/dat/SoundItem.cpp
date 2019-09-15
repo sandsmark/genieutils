@@ -25,8 +25,9 @@ namespace genie {
 
 unsigned short SoundItem::getFileNameSize()
 {
-    if (getGameVersion() < GV_SWGB)
+    if (getGameVersion() < GV_SWGB) {
         return 13;
+}
     return 27;
 }
 

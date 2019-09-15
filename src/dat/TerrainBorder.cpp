@@ -44,8 +44,9 @@ void TerrainBorder::serializeObject(void)
     serialize(Name, getNameSize());
     serialize(Name2, getNameSize());
 
-    if (gv >= GV_AoEB)
+    if (gv >= GV_AoEB) {
         serialize<int32_t>(SLP);
+}
     serialize<int32_t>(ShapePtr);
     serialize<int32_t>(SoundID);
     serialize<uint8_t>(Colors, 3);
@@ -68,7 +69,8 @@ void TerrainBorder::serializeObject(void)
     serialize<int16_t>(DrawTerrain);
     serialize<int16_t>(UnderlayTerrain);
 
-    if (gv != GV_MIK)
+    if (gv != GV_MIK) {
         serialize<int16_t>(BorderStyle);
+}
 }
 } // namespace genie

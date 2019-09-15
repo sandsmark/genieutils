@@ -85,20 +85,21 @@ void DatFile::serializeObject(void)
 
     // Handle all different versions while in development.
     if(getGameVersion() == GV_Tapsa) {
-        if("VER 4.5" == FileVersion)
+        if("VER 4.5" == FileVersion) {
             setGameVersion(GV_T8);
-        else if("VER 4.4" == FileVersion)
+        } else if("VER 4.4" == FileVersion) {
             setGameVersion(GV_T7);
-        else if("VER 4.3" == FileVersion)
+        } else if("VER 4.3" == FileVersion) {
             setGameVersion(GV_T6);
-        else if("VER 4.2" == FileVersion)
+        } else if("VER 4.2" == FileVersion) {
             setGameVersion(GV_T5);
-        else if("VER 4.1" == FileVersion)
+        } else if("VER 4.1" == FileVersion) {
             setGameVersion(GV_T4);
-        else if("VER 4.0" == FileVersion)
+        } else if("VER 4.0" == FileVersion) {
             setGameVersion(GV_T3);
-        else if("VER 3.9" == FileVersion)
+        } else if("VER 3.9" == FileVersion) {
             setGameVersion(GV_T2);
+}
     }
 
     GameVersion gv = getGameVersion();
@@ -133,23 +134,26 @@ void DatFile::serializeObject(void)
 
     serialize<int32_t>(FloatPtrTerrainTables, count16);
 
-    if (gv >= GV_AoKA)
+    if (gv >= GV_AoKA) {
         serialize<int32_t>(TerrainPassGraphicPointers, count16);
+}
 
     TerrainRestriction::setTerrainCount(TerrainsUsed1);
     serialize(TerrainRestrictions, count16);
 
     serializeSize<uint16_t>(count16, PlayerColours.size());
 
-    if (verbose_)
+    if (verbose_) {
         std::cout << "PlayerColours: " << count16 << std::endl;
+}
 
     serialize(PlayerColours, count16);
 
     serializeSize<uint16_t>(count16, Sounds.size());
 
-    if (verbose_)
+    if (verbose_) {
         std::cout << "Sounds: " << count16 << std::endl;
+}
 
     serialize(Sounds, count16);
 
@@ -184,13 +188,15 @@ void DatFile::serializeObject(void)
     // It exists in Star Wars games too, but is not used.
     serialize<ISerializable>(RandomMaps);
 
-    if (verbose_)
+    if (verbose_) {
         std::cout << "Random maps: " << RandomMaps.Maps.size() << std::endl;
+}
 
     serializeSize<uint32_t>(count32, Effects.size());
 
-    if (verbose_)
+    if (verbose_) {
         std::cout << "Effects: " << count32 << std::endl;
+}
 
     serialize(Effects, count32);
 
@@ -203,26 +209,30 @@ void DatFile::serializeObject(void)
     if (gv >= GV_AoK) {
         serializeSize<uint32_t>(count32, UnitHeaders.size());
 
-        if (verbose_)
+        if (verbose_) {
             std::cout << "Units: " << count32 << std::endl;
+}
 
         serialize(UnitHeaders, count32);
     }
 
     serializeSize<uint16_t>(count16, Civs.size());
 
-    if (verbose_)
+    if (verbose_) {
         std::cout << "Civs: " << count16 << std::endl;
+}
 
     serialize(Civs, count16);
 
-    if (gv >= GV_SWGB)
+    if (gv >= GV_SWGB) {
         serialize<int8_t>(SUnknown7);
+}
 
     serializeSize<uint16_t>(count16, Techs.size());
 
-    if (verbose_)
+    if (verbose_) {
         std::cout << "Techs: " << count16 << std::endl;
+}
 
     serialize(Techs, count16);
 
@@ -231,8 +241,9 @@ void DatFile::serializeObject(void)
 //        std::cout << "TechTrees (before eof) (0x" << std::hex << pos_cnt;
 //    }
 
-    if (gv >= GV_SWGB)
+    if (gv >= GV_SWGB) {
         serialize<int8_t>(SUnknown8);
+}
 
     if (gv >= GV_AoKA) // 9.38
     {
