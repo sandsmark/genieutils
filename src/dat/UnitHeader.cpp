@@ -38,7 +38,7 @@ void UnitHeader::serializeObject(void)
     if (Exists) {
         uint16_t task_count{};
         serializeSize<uint16_t>(task_count, TaskList.size());
-        serializeSub<Task>(TaskList, task_count);
+        serialize(TaskList, task_count);
     }
 }
 }

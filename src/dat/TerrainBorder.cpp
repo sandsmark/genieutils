@@ -69,7 +69,7 @@ void TerrainBorder::serializeObject(void)
     serialize<int8_t>(Drawn);
 
     for (std::vector<FrameData> &sub : Borders) {
-        serializeSub<FrameData>(sub, gv == GV_MIK ? 13 : 12);
+        serialize(sub, gv == GV_MIK ? 13 : 12);
     }
 
     serialize<int16_t>(DrawTerrain);

@@ -483,7 +483,9 @@ protected:
     //----------------------------------------------------------------------------
     /// Reads or writes an array of data to/from a vector dependent on operation.
     //
-    template <typename T>
+    template <typename T,
+                  std::enable_if_t<std::is_pod<T>::value, int> = 0
+        >
     void serialize(std::vector<T> &vec, size_t size)
     {
         switch (getOperation()) {
@@ -554,10 +556,13 @@ protected:
     }
 
     //----------------------------------------------------------------------------
-    /// Serializes a collection of objects that inherit from ISerializable.
+    /// Serializes a vector of objects that inherit from ISerializable.
     //
-    template <typename T>
-    void serializeSub(std::vector<T> &vec, size_t size)
+
+    template <typename T,
+                  std::enable_if_t<std::is_base_of<ISerializable, T>::value, int> = 0
+        >
+    void serialize(std::vector<T> &vec, size_t size)
     {
         assert(operation_ != OP_INVALID);
 
@@ -566,7 +571,7 @@ protected:
                 std::cerr << "Warning!: vector size differs size!" << vec.size() << " " << size << std::endl;
 
             for (typename std::vector<T>::iterator it = vec.begin(); it != vec.end(); ++it) {
-                ISerializable *data = dynamic_cast<ISerializable *>(&(*it));
+                ISerializable *data = static_cast<ISerializable *>(&(*it));
 
                 data->serializeSubObject(this);
 
@@ -577,7 +582,7 @@ protected:
             vec.resize(size);
 
             for (size_t i = 0; i < size; ++i) {
-                ISerializable *cast_obj = dynamic_cast<ISerializable *>(&vec[i]);
+                ISerializable *cast_obj = static_cast<ISerializable *>(&vec[i]);
                 cast_obj->serializeSubObject(this);
             }
         }

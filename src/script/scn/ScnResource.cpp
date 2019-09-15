@@ -49,7 +49,7 @@ void ScnPlayerResources::serializeObject(void)
 void ScnPlayerUnits::serializeObject(void)
 {
     serializeSize<uint32_t>(unitCount_, units.size());
-    serializeSub<ScnUnit>(units, unitCount_);
+    serialize(units, unitCount_);
 }
 
 void ScnUnit::serializeObject(void)

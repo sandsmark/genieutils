@@ -47,8 +47,8 @@ void RandomMaps::serializeObject()
 
         serialize<int32_t>(RandomMapsPtr);
 
-        serializeSub<MapInfo>(Maps, random_map_count);
-        serializeSub<MapInfo>(Maps, random_map_count);
+        serialize(Maps, random_map_count);
+        serialize(Maps, random_map_count);
     }
 }
 
@@ -86,25 +86,25 @@ void MapInfo::serializeObject(void)
     serialize<int32_t>(MapLandsPtr);
 
     if (io_all_)
-        serializeSub<MapLand>(MapLands, count);
+        serialize(MapLands, count);
 
     serializeSize<uint32_t>(count, MapTerrains.size());
     serialize<int32_t>(MapTerrainsPtr);
 
     if (io_all_)
-        serializeSub<MapTerrain>(MapTerrains, count);
+        serialize(MapTerrains, count);
 
     serializeSize<uint32_t>(count, MapUnits.size());
     serialize<int32_t>(MapUnitsPtr);
 
     if (io_all_)
-        serializeSub<MapUnit>(MapUnits, count);
+        serialize(MapUnits, count);
 
     serializeSize<uint32_t>(count, MapElevations.size());
     serialize<int32_t>(MapElevationsPtr);
 
     if (io_all_)
-        serializeSub<MapElevation>(MapElevations, count);
+        serialize(MapElevations, count);
 
     io_all_ = !io_all_;
 }

@@ -36,11 +36,11 @@ void Trigger::serializeObject(void)
     serializeForcedString<int32_t>(description);
     serializeForcedString<int32_t>(name);
     serializeSize<int32_t>(numEffects_, effects.size());
-    serializeSub<TriggerEffect>(effects, numEffects_);
+    serialize(effects, numEffects_);
     if (scn_trigger_ver > 1.2f)
         serialize<int32_t>(effectDisplayOrder, numEffects_);
     serializeSize<int32_t>(numConditions_, conditions.size());
-    serializeSub<TriggerCondition>(conditions, numConditions_);
+    serialize(conditions, numConditions_);
     if (scn_trigger_ver > 1.2f)
         serialize<int32_t>(conditionDisplayOrder, numConditions_);
 }

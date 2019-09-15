@@ -137,25 +137,25 @@ void DatFile::serializeObject(void)
         serialize<int32_t>(TerrainPassGraphicPointers, count16);
 
     TerrainRestriction::setTerrainCount(TerrainsUsed1);
-    serializeSub<TerrainRestriction>(TerrainRestrictions, count16);
+    serialize(TerrainRestrictions, count16);
 
     serializeSize<uint16_t>(count16, PlayerColours.size());
 
     if (verbose_)
         std::cout << "PlayerColours: " << count16 << std::endl;
 
-    serializeSub<PlayerColour>(PlayerColours, count16);
+    serialize(PlayerColours, count16);
 
     serializeSize<uint16_t>(count16, Sounds.size());
 
     if (verbose_)
         std::cout << "Sounds: " << count16 << std::endl;
 
-    serializeSub<Sound>(Sounds, count16);
+    serialize(Sounds, count16);
 
     serializeSize<uint16_t>(count16, Graphics.size());
     if (gv < GV_AoE) {
-        serializeSub<Graphic>(Graphics, count16);
+        serialize(Graphics, count16);
     } else {
         serialize<int32_t>(GraphicPointers, count16);
         serializeSubWithPointers<Graphic>(Graphics, count16, GraphicPointers);
@@ -192,12 +192,12 @@ void DatFile::serializeObject(void)
     if (verbose_)
         std::cout << "Effects: " << count32 << std::endl;
 
-    serializeSub<Effect>(Effects, count32);
+    serialize(Effects, count32);
 
     if (gv >= GV_SWGB) //pos: 0x111936
     {
         serializeSize<uint16_t>(count16, UnitLines.size());
-        serializeSub<UnitLine>(UnitLines, count16);
+        serialize(UnitLines, count16);
     }
 
     if (gv >= GV_AoK) {
@@ -206,7 +206,7 @@ void DatFile::serializeObject(void)
         if (verbose_)
             std::cout << "Units: " << count32 << std::endl;
 
-        serializeSub<UnitHeader>(UnitHeaders, count32);
+        serialize(UnitHeaders, count32);
     }
 
     serializeSize<uint16_t>(count16, Civs.size());
@@ -214,7 +214,7 @@ void DatFile::serializeObject(void)
     if (verbose_)
         std::cout << "Civs: " << count16 << std::endl;
 
-    serializeSub<Civ>(Civs, count16);
+    serialize(Civs, count16);
 
     if (gv >= GV_SWGB)
         serialize<int8_t>(SUnknown7);
@@ -224,7 +224,7 @@ void DatFile::serializeObject(void)
     if (verbose_)
         std::cout << "Techs: " << count16 << std::endl;
 
-    serializeSub<Tech>(Techs, count16);
+    serialize(Techs, count16);
 
 //    if (verbose_) {
 //        pos_cnt = tellg();

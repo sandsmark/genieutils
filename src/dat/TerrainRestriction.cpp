@@ -54,7 +54,7 @@ void TerrainRestriction::serializeObject(void)
 
     GameVersion gv = getGameVersion();
     if (gv >= GV_AoKA || (gv >= GV_T4 && gv <= GV_LatestTap)) {
-        serializeSub<TerrainPassGraphic>(TerrainPassGraphics, terrain_count_);
+        serialize(TerrainPassGraphics, terrain_count_);
     }
 }
 }

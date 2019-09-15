@@ -84,21 +84,21 @@ void TerrainBlock::serializeObject(void)
     serialize<int32_t>(WorldWidth);
     serialize<int32_t>(WorldHeight);
 
-    serializeSub<TileSize>(TileSizes, SharedTerrain::TILE_TYPE_COUNT);
+    serialize(TileSizes, SharedTerrain::TILE_TYPE_COUNT);
     if (gv >= GV_AoE)
         serialize<int16_t>(PaddingTS); // Padding for TileSizes (32-bit aligned)
 
     if (isOperation(OP_READ))
-        serializeSub<Terrain>(Terrains, Terrain::getTerrainCount(gv));
+        serialize(Terrains, Terrain::getTerrainCount(gv));
     else
-        serializeSub<Terrain>(Terrains, Terrains.size());
+        serialize(Terrains, Terrains.size());
 
     std::cout << "Terrains: " << Terrains.size() << std::endl;
 
     if (gv < GV_AoEB)
         serialize<int16_t>(AoEAlphaUnknown, (16 * 1888) / 2);
     // TerrainBorders seem to be unused (are empty) in GV > AoK Alpha
-    serializeSub<TerrainBorder>(TerrainBorders, 16); //TODO: fixed size?
+    serialize(TerrainBorders, 16); //TODO: fixed size?
 
     // Probably filled after loading map in game.
     serialize<int32_t>(MapRowOffset);

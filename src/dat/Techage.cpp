@@ -47,6 +47,6 @@ void Effect::serializeObject(void)
 
     uint16_t command_count{};
     serializeSize<uint16_t>(command_count, EffectCommands.size());
-    serializeSub<EffectCommand>(EffectCommands, command_count);
+    serialize(EffectCommands, command_count);
 }
 }

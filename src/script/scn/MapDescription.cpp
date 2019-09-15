@@ -29,7 +29,7 @@ void ScnMap::serializeObject(void)
     serialize<uint32_t>(width);
     serialize<uint32_t>(height);
 
-    serializeSub<MapTile>(tiles, width * height);
+    serialize(tiles, width * height);
 }
 
 void MapTile::serializeObject(void)

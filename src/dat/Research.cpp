@@ -51,7 +51,7 @@ void Tech::serializeObject(void)
 
     serialize<int16_t>(RequiredTechs, getRequiredTechsSize());
 
-    serializeSub<ResearchResourceCost>(ResourceCosts, 3);
+    serialize(ResourceCosts, 3);
     serialize<int16_t>(RequiredTechCount);
 
     if (gv >= GV_AoKB) {

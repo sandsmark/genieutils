@@ -42,7 +42,7 @@ namespace unit {
 
         if (gv >= GV_AoKE3) {
             serialize<int8_t>(CanBurn);
-            serializeSub<unit::BuildingAnnex>(Annexes, BUILDING_ANNEXES_SIZE); // 40 bytes
+            serialize(Annexes); // 40 bytes
             if (gv >= GV_AoKA)
                 serialize<int16_t>(HeadUnit); // 9.89
             serialize<int16_t>(TransformUnit);
@@ -58,7 +58,7 @@ namespace unit {
             {
                 serialize<int16_t>(PileUnit); // 9.06
                 // 9.06 - 9.25 -> 5 x 2 x int16_t
-                serialize<int8_t>(LootingTable, LOOTABLE_RES_COUNT); // 9.26
+                serialize<int8_t>(LootingTable); // 9.26
             }
         }
     }

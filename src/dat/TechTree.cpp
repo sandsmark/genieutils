@@ -66,10 +66,10 @@ void TechTree::serializeObject(void)
 
     serialize<int32_t>(TotalUnitTechGroups); // 9.39
 
-    serializeSub(TechTreeAges, age_count);
-    serializeSub(BuildingConnections, building_count);
-    serializeSub(UnitConnections, unit_count);
-    serializeSub(ResearchConnections, research_count);
+    serialize(TechTreeAges, age_count);
+    serialize(BuildingConnections, building_count);
+    serialize(UnitConnections, unit_count);
+    serialize(ResearchConnections, research_count);
 }
 
 void TechTreeAge::setGameVersion(GameVersion gv)

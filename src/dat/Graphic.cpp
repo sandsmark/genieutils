@@ -97,7 +97,7 @@ void Graphic::serializeObject(void)
     if (gv >= GV_AoKB) // 10.72
         serialize<int8_t>(EditorFlag); // A sprite editor thing
 
-    serializeSub<GraphicDelta>(Deltas, delta_count);
+    serialize(Deltas, delta_count);
 
     if (AngleSoundsUsed != 0) {
         if (isOperation(OP_WRITE) && AngleSounds.size() != AngleCount) {
@@ -107,7 +107,7 @@ void Graphic::serializeObject(void)
             AngleSounds.resize(AngleCount, AngleSounds.front());
         }
 
-        serializeSub<GraphicAngleSound>(AngleSounds, AngleCount);
+        serialize(AngleSounds, AngleCount);
     }
 }
 }

@@ -125,7 +125,7 @@ void Terrain::serializeObject(void)
     serialize<int8_t>(FrameChanged);
     serialize<int8_t>(Drawn);
 
-    serializeSub<FrameData>(ElevationGraphics, TILE_TYPE_COUNT);
+    serialize(ElevationGraphics, TILE_TYPE_COUNT);
     serialize<int16_t>(TerrainToDraw);
     serializePair<int16_t>(TerrainDimensions);
     if (isOperation(OP_READ))

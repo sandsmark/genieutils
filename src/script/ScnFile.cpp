@@ -164,16 +164,16 @@ void ScnFile::serializeObject(void)
 
     serializeSize<uint32_t>(playerUnitsCount, playerUnits.size());
     if (scn_internal_ver > 1.06f)
-        serializeSub<ScnPlayerResources>(playerResources, 8);
+        serialize(playerResources, 8);
     else {
         // A lot of data is read here.
     }
 
-    serializeSub<ScnPlayerUnits>(playerUnits, playerUnitsCount);
+    serialize(playerUnits, playerUnitsCount);
 
     // You would think this would be the size of the player data, but no
     serialize<uint32_t>(playerCount2_);
-    serializeSub<ScnMorePlayerData>(players, 8);
+    serialize(players, 8);
 
     triggerVersion = scn_trigger_ver;
     serialize<double>(triggerVersion);
@@ -182,7 +182,7 @@ void ScnFile::serializeObject(void)
     if (scn_trigger_ver > 1.4f)
         serialize<int8_t>(objectivesStartingState);
     serializeSize<uint32_t>(numTriggers_, triggers.size());
-    serializeSub<Trigger>(triggers, numTriggers_);
+    serialize(triggers, numTriggers_);
     if (scn_trigger_ver > 1.3f)
         serialize<int32_t>(triggerDisplayOrder, numTriggers_);
 
@@ -193,7 +193,7 @@ void ScnFile::serializeObject(void)
             serialize<uint32_t>(perError, 99);
         if (includeFiles) {
             serializeSize<uint32_t>(fileCount_, includedFiles.size());
-            serializeSub<ScnPersonalityScript>(includedFiles, fileCount_);
+            serialize(includedFiles, fileCount_);
         }
     }
 
@@ -344,7 +344,7 @@ void CpxFile::serializeObject()
     serialize(version, 4);
     serialize(name, 256);
     serialize(filecount);
-    serializeSub(m_files, filecount);
+    serialize(m_files, filecount);
 }
 
 std::vector<std::string> CpxFile::getFilenames() const

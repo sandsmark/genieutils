@@ -45,7 +45,7 @@ void ScnMainPlayerData::serializeObject(void)
         }
 
         CombinedResources::playerInfo = true;
-        serializeSub<CombinedResources>(resourcesPlusPlayerInfo, 16);
+        serialize(resourcesPlusPlayerInfo, 16);
     }
 
     if (scn_plr_data_ver > 1.06f) {
@@ -105,7 +105,7 @@ void ScnMainPlayerData::serializeObject(void)
         serializeSizedStrings<uint16_t>(personalityNames, 16, false);
     }
 
-    serializeSub(aiFiles, 16);
+    serialize(aiFiles, 16);
 
     if (scn_plr_data_ver > 1.1f) {
         serialize<uint8_t>(aiTypes, 16);
@@ -121,10 +121,10 @@ void ScnMainPlayerData::serializeObject(void)
         for (unsigned int i = 0; i < 16; ++i) {
             serialize(playerNames[i], 256);
         }
-        serializeSub<CombinedResources>(resourcesPlusPlayerInfo, 16);
+        serialize(resourcesPlusPlayerInfo, 16);
     } else {
         CombinedResources::playerInfo = false;
-        serializeSub<CombinedResources>(resourcesPlusPlayerInfo, 16);
+        serialize(resourcesPlusPlayerInfo, 16);
     }
 
     if (scn_plr_data_ver > 1.01f) {
@@ -207,7 +207,7 @@ void Timeline::serializeObject(void)
     serialize<uint16_t>(availableId);
     serialize<float>(time);
 
-    serializeSub<TimelineEvent>(events, entryCount);
+    serialize(events, entryCount);
 }
 
 void TimelineEvent::serializeObject(void)
@@ -411,7 +411,7 @@ void ScnMorePlayerData::serializeObject(void)
     serialize<uint8_t>(victory);
 //    printf("victory: %d\n", victory);
 
-    serializeSub<ScnPlayerVictoryCondition>(victoryConditions, victoryConditionsCount);
+    serialize(victoryConditions, victoryConditionsCount);
 
     if (victoryConditionVersion < 1.0) {
         totalVictoryPoints = 0;

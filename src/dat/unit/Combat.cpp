@@ -46,10 +46,10 @@ namespace unit {
 
         uint16_t attack_count{};
         serializeSize<uint16_t>(attack_count, Attacks.size());
-        serializeSub<unit::AttackOrArmor>(Attacks, attack_count);
+        serialize(Attacks, attack_count);
 
         serializeSize<uint16_t>(attack_count, Armours.size());
-        serializeSub<unit::AttackOrArmor>(Armours, attack_count);
+        serialize(Armours, attack_count);
 
         serialize<int16_t>(DefenseTerrainBonus);
         serialize<float>(MaxRange);

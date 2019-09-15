@@ -47,6 +47,6 @@ void Sound::serializeObject(void)
         }
     }
 
-    serializeSub<SoundItem>(Items, file_count);
+    serialize(Items, file_count);
 }
 }

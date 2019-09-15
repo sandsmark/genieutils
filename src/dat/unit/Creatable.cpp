@@ -39,7 +39,7 @@ namespace unit {
     {
         GameVersion gv = getGameVersion();
 
-        serializeSub<ResourceCost>(ResourceCosts, 3);
+        serialize(ResourceCosts, 3);
         serialize<int16_t>(TrainTime);
         serialize<int16_t>(TrainLocationID);
         serialize<int8_t>(ButtonID);

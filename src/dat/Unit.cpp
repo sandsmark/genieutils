@@ -227,11 +227,11 @@ void Unit::serializeObject(void)
         serialize<float>(HPBarHeight);
     }
 
-    serializeSub<ResourceStorage>(ResourceStorages, 3);
+    serialize(ResourceStorages, 3);
 
     uint8_t damage_graphic_count{};
     serializeSize<uint8_t>(damage_graphic_count, DamageGraphics.size());
-    serializeSub<unit::DamageGraphic>(DamageGraphics, damage_graphic_count);
+    serialize(DamageGraphics, damage_graphic_count);
 
     serialize<int16_t>(SelectionSound);
     serialize<int16_t>(DyingSound);
