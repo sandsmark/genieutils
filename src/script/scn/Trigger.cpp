@@ -31,18 +31,21 @@ void Trigger::serializeObject(void)
     serialize<int32_t>(stringTableID);
     serialize<int8_t>(isObjective);
     serialize<int32_t>(descriptionOrder);
-    if (scn_trigger_ver > 1.5f)
+    if (scn_trigger_ver > 1.5f) {
         serialize<int32_t>(startingTime);
+    }
     serializeForcedString<int32_t>(description);
     serializeForcedString<int32_t>(name);
     serializeSize<int32_t>(numEffects_, effects.size());
     serialize(effects, numEffects_);
-    if (scn_trigger_ver > 1.2f)
+    if (scn_trigger_ver > 1.2f) {
         serialize<int32_t>(effectDisplayOrder, numEffects_);
+    }
     serializeSize<int32_t>(numConditions_, conditions.size());
     serialize(conditions, numConditions_);
-    if (scn_trigger_ver > 1.2f)
+    if (scn_trigger_ver > 1.2f) {
         serialize<int32_t>(conditionDisplayOrder, numConditions_);
+    }
 }
 
 void TriggerCondition::serializeObject(void)
@@ -54,15 +57,17 @@ void TriggerCondition::serializeObject(void)
             usedVariables = 16;
             int32_t *browser = &aiSignal;
             while (usedVariables > 0) {
-                if (*browser != -1)
+                if (*browser != -1) {
                     break;
+                }
                 --usedVariables;
                 --browser;
             }
         }
         serialize<int32_t>(usedVariables);
-    } else
+    } else {
         usedVariables = 13;
+    }
 
     int32_t *start = &amount;
     serialize<int32_t>(&start, usedVariables);
@@ -77,21 +82,24 @@ void TriggerEffect::serializeObject(void)
             usedVariables = 23;
             int32_t *browser = &instructionPanel;
             while (usedVariables > 0) {
-                if (*browser != -1)
+                if (*browser != -1) {
                     break;
+                }
                 --usedVariables;
                 --browser;
             }
         }
         serialize<int32_t>(usedVariables);
-    } else
+    } else {
         usedVariables = 16;
+    }
 
     int32_t *start = &aiGoal;
     serialize<int32_t>(&start, usedVariables);
     serializeForcedString<int32_t>(message);
     serializeForcedString<int32_t>(soundFile);
-    if (scn_trigger_ver > 1.1f && usedVariables >= 5 && setObjects > 0)
+    if (scn_trigger_ver > 1.1f && usedVariables >= 5 && setObjects > 0) {
         serialize<int32_t>(selectedUnits, setObjects);
+    }
 }
 } // namespace genie

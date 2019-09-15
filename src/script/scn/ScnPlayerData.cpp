@@ -180,8 +180,9 @@ void ScnMainPlayerData::serializeObject(void)
 
 void CombinedResources::serializeObject(void)
 {
-    if (playerInfo || scn_plr_data_ver < 1.14f)
+    if (playerInfo || scn_plr_data_ver < 1.14f) {
         serialize<uint32_t>(enabled);
+    }
     if (!playerInfo || scn_plr_data_ver < 1.14f) {
         serialize<uint32_t>(gold);
         serialize<uint32_t>(wood);
@@ -196,8 +197,9 @@ void CombinedResources::serializeObject(void)
     if (!playerInfo && scn_plr_data_ver > 1.16f) {
         serialize<uint32_t>(ore);
         serialize<uint32_t>(goods);
-        if (scn_plr_data_ver > 1.23f)
+        if (scn_plr_data_ver > 1.23f) {
             serialize<uint32_t>(goods);
+        }
     }
 }
 
@@ -251,8 +253,9 @@ void ScnMainPlayerData::serializeBitmap(void)
     serialize<uint32_t>(bitmapHeigth);
     serialize<int16_t>(hasBitmap);
 
-    if (bitmapIncluded == 0)
+    if (bitmapIncluded == 0) {
         return;
+    }
 
     serialize<char>(&bmpHeader, 0x28);
     if (isOperation(OP_READ)) {
@@ -260,8 +263,9 @@ void ScnMainPlayerData::serializeBitmap(void)
 
         bitmap = new char[bitmapByteSize];
 
-        for (unsigned int i = 0; i < 0x28; ++i)
+        for (unsigned int i = 0; i < 0x28; ++i) {
             bitmap[i] = bmpHeader[i];
+        }
 
         char *bitmapStart = (bitmap + 0x28);
 
@@ -275,14 +279,16 @@ void AiFile::serializeObject(void)
 {
     serializeSize<uint32_t>(aiFilenameSize, aiFilename, true);
     serializeSize<uint32_t>(cityFileSize, cityFilename, true);
-    if (scn_plr_data_ver > 1.07f)
+    if (scn_plr_data_ver > 1.07f) {
         serializeSize<uint32_t>(perFileSize, perFilename, true);
+    }
 
     // crap in exe, says these are >= 1.15
     serialize(aiFilename, aiFilenameSize);
     serialize(cityFilename, cityFileSize);
-    if (scn_plr_data_ver > 1.07f)
+    if (scn_plr_data_ver > 1.07f) {
         serialize(perFilename, perFileSize);
+    }
 }
 
 void ScnVictory::serializeObject(void)
@@ -329,8 +335,9 @@ void ScnDiplomacy::serializeObject(void)
 
 void ScnDisables::serializeObject(void)
 {
-    if (scn_plr_data_ver > 1.17f)
+    if (scn_plr_data_ver > 1.17f) {
         serialize<uint32_t>(numDisabledTechs, 16);
+    }
     serialize<uint32_t>(disabledTechs, 16, scn_plr_data_ver < 1.04f ? 20 : scn_plr_data_ver < 1.3f ? 30 : 60);
     if (scn_plr_data_ver > 1.17f) {
         serialize<uint32_t>(numDisabledUnits, 16);

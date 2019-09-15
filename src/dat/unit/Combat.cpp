@@ -63,8 +63,9 @@ namespace unit {
         serialize<int8_t>(BlastAttackLevel);
         serialize<float>(MinRange);
 
-        if (gv >= GV_AoKB) // 10.36
+        if (gv >= GV_AoKB) { // 10.36
             serialize<float>(AccuracyDispersion);
+        }
 
         serialize<int16_t>(AttackGraphic);
         if (gv >= GV_AoEB) // 7.01

@@ -111,8 +111,9 @@ void SlpFile::saveFile()
 //------------------------------------------------------------------------------
 void SlpFile::unload()
 {
-    if (!loaded_)
+    if (!loaded_) {
         log.warn("Trying to unload a not loaded slpfile!");
+    }
 
     frames_.clear();
     num_frames_ = 0;

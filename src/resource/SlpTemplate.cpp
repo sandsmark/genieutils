@@ -96,8 +96,9 @@ void SlpTemplateFile::saveFile() noexcept
 //------------------------------------------------------------------------------
 void SlpTemplateFile::unload() noexcept
 {
-    if (!loaded_)
+    if (!loaded_) {
         log.warn("Trying to unload a not loaded slpfile!");
+    }
 
     for (SlpTemplate &slpTemplate : templates) {
         slpTemplate.cmd_offsets_.clear();

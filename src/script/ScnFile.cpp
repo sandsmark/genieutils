@@ -151,21 +151,22 @@ void ScnFile::serializeObject(void)
 
     serialize<ISerializable>(map);
 
-    if (scn_ver == "1.20" || scn_ver == "1.21")
+    if (scn_ver == "1.20" || scn_ver == "1.21") {
         scn_internal_ver = 1.14f;
-    else if (scn_ver == "1.17" || scn_ver == "1.18" || scn_ver == "1.19")
+    } else if (scn_ver == "1.17" || scn_ver == "1.18" || scn_ver == "1.19") {
         scn_internal_ver = 1.13f;
-    else if (scn_ver == "1.14" || scn_ver == "1.15" || scn_ver == "1.16")
+    } else if (scn_ver == "1.14" || scn_ver == "1.15" || scn_ver == "1.16") {
         scn_internal_ver = 1.12f;
-    else if (scn_ver == "1.22")
+    } else if (scn_ver == "1.22") {
         scn_internal_ver = 1.15f;
-    else
+    } else {
         std::cerr << "unhandled version " << scn_ver << std::endl;
+    }
 
     serializeSize<uint32_t>(playerUnitsCount, playerUnits.size());
-    if (scn_internal_ver > 1.06f)
+    if (scn_internal_ver > 1.06f) {
         serialize(playerResources, 8);
-    else {
+    } else {
         // A lot of data is read here.
     }
 
@@ -179,18 +180,21 @@ void ScnFile::serializeObject(void)
     serialize<double>(triggerVersion);
     scn_trigger_ver = triggerVersion;
 
-    if (scn_trigger_ver > 1.4f)
+    if (scn_trigger_ver > 1.4f) {
         serialize<int8_t>(objectivesStartingState);
+    }
     serializeSize<uint32_t>(numTriggers_, triggers.size());
     serialize(triggers, numTriggers_);
-    if (scn_trigger_ver > 1.3f)
+    if (scn_trigger_ver > 1.3f) {
         serialize<int32_t>(triggerDisplayOrder, numTriggers_);
+    }
 
     if (scn_ver == "1.22" || scn_ver == "1.21" || scn_ver == "1.20" || scn_ver == "1.19" || scn_ver == "1.18") {
         serialize<uint32_t>(includeFiles);
         serialize<uint32_t>(perErrorIncluded);
-        if (perErrorIncluded)
+        if (perErrorIncluded) {
             serialize<uint32_t>(perError, 99);
+        }
         if (includeFiles) {
             serializeSize<uint32_t>(fileCount_, includedFiles.size());
             serialize(includedFiles, fileCount_);

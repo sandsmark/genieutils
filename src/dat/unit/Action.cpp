@@ -41,8 +41,9 @@ namespace unit {
         serializePair<int16_t>(DropSite, (gv < GV_TEST) ? true : false);
         serialize<int8_t>(TaskSwapGroup);
         serialize<int16_t>(AttackSound);
-        if (gv >= GV_AoEB)
+        if (gv >= GV_AoEB) {
             serialize<int16_t>(MoveSound); // 6.92
+        }
         serialize<int8_t>(RunPattern);
 
         if (gv < GV_AoK) // 11.24

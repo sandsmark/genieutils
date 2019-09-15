@@ -29,8 +29,9 @@ namespace unit {
 
         serialize<int16_t>(ConstructionGraphicID);
 
-        if (gv >= GV_TC) // 11.53
+        if (gv >= GV_TC) { // 11.53
             serialize<int16_t>(SnowGraphicID);
+        }
 
         serialize<int8_t>(AdjacentMode);
         serialize<int16_t>(GraphicsAngle);
@@ -43,8 +44,9 @@ namespace unit {
         if (gv >= GV_AoKE3) {
             serialize<int8_t>(CanBurn);
             serialize(Annexes); // 40 bytes
-            if (gv >= GV_AoKA)
+            if (gv >= GV_AoKA) {
                 serialize<int16_t>(HeadUnit); // 9.89
+            }
             serialize<int16_t>(TransformUnit);
             serialize<int16_t>(TransformSound);
         }

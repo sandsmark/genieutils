@@ -250,9 +250,9 @@ size_t DrsFile::copyrightHeaderSize() const
 //------------------------------------------------------------------------------
 void DrsFile::loadHeader()
 {
-    if (header_loaded_)
+    if (header_loaded_) {
         log.warn("Trying to load header again!");
-    else {
+    } else {
         string copyright = readString(copyrightHeaderSize());
         string version = readString(4);
         string filetype = readString(12);

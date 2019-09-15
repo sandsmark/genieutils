@@ -66,8 +66,9 @@ void SlpFrame::setSize(const uint32_t width, const uint32_t height)
 
 void SlpFrame::enlarge(const uint32_t width, const uint32_t height, const int32_t offset_x, const int32_t offset_y)
 {
-    if (width_ > width && height_ > height)
+    if (width_ > width && height_ > height) {
         return;
+    }
 
     if (is32bit()) {
         //std::vector<uint32_t> new_bgra_channels(width * height, 0);
@@ -189,10 +190,12 @@ void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
     uint32_t outline_pc_slot = 0;
     uint32_t transparent_slot = 0;
     // Ensure that all 8-bit masks get saved.
-    for (const XY &pixel : img_data.outline_pc_mask)
+    for (const XY &pixel : img_data.outline_pc_mask) {
         img_data.alpha_channel[pixel.y * width_ + pixel.x] = 255;
-    for (const XY &pixel : img_data.shield_mask)
+    }
+    for (const XY &pixel : img_data.shield_mask) {
         img_data.alpha_channel[pixel.y * width_ + pixel.x] = 255;
+    }
     {
         std::vector<XY> new_shadow_mask;
         new_shadow_mask.reserve(img_data.shadow_mask.size());
@@ -212,17 +215,19 @@ void SlpFrame::setSaveParams(std::ostream &ostr, uint32_t &slp_offset_)
         left_edges_[row] = 0;
         if (is32bit()) {
             for (uint32_t col = 0; col < width_; ++col) {
-                if (img_data.bgra_channels[row * width_ + col] == 0)
+                if (img_data.bgra_channels[row * width_ + col] == 0) {
                     ++left_edges_[row];
-                else
+                } else {
                     break;
+                }
             }
         } else {
             for (uint32_t col = 0; col < width_; ++col) {
-                if (img_data.alpha_channel[row * width_ + col] == 0)
+                if (img_data.alpha_channel[row * width_ + col] == 0) {
                     ++left_edges_[row];
-                else
+                } else {
                     break;
+                }
             }
         }
         // Fully transparent row
@@ -459,9 +464,9 @@ void SlpFrame::readImage()
             {
             case GreaterBlockCopy: // Greater block copy
                 pix_cnt = (sub << 4) + read<uint8_t>();
-                if (is32bit())
+                if (is32bit()) {
                     readPixelsToImage32(row, pix_pos, pix_cnt);
-                else {
+                } else {
                     readPixelsToImage(row, pix_pos, pix_cnt);
                 }
                 break;
@@ -473,26 +478,29 @@ void SlpFrame::readImage()
 
             case CopyAndTransform: // Copy and transform (player color)
                 pix_cnt = getPixelCountFromData(data);
-                if (is32bit())
+                if (is32bit()) {
                     readPixelsToImage32(row, pix_pos, pix_cnt, 1);
-                else
+                } else {
                     readPixelsToImage(row, pix_pos, pix_cnt, true);
+                }
                 break;
 
             case FillColor: // Run of plain color
                 pix_cnt = getPixelCountFromData(data);
-                if (is32bit())
+                if (is32bit()) {
                     setPixelsToColor32(row, pix_pos, pix_cnt);
-                else
+                } else {
                     setPixelsToColor(row, pix_pos, pix_cnt);
+                }
                 break;
 
             case TransformBlock: // Transform block (player color)
                 pix_cnt = getPixelCountFromData(data);
-                if (is32bit())
+                if (is32bit()) {
                     setPixelsToColor32(row, pix_pos, pix_cnt, true);
-                else
+                } else {
                     setPixelsToColor(row, pix_pos, pix_cnt, true);
+                }
                 break;
 
             case Shadow: // Shadow pixels
@@ -678,10 +686,11 @@ uint8_t SlpFrame::getPixelCountFromData(uint8_t data)
 
     data = (data & 0xF0) >> 4;
 
-    if (data == 0)
+    if (data == 0) {
         pix_cnt = read<uint8_t>();
-    else
+    } else {
         pix_cnt = data;
+    }
 
     return pix_cnt;
 }
@@ -689,8 +698,9 @@ uint8_t SlpFrame::getPixelCountFromData(uint8_t data)
 //------------------------------------------------------------------------------
 void SlpFrame::handleColors(cnt_type count_type, uint32_t row, uint32_t col, uint32_t count)
 {
-    if (count == 0)
+    if (count == 0) {
         return;
+    }
     switch (count_type) {
     case CNT_TRANSPARENT:
         if (count > 0x3F) // Greater skip.

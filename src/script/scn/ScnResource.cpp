@@ -35,11 +35,13 @@ void ScnPlayerResources::serializeObject(void)
         serialize<float>(ore);
 
         // this seems wrong, 1.3 is way too high, is always true?
-        if (scn_internal_ver < 1.3f)
+        if (scn_internal_ver < 1.3f) {
             serialize<float>(goods);
+        }
     }
-    if (scn_internal_ver > 1.13f)
+    if (scn_internal_ver > 1.13f) {
         serialize<float>(popLimit); // game forces range from 25 to 200, defaults to 75
+    }
 
     if (scn_internal_ver > 1.14f) {
         serialize<uint32_t>(playerId);

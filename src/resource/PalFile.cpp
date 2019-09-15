@@ -84,8 +84,9 @@ void PalFile::serializeObject()
         *ostr << fileHeader;
         *ostr << fileVersionHeader;
 
-        if (colors_.size() > 256)
+        if (colors_.size() > 256) {
             log.error("Too much colors (>256)");
+        }
 
         *ostr << colors_.size() << lineEnding;
 
@@ -100,11 +101,13 @@ void PalFile::serializeObject()
 //------------------------------------------------------------------------------
 size_t PalFile::numOfChars(uint8_t number)
 {
-    if (number < 10)
+    if (number < 10) {
         return 1;
+    }
 
-    if (number < 100)
+    if (number < 100) {
         return 2;
+    }
 
     return 3;
 }
@@ -119,8 +122,9 @@ size_t PalFile::objectSize()
     size += fileHeader.size();
     size += fileVersionHeader.size();
 
-    if (colors_.size() > 256)
+    if (colors_.size() > 256) {
         log.error("Too much colors (>256)");
+    }
 
     size += numOfChars(colors_.size()) + lineEndingSize;
 
