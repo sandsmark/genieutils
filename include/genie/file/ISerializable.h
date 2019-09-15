@@ -257,9 +257,9 @@ protected:
     /// @param data to write.
     //
     template <typename T>
-    void write(T &data)
+    void write(const T &data)
     {
-        ostr_->write(reinterpret_cast<char *>(&data), sizeof(T));
+        ostr_->write(reinterpret_cast<const char *>(&data), sizeof(T));
     }
 
     //----------------------------------------------------------------------------
@@ -280,9 +280,9 @@ protected:
     /// Writes an array to file.
     //
     template <typename T>
-    void write(T **data, size_t len)
+    void write(const T * const *data, size_t len)
     {
-        ostr_->write(reinterpret_cast<char *>(*data), sizeof(T) * len);
+        ostr_->write(reinterpret_cast<const char * const>(*data), sizeof(T) * len);
     }
 
     // Serializes a string with debug data.
@@ -457,7 +457,7 @@ protected:
     //
     template <typename T,
               std::size_t N,
-                  std::enable_if_t<std::is_base_of<ISerializable, T>::value, int> = 0
+              std::enable_if_t<std::is_base_of<ISerializable, T>::value, int> = 0
         >
     void serialize(std::array<T, N> &vec)
     {
