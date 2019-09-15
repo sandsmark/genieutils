@@ -31,8 +31,8 @@ namespace unit {
     {
     public:
         Creatable();
-        virtual ~Creatable();
-        virtual void setGameVersion(GameVersion gv);
+        ~Creatable() override;
+        void setGameVersion(GameVersion gv) override;
 
         static unsigned short getResourceCostsSize();
 
@@ -127,7 +127,7 @@ namespace unit {
         int16_t DisplayedPierceArmour = 0;
 
     protected:
-        virtual void serializeObject(void);
+        void serializeObject(void) override;
     };
 }
 }

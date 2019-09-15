@@ -28,8 +28,8 @@ class MapElevation : public ISerializable
 {
 public:
     MapElevation();
-    virtual ~MapElevation();
-    virtual void setGameVersion(GameVersion gv);
+    ~MapElevation() override;
+    void setGameVersion(GameVersion gv) override;
 
     int32_t Proportion = 0;
     int32_t Terrain = -1;
@@ -39,15 +39,15 @@ public:
     int32_t TileSpacing = 0;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 
 class MapUnit : public ISerializable
 {
 public:
     MapUnit();
-    virtual ~MapUnit();
-    virtual void setGameVersion(GameVersion gv);
+    ~MapUnit() override;
+    void setGameVersion(GameVersion gv) override;
 
     int32_t Unit = -1;
     int32_t HostTerrain = -1;
@@ -64,15 +64,15 @@ public:
     int32_t MaxDistanceToPlayers = 6;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 
 class MapTerrain : public ISerializable
 {
 public:
     MapTerrain();
-    virtual ~MapTerrain();
-    virtual void setGameVersion(GameVersion gv);
+    ~MapTerrain() override;
+    void setGameVersion(GameVersion gv) override;
 
     int32_t Proportion = 0;
     int32_t Terrain = -1;
@@ -90,7 +90,7 @@ class MapLand : public ISerializable
 public:
     MapLand();
     virtual ~MapLand();
-    virtual void setGameVersion(GameVersion gv);
+    void setGameVersion(GameVersion gv) override;
 
     int32_t LandID = 1;
     int32_t Terrain = -1;
@@ -109,15 +109,15 @@ public:
     int32_t Clumpiness = 8;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 
 class MapInfo : public ISerializable
 {
 public:
     MapInfo();
-    virtual ~MapInfo();
-    virtual void setGameVersion(GameVersion gv);
+    ~MapInfo() override;
+    void setGameVersion(GameVersion gv) override;
 
     int32_t MapID = -1;
 
@@ -145,15 +145,15 @@ public:
 private:
     bool io_all_ = false;
 
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 
 class RandomMaps : public ISerializable
 {
 public:
     RandomMaps();
-    virtual ~RandomMaps();
-    virtual void setGameVersion(GameVersion gv);
+    ~RandomMaps() override;
+    void setGameVersion(GameVersion gv) override;
 
     // Overwritten
     int32_t RandomMapsPtr = 0;
@@ -163,7 +163,7 @@ public:
 private:
     std::vector<std::vector<int32_t>> OldMaps;
 
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 }
 

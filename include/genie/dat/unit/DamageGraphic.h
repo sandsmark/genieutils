@@ -30,8 +30,8 @@ namespace unit {
     {
     public:
         DamageGraphic();
-        virtual ~DamageGraphic();
-        virtual void setGameVersion(GameVersion gv);
+        ~DamageGraphic() override;
+        void setGameVersion(GameVersion gv) override;
 
         int16_t GraphicID = -1;
 
@@ -53,7 +53,7 @@ namespace unit {
         int8_t ApplyMode = 0;
 
     private:
-        virtual void serializeObject(void);
+        void serializeObject(void) override;
     };
 }
 }

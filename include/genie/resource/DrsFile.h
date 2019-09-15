@@ -107,7 +107,7 @@ private:
     //
     void loadHeader();
 
-    virtual void serializeObject() override;
+    void serializeObject() override;
 };
 }
 

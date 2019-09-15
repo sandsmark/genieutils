@@ -66,7 +66,7 @@ public:
     };
 
     TriggerCondition();
-    virtual ~TriggerCondition();
+    ~TriggerCondition() override;
 
     int32_t type = 0;
     int32_t usedVariables = 0; //always = 0x10 (for internal use)
@@ -98,7 +98,7 @@ public:
     int32_t aiSignal = -1;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 
 class TriggerEffect : public ISerializable
@@ -159,7 +159,7 @@ public:
 
 
     TriggerEffect();
-    virtual ~TriggerEffect();
+    ~TriggerEffect() override;
 
     int32_t type = 0;
     int32_t usedVariables = 0;
@@ -188,14 +188,14 @@ public:
     std::vector<int32_t> selectedUnits;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 
 class Trigger : public ISerializable
 {
 public:
     Trigger();
-    virtual ~Trigger();
+    ~Trigger() override;
 
     int32_t startingState;
     int8_t looping;
@@ -213,7 +213,7 @@ public:
 private:
     int32_t numEffects_;
     int32_t numConditions_;
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 }
 

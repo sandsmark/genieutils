@@ -30,8 +30,8 @@ class Tech : public ISerializable
 {
 public:
     Tech();
-    virtual ~Tech();
-    virtual void setGameVersion(GameVersion gv);
+    ~Tech() override;
+    void setGameVersion(GameVersion gv) override;
 
     /// Size of RequiredTechs vector (4 in aoe/ror and 6 in games >= aok)
     unsigned short getRequiredTechsSize(void);
@@ -95,7 +95,7 @@ public:
     std::string Name2 = "";
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 }
 

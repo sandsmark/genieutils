@@ -70,13 +70,13 @@ class ScnPersonalityScript : public ISerializable
 {
 public:
     ScnPersonalityScript();
-    virtual ~ScnPersonalityScript();
+    ~ScnPersonalityScript() override;
 
     std::string filename;
     std::string content;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 
 //------------------------------------------------------------------------------
@@ -87,7 +87,7 @@ class ScnFile : public IFile
 {
 public:
     ScnFile();
-    virtual ~ScnFile();
+    ~ScnFile() override;
 
     //----------------------------------------------------------------------------
     /// Extracts a scenario (for debugging purpose).
@@ -147,7 +147,7 @@ private:
 
     Compressor compressor_;
 
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 
     void serializeVersion(void);
 };

@@ -80,5 +80,17 @@ namespace unit {
             }
         }
     }
+
+    void BuildingAnnex::setGameVersion(GameVersion gv)
+    {
+        ISerializable::setGameVersion(gv);
+    }
+
+    void BuildingAnnex::serializeObject()
+    {
+        serialize<int16_t>(UnitID);
+        serializePair<float>(Misplacement);
+    }
+
 }
 }

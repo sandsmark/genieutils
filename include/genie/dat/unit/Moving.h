@@ -32,7 +32,7 @@ namespace unit {
     {
     public:
         Moving();
-        virtual ~Moving();
+        ~Moving() override;
         virtual void setGameVersion(GameVersion gv);
 
         int16_t WalkingGraphic = -1;
@@ -59,7 +59,7 @@ namespace unit {
         float MaxYawPerSecondStationary = std::numeric_limits<float>::max();
 
     protected:
-        virtual void serializeObject(void);
+        void serializeObject(void) override;
     };
 }
 }

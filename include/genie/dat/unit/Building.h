@@ -41,11 +41,7 @@ namespace unit {
         std::pair<float, float> Misplacement = { 0.f, 0.f };
 
     private:
-        virtual void serializeObject(void)
-        {
-            serialize<int16_t>(UnitID);
-            serializePair<float>(Misplacement);
-        }
+        void serializeObject(void) override;
     };
 
     class Building : public ISerializable
@@ -136,7 +132,7 @@ namespace unit {
         std::vector<int8_t> LootingTable;
 
     protected:
-        virtual void serializeObject(void);
+        void serializeObject(void) override;
     };
 }
 }

@@ -30,10 +30,10 @@ class TerrainBorder : public SharedTerrain
 {
 public:
     TerrainBorder();
-    virtual ~TerrainBorder();
-    virtual void setGameVersion(GameVersion gv);
+    ~TerrainBorder() override;
+    void setGameVersion(GameVersion gv) override;
 
-    unsigned short getNameSize(void);
+    unsigned short getNameSize(void) override;
 
     std::vector<std::vector<FrameData>> Borders;
 
@@ -48,7 +48,7 @@ public:
     int16_t BorderStyle = 0;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 }
 

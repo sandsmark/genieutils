@@ -28,8 +28,8 @@ class TerrainPassGraphic : public ISerializable
 {
 public:
     TerrainPassGraphic();
-    virtual ~TerrainPassGraphic();
-    virtual void setGameVersion(GameVersion gv);
+    ~TerrainPassGraphic() override;
+    void setGameVersion(GameVersion gv) override;
 
     int32_t ExitTileSpriteID = -1;
     int32_t EnterTileSpriteID = -1;
@@ -37,7 +37,7 @@ public:
     float WalkSpriteRate = 0;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 }
 

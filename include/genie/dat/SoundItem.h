@@ -28,8 +28,8 @@ class SoundItem : public ISerializable
 {
 public:
     SoundItem();
-    virtual ~SoundItem();
-    virtual void setGameVersion(GameVersion gv);
+    ~SoundItem() override;
+    void setGameVersion(GameVersion gv) override;
 
     unsigned short getFileNameSize();
 
@@ -47,7 +47,7 @@ public:
     int16_t IconSet = -1; //not in aoe/ror
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 }
 

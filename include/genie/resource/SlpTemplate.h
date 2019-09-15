@@ -45,7 +45,7 @@ public:
     }
 
 private:
-    virtual void serializeObject() noexcept override;
+    void serializeObject() noexcept override;
 
     bool m_loaded = true;
 };
@@ -81,7 +81,7 @@ public:
     }
 
 private:
-    virtual void serializeObject() noexcept override;
+    void serializeObject() noexcept override;
 
     bool m_loaded = true;
 };
@@ -209,7 +209,7 @@ public:
     PatternMask m_masks[PatternMasksCount];
 
 private:
-    virtual void serializeObject() noexcept override;
+    void serializeObject() noexcept override;
 
     bool m_loaded = false;
 };
@@ -244,7 +244,7 @@ public:
     }
 
 private:
-    virtual void serializeObject() noexcept override;
+    void serializeObject() noexcept override;
     bool m_loaded = false;
 };
 

@@ -30,8 +30,8 @@ class TerrainRestriction : public ISerializable
 {
 public:
     TerrainRestriction();
-    virtual ~TerrainRestriction();
-    virtual void setGameVersion(GameVersion gv);
+    ~TerrainRestriction() override;
+    void setGameVersion(GameVersion gv) override;
 
     /// Accessibility and Damage Multiplier
     /// See unit -> terrain defense bonus\nPass-ability:
@@ -53,7 +53,7 @@ public:
 private:
     static unsigned short terrain_count_;
 
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 }
 #endif // GENIE_TERRAINRESTRICTION_H

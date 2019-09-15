@@ -40,7 +40,7 @@ public:
     int16_t SoundID3 = -1;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 }
 

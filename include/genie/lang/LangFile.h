@@ -46,7 +46,7 @@ class LangFile : public IFile
 
 public:
     LangFile();
-    virtual ~LangFile();
+    ~LangFile() override;
 
     void load(const std::string &fileName) override;
     void saveAs(const char *fileName) override;

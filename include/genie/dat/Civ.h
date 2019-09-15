@@ -68,7 +68,7 @@ public:
     std::vector<int16_t> UniqueUnitsTechs = { -1, -1, -1, -1 }; // Unknown in >=SWGB (cnt=4)
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 }
 

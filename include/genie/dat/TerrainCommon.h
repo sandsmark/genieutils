@@ -27,15 +27,15 @@ class FrameData : public ISerializable
 {
 public:
     FrameData();
-    virtual ~FrameData();
-    virtual void setGameVersion(GameVersion gv);
+    ~FrameData() override;
+    void setGameVersion(GameVersion gv) override;
 
     int16_t FrameCount = 0;
     int16_t AngleCount = 0;
     int16_t ShapeID = 0;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 
 class SharedTerrain : public ISerializable

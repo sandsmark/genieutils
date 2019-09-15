@@ -133,7 +133,7 @@ public:
     std::vector<GraphicAngleSound> AngleSounds;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 }
 

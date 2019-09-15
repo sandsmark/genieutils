@@ -30,23 +30,23 @@ class TileSize : public ISerializable
 {
 public:
     TileSize();
-    virtual ~TileSize();
-    virtual void setGameVersion(GameVersion gv);
+    ~TileSize() override;
+    void setGameVersion(GameVersion gv) override;
 
     int16_t Width;
     int16_t Height;
     int16_t DeltaY;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 
 class TerrainBlock : public ISerializable
 {
 public:
     TerrainBlock();
-    virtual ~TerrainBlock();
-    virtual void setGameVersion(GameVersion gv);
+    ~TerrainBlock() override;
+    void setGameVersion(GameVersion gv) override;
 
     int32_t VirtualFunctionPtr;
     int32_t MapPointer;
@@ -99,7 +99,7 @@ public:
     std::vector<int32_t> SomeInt32;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 }
 

@@ -598,6 +598,6 @@ public:
     unit::Building Building;
 
 protected:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 }

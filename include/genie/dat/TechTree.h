@@ -33,8 +33,8 @@ class TechTree : public ISerializable
 {
 public:
     TechTree();
-    virtual ~TechTree();
-    virtual void setGameVersion(GameVersion gv);
+    ~TechTree() override;
+    void setGameVersion(GameVersion gv) override;
 
     /// Number of total unit/tech groups
     int32_t TotalUnitTechGroups = 1; //1
@@ -50,7 +50,7 @@ public:
     static unsigned short getCount(); //GameVersion gv);
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 
 namespace techtree {
@@ -60,9 +60,9 @@ namespace techtree {
     public:
         Common() {}
 
-        virtual ~Common() {}
+        ~Common() override {}
 
-        virtual void setGameVersion(GameVersion gv)
+        void setGameVersion(GameVersion gv) override
         {
             ISerializable::setGameVersion(gv);
             UnitResearch.resize(getSlots());
@@ -88,7 +88,7 @@ namespace techtree {
         }
 
     private:
-        virtual void serializeObject(void) // 84 bytes, 164 in SWGB
+        void serializeObject(void) override // 84 bytes, 164 in SWGB
         {
             serialize<int32_t>(SlotsUsed);
             serialize<int32_t>(UnitResearch, getSlots());
@@ -122,15 +122,15 @@ public:
     unsigned short getZoneCount();
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 
 class BuildingConnection : public ISerializable
 {
 public:
     BuildingConnection();
-    virtual ~BuildingConnection();
-    virtual void setGameVersion(GameVersion gv);
+    ~BuildingConnection() override;
+    void setGameVersion(GameVersion gv) override;
 
     int32_t ID = -1;
 
@@ -172,15 +172,15 @@ public:
     int32_t EnablingResearch = 0;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 
 class UnitConnection : public ISerializable
 {
 public:
     UnitConnection();
-    virtual ~UnitConnection();
-    virtual void setGameVersion(GameVersion gv);
+    ~UnitConnection() override;
+    void setGameVersion(GameVersion gv) override;
 
     int32_t ID = -1;
     int8_t Status = 2; //always 2
@@ -202,15 +202,15 @@ public:
     int32_t EnablingResearch = -1;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 
 class ResearchConnection : public ISerializable
 {
 public:
     ResearchConnection();
-    virtual ~ResearchConnection();
-    virtual void setGameVersion(GameVersion gv);
+    ~ResearchConnection() override;
+    void setGameVersion(GameVersion gv) override;
 
     int32_t ID = -1;
     int8_t Status = 2; //always 2
@@ -229,7 +229,7 @@ public:
     int32_t LineMode = 0;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 }
 

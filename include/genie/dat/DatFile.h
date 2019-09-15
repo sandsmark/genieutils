@@ -55,10 +55,10 @@ public:
     //----------------------------------------------------------------------------
     /// Destructor
     //
-    virtual ~DatFile();
+    ~DatFile() override;
 
     //----------------------------------------------------------------------------
-    virtual void setGameVersion(GameVersion gv);
+    void setGameVersion(GameVersion gv) override;
 
     //----------------------------------------------------------------------------
     /// Uncompress dat file.
@@ -138,9 +138,9 @@ private:
     //----------------------------------------------------------------------------
     /// Clears all data.
     //
-    virtual void unload(void);
+    void unload(void) override;
 
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 }
 

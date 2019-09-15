@@ -31,8 +31,8 @@ namespace unit {
     {
     public:
         Combat();
-        virtual ~Combat();
-        virtual void setGameVersion(GameVersion gv);
+        ~Combat() override;
+        void setGameVersion(GameVersion gv) override;
 
         /// This armor is used for attack types that have no corresponding armor type
         /// Can be negative only in The Conquerors and later games
@@ -93,7 +93,7 @@ namespace unit {
         float DisplayedReloadTime = 0;
 
     protected:
-        virtual void serializeObject(void);
+        void serializeObject(void) override;
     };
 }
 }

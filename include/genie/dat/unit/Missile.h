@@ -30,8 +30,8 @@ namespace unit {
     {
     public:
         Missile();
-        virtual ~Missile();
-        virtual void setGameVersion(GameVersion gv);
+        ~Missile() override;
+        void setGameVersion(GameVersion gv) override;
 
         /// 0. Straight
         /// 1. Homing?, projectile falls vertically to the bottom of the map
@@ -67,7 +67,7 @@ namespace unit {
         float ProjectileArc = 0;
 
     protected:
-        virtual void serializeObject(void);
+        void serializeObject(void) override;
     };
 }
 }

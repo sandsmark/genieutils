@@ -234,7 +234,7 @@ private:
 
     std::vector<std::vector<uint8_t>> commands_; // Don't you dare use std::list here!
 
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 
     //----------------------------------------------------------------------------
     /// Reads pixel indexes from file and sets the pixels according to the

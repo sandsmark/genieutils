@@ -28,8 +28,8 @@ class PlayerColour : public ISerializable
 {
 public:
     PlayerColour();
-    virtual ~PlayerColour();
-    virtual void setGameVersion(GameVersion gv);
+    ~PlayerColour() override;
+    void setGameVersion(GameVersion gv) override;
 
     int32_t ID = -1;
     int32_t PaletteBase = 0;
@@ -58,7 +58,7 @@ public:
     uint8_t Type = 1;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 }
 

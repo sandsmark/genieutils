@@ -73,7 +73,7 @@ public:
     //----------------------------------------------------------------------------
     /// Destructor
     //
-    virtual ~CabFile();
+    ~CabFile() override;
 
     //----------------------------------------------------------------------------
     /// Debug information will be printed to stdout if activated.
@@ -94,7 +94,7 @@ private:
     CabFile(const CabFile &other);
     CabFile &operator=(const CabFile &other);
 
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 
     std::vector<Folder> m_folders;
     std::unordered_map<std::string, File> m_files;

@@ -265,9 +265,9 @@ class Resource : public ISerializable
 public:
     Resource() {}
 
-    virtual ~Resource() {}
+    ~Resource() override {}
 
-    virtual void setGameVersion(GameVersion gv)
+    void setGameVersion(GameVersion gv) override
     {
         ISerializable::setGameVersion(gv);
     }
@@ -281,7 +281,7 @@ public:
     E Paid = 0;
 
 private:
-    virtual void serializeObject(void)
+    void serializeObject(void) override
     {
         serialize<int16_t>(Type);
         serialize<A>(Amount);

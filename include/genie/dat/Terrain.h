@@ -29,8 +29,8 @@ class Terrain : public SharedTerrain
 {
 public:
     Terrain();
-    virtual ~Terrain();
-    virtual void setGameVersion(GameVersion gv);
+    ~Terrain() override;
+    void setGameVersion(GameVersion gv) override;
     static unsigned short getTerrainCount(GameVersion gv);
     static void setTerrainCount(unsigned short cnt);
 
@@ -39,7 +39,7 @@ public:
     int32_t StringID = 0;
     int16_t Phantom = 0;
 
-    unsigned short getNameSize(void);
+    unsigned short getNameSize(void) override;
 
     int32_t BlendPriority = 0; //not in aoe/ror
     int32_t BlendType = 0; //not in aoe/ror
@@ -74,7 +74,7 @@ public:
 private:
     static unsigned short terrain_count_;
 
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 }
 

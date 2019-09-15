@@ -32,7 +32,7 @@ class ScnUnit : public ISerializable
 {
 public:
     ScnUnit();
-    virtual ~ScnUnit();
+    ~ScnUnit() override;
 
     enum States {
         Ready,
@@ -52,14 +52,14 @@ public:
     int32_t garrisonedInID = 0;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 
 class ScnPlayerResources : public ISerializable
 {
 public:
     ScnPlayerResources();
-    virtual ~ScnPlayerResources();
+    ~ScnPlayerResources() override;
 
     float food = 0;
     float wood = 0;
@@ -71,20 +71,20 @@ public:
     uint32_t playerId = 0;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 
 class ScnPlayerUnits : public ISerializable
 {
 public:
     ScnPlayerUnits();
-    virtual ~ScnPlayerUnits();
+    ~ScnPlayerUnits() override;
 
     std::vector<ScnUnit> units;
 
 private:
     uint32_t unitCount_;
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 }
 

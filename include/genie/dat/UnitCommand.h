@@ -196,7 +196,7 @@ public:
     int16_t ResourceDepositSoundID = -1;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 }
 

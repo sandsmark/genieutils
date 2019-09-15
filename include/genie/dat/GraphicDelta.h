@@ -40,7 +40,7 @@ public:
     int16_t Padding2 = 0;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 }
 

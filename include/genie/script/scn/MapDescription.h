@@ -31,7 +31,7 @@ class MapTile : public ISerializable
 {
 public:
     MapTile();
-    virtual ~MapTile();
+    ~MapTile() override;
 
     uint8_t terrainID = 0;
     uint8_t elevation = 0;
@@ -40,7 +40,7 @@ public:
     uint8_t unused = 0;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 
 /// Naming it ScnMap because it may be used elsewhere
@@ -48,7 +48,7 @@ class ScnMap : public ISerializable
 {
 public:
     ScnMap();
-    virtual ~ScnMap();
+    ~ScnMap() override;
 
     /// AoK caps at 256
     uint32_t width = 0;
@@ -59,7 +59,7 @@ public:
     std::vector<MapTile> tiles;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 }
 

@@ -41,7 +41,7 @@ public:
     std::vector<SoundItem> Items;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 }
 

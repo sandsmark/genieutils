@@ -41,7 +41,7 @@ public:
     std::vector<int16_t> UnitIDs;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 }
 

@@ -72,7 +72,7 @@ namespace unit {
         int16_t Amount = 0;
 
     private:
-        virtual void serializeObject(void);
+        void serializeObject(void) override;
     };
 }
 }

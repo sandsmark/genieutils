@@ -63,7 +63,7 @@ public:
     //----------------------------------------------------------------------------
     /// Destructor
     //
-    virtual ~BlendomaticFile();
+    ~BlendomaticFile() override;
 
     //----------------------------------------------------------------------------
     /// Frees all content of a slp file.

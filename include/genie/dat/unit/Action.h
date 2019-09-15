@@ -69,7 +69,7 @@ public:
     std::vector<Task> TaskList; //only in aoe/ror
 
 protected:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 
 }

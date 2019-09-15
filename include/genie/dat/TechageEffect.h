@@ -31,8 +31,8 @@ class EffectCommand : public ISerializable
 {
 public:
     EffectCommand();
-    virtual ~EffectCommand();
-    virtual void setGameVersion(GameVersion gv);
+    ~EffectCommand() override;
+    void setGameVersion(GameVersion gv) override;
 
     enum EffectType {
         AbsoluteAttributeModifier = 0,
@@ -132,7 +132,7 @@ public:
     float Amount = 0;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 }
 

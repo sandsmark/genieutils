@@ -30,8 +30,8 @@ class Effect : public ISerializable
 
 public:
     Effect();
-    virtual ~Effect();
-    virtual void setGameVersion(GameVersion gv);
+    ~Effect() override;
+    void setGameVersion(GameVersion gv) override;
 
     static unsigned short getNameSize(void);
 
@@ -41,7 +41,7 @@ public:
     std::vector<EffectCommand> EffectCommands;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 }
 

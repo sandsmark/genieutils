@@ -33,7 +33,7 @@ class CombinedResources : public ISerializable
 {
 public:
     CombinedResources();
-    virtual ~CombinedResources();
+    ~CombinedResources() override;
 
     uint32_t enabled;
     uint32_t isHuman;
@@ -50,7 +50,7 @@ public:
     static bool playerInfo;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 
 class TimelineEvent : public ISerializable
@@ -79,14 +79,14 @@ public:
     uint16_t targetPlayerId; // 28
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 
 class Timeline : public ISerializable
 {
 public:
     Timeline();
-    virtual ~Timeline();
+    ~Timeline() override;
 
     uint16_t entryCount;
     uint16_t availableId;
@@ -95,14 +95,14 @@ public:
     std::vector<TimelineEvent> events;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 
 class AiFile : public ISerializable
 {
 public:
     AiFile();
-    virtual ~AiFile();
+    ~AiFile() override;
 
     uint32_t aiFilenameSize;
     uint32_t cityFileSize;
@@ -112,7 +112,7 @@ public:
     std::string perFilename;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 
 class ScnVictory : public ISerializable
@@ -126,7 +126,7 @@ public:
         Custom
     };
     ScnVictory();
-    virtual ~ScnVictory();
+    ~ScnVictory() override;
 
     uint32_t conquestRequired;
     uint32_t unused1;
@@ -140,27 +140,27 @@ public:
     uint32_t timeForTimedGame = 0;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 
 class ScnDiplomacy : public ISerializable
 {
 public:
     ScnDiplomacy();
-    virtual ~ScnDiplomacy();
+    ~ScnDiplomacy() override;
 
     std::vector<std::vector<uint32_t>> stances;
     std::vector<std::vector<uint32_t>> individualVictory;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 
 class ScnDisables : public ISerializable
 {
 public:
     ScnDisables();
-    virtual ~ScnDisables();
+    ~ScnDisables() override;
 
     std::vector<uint32_t> numDisabledTechs;
     std::vector<std::vector<uint32_t>> disabledTechs;
@@ -170,14 +170,14 @@ public:
     std::vector<std::vector<uint32_t>> disabledBuildings;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 
 class ScnMainPlayerData : public ISerializable
 {
 public:
     ScnMainPlayerData();
-    virtual ~ScnMainPlayerData();
+    ~ScnMainPlayerData() override;
 
     float playerDataVersion = 0.f;
     static float version;
@@ -272,7 +272,7 @@ public:
 private:
     uint32_t separator_ = 0;
     void serializePlayerDataVersion(void);
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
     void serializeBitmap(void);
 };
 
@@ -327,14 +327,14 @@ public:
     uint8_t state;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 
 class ScnMorePlayerData : public ISerializable
 {
 public:
     ScnMorePlayerData();
-    virtual ~ScnMorePlayerData();
+    ~ScnMorePlayerData() override;
 
     std::string playerName;
     float initCameraX = 0.f;
@@ -360,7 +360,7 @@ private:
     uint16_t playerCount_;
     uint32_t victoryConditionsCount;
     uint32_t pointConditionsCount;
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 }
 

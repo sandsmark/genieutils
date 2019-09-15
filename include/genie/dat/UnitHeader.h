@@ -36,7 +36,7 @@ public:
     std::vector<Task> TaskList;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 }
 
