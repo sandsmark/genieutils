@@ -42,19 +42,24 @@ unsigned short Terrain::getTerrainCount(GameVersion gv)
 {
     if (terrain_count_) {
         return terrain_count_;
-}
+    }
+
     if (gv >= GV_SWGB) {
         return 55;
-}
+    }
+
     if (gv >= GV_T2 && gv <= GV_LatestTap) {
         return 96;
-}
+    }
+
     if (gv == GV_Cysion) {
         return 100;
-}
+    }
+
     if (gv == GV_TC) {
         return 42;
-}
+    }
+
     return 32;
 }
 
@@ -65,7 +70,7 @@ unsigned short Terrain::getNameSize()
         return 17;
     } else {
         return 13;
-}
+    }
 }
 
 //------------------------------------------------------------------------------
@@ -93,13 +98,15 @@ void Terrain::serializeObject(void)
             serialize<int16_t>(blend);
             BlendType = blend;
         }
+
         serializeDebugString(Name);
         serializeDebugString(Name2);
     }
 
     if (gv >= GV_AoEB) {
         serialize<int32_t>(SLP);
-}
+    }
+
     serialize<int32_t>(ShapePtr);
     serialize<int32_t>(SoundID);
 
@@ -127,6 +134,7 @@ void Terrain::serializeObject(void)
     serialize(ElevationGraphics);
     serialize<int16_t>(TerrainToDraw);
     serializePair<int16_t>(TerrainDimensions);
+
     if (isOperation(OP_READ)) {
         serialize<int16_t>(Borders, getTerrainCount(gv));
     } else {

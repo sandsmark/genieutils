@@ -33,12 +33,14 @@ void RandomMaps::setGameVersion(GameVersion gv)
 void RandomMaps::serializeObject()
 {
     uint32_t random_map_count{};
+
     if (getGameVersion() < GV_AoEB) {
         serializeSize<uint32_t>(random_map_count, OldMaps.size());
 
         if (isOperation(OP_READ)) {
             OldMaps.resize(random_map_count);
         }
+
         for (std::vector<int32_t> &sub : OldMaps) {
             serialize<int32_t>(sub, 852);
         }
@@ -68,7 +70,7 @@ void MapInfo::serializeObject(void)
 {
     if (!io_all_) {
         serialize<int32_t>(MapID);
-}
+    }
 
     // Yes. These are read and written twice.
 
@@ -88,28 +90,28 @@ void MapInfo::serializeObject(void)
 
     if (io_all_) {
         serialize(MapLands, count);
-}
+    }
 
     serializeSize<uint32_t>(count, MapTerrains.size());
     serialize<int32_t>(MapTerrainsPtr);
 
     if (io_all_) {
         serialize(MapTerrains, count);
-}
+    }
 
     serializeSize<uint32_t>(count, MapUnits.size());
     serialize<int32_t>(MapUnitsPtr);
 
     if (io_all_) {
         serialize(MapUnits, count);
-}
+    }
 
     serializeSize<uint32_t>(count, MapElevations.size());
     serialize<int32_t>(MapElevationsPtr);
 
     if (io_all_) {
         serialize(MapElevations, count);
-}
+    }
 
     io_all_ = !io_all_;
 }

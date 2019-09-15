@@ -74,6 +74,7 @@ const PalFile &DrsFile::getPalFile(uint32_t id)
     }
 
     std::unordered_map<uint32_t, BinaFilePtr>::iterator b = bina_map_.find(id);
+
     if (b == bina_map_.end()) {
         log.debug("No bina file with id [%u] found!", id);
         return PalFile::null;
@@ -169,14 +170,17 @@ std::string DrsFile::idType(uint32_t id)
     if (id >= 50000 && id < 50100) {
         return "screen data";
     }
+
     if (wav_offsets_.find(id) != wav_offsets_.end()) {
         return "wav";
     }
+
     if (slp_map_.find(id) != slp_map_.end()) {
         return "slp";
     }
 
     std::unordered_map<uint32_t, BinaFilePtr>::iterator i = bina_map_.find(id);
+
     if (i == bina_map_.end()) {
         return "unknown";
     }
@@ -194,14 +198,16 @@ std::shared_ptr<uint8_t[]> DrsFile::getWavPtr(uint32_t id)
         getIStream()->seekg(std::streampos(i->second));
         /*uint32_t type =*/ read<uint32_t>();
         uint32_t size = read<uint32_t>();
+
         if (!size)  {
             return nullptr;
         }
+
 #ifndef NDEBUG
 //        log.debug("WAV [%u], type [%X], size [%u]", id, type, size);
 #endif
         getIStream()->seekg(std::streampos(i->second));
-        std::shared_ptr<uint8_t[]> ptr (new uint8_t[size + 32]);
+        std::shared_ptr<uint8_t[]> ptr(new uint8_t[size + 32]);
         uint8_t *data = ptr.get();
         read(&data, size);
         return ptr;
@@ -214,6 +220,7 @@ std::shared_ptr<uint8_t[]> DrsFile::getWavPtr(uint32_t id)
 std::vector<uint32_t> DrsFile::binaryFileIds() const
 {
     std::vector<uint32_t> ret;
+
     for (const std::pair<const uint32_t, BinaFilePtr> &entry : bina_map_) {
         ret.push_back(entry.first);
     }
@@ -224,6 +231,7 @@ std::vector<uint32_t> DrsFile::binaryFileIds() const
 std::vector<uint32_t> DrsFile::slpFileIds() const
 {
     std::vector<uint32_t> ret;
+
     for (const std::pair<const uint32_t, SlpFilePtr> &entry : slp_map_) {
         ret.push_back(entry.first);
     }
@@ -265,6 +273,7 @@ void DrsFile::loadHeader()
         header_offset_ = read<uint32_t>();
 
         std::vector<std::streampos> table_offsets;
+
         // Load table data
         for (uint32_t i = 0; i < num_of_tables_; ++i) {
             table_types_.push_back(readString(4));

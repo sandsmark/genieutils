@@ -38,24 +38,31 @@ void UIFile::serializeObject()
         if (!readBackground(istr, &backgroundSmall, "background1_files")) {
             return;
         }
+
         if (!readBackground(istr, &backgroundMedium, "background2_files")) {
             return;
         }
+
         if (!readBackground(istr, &backgroundLarge, "background3_files")) {
             return;
         }
+
         if (!readFileReference(istr, &paletteFile, "palette_file")) {
             return;
         }
+
         if (!readFileReference(istr, &cursorFile, "cursor_file")) {
             return;
         }
+
         if (!readValue(istr, &shadePercent, "shade_amount", "percent")) {
             return;
         }
+
         if (!readFileReference(istr, &buttonFile, "button_file")) {
             return;
         }
+
         if (!readFileReference(istr, &popupDialogFile, "popup_dialog_sin")) {
             return;
         }
@@ -63,12 +70,14 @@ void UIFile::serializeObject()
         if (!readValue(istr, &backgroundPosition, "background_position")) {
             return;
         }
+
         if (!readValue(istr, &backgroundMaskColor, "background_color")) {
             return;
         }
 
         std::string bevelColorName;
         *istr >> bevelColorName;
+
         if (bevelColorName != "bevel_colors") {
             log.error("Expected name bevel_colors, got %s", bevelColorName.c_str());
             return;
@@ -90,18 +99,23 @@ void UIFile::serializeObject()
         if (!readColor(istr, &textColor1, "text_color1")) {
             return;
         }
+
         if (!readColor(istr, &textColor2, "text_color2")) {
             return;
         }
+
         if (!readColor(istr, &focusColor1, "focus_color1")) {
             return;
         }
+
         if (!readColor(istr, &focusColor2, "focus_color2")) {
             return;
         }
+
         if (!readColor(istr, &stateColor1, "state_color1")) {
             return;
         }
+
         if (!readColor(istr, &stateColor2, "state_color2")) {
             return;
         }
@@ -115,6 +129,7 @@ bool UIFile::readBackground(std::istream *istr, UIFile::Background *background, 
 {
     std::string name;
     *istr >> name;
+
     if (name != expectedName) {
         log.error("Expected name %s, got %s", expectedName.c_str(), name.c_str());
         return false;
@@ -132,10 +147,12 @@ bool UIFile::readFileReference(std::istream *istr, UIFile::FileReference *fileRe
 {
     std::string name;
     *istr >> name;
+
     if (name != expectedName) {
         log.error("Expected name %s, got %s!", expectedName.c_str(), name.c_str());
         return false;
     }
+
     *istr >> fileReference->filename;
     *istr >> fileReference->id;
     return true;
@@ -145,13 +162,16 @@ bool UIFile::readValue(std::istream *istr, uint32_t *val, const std::string &exp
 {
     std::string name;
     *istr >> name;
+
     if (name != expectedName) {
         log.error("Expected name %s, got %s", expectedName.c_str(), name.c_str());
         return false;
     }
+
     if (!expectedType.empty()) {
         std::string type;
         *istr >> type;
+
         if (type != expectedType) {
             log.warn("Expected type %s, got %s", expectedType.c_str(), type.c_str());
         }
@@ -166,6 +186,7 @@ bool UIFile::readColor(std::istream *istr, Color *color, const std::string &expe
 {
     std::string name;
     *istr >> name;
+
     if (name != expectedName) {
         log.error("Expected name %s, got %s", expectedName.c_str(), name.c_str());
         return false;

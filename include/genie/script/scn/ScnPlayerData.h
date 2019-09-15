@@ -248,7 +248,7 @@ public:
     uint32_t allTechs = 0;
     std::vector<int32_t> startingAge;
     int32_t player1CameraX = 0;
-    int32_t player1CameraY= 0;
+    int32_t player1CameraY = 0;
     int32_t aiType = 0;
 
 private:

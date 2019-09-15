@@ -39,16 +39,14 @@ class UIFile : public IFile
 {
 
 public:
-    struct Background
-    {
+    struct Background {
         std::string filename;
         std::string alternateFilename; //always none?
         int32_t fileId;
         int32_t alternateFileId; // always -1
     };
 
-    struct FileReference
-    {
+    struct FileReference {
         std::string filename;
         int32_t id;
     };

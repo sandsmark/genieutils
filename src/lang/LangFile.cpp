@@ -46,8 +46,10 @@ void PcrioError::check(int error)
     switch (error) {
     case PCR_ERROR_NONE:
         return;
+
     case PCR_ERROR_BAD_ALLOC:
         throw std::bad_alloc();
+
     default:
         throw PcrioError(error);
     }
@@ -64,15 +66,15 @@ LangFile::~LangFile()
 {
     if (toDefaultCharsetCd_) {
         iconv_close(toDefaultCharsetCd_);
-}
+    }
 
     if (fromDefaultCharsetCd_) {
         iconv_close(fromDefaultCharsetCd_);
-}
+    }
 
     if (pfile_) {
         pcr_free(pfile_);
-}
+    }
 }
 
 //------------------------------------------------------------------------------
@@ -87,7 +89,7 @@ void LangFile::load(const std::string &filename)
 
     if (pfile_) {
         pcr_free(pfile_);
-}
+    }
 
     pfile_ = pcr_read_file(filename.c_str(), &errorCode_);
 
@@ -104,7 +106,7 @@ void LangFile::load(const std::string &filename)
 
         if (linfos->count == 0) {
             throw std::string("Not supported: There are no resources in dll file");
-}
+        }
 
         struct language_info *linfo = &linfos->array[0];
 
@@ -112,8 +114,8 @@ void LangFile::load(const std::string &filename)
         for (unsigned int i = 1; i < linfos->count; i++) {
             if (linfo->item_count < linfos->array[i].item_count) {
                 linfo = &linfos->array[i];
-}
-}
+            }
+        }
 
         defaultCultureId_ = linfo->lang.id;
         defaultCodepage_ = linfo->lang.codepage;
@@ -135,7 +137,7 @@ void LangFile::load(const std::string &filename)
 
         std::cout << cName.str().c_str() << std::endl;
 
-        if (toDefaultCharsetCd_ == (iconv_t)-1 || fromDefaultCharsetCd_ == (iconv_t)-1) {
+        if (toDefaultCharsetCd_ == (iconv_t) -1 || fromDefaultCharsetCd_ == (iconv_t) -1) {
             log.error("Can't open default converter");
             throw std::iostream::failure("Can't open default converter.");
         }
@@ -215,8 +217,7 @@ void LangFile::setString(unsigned int id, const std::string &str)
 
     if (err > 0) {
         PcrioError::check(err);
-    } else if (err == -1) // wrong codepage
-    {
+    } else if (err == -1) { // wrong codepage
         log.info("Trying to rewrite string converted to wrong codepage");
 
         lang.codepage = pcr_get_codepageL(pfile_, id, lang.id);
@@ -250,7 +251,7 @@ std::string LangFile::convertTo(const std::string &in, uint32_t codepage)
 
     if (codepage == 0) {
         return in;
-}
+    }
 
     if (codepage == defaultCodepage_) {
         cd = fromDefaultCharsetCd_;
@@ -271,7 +272,7 @@ std::string LangFile::convertTo(const std::string &in, uint32_t codepage)
 
     if (codepage != defaultCodepage_) {
         iconv_close(cd);
-}
+    }
 
     return encodedStr;
 }
@@ -284,7 +285,7 @@ std::string LangFile::convertFrom(const std::string &in, uint32_t codepage)
 
     if (codepage == 0) {
         return in;
-}
+    }
 
     if (codepage == defaultCodepage_) {
         cd = toDefaultCharsetCd_;
@@ -305,7 +306,7 @@ std::string LangFile::convertFrom(const std::string &in, uint32_t codepage)
 
     if (codepage != defaultCodepage_) {
         iconv_close(cd);
-}
+    }
 
     return decodedStr;
 }
@@ -329,10 +330,10 @@ std::string LangFile::convert(iconv_t cd, const std::string &input)
 
     strncpy(inbuf, input.c_str(), inleft);
 
-    while (cd != (iconv_t)-1 && inleft > 0 && iconv_value == 0) {
+    while (cd != (iconv_t) -1 && inleft > 0 && iconv_value == 0) {
         iconv_value = iconv(cd, &inptr, &inleft, &outptr, &outleft);
 
-        if (iconv_value == (size_t)-1) {
+        if (iconv_value == (size_t) -1) {
             if (errno == E2BIG) {
                 decodedStr += std::string(buf, CONV_BUF_SIZE);
                 outleft = CONV_BUF_SIZE;
@@ -345,10 +346,11 @@ std::string LangFile::convert(iconv_t cd, const std::string &input)
 
                 if (errno == EILSEQ) {
                     error += "EILSEQ";
-}
+                }
+
                 if (errno == EINVAL) {
                     error += "EINVAL";
-}
+                }
 
                 log.error("%s", error.c_str());
 
@@ -356,7 +358,7 @@ std::string LangFile::convert(iconv_t cd, const std::string &input)
             }
         } else {
             decodedStr += std::string(buf, CONV_BUF_SIZE - outleft);
-}
+        }
     }
 
     delete[] inbuf;

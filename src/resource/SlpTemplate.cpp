@@ -41,8 +41,7 @@ void SlpTemplateFile::serializeObject()
 {
     if (isOperation(OP_READ) && !loaded_) {
         loadFile();
-    } else if (isOperation(OP_WRITE)) // && loaded_)
-    {
+    } else if (isOperation(OP_WRITE)) { // && loaded_)
         saveFile();
     }
 }
@@ -76,6 +75,7 @@ void SlpTemplateFile::loadFile() noexcept
 
         slpTemplate.left_edges_.resize(slpTemplate.height_);
         slpTemplate.right_edges_.resize(slpTemplate.height_);
+
         for (uint32_t row = 0; row < slpTemplate.height_; ++row) {
             serialize(slpTemplate.left_edges_[row]);
             serialize(slpTemplate.right_edges_[row]);
@@ -119,23 +119,23 @@ bool SlpTemplateFile::isLoaded() const noexcept
 
 void FiltermapFile::serializeObject() noexcept
 {
-    for (int i=0; i<SlopeCount; i++) {
+    for (int i = 0; i < SlopeCount; i++) {
         uint32_t dataSize = 0;
         serialize(dataSize);
 
         serialize(maps[i].height);
 
-        for (uint32_t y = 0; y<maps[i].height; y++) {
+        for (uint32_t y = 0; y < maps[i].height; y++) {
             FilterLine line;
             serialize(line.width);
 
-            for (int x=0; x<line.width; x++) {
+            for (int x = 0; x < line.width; x++) {
                 FilterCmd command;
                 serialize(command.sourcePixelCount);
                 command.lightIndex = command.sourcePixelCount >> 4;
                 command.sourcePixelCount = command.sourcePixelCount & 0xF;
 
-                for (uint16_t n=0; n<command.sourcePixelCount; n++) {
+                for (uint16_t n = 0; n < command.sourcePixelCount; n++) {
                     SourcePixel sourcePixel;
 
                     // this dumb fucking way is only way to get msvc to work
@@ -149,6 +149,7 @@ void FiltermapFile::serializeObject() noexcept
 
                     command.sourcePixels.push_back(sourcePixel);
                 }
+
                 line.commands.push_back(command);
             }
 
@@ -163,10 +164,10 @@ void FiltermapFile::serializeObject() noexcept
 
 void PatternMasksFile::serializeObject() noexcept
 {
-    for (int i=0; i<40; i++) {
+    for (int i = 0; i < 40; i++) {
         int32_t size = 4096;
         serialize(size);
-        getIStream()->read((char*)&m_masks[i].pixels, 4096);
+        getIStream()->read((char *)&m_masks[i].pixels, 4096);
     }
 
     if (getOperation() == OP_READ) {
@@ -178,7 +179,7 @@ void IcmFile::serializeObject() noexcept
 {
     while (!getIStream()->eof()) {
         InverseColorMap map;
-        getIStream()->read((char*)&map.map, 32 * 32 * 32);
+        getIStream()->read((char *)&map.map, 32 * 32 * 32);
         maps.push_back(std::move(map));
     }
 
@@ -191,7 +192,7 @@ void IcmFile::serializeObject() noexcept
 
 void LightmapFile::serializeObject() noexcept
 {
-    getIStream()->read((char*)&lightmaps, 18 * 4096);
+    getIStream()->read((char *)&lightmaps, 18 * 4096);
 
     if (getOperation() == OP_READ) {
         m_loaded = true;

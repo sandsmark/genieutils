@@ -50,6 +50,7 @@ void BlendomaticFile::serializeObject()
 
         // number of pixels
         serialize(modes_[i].pixelCount);
+
         if (modes_[i].pixelCount > 3000) {
             std::cerr << "invalid pixel count " << modes_[i].pixelCount << std::endl;
             exit(0);
@@ -79,6 +80,7 @@ void BlendomaticFile::setBlendMode(uint32_t number, const BlendMode &mode)
     if (number >= modes_.size()) {
         modes_.resize(number + 1);
     }
+
     modes_[number] = mode;
 }
 

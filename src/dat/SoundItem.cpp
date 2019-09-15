@@ -27,7 +27,8 @@ unsigned short SoundItem::getFileNameSize()
 {
     if (getGameVersion() < GV_SWGB) {
         return 13;
-}
+    }
+
     return 27;
 }
 
@@ -48,6 +49,7 @@ void SoundItem::serializeObject(void)
     } else {
         serialize<int32_t>(ResourceID);
     }
+
     serialize<int16_t>(Probability);
 
     if (gv >= GV_AoKE3) {

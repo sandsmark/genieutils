@@ -46,7 +46,8 @@ void TerrainBorder::serializeObject(void)
 
     if (gv >= GV_AoEB) {
         serialize<int32_t>(SLP);
-}
+    }
+
     serialize<int32_t>(ShapePtr);
     serialize<int32_t>(SoundID);
     serialize<uint8_t>(Colors, 3);
@@ -71,6 +72,6 @@ void TerrainBorder::serializeObject(void)
 
     if (gv != GV_MIK) {
         serialize<int16_t>(BorderStyle);
-}
+    }
 }
 } // namespace genie

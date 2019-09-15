@@ -27,35 +27,35 @@ namespace genie {
 
 namespace unit {
 
-    /// Attributes for Unit of type >= DeadFish.
-    class Moving : public ISerializable
-    {
-    public:
-        int16_t WalkingGraphic = -1;
-        int16_t RunningGraphic = -1;
-        float RotationSpeed = 0;
-        int8_t OldSizeClass = 0;
-        int16_t TrackingUnit = -1;
+/// Attributes for Unit of type >= DeadFish.
+class Moving : public ISerializable
+{
+public:
+    int16_t WalkingGraphic = -1;
+    int16_t RunningGraphic = -1;
+    float RotationSpeed = 0;
+    int8_t OldSizeClass = 0;
+    int16_t TrackingUnit = -1;
 
-        /// 0. Not used
-        /// 1. Appears while moving and at the start of the game
-        /// 2. Appears while moving, based on density
-        int8_t TrackingUnitMode = 0;
+    /// 0. Not used
+    /// 1. Appears while moving and at the start of the game
+    /// 2. Appears while moving, based on density
+    int8_t TrackingUnitMode = 0;
 
-        /// Only with TrackingUnitMode 2
-        float TrackingUnitDensity = 0;
+    /// Only with TrackingUnitMode 2
+    float TrackingUnitDensity = 0;
 
-        int8_t OldMoveAlgorithm = 0;
+    int8_t OldMoveAlgorithm = 0;
 
-        // All can change while playing
-        float TurnRadius = 0;
-        float TurnRadiusSpeed = std::numeric_limits<float>::max();
-        float MaxYawPerSecondMoving = std::numeric_limits<float>::max();
-        float StationaryYawRevolutionTime = 0;
-        float MaxYawPerSecondStationary = std::numeric_limits<float>::max();
+    // All can change while playing
+    float TurnRadius = 0;
+    float TurnRadiusSpeed = std::numeric_limits<float>::max();
+    float MaxYawPerSecondMoving = std::numeric_limits<float>::max();
+    float StationaryYawRevolutionTime = 0;
+    float MaxYawPerSecondStationary = std::numeric_limits<float>::max();
 
-    protected:
-        void serializeObject(void) override;
-    };
+protected:
+    void serializeObject(void) override;
+};
 } // namespace unit
 } // namespace genie

@@ -23,53 +23,55 @@
 namespace genie {
 
 namespace unit {
-    void Building::serializeObject(void)
-    {
-        GameVersion gv = getGameVersion();
+void Building::serializeObject(void)
+{
+    GameVersion gv = getGameVersion();
 
-        serialize<int16_t>(ConstructionGraphicID);
+    serialize<int16_t>(ConstructionGraphicID);
 
-        if (gv >= GV_TC) { // 11.53
-            serialize<int16_t>(SnowGraphicID);
-        }
-
-        serialize<int8_t>(AdjacentMode);
-        serialize<int16_t>(GraphicsAngle);
-        serialize<int8_t>(DisappearsWhenBuilt);
-        serialize<int16_t>(StackUnitID);
-        serialize<int16_t>(FoundationTerrainID);
-        serialize<int16_t>(OldOverlayID); // No longer used
-        serialize<int16_t>(TechID);
-
-        if (gv >= GV_AoKE3) {
-            serialize<int8_t>(CanBurn);
-            serialize(Annexes); // 40 bytes
-            if (gv >= GV_AoKA) {
-                serialize<int16_t>(HeadUnit); // 9.89
-            }
-            serialize<int16_t>(TransformUnit);
-            serialize<int16_t>(TransformSound);
-        }
-
-        serialize<int16_t>(ConstructionSound);
-
-        if (gv >= GV_AoKE3) {
-            serialize<int8_t>(GarrisonType);
-            serialize<float>(GarrisonHealRate);
-            serialize<float>(GarrisonRepairRate);
-            {
-                serialize<int16_t>(PileUnit); // 9.06
-                // 9.06 - 9.25 -> 5 x 2 x int16_t
-                serialize<int8_t>(LootingTable); // 9.26
-            }
-        }
+    if (gv >= GV_TC) { // 11.53
+        serialize<int16_t>(SnowGraphicID);
     }
 
-    void BuildingAnnex::serializeObject()
-    {
-        serialize<int16_t>(UnitID);
-        serializePair<float>(Misplacement);
+    serialize<int8_t>(AdjacentMode);
+    serialize<int16_t>(GraphicsAngle);
+    serialize<int8_t>(DisappearsWhenBuilt);
+    serialize<int16_t>(StackUnitID);
+    serialize<int16_t>(FoundationTerrainID);
+    serialize<int16_t>(OldOverlayID); // No longer used
+    serialize<int16_t>(TechID);
+
+    if (gv >= GV_AoKE3) {
+        serialize<int8_t>(CanBurn);
+        serialize(Annexes); // 40 bytes
+
+        if (gv >= GV_AoKA) {
+            serialize<int16_t>(HeadUnit); // 9.89
+        }
+
+        serialize<int16_t>(TransformUnit);
+        serialize<int16_t>(TransformSound);
     }
+
+    serialize<int16_t>(ConstructionSound);
+
+    if (gv >= GV_AoKE3) {
+        serialize<int8_t>(GarrisonType);
+        serialize<float>(GarrisonHealRate);
+        serialize<float>(GarrisonRepairRate);
+        {
+            serialize<int16_t>(PileUnit); // 9.06
+            // 9.06 - 9.25 -> 5 x 2 x int16_t
+            serialize<int8_t>(LootingTable); // 9.26
+        }
+    }
+}
+
+void BuildingAnnex::serializeObject()
+{
+    serialize<int16_t>(UnitID);
+    serializePair<float>(Misplacement);
+}
 
 } // namespace unit
 } // namespace genie

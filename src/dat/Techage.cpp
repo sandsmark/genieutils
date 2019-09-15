@@ -39,6 +39,7 @@ unsigned short Effect::getNameSize(void)
 void Effect::serializeObject(void)
 {
     GameVersion gv = getGameVersion();
+
     if (gv > GV_LatestTap || gv < GV_Tapsa) {
         serialize(Name, getNameSize());
     } else {

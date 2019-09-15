@@ -42,7 +42,7 @@ unsigned short Tech::getRequiredTechsSize()
         return 6;
     } else {
         return 4;
-}
+    }
 }
 
 //------------------------------------------------------------------------------
@@ -61,15 +61,18 @@ void Tech::serializeObject(void)
     }
 
     serialize<int16_t>(ResearchLocation);
+
     if (gv >= GV_MATT) {
         serialize<uint16_t>(LanguageDLLName);
         serialize<uint16_t>(LanguageDLLDescription);
     }
+
     serialize<int16_t>(ResearchTime);
     serialize<int16_t>(EffectID);
     serialize<int16_t>(Type);
     serialize<int16_t>(IconID);
     serialize<int8_t>(ButtonID);
+
     if (gv >= GV_AoEB) {
         serialize<int32_t>(LanguageDLLHelp);
         serialize<int32_t>(LanguageDLLTechTree);

@@ -40,7 +40,7 @@ unsigned short TechTree::getCount() //GameVersion gv) // used before 10.84 (GV_A
         return 100;
     } else {
         return 40;
-}
+    }
 }
 
 //------------------------------------------------------------------------------
@@ -91,7 +91,7 @@ unsigned short TechTreeAge::getZoneCount()
         return 10;
     } else {
         return 3;
-}
+    }
 }
 
 //------------------------------------------------------------------------------
@@ -102,8 +102,8 @@ void TechTreeAge::serializeObject(void)
 
     // All of these need rework. Used + actual? Fix actual!
     uint8_t count{};
-    if (getGameVersion() < GV_AoKB) // < 10.84
-    {
+
+    if (getGameVersion() < GV_AoKB) { // < 10.84
         serialize<uint8_t>(count);
         serialize<int32_t>(Buildings, TechTree::getCount());
 
@@ -155,8 +155,8 @@ void BuildingConnection::serializeObject(void)
     serialize<int8_t>(Status);
 
     uint8_t count{};
-    if (getGameVersion() < GV_AoKB) // < 10.84
-    {
+
+    if (getGameVersion() < GV_AoKB) { // < 10.84
         serialize<uint8_t>(count);
         serialize<int32_t>(Buildings, TechTree::getCount());
 
@@ -208,8 +208,8 @@ void UnitConnection::serializeObject(void)
         serialize<int32_t>(VerticalLine);
 
         uint8_t count{};
-        if (getGameVersion() < GV_AoKB) // < 10.84
-        {
+
+        if (getGameVersion() < GV_AoKB) { // < 10.84
             serialize<uint8_t>(count);
             serialize<int32_t>(Units, TechTree::getCount());
         } else {
@@ -238,8 +238,8 @@ void ResearchConnection::serializeObject(void)
     serialize<int32_t>(UpperBuilding);
 
     uint8_t count{};
-    if (getGameVersion() < GV_AoKB) // < 10.84
-    {
+
+    if (getGameVersion() < GV_AoKB) { // < 10.84
         serialize<uint8_t>(count);
         serialize<int32_t>(Buildings, TechTree::getCount());
 

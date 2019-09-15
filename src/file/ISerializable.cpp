@@ -87,7 +87,7 @@ std::streampos ISerializable::tellg(void) const
 {
     if (isOperation(OP_READ)) {
         return istr_->tellg();
-}
+    }
 
     return 0;
 }
@@ -103,7 +103,7 @@ std::string ISerializable::readString(size_t len)
 
         if (tmp_len < len) {
             len = tmp_len;
-}
+        }
 
         std::string ret(buf, len);
         delete[] buf;
@@ -123,7 +123,7 @@ void ISerializable::writeString(const std::string &str, size_t len)
 
     for (unsigned int i = str.size(); i < len; i++) {
         buf[i] = 0; // fill up with 0
-}
+    }
 
     ostr_->write(buf, len);
 

@@ -50,7 +50,8 @@ public:
     /// @param index index of color in palette
     /// @return color object
     //
-    const inline Color &operator[](uint16_t index) const {
+    const inline Color &operator[](uint16_t index) const
+    {
         return colors_[index];
     }
 

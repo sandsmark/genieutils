@@ -29,8 +29,7 @@
 
 namespace genie {
 
-struct BlendMode
-{
+struct BlendMode {
     // For passing by reference
     static const BlendMode null;
 

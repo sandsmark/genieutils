@@ -41,8 +41,7 @@ void SlpFile::serializeObject()
 {
     if (isOperation(OP_READ) && !loaded_) {
         loadFile();
-    } else if (isOperation(OP_WRITE)) // && loaded_)
-    {
+    } else if (isOperation(OP_WRITE)) { // && loaded_)
         saveFile();
     }
 }
@@ -58,7 +57,7 @@ void SlpFile::loadFile()
         m_graphicsFileData.resize(size_, 0);
         std::streampos orig = getIStream()->tellg();
         getIStream()->seekg(getInitialReadPosition());
-        char *data = reinterpret_cast<char*>(m_graphicsFileData.data());
+        char *data = reinterpret_cast<char *>(m_graphicsFileData.data());
         getIStream()->read(data, size_);
         getIStream()->seekg(orig);
     } else {
@@ -73,8 +72,9 @@ void SlpFile::loadFile()
         frames_[i]->serializeHeader();
     }
 
-    const char *data = reinterpret_cast<const char*>(m_graphicsFileData.data());
+    const char *data = reinterpret_cast<const char *>(m_graphicsFileData.data());
     std::istringstream istr(std::string(data, m_graphicsFileData.size()));
+
     // Load frame header
     for (uint32_t i = 0; i < num_frames_; ++i) {
         frames_[i]->load(istr);
@@ -102,6 +102,7 @@ void SlpFile::saveFile()
     for (uint32_t i = 0; i < num_frames_; ++i) {
         frames_[i]->save(*getOStream());
     }
+
 #ifndef NDEBUG
     std::chrono::time_point<std::chrono::system_clock> endTime = std::chrono::system_clock::now();
     log.debug("SLP (%u bytes) saving took [%u] milliseconds", slp_offset_, std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count());
@@ -151,18 +152,21 @@ const SlpFramePtr &SlpFile::getFrame(uint32_t frame)
             readObject(*getIStream());
             return getFrame(frame);
         }
+
         log.error("Trying to get frame [%u] from index out of range!", frame);
         throw std::out_of_range("getFrame()");
     }
 
     if (frames_[frame]->img_data.pixel_indexes.empty()) {
-        const char *data = reinterpret_cast<const char*>(m_graphicsFileData.data());
+        const char *data = reinterpret_cast<const char *>(m_graphicsFileData.data());
         std::istringstream istr(std::string(data, m_graphicsFileData.size()));
         frames_[frame]->setLoadParams(istr);
         frames_[frame]->readImage();
+
         if (frames_[frame]->getWidth() == 0) {
             log.debug("Got null frame");
         }
+
         frames_[frame]->setLoadParams(*getIStream());
     }
 
@@ -182,6 +186,7 @@ int SlpFile::frameCommandsOffset(const size_t frame, const int row)
     if (!loaded_) {
         readObject(*getIStream());
     }
+
     if (frame >= frames_.size()) {
         log.error("Trying to get frame [%u] from index out of range!", frame);
         throw std::out_of_range("getFrame()");
@@ -195,6 +200,7 @@ int SlpFile::frameHeight(const size_t frame)
     if (!loaded_) {
         readObject(*getIStream());
     }
+
     if (frame >= frames_.size()) {
         log.error("Trying to get frame [%u] from index out of range!", frame);
         throw std::out_of_range("getFrame()");
@@ -208,6 +214,7 @@ int SlpFile::frameWidth(const size_t frame)
     if (!loaded_) {
         readObject(*getIStream());
     }
+
     if (frame >= frames_.size()) {
         log.error("Trying to get frame [%u] from index out of range!", frame);
         throw std::out_of_range("getFrame()");

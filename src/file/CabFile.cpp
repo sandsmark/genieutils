@@ -48,7 +48,7 @@ void CabFile::setVerboseMode(bool verbose)
 
 void CabFile::readFile(std::string filename)
 {
-    for (size_t i=0; i<filename.size(); i++) {
+    for (size_t i = 0; i < filename.size(); i++) {
         if (filename[i] == '/') {
             filename[i] = '\\';
         }
@@ -58,25 +58,31 @@ void CabFile::readFile(std::string filename)
         std::cerr << filename << " is not in the archive" << std::endl;
         return;
     }
+
     const File &file = m_files[filename];
+
     if (file.folder > m_folders.size()) {
         std::cerr << "Invalid folder " << file.folder;
         return;
     }
 
     const Folder &folder = m_folders[file.folder];
+
 //    uint16_t compressedSize = 0;
-    switch(folder.compression) {
+    switch (folder.compression) {
     case Uncompressed:
         std::cout << "Uncompressed" << std::endl;
 //        compressedSize = file.size;
         break;
+
     case MsZip:
         std::cerr << "MsZip is not implemented" << std::endl;
         return;
+
     case Lzx:
         std::cout << "lzx compression" << std::endl;
         break;
+
     default:
         std::cout << "unknown compression " << std::hex << folder.compression << std::dec << std::endl;
         return;
@@ -91,11 +97,13 @@ void CabFile::readFile(std::string filename)
 
     const int windowSize = (folder.compression >> 8) & 0x1f;
 
-    for (size_t i=0; i<m_folders[file.folder].blocks.size(); i++) {
+    for (size_t i = 0; i < m_folders[file.folder].blocks.size(); i++) {
         const Block &block = folder.blocks[i];
+
         if (fileEnd < block.uncompressedOffset) {
             continue;
         }
+
         if (file.offsetInFolder > block.uncompressedOffset + block.uncompressedSize) {
             continue;
         }
@@ -118,11 +126,13 @@ void CabFile::readFile(std::string filename)
         int ret = LZXdecompress(decompressor.get(),
                                 compressedBuffer.data(), uncompressedBuffer.data(),
                                 int(compressedBuffer.size()), int(uncompressedBuffer.size())
-                );
+                               );
+
         if (ret != DECR_OK) {
             std::cout << "Failed to decode block " << ret << std::endl;
             return;
         }
+
 //        std::cout << uncompressedBuffer << std::endl;
     }
 }
@@ -130,9 +140,11 @@ void CabFile::readFile(std::string filename)
 bool CabFile::seekToHeader()
 {
     static const char header[] = { 'M', 'S', 'C', 'F',
-                                    0,   0,   0,   0 };
+                                   0,   0,   0,   0
+                                 };
 
     std::istream *istr = getIStream();
+
     if (!istr) {
         std::cerr << "no input file set" << std::endl;
         return false;
@@ -141,8 +153,10 @@ bool CabFile::seekToHeader()
     std::streampos position = istr->tellg();
     char buffer[sizeof(header)];
     std::cout << sizeof(buffer) << " " << sizeof(header) << std::endl;
+
     while (istr->good() && !istr->eof()) {
         istr->read(buffer, sizeof(buffer));
+
         if (strncmp(header, buffer, sizeof(buffer)) == 0) {
             if (verbose_) {
                 std::cout << "Found header at " << std::hex << position << std::dec << std::endl;
@@ -179,64 +193,81 @@ void CabFile::serializeObject(void)
     istr->seekg(startPos + std::streampos(8));
 
     const uint64_t byteCount = read<uint64_t>();
+
     if (verbose_) {
         std::cout << byteCount << " bytes" << std::endl;
     }
 
     const uint64_t headerSize = read<uint64_t>();
+
     if (verbose_) {
         std::cout << "files start at " << headerSize << std::endl;
     }
 
     const uint8_t versionMajor = read<uint8_t>();
     const uint8_t versionMinor = read<uint8_t>();
+
     if (verbose_) {
         std::cout << "version " << int(versionMajor) << "." << int(versionMinor) << std::endl;
     }
+
     if (versionMajor != 3 || versionMinor != 1) {
         std::cerr << "Invalid version" << std::endl;
         return;
     }
 
     const uint16_t folderCount = read<uint16_t>();
+
     if (verbose_) {
         std::cout << folderCount << " folders" << std::endl;
     }
+
     const uint16_t fileCount = read<uint16_t>();
+
     if (verbose_) {
         std::cout << fileCount << " files" << std::endl;
     }
 
     const uint16_t flags = read<uint16_t>();
+
     if (verbose_) {
         std::cout << "flags: " << std::hex << flags << std::dec << std::endl;
     }
+
     if (flags != 0x0) {
         std::cerr << "not implemented" << std::endl;
         return;
     }
 
     const uint16_t setId = read<uint16_t>();
+
     if (verbose_) {
         std::cout << "set id: " << std::hex << setId << std::dec << std::endl;
     }
+
     const uint16_t setNumber = read<uint16_t>();
+
     if (verbose_) {
         std::cout << "set number: " << setNumber << std::endl;
     }
 
 
-    for (uint16_t i=0; i<folderCount; i++) {
+    for (uint16_t i = 0; i < folderCount; i++) {
         Folder folder;
         folder.dataOffset = read<uint32_t>();
+
         if (verbose_) {
             std::cout << "data offset: " << folder.dataOffset << std::endl;
         }
+
         folder.blockCount = read<uint16_t>();
+
         if (verbose_) {
             std::cout << "block count: " << folder.blockCount << std::endl;
         }
+
         folder.compression = read<uint16_t>();
+
         if (verbose_) {
             std::cout << "compression: 0x" << std::hex << folder.compression << std::dec << std::endl;
         }
@@ -244,37 +275,47 @@ void CabFile::serializeObject(void)
         m_folders.push_back(std::move(folder));
     }
 
-    for (uint16_t i=0; i<fileCount; i++) {
+    for (uint16_t i = 0; i < fileCount; i++) {
         File file;
         file.size = read<uint32_t>();
+
         if (verbose_) {
             std::cout << "file size: " << file.size << std::endl;
         }
 
         file.offsetInFolder = read<uint32_t>();
+
         if (verbose_) {
             std::cout << "offset in folder: " << file.offsetInFolder << std::endl;
         }
+
         file.folder = read<uint16_t>();
+
         if (verbose_) {
             std::cout << "folder: " << file.folder << std::endl;
         }
 
         file.date = read<uint16_t>();
+
         if (verbose_) {
             std::cout << "date: " << std::hex << file.date << std::dec << std::endl;
         }
+
         file.time = read<uint16_t>();
+
         if (verbose_) {
             std::cout << "time: " << std::hex << file.time << std::dec << std::endl;
         }
+
         file.attributes = read<uint16_t>();
+
         if (verbose_) {
             std::cout << "attributes: " << std::hex << file.attributes << std::dec << std::endl;
         }
 
         while (!istr->eof()) {
             char c = istr->get();
+
             if (c == 0x0) {
                 break;
             }
@@ -291,9 +332,11 @@ void CabFile::serializeObject(void)
 
 
     uint32_t uncompressedOffset = 0;
-    for (uint16_t i=0; i<folderCount; i++) {
+
+    for (uint16_t i = 0; i < folderCount; i++) {
         Folder &folder = m_folders[i];
-        for (uint16_t j=0; j<folder.blockCount; j++) {
+
+        for (uint16_t j = 0; j < folder.blockCount; j++) {
             Block block;
             block.checksum = read<uint32_t>();
             block.compressedSize = read<uint16_t>();

@@ -28,15 +28,13 @@
 
 namespace genie {
 
-struct TileSpan
-{
+struct TileSpan {
     int8_t y;
     int8_t xStart;
     int8_t xEnd;
 };
 
-struct VisibilityMask
-{
+struct VisibilityMask {
     enum Visibility {
         None = 0,
         East = 1,
@@ -57,15 +55,18 @@ template<int EdgeCount>
 class EdgeFile : public IFile
 {
 public:
-    const VisibilityMask &visibilityMask(const Slope slope, const int edges) const {
+    const VisibilityMask &visibilityMask(const Slope slope, const int edges) const
+    {
         if (edges >= EdgeCount) {
             log.error("Invalid edge %", edges);
             return VisibilityMask::null;
         }
+
         if (slope >= SlopeCount) {
             log.error("Invalid slope %", slope);
             return VisibilityMask::null;
         }
+
         return edgeSlopes[slope].tileMasks[edges];
     }
 
@@ -74,15 +75,18 @@ private:
         VisibilityMask tileMasks[EdgeCount];
     };
 
-    VisibilityMask readMask() {
+    VisibilityMask readMask()
+    {
         VisibilityMask mask;
 
         while (!getIStream()->eof()) {
             TileSpan span;
             serialize(span);
+
             if (span.xStart == -1 && span.xEnd == -1) {
                 break;
             }
+
             mask.lines.push_back(std::move(span));
 
             // just in case we read random gurba (good norwegian expression)
@@ -95,7 +99,8 @@ private:
         return mask;
     }
 
-    void serializeObject() override {
+    void serializeObject() override
+    {
         const std::istream::pos_type start = tellg();
 
         serialize(slopeOffsets, SlopeCount);

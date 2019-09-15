@@ -23,14 +23,14 @@
 namespace genie {
 
 namespace unit {
-    void Missile::serializeObject(void)
-    {
-        serialize<int8_t>(ProjectileType);
-        serialize<int8_t>(SmartMode);
-        serialize<int8_t>(HitMode);
-        serialize<int8_t>(VanishMode);
-        serialize<int8_t>(AreaEffectSpecials);
-        serialize<float>(ProjectileArc);
-    }
+void Missile::serializeObject(void)
+{
+    serialize<int8_t>(ProjectileType);
+    serialize<int8_t>(SmartMode);
+    serialize<int8_t>(HitMode);
+    serialize<int8_t>(VanishMode);
+    serialize<int8_t>(AreaEffectSpecials);
+    serialize<float>(ProjectileArc);
+}
 } // namespace unit
 } // namespace genie

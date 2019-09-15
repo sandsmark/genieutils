@@ -40,7 +40,7 @@ unsigned short Graphic::getNameSize()
         return 21;
     } else {
         return 25;
-}
+    }
 }
 
 unsigned short Graphic::getFilenameSize()
@@ -49,7 +49,7 @@ unsigned short Graphic::getFilenameSize()
         return 13;
     } else {
         return 25;
-}
+    }
 }
 
 void Graphic::serializeObject(void)
@@ -62,6 +62,7 @@ void Graphic::serializeObject(void)
     } else {
         serializeDebugString(Name);
         serializeDebugString(FileName);
+
         if (gv >= GV_T3) {
             serialize<uint16_t>(FirstFrame);
         }
@@ -74,6 +75,7 @@ void Graphic::serializeObject(void)
     } else {
         serialize<int32_t>(SLP);
     }
+
     serialize<int8_t>(IsLoaded); // Unused
     serialize<int8_t>(OldColorFlag); // Unused
     serialize<int8_t>(Layer);
@@ -98,7 +100,7 @@ void Graphic::serializeObject(void)
 
     if (gv >= GV_AoKB) { // 10.72
         serialize<int8_t>(EditorFlag); // A sprite editor thing
-}
+    }
 
     serialize(Deltas, delta_count);
 

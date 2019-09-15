@@ -26,31 +26,31 @@ namespace genie {
 
 namespace unit {
 
-    class DamageGraphic : public ISerializable
-    {
-    public:
-        int16_t GraphicID = -1;
+class DamageGraphic : public ISerializable
+{
+public:
+    int16_t GraphicID = -1;
 
-        /// Percentage damage this appears at
-        int8_t DamagePercent = 0;
+    /// Percentage damage this appears at
+    int8_t DamagePercent = 0;
 
-        int8_t OldApplyMode = 0;
+    int8_t OldApplyMode = 0;
 
 
-        enum GraphicApplyMode {
-            OverlayGraphic = 0,
-            OverlayRandomly = 1,
-            ReplaceGraphic = 2
-        };
-
-        /// 0   Overlay (flames on buildings)
-        /// 1   Overlay randomly
-        /// 2   Replace graphics (damaged walls)
-        int8_t ApplyMode = 0;
-
-    private:
-        void serializeObject(void) override;
+    enum GraphicApplyMode {
+        OverlayGraphic = 0,
+        OverlayRandomly = 1,
+        ReplaceGraphic = 2
     };
+
+    /// 0   Overlay (flames on buildings)
+    /// 1   Overlay randomly
+    /// 2   Replace graphics (damaged walls)
+    int8_t ApplyMode = 0;
+
+private:
+    void serializeObject(void) override;
+};
 } // namespace unit
 } // namespace genie
 

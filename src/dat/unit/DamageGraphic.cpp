@@ -23,12 +23,12 @@
 namespace genie {
 
 namespace unit {
-    void DamageGraphic::serializeObject(void)
-    {
-        serialize<int16_t>(GraphicID);
-        serialize<int8_t>(DamagePercent);
-        serialize<int8_t>(OldApplyMode); // This isn't even actual variable
-        serialize<int8_t>(ApplyMode);
-    }
+void DamageGraphic::serializeObject(void)
+{
+    serialize<int16_t>(GraphicID);
+    serialize<int8_t>(DamagePercent);
+    serialize<int8_t>(OldApplyMode); // This isn't even actual variable
+    serialize<int8_t>(ApplyMode);
+}
 } // namespace unit
 } // namespace genie

@@ -31,18 +31,23 @@ void Trigger::serializeObject(void)
     serialize<int32_t>(stringTableID);
     serialize<int8_t>(isObjective);
     serialize<int32_t>(descriptionOrder);
+
     if (scn_trigger_ver > 1.5f) {
         serialize<int32_t>(startingTime);
     }
+
     serializeForcedString<int32_t>(description);
     serializeForcedString<int32_t>(name);
     serializeSize<int32_t>(numEffects_, effects.size());
     serialize(effects, numEffects_);
+
     if (scn_trigger_ver > 1.2f) {
         serialize<int32_t>(effectDisplayOrder, numEffects_);
     }
+
     serializeSize<int32_t>(numConditions_, conditions.size());
     serialize(conditions, numConditions_);
+
     if (scn_trigger_ver > 1.2f) {
         serialize<int32_t>(conditionDisplayOrder, numConditions_);
     }
@@ -51,19 +56,22 @@ void Trigger::serializeObject(void)
 void TriggerCondition::serializeObject(void)
 {
     serialize<int32_t>(type);
+
     if (scn_trigger_ver > 1.0f) {
-        if (isOperation(OP_WRITE)) // Automatic compression.
-        {
+        if (isOperation(OP_WRITE)) { // Automatic compression.
             usedVariables = 16;
             int32_t *browser = &aiSignal;
+
             while (usedVariables > 0) {
                 if (*browser != -1) {
                     break;
                 }
+
                 --usedVariables;
                 --browser;
             }
         }
+
         serialize<int32_t>(usedVariables);
     } else {
         usedVariables = 13;
@@ -76,19 +84,22 @@ void TriggerCondition::serializeObject(void)
 void TriggerEffect::serializeObject(void)
 {
     serialize<int32_t>(type);
+
     if (scn_trigger_ver > 1.0f) {
-        if (isOperation(OP_WRITE)) // Automatic compression.
-        {
+        if (isOperation(OP_WRITE)) { // Automatic compression.
             usedVariables = 23;
             int32_t *browser = &instructionPanel;
+
             while (usedVariables > 0) {
                 if (*browser != -1) {
                     break;
                 }
+
                 --usedVariables;
                 --browser;
             }
         }
+
         serialize<int32_t>(usedVariables);
     } else {
         usedVariables = 16;
@@ -98,6 +109,7 @@ void TriggerEffect::serializeObject(void)
     serialize<int32_t>(&start, usedVariables);
     serializeForcedString<int32_t>(message);
     serializeForcedString<int32_t>(soundFile);
+
     if (scn_trigger_ver > 1.1f && usedVariables >= 5 && setObjects > 0) {
         serialize<int32_t>(selectedUnits, setObjects);
     }

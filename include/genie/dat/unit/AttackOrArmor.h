@@ -26,50 +26,50 @@ namespace genie {
 
 namespace unit {
 
-    /// Stores information about the class and amount of an armor or attack
-    class AttackOrArmor : public ISerializable
-    {
-    public:
-        enum Class {
-            Unused = 0,
-            Infantry = 1,
-            TurtleShips = 2,
-            BasePierce = 3,
-            BaseMelee = 4,
-            WarElephants = 5,
-            Unused6 = 6,
-            Unused7 = 7,
-            Cavalry = 8,
-            Unused9 = 9,
-            Unused10 = 10,
-            AllBuildingsExceptPort = 11,
-            Unused12 = 12,
-            StoneDefense = 13,
-            FEPredatorAnimals = 14,
-            Archers = 15,
-            ShipsCamelsSaboteurs = 16,
-            Rams = 17,
-            Trees = 18,
-            UniqueUnitsExceptTurtleShip = 19,
-            SiegeWeapons = 20,
-            StandardBuildings = 21,
-            WallsGates = 22,
-            FEGunpowderUnits = 23,
-            Boars = 24,
-            Monks = 25,
-            Castle = 26,
-            Spearmen = 27,
-            CavalryArchers = 28,
-            EagleWarriors = 29,
-            HDCamels = 30,
-        };
-
-        int16_t Class = -1;
-        int16_t Amount = 0;
-
-    private:
-        void serializeObject(void) override;
+/// Stores information about the class and amount of an armor or attack
+class AttackOrArmor : public ISerializable
+{
+public:
+    enum Class {
+        Unused = 0,
+        Infantry = 1,
+        TurtleShips = 2,
+        BasePierce = 3,
+        BaseMelee = 4,
+        WarElephants = 5,
+        Unused6 = 6,
+        Unused7 = 7,
+        Cavalry = 8,
+        Unused9 = 9,
+        Unused10 = 10,
+        AllBuildingsExceptPort = 11,
+        Unused12 = 12,
+        StoneDefense = 13,
+        FEPredatorAnimals = 14,
+        Archers = 15,
+        ShipsCamelsSaboteurs = 16,
+        Rams = 17,
+        Trees = 18,
+        UniqueUnitsExceptTurtleShip = 19,
+        SiegeWeapons = 20,
+        StandardBuildings = 21,
+        WallsGates = 22,
+        FEGunpowderUnits = 23,
+        Boars = 24,
+        Monks = 25,
+        Castle = 26,
+        Spearmen = 27,
+        CavalryArchers = 28,
+        EagleWarriors = 29,
+        HDCamels = 30,
     };
+
+    int16_t Class = -1;
+    int16_t Amount = 0;
+
+private:
+    void serializeObject(void) override;
+};
 } // namespace unit
 } // namespace genie
 

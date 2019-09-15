@@ -16,18 +16,23 @@ std::string getFileName(genie::GameVersion gv)
     case genie::GV_AoE:
         file_name += "Empires.dat";
         break;
+
     case genie::GV_RoR:
         file_name += "empires_x1.dat";
         break;
+
     case genie::GV_AoK:
         file_name += "empires2.dat";
         break;
+
     case genie::GV_TC:
         file_name += "empires2_x1_p1.dat";
         break;
+
     case genie::GV_SWGB:
         file_name += "genie.dat";
         break;
+
     case genie::GV_CC:
         file_name += "genie_x1.dat";
         break;
@@ -51,35 +56,35 @@ BOOST_AUTO_TEST_CASE(simple_change_values_test)
     std::cout << file->Civs[0].size() << std::endl;
 
     /*file->Civs[0].Units[4].DeadFish.TrackingUnit = 5;
-  file->Civs[0].Units[4].Creatable.TrainTime = 999;
-  file->Civs[0].Units[4].Creatable.ButtonID = 100;
-  
-  file->Civs[0].Units[5].DeadFish.TrackingUnit = 5;
-  file->Civs[0].Units[5].Creatable.TrainTime = 999;
-  file->Civs[0].Units[5].Creatable.ButtonID = 100;
-  
-  genie::Unit a = file->Civs[0].Units[5];
-  genie::Unit b(a);
-  
-  file->save("temp.dat");
-  
-  file->load("temp.dat");
-  
-  BOOST_CHECK( file->Civs[0].Units[4].DeadFish.TrackingUnit == 5 );
-  BOOST_CHECK( file->Civs[0].Units[4].Creatable.TrainTime == 999 );
-  BOOST_CHECK( file->Civs[0].Units[4].Creatable.ButtonID == 100 );
-  
-  BOOST_CHECK( file->Civs[0].Units[5].DeadFish.TrackingUnit == 5 );
-  BOOST_CHECK( file->Civs[0].Units[5].Creatable.TrainTime == 999 );
-  BOOST_CHECK( file->Civs[0].Units[5].Creatable.ButtonID == 100 );
-  
-  BOOST_CHECK( a.DeadFish.TrackingUnit == 5 );
-  BOOST_CHECK( a.Creatable.TrainTime == 999 );
-  BOOST_CHECK( a.Creatable.ButtonID == 100 );
-  
-  BOOST_CHECK( b.DeadFish.TrackingUnit == 5 );
-  BOOST_CHECK( b.Creatable.TrainTime == 999 );
-  BOOST_CHECK( b.Creatable.ButtonID == 100 ); */
+    file->Civs[0].Units[4].Creatable.TrainTime = 999;
+    file->Civs[0].Units[4].Creatable.ButtonID = 100;
+
+    file->Civs[0].Units[5].DeadFish.TrackingUnit = 5;
+    file->Civs[0].Units[5].Creatable.TrainTime = 999;
+    file->Civs[0].Units[5].Creatable.ButtonID = 100;
+
+    genie::Unit a = file->Civs[0].Units[5];
+    genie::Unit b(a);
+
+    file->save("temp.dat");
+
+    file->load("temp.dat");
+
+    BOOST_CHECK( file->Civs[0].Units[4].DeadFish.TrackingUnit == 5 );
+    BOOST_CHECK( file->Civs[0].Units[4].Creatable.TrainTime == 999 );
+    BOOST_CHECK( file->Civs[0].Units[4].Creatable.ButtonID == 100 );
+
+    BOOST_CHECK( file->Civs[0].Units[5].DeadFish.TrackingUnit == 5 );
+    BOOST_CHECK( file->Civs[0].Units[5].Creatable.TrainTime == 999 );
+    BOOST_CHECK( file->Civs[0].Units[5].Creatable.ButtonID == 100 );
+
+    BOOST_CHECK( a.DeadFish.TrackingUnit == 5 );
+    BOOST_CHECK( a.Creatable.TrainTime == 999 );
+    BOOST_CHECK( a.Creatable.ButtonID == 100 );
+
+    BOOST_CHECK( b.DeadFish.TrackingUnit == 5 );
+    BOOST_CHECK( b.Creatable.TrainTime == 999 );
+    BOOST_CHECK( b.Creatable.ButtonID == 100 ); */
 }
 
 int readWriteDiff(genie::GameVersion gv)

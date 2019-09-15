@@ -24,51 +24,50 @@ namespace genie {
 
 namespace unit {
 
-    Creatable::Creatable() :
-        //Type50(),
-        ResourceCosts(3)
-    {
-    }
+Creatable::Creatable() :
+    //Type50(),
+    ResourceCosts(3)
+{
+}
 
-    unsigned short Creatable::getResourceCostsSize()
-    {
-        return 3;
-    }
+unsigned short Creatable::getResourceCostsSize()
+{
+    return 3;
+}
 
-    void Creatable::serializeObject(void)
-    {
-        GameVersion gv = getGameVersion();
+void Creatable::serializeObject(void)
+{
+    GameVersion gv = getGameVersion();
 
-        serialize(ResourceCosts, 3);
-        serialize<int16_t>(TrainTime);
-        serialize<int16_t>(TrainLocationID);
-        serialize<int8_t>(ButtonID);
+    serialize(ResourceCosts, 3);
+    serialize<int16_t>(TrainTime);
+    serialize<int16_t>(TrainLocationID);
+    serialize<int8_t>(ButtonID);
 
-        if (gv >= GV_AoEB) // 7.01
-        {
-            if (gv >= GV_AoKE3) // 9.07
-            {
-                serialize<float>(RearAttackModifier);
-                serialize<float>(FlankAttackModifier);
-                serialize<int8_t>(CreatableType);
+    if (gv >= GV_AoEB) { // 7.01
+        if (gv >= GV_AoKE3) { // 9.07
+            serialize<float>(RearAttackModifier);
+            serialize<float>(FlankAttackModifier);
+            serialize<int8_t>(CreatableType);
 
-                if (gv >= GV_AoKB) {
-                    serialize<int8_t>(HeroMode); // 10.49
-                    serialize<int32_t>(GarrisonGraphic); // 10.73
-                }
-
-                serialize<float>(TotalProjectiles);
-                serialize<int8_t>(MaxTotalProjectiles);
-                serialize<float>(ProjectileSpawningArea, 3);
-                serialize<int32_t>(SecondaryProjectileUnit); // 9.08
-                // 9.2
-                {
-                    serialize<int32_t>(SpecialGraphic);
-                    serialize<int8_t>(SpecialAbility);
-                }
+            if (gv >= GV_AoKB) {
+                serialize<int8_t>(HeroMode); // 10.49
+                serialize<int32_t>(GarrisonGraphic); // 10.73
             }
-            serialize<int16_t>(DisplayedPierceArmour);
+
+            serialize<float>(TotalProjectiles);
+            serialize<int8_t>(MaxTotalProjectiles);
+            serialize<float>(ProjectileSpawningArea, 3);
+            serialize<int32_t>(SecondaryProjectileUnit); // 9.08
+            // 9.2
+            {
+                serialize<int32_t>(SpecialGraphic);
+                serialize<int8_t>(SpecialAbility);
+            }
         }
+
+        serialize<int16_t>(DisplayedPierceArmour);
     }
+}
 } // namespace unit
 } // namespace genie

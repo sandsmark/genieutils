@@ -23,58 +23,59 @@
 namespace genie {
 
 namespace unit {
-    //------------------------------------------------------------------------------
-    void Combat::setGameVersion(GameVersion gv)
-    {
-        ISerializable::setGameVersion(gv);
+//------------------------------------------------------------------------------
+void Combat::setGameVersion(GameVersion gv)
+{
+    ISerializable::setGameVersion(gv);
 
-        updateGameVersion(Attacks);
-        updateGameVersion(Armours);
+    updateGameVersion(Attacks);
+    updateGameVersion(Armours);
+}
+
+void Combat::serializeObject(void)
+{
+    GameVersion gv = getGameVersion();
+
+    if (gv < GV_TC // 11.52
+            && (gv > GV_LatestTap || gv < GV_T3)) {
+        uint8_t defarmor_byte = BaseArmor;
+        serialize<uint8_t>(defarmor_byte);
+        BaseArmor = defarmor_byte;
+    } else {
+        serialize<int16_t>(BaseArmor);
     }
 
-    void Combat::serializeObject(void)
-    {
-        GameVersion gv = getGameVersion();
-        if (gv < GV_TC // 11.52
-                && (gv > GV_LatestTap || gv < GV_T3)) {
-            uint8_t defarmor_byte = BaseArmor;
-            serialize<uint8_t>(defarmor_byte);
-            BaseArmor = defarmor_byte;
-        } else {
-            serialize<int16_t>(BaseArmor);
-        }
+    uint16_t attack_count{};
+    serializeSize<uint16_t>(attack_count, Attacks.size());
+    serialize(Attacks, attack_count);
 
-        uint16_t attack_count{};
-        serializeSize<uint16_t>(attack_count, Attacks.size());
-        serialize(Attacks, attack_count);
+    serializeSize<uint16_t>(attack_count, Armours.size());
+    serialize(Armours, attack_count);
 
-        serializeSize<uint16_t>(attack_count, Armours.size());
-        serialize(Armours, attack_count);
+    serialize<int16_t>(DefenseTerrainBonus);
+    serialize<float>(MaxRange);
+    serialize<float>(BlastWidth);
+    serialize<float>(ReloadTime);
+    serialize<int16_t>(ProjectileUnitID);
+    serialize<int16_t>(AccuracyPercent);
+    serialize<int8_t>(BreakOffCombat); // Not used anymore
+    serialize<int16_t>(FrameDelay);
+    serialize<float>(GraphicDisplacement, 3);
+    serialize<int8_t>(BlastAttackLevel);
+    serialize<float>(MinRange);
 
-        serialize<int16_t>(DefenseTerrainBonus);
-        serialize<float>(MaxRange);
-        serialize<float>(BlastWidth);
-        serialize<float>(ReloadTime);
-        serialize<int16_t>(ProjectileUnitID);
-        serialize<int16_t>(AccuracyPercent);
-        serialize<int8_t>(BreakOffCombat); // Not used anymore
-        serialize<int16_t>(FrameDelay);
-        serialize<float>(GraphicDisplacement, 3);
-        serialize<int8_t>(BlastAttackLevel);
-        serialize<float>(MinRange);
-
-        if (gv >= GV_AoKB) { // 10.36
-            serialize<float>(AccuracyDispersion);
-        }
-
-        serialize<int16_t>(AttackGraphic);
-        if (gv >= GV_AoEB) // 7.01
-        {
-            serialize<int16_t>(DisplayedMeleeArmour);
-            serialize<int16_t>(DisplayedAttack);
-            serialize<float>(DisplayedRange);
-            serialize<float>(DisplayedReloadTime);
-        }
+    if (gv >= GV_AoKB) { // 10.36
+        serialize<float>(AccuracyDispersion);
     }
+
+    serialize<int16_t>(AttackGraphic);
+
+    if (gv >= GV_AoEB) { // 7.01
+        serialize<int16_t>(DisplayedMeleeArmour);
+        serialize<int16_t>(DisplayedAttack);
+        serialize<float>(DisplayedRange);
+        serialize<float>(DisplayedReloadTime);
+    }
+}
 } // namespace unit
 } // namespace genie

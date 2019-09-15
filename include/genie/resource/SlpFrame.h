@@ -33,8 +33,7 @@
 
 namespace genie {
 
-struct XY
-{
+struct XY {
     uint32_t x;
     uint32_t y;
 };
@@ -51,8 +50,7 @@ inline bool operator==(const XY &l, const XY &r)
 
 // Element for player_color vector, the vector stores position (x, y) of
 // a player color pixel and the palette index for the color
-struct PlayerColorXY
-{
+struct PlayerColorXY {
     uint32_t x;
     uint32_t y;
     uint8_t index;
@@ -63,8 +61,7 @@ inline bool operator<(const PlayerColorXY &l, const PlayerColorXY &r)
     return l.y == r.y ? l.x < r.x : l.y < r.y;
 }
 
-struct SlpFrameData
-{
+struct SlpFrameData {
     std::vector<uint8_t> pixel_indexes;
     std::vector<uint32_t> bgra_channels;
     std::vector<uint8_t> alpha_channel;
@@ -199,7 +196,8 @@ public:
 
     void readImage();
 
-    uint32_t commandsOffset(const int row) {
+    uint32_t commandsOffset(const int row)
+    {
         return cmd_offsets_[row];
     }
 
@@ -277,7 +275,8 @@ private:
                     CNT_PLAYER,
                     CNT_SHIELD,
                     CNT_PC_OUTLINE,
-                    CNT_SHADOW };
+                    CNT_SHADOW
+                  };
     void handleColors(cnt_type count_type, uint32_t row, uint32_t col, uint32_t count);
     void handleSpecial(uint8_t cmd, uint32_t row, uint32_t col, uint32_t count, uint32_t pixs);
     void pushPixelsToBuffer(uint32_t row, uint32_t col, uint32_t count);

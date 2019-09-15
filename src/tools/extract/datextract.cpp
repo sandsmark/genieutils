@@ -30,9 +30,9 @@ int main(int argc, char **argv)
         po::options_description desc("Allowed options");
 
         desc.add_options()("help,h", "show help")
-            //       ("raw-in", "input file is uncompressed")
-            ("raw-out", "output file will not be compressed")("geniedat", "load file with geniedat")("game,g", po::value<std::string>(),
-                                                                                                     "allowed values: aoe, ror, aok, tc, swgb or cc")("input-file,f", po::value<std::string>(), "input file")("output-file,o", po::value<std::string>(), "output file")("verbose,v", "verbose output");
+        //       ("raw-in", "input file is uncompressed")
+        ("raw-out", "output file will not be compressed")("geniedat", "load file with geniedat")("game,g", po::value<std::string>(),
+                "allowed values: aoe, ror, aok, tc, swgb or cc")("input-file,f", po::value<std::string>(), "input file")("output-file,o", po::value<std::string>(), "output file")("verbose,v", "verbose output");
 
         po::positional_options_description pos;
         pos.add("input-file", 1);
@@ -57,25 +57,37 @@ int main(int argc, char **argv)
 
         genie::DatFile file;
 
-        if (vm.count("verbose"))
+        if (vm.count("verbose")) {
             file.setVerboseMode(true);
+        }
 
         if (vm.count("raw-out")) {
             file.extractRaw(vm["input-file"].as<std::string>().c_str(),
                             vm["output-file"].as<std::string>().c_str());
         } else if (vm.count("geniedat")) {
-            if (vm["game"].as<std::string>() == "aoe")
+            if (vm["game"].as<std::string>() == "aoe") {
                 file.setGameVersion(genie::GV_AoE);
-            if (vm["game"].as<std::string>() == "ror")
+            }
+
+            if (vm["game"].as<std::string>() == "ror") {
                 file.setGameVersion(genie::GV_RoR);
-            if (vm["game"].as<std::string>() == "aok")
+            }
+
+            if (vm["game"].as<std::string>() == "aok") {
                 file.setGameVersion(genie::GV_AoK);
-            if (vm["game"].as<std::string>() == "tc")
+            }
+
+            if (vm["game"].as<std::string>() == "tc") {
                 file.setGameVersion(genie::GV_TC);
-            if (vm["game"].as<std::string>() == "swgb")
+            }
+
+            if (vm["game"].as<std::string>() == "swgb") {
                 file.setGameVersion(genie::GV_SWGB);
-            if (vm["game"].as<std::string>() == "cc")
+            }
+
+            if (vm["game"].as<std::string>() == "cc") {
                 file.setGameVersion(genie::GV_CC);
+            }
 
             if (file.getGameVersion() == genie::GV_None) {
                 std::cout << "Wrong game arg\n"
@@ -90,9 +102,9 @@ int main(int argc, char **argv)
             file.saveAs(vm["output-file"].as<std::string>().c_str());
         }
 
-    } catch (boost::exception_detail::clone_impl<
-             boost::exception_detail::error_info_injector<
-                 boost::program_options::too_many_positional_options_error>>
+    } catch (boost::exception_detail::clone_impl <
+                 boost::exception_detail::error_info_injector <
+                 boost::program_options::too_many_positional_options_error >>
                  e) {
         std::cout << "too many arguments!" << std::endl;
     }

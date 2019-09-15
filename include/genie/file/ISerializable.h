@@ -245,8 +245,9 @@ protected:
     {
         T ret = {};
 
-        if (!istr_->eof())
+        if (!istr_->eof()) {
             istr_->read(reinterpret_cast<char *>(&ret), sizeof(ret));
+        }
 
         return ret;
     }
@@ -269,8 +270,9 @@ protected:
     void read(T **array, size_t len)
     {
         if (!istr_->eof()) {
-            if (*array == 0)
+            if (*array == 0) {
                 *array = new T[len];
+            }
 
             istr_->read(reinterpret_cast<char *>(*array), sizeof(T) * len);
         }
@@ -280,9 +282,9 @@ protected:
     /// Writes an array to file.
     //
     template <typename T>
-    void write(const T * const *data, size_t len)
+    void write(const T *const *data, size_t len)
     {
-        ostr_->write(reinterpret_cast<const char * const>(*data), sizeof(T) * len);
+        ostr_->write(reinterpret_cast<const char *const>(*data), sizeof(T) * len);
     }
 
     // Serializes a string with debug data.
@@ -317,9 +319,11 @@ protected:
         assert(operation_ != OP_INVALID);
 
         T size{};
+
         if (isOperation(OP_WRITE)) {
             size = str.size() + 1;
         }
+
         serialize<T>(size);
         serialize(str, size);
     }
@@ -334,8 +338,9 @@ protected:
             vec.resize(size);
         }
 
-        for (size_t i = 0; i < size; ++i)
+        for (size_t i = 0; i < size; ++i) {
             serializeSizedString<T>(vec[i], cString);
+        }
     }
 
     //----------------------------------------------------------------------------
@@ -351,12 +356,15 @@ protected:
         case OP_WRITE:
             write<T>(data);
             break;
+
         case OP_READ:
             data = read<T>();
             break;
+
         case OP_CALC_SIZE:
             size_ += sizeof(T);
             break;
+
         case OP_INVALID:
             assert(operation_ != OP_INVALID);
             break;
@@ -370,8 +378,9 @@ protected:
 
         data.serializeSubObject(this);
 
-        if (isOperation(OP_CALC_SIZE))
+        if (isOperation(OP_CALC_SIZE)) {
             size_ += data.objectSize();
+        }
     }
 
     //----------------------------------------------------------------------------
@@ -385,12 +394,15 @@ protected:
         case OP_WRITE:
             write<T>(data, len);
             break;
+
         case OP_READ:
             read<T>(data, len);
             break;
+
         case OP_CALC_SIZE:
             size_ += sizeof(T) * len;
             break;
+
         case OP_INVALID:
             assert(operation_ != OP_INVALID);
             break;
@@ -409,12 +421,15 @@ protected:
             case OP_WRITE:
                 writeString(str, len);
                 break;
+
             case OP_READ:
                 str = readString(len);
                 break;
+
             case OP_CALC_SIZE:
                 size_ += sizeof(char) * len;
                 break;
+
             case OP_INVALID:
                 assert(operation_ != OP_INVALID);
                 break;
@@ -424,7 +439,7 @@ protected:
 
     /// std::array with a plain old data type (could probably use is_trivial, but not needed)
     template <typename T, std::size_t N,
-                  std::enable_if_t<std::is_pod<T>::value, int> = 0
+              std::enable_if_t<std::is_pod<T>::value, int> = 0
               >
     void serialize(std::array<T, N> &vec)
     {
@@ -437,8 +452,9 @@ protected:
             break;
 
         case OP_READ:
-            for (size_t i = 0; i < N; ++i)
+            for (size_t i = 0; i < N; ++i) {
                 vec[i] = read<T>();
+            }
 
             break;
 
@@ -458,7 +474,7 @@ protected:
     template <typename T,
               std::size_t N,
               std::enable_if_t<std::is_base_of<ISerializable, T>::value, int> = 0
-        >
+              >
     void serialize(std::array<T, N> &vec)
     {
         assert(operation_ != OP_INVALID);
@@ -469,8 +485,9 @@ protected:
 
                 data->serializeSubObject(this);
 
-                if (isOperation(OP_CALC_SIZE))
+                if (isOperation(OP_CALC_SIZE)) {
                     size_ += data->objectSize();
+                }
             }
         } else {
             for (size_t i = 0; i < N; ++i) {
@@ -484,14 +501,15 @@ protected:
     /// Reads or writes an array of data to/from a vector dependent on operation.
     //
     template <typename T,
-                  std::enable_if_t<std::is_pod<T>::value, int> = 0
-        >
+              std::enable_if_t<std::is_pod<T>::value, int> = 0
+              >
     void serialize(std::vector<T> &vec, size_t size)
     {
         switch (getOperation()) {
         case OP_WRITE:
-            if (vec.size() != size)
+            if (vec.size() != size) {
                 std::cerr << "Warning!: vector size differs len!" << vec.size() << " " << size << std::endl;
+            }
 
             for (typename std::vector<T>::iterator it = vec.begin(); it != vec.end(); ++it) {
                 write<T>(*it);
@@ -502,8 +520,9 @@ protected:
         case OP_READ:
             vec.resize(size);
 
-            for (size_t i = 0; i < size; ++i)
+            for (size_t i = 0; i < size; ++i) {
                 vec[i] = read<T>();
+            }
 
             break;
 
@@ -525,12 +544,14 @@ protected:
     {
         switch (getOperation()) {
         case OP_WRITE:
-            if (vec.size() != size)
+            if (vec.size() != size) {
                 std::cerr << "Warning!: vector size differs len!" << vec.size() << " " << size << std::endl;
+            }
 
             for (size_t i = 0; i < size; ++i)
-                for (typename std::vector<T>::iterator it = vec[i].begin(); it != vec[i].end(); ++it)
+                for (typename std::vector<T>::iterator it = vec[i].begin(); it != vec[i].end(); ++it) {
                     write<T>(*it);
+                }
 
             break;
 
@@ -539,8 +560,10 @@ protected:
 
             for (size_t i = 0; i < size; ++i) {
                 vec[i].resize(size2);
-                for (size_t j = 0; j < size2; ++j)
+
+                for (size_t j = 0; j < size2; ++j) {
                     vec[i][j] = read<T>();
+                }
             }
 
             break;
@@ -560,23 +583,25 @@ protected:
     //
 
     template <typename T,
-                  std::enable_if_t<std::is_base_of<ISerializable, T>::value, int> = 0
-        >
+              std::enable_if_t<std::is_base_of<ISerializable, T>::value, int> = 0
+              >
     void serialize(std::vector<T> &vec, size_t size)
     {
         assert(operation_ != OP_INVALID);
 
         if (isOperation(OP_WRITE) || isOperation(OP_CALC_SIZE)) {
-            if (vec.size() != size)
+            if (vec.size() != size) {
                 std::cerr << "Warning!: vector size differs size!" << vec.size() << " " << size << std::endl;
+            }
 
             for (typename std::vector<T>::iterator it = vec.begin(); it != vec.end(); ++it) {
                 ISerializable *data = static_cast<ISerializable *>(&(*it));
 
                 data->serializeSubObject(this);
 
-                if (isOperation(OP_CALC_SIZE))
+                if (isOperation(OP_CALC_SIZE)) {
                     size_ += data->objectSize();
+                }
             }
         } else {
             vec.resize(size);
@@ -596,8 +621,10 @@ protected:
     void serializeSize(T &data, size_t size)
     {
         assert(operation_ != OP_INVALID);
-        if (isOperation(OP_WRITE))
+
+        if (isOperation(OP_WRITE)) {
             data = size;
+        }
 
         serialize<T>(data);
     }
@@ -613,12 +640,14 @@ protected:
     void serializeSize(T &data, std::string str, bool cString = true)
     {
         assert(operation_ != OP_INVALID);
+
         // calculate new size
         if (isOperation(OP_WRITE)) {
             size_t size = str.size();
 
-            if (cString && size != 0)
-                size++; //counting \0
+            if (cString && size != 0) {
+                size++;    //counting \0
+            }
 
             data = size;
         }
@@ -636,18 +665,21 @@ protected:
                                   std::vector<int32_t> &pointers)
     {
         assert(operation_ != OP_INVALID);
+
         if (isOperation(OP_WRITE) || isOperation(OP_CALC_SIZE)) {
             for (size_t i = 0; i < size; ++i) {
                 if (pointers[i]) {
                     ISerializable *data = dynamic_cast<ISerializable *>(&vec[i]);
                     data->serializeSubObject(this);
 
-                    if (isOperation(OP_CALC_SIZE))
+                    if (isOperation(OP_CALC_SIZE)) {
                         size_ += data->objectSize();
+                    }
                 }
             }
         } else {
             vec.resize(size);
+
             for (size_t i = 0; i < size; ++i) {
                 if (pointers[i]) {
                     ISerializable *cast_obj = dynamic_cast<ISerializable *>(&vec[i]);
@@ -672,23 +704,30 @@ protected:
         case OP_WRITE:
             write<T>(p.first);
 
-            if (!only_first)
+            if (!only_first) {
                 write<T>(p.second);
+            }
+
             break;
 
         case OP_READ:
             p.first = read<T>();
 
-            if (!only_first)
+            if (!only_first) {
                 p.second = read<T>();
+            }
+
             break;
 
         case OP_CALC_SIZE:
             size_ += sizeof(T);
 
-            if (!only_first)
+            if (!only_first) {
                 size_ += sizeof(T);
+            }
+
             break;
+
         case OP_INVALID:
             assert(operation_ != OP_INVALID);
             break;

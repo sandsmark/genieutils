@@ -32,7 +32,7 @@ void Sound::setGameVersion(GameVersion gv)
 
 void Sound::serializeObject(void)
 {
-  GameVersion gv = getGameVersion();
+    GameVersion gv = getGameVersion();
     serialize<int16_t>(ID);
     serialize<int16_t>(PlayDelay);
 

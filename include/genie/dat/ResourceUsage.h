@@ -49,7 +49,7 @@ enum class ResourceType : int16_t {
     TotalUnitsOwned = 19,
     UnitsKilled = 20,
     TechnologyCount = 21,
-    PercentMapExplored =22,
+    PercentMapExplored = 22,
     CastleAgeTechID = 23,
     ImperialAgeTechID = 24,
     FeudalAgeTechID = 25,

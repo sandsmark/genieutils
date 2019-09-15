@@ -53,42 +53,43 @@ private:
 
 namespace techtree {
 
-    class Common : public ISerializable
+class Common : public ISerializable
+{
+public:
+    void setGameVersion(GameVersion gv) override
     {
-    public:
-        void setGameVersion(GameVersion gv) override
-        {
-            ISerializable::setGameVersion(gv);
-            UnitResearch.resize(getSlots());
-            Mode.resize(getSlots());
+        ISerializable::setGameVersion(gv);
+        UnitResearch.resize(getSlots());
+        Mode.resize(getSlots());
+    }
+
+    int32_t SlotsUsed = 0;
+
+    /// Connection lines when selected
+    std::vector<int32_t> UnitResearch;
+
+    /// 0 Age/Tech-level, 1 Building, 2 Unit, 3 Tech.
+    std::vector<int32_t> Mode;
+
+    unsigned short getSlots()
+    {
+        if (getGameVersion() >= genie::GV_SWGB) {
+            return 20;
+        } else if (getGameVersion() >= genie::GV_AoKB) {
+            return 10;
+        } else {
+            return 5;
         }
+    }
 
-        int32_t SlotsUsed = 0;
-
-        /// Connection lines when selected
-        std::vector<int32_t> UnitResearch;
-
-        /// 0 Age/Tech-level, 1 Building, 2 Unit, 3 Tech.
-        std::vector<int32_t> Mode;
-
-        unsigned short getSlots()
-        {
-            if (getGameVersion() >= genie::GV_SWGB)
-                return 20;
-            else if (getGameVersion() >= genie::GV_AoKB)
-                return 10;
-            else
-                return 5;
-        }
-
-    private:
-        void serializeObject(void) override // 84 bytes, 164 in SWGB
-        {
-            serialize<int32_t>(SlotsUsed);
-            serialize<int32_t>(UnitResearch, getSlots());
-            serialize<int32_t>(Mode, getSlots());
-        }
-    };
+private:
+    void serializeObject(void) override // 84 bytes, 164 in SWGB
+    {
+        serialize<int32_t>(SlotsUsed);
+        serialize<int32_t>(UnitResearch, getSlots());
+        serialize<int32_t>(Mode, getSlots());
+    }
+};
 } // namespace techtree
 
 /// Contains all items of an age in techtree

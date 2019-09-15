@@ -27,8 +27,7 @@
 
 namespace genie {
 
-struct MapPoint
-{
+struct MapPoint {
     int32_t x, y;
 };
 

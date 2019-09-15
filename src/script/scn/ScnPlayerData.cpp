@@ -35,6 +35,7 @@ ScnMainPlayerData::~ScnMainPlayerData()
 void ScnMainPlayerData::serializeObject(void)
 {
     serializePlayerDataVersion();
+
     if (scn_plr_data_ver > 1.13f) {
         for (unsigned int i = 0; i < 16; ++i) {
             serialize(playerNames[i], 256); // 1.14 <-- this is read much later in AoE 1
@@ -121,6 +122,7 @@ void ScnMainPlayerData::serializeObject(void)
         for (unsigned int i = 0; i < 16; ++i) {
             serialize(playerNames[i], 256);
         }
+
         serialize(resourcesPlusPlayerInfo, 16);
     } else {
         CombinedResources::playerInfo = false;
@@ -169,6 +171,7 @@ void ScnMainPlayerData::serializeObject(void)
         serialize<int32_t>(player1CameraX);
         serialize<int32_t>(player1CameraY);
     }
+
     if (scn_plr_data_ver > 1.2f) {
         serialize<int32_t>(aiType);
     }
@@ -183,20 +186,24 @@ void CombinedResources::serializeObject(void)
     if (playerInfo || scn_plr_data_ver < 1.14f) {
         serialize<uint32_t>(enabled);
     }
+
     if (!playerInfo || scn_plr_data_ver < 1.14f) {
         serialize<uint32_t>(gold);
         serialize<uint32_t>(wood);
         serialize<uint32_t>(food);
         serialize<uint32_t>(stone);
     }
+
     if (playerInfo || scn_plr_data_ver < 1.14f) {
         serialize<uint32_t>(isHuman);
         serialize<uint32_t>(civilizationID);
         serialize<uint32_t>(unknown1);
     }
+
     if (!playerInfo && scn_plr_data_ver > 1.16f) {
         serialize<uint32_t>(ore);
         serialize<uint32_t>(goods);
+
         if (scn_plr_data_ver > 1.23f) {
             serialize<uint32_t>(goods);
         }
@@ -231,18 +238,18 @@ void TimelineEvent::serializeObject(void)
     serialize<uint16_t>(targetPlayerId);
 
     /*/ 48 bytes? Lots of data if count is over 0
-  ReadData((HANDLE)_hScenFile, hUnknown, 4u); // int
-  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 4, 1u); // char
-  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 6, 2u); // float?
-  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 8, 1u); // char
-  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 12, 4u); // int
-  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 16, 4u); // int
-  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 20, 4u); // in
-  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 24, 2u); // int16
-  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 32, 2u); // int16
-  ReadData((HANDLE)_hScenFile, &hScenFile,            2u); // int16
-  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 40, 2u); // int16
-  ReadData((HANDLE)_hScenFile, &v15, 2u);*/                // int16
+    ReadData((HANDLE)_hScenFile, hUnknown, 4u); // int
+    ReadData((HANDLE)_hScenFile, (char *)hUnknown + 4, 1u); // char
+    ReadData((HANDLE)_hScenFile, (char *)hUnknown + 6, 2u); // float?
+    ReadData((HANDLE)_hScenFile, (char *)hUnknown + 8, 1u); // char
+    ReadData((HANDLE)_hScenFile, (char *)hUnknown + 12, 4u); // int
+    ReadData((HANDLE)_hScenFile, (char *)hUnknown + 16, 4u); // int
+    ReadData((HANDLE)_hScenFile, (char *)hUnknown + 20, 4u); // in
+    ReadData((HANDLE)_hScenFile, (char *)hUnknown + 24, 2u); // int16
+    ReadData((HANDLE)_hScenFile, (char *)hUnknown + 32, 2u); // int16
+    ReadData((HANDLE)_hScenFile, &hScenFile,            2u); // int16
+    ReadData((HANDLE)_hScenFile, (char *)hUnknown + 40, 2u); // int16
+    ReadData((HANDLE)_hScenFile, &v15, 2u);*/                // int16
 }
 
 void ScnMainPlayerData::serializeBitmap(void)
@@ -258,6 +265,7 @@ void ScnMainPlayerData::serializeBitmap(void)
     }
 
     serialize<char>(&bmpHeader, 0x28);
+
     if (isOperation(OP_READ)) {
         bitmapByteSize = *reinterpret_cast<uint32_t *>(bmpHeader + 20);
 
@@ -279,6 +287,7 @@ void AiFile::serializeObject(void)
 {
     serializeSize<uint32_t>(aiFilenameSize, aiFilename, true);
     serializeSize<uint32_t>(cityFileSize, cityFilename, true);
+
     if (scn_plr_data_ver > 1.07f) {
         serializeSize<uint32_t>(perFileSize, perFilename, true);
     }
@@ -286,6 +295,7 @@ void AiFile::serializeObject(void)
     // crap in exe, says these are >= 1.15
     serialize(aiFilename, aiFilenameSize);
     serialize(cityFilename, cityFileSize);
+
     if (scn_plr_data_ver > 1.07f) {
         serialize(perFilename, perFileSize);
     }
@@ -302,6 +312,7 @@ void ScnVictory::serializeObject(void)
         serialize<uint32_t>(unused3);
     }
     serialize<uint32_t>(allConditionsRequired);
+
     if (scn_plr_data_ver > 1.12f) {
         serialize<uint32_t>(victoryMode);
         serialize<uint32_t>(scoreRequired);
@@ -314,23 +325,23 @@ void ScnDiplomacy::serializeObject(void)
     serialize<uint32_t>(stances, 16, 16); // Diplomacy (16*16*4)
     serialize<uint32_t>(individualVictory, 16, 180); // Individual Victory (12*60)
     /* Individual victory conditions were eventually reformed into triggers.
-00 +12 Quantity
-01 +16 Resource
-02 +20 Set Object
-03 +24 Next Object
-04 +28 Object Constant
-05 +32 Source Player
-06 +36 Technology
-07 +40 Timer
-08 +44 Trigger
-09 +48 Area X (FROM)
-10 +52 Area Y (FROM)
-11 +56 Area X (TO)
-12 +60 Area Y (TO)
-13 +64 Object Group
-14 +68 Object Type
-15 +72 AI Signal
-*/
+    00 +12 Quantity
+    01 +16 Resource
+    02 +20 Set Object
+    03 +24 Next Object
+    04 +28 Object Constant
+    05 +32 Source Player
+    06 +36 Technology
+    07 +40 Timer
+    08 +44 Trigger
+    09 +48 Area X (FROM)
+    10 +52 Area Y (FROM)
+    11 +56 Area X (TO)
+    12 +60 Area Y (TO)
+    13 +64 Object Group
+    14 +68 Object Type
+    15 +72 AI Signal
+    */
 }
 
 void ScnDisables::serializeObject(void)
@@ -338,7 +349,9 @@ void ScnDisables::serializeObject(void)
     if (scn_plr_data_ver > 1.17f) {
         serialize<uint32_t>(numDisabledTechs, 16);
     }
+
     serialize<uint32_t>(disabledTechs, 16, scn_plr_data_ver < 1.04f ? 20 : scn_plr_data_ver < 1.3f ? 30 : 60);
+
     if (scn_plr_data_ver > 1.17f) {
         serialize<uint32_t>(numDisabledUnits, 16);
         serialize<uint32_t>(disabledUnits, 16, scn_plr_data_ver < 1.3f ? 30 : 60);
@@ -357,6 +370,7 @@ void ScnMorePlayerData::serializeObject(void)
     serialize<uint8_t>(alliedVictory);
     serializeSize<uint16_t>(playerCount_, diplomacy1.size());
     serialize<uint8_t>(diplomacy1, playerCount_);
+
     if (scn_internal_ver >= 1.08) {
         serialize<uint32_t>(diplomacy2, playerCount_);
     }
@@ -369,6 +383,7 @@ void ScnMorePlayerData::serializeObject(void)
     } else {
         victoryConditionVersion = 0;
     }
+
 //    printf("victory condition version: %f\n", victoryConditionVersion);
 
     // I think this is some victory condition stuff

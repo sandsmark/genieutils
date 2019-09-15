@@ -51,8 +51,8 @@ void Civ::serializeObject(void)
 
     if (gv >= GV_MIK) {
         serialize<int16_t>(TechTreeID);
-        if (gv >= GV_AoKB) // 10.38
-        {
+
+        if (gv >= GV_AoKB) { // 10.38
             serialize<int16_t>(TeamBonusID);
 
             if (gv >= GV_SWGB) {

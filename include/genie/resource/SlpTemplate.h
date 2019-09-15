@@ -40,7 +40,8 @@ class LightmapFile : public IFile
 public:
     uint8_t lightmaps[18][4096];
 
-    operator bool() const noexcept {
+    operator bool() const noexcept
+    {
         return m_loaded;
     }
 
@@ -66,17 +67,18 @@ public:
         AokNeutral = 9
     };
 
-    struct InverseColorMap
-    {
+    struct InverseColorMap {
         uint8_t map[32][32][32];
 
-        inline constexpr uint8_t paletteIndex(const uint8_t r, const uint8_t g, const uint8_t b) const noexcept {
+        inline constexpr uint8_t paletteIndex(const uint8_t r, const uint8_t g, const uint8_t b) const noexcept
+        {
             return map[r][g][b];
         }
     };
     std::vector<InverseColorMap> maps;
 
-    operator bool() const noexcept {
+    operator bool() const noexcept
+    {
         return m_loaded;
     }
 
@@ -141,18 +143,23 @@ public:
     struct PatternMask {
         uint8_t pixels[4096];
 
-        inline static constexpr bool isIgnore(const uint8_t pixel) noexcept {
+        inline static constexpr bool isIgnore(const uint8_t pixel) noexcept
+        {
             return pixel & 0x1;
         }
-        inline static constexpr bool isBrighten(const uint8_t pixel) noexcept {
+        inline static constexpr bool isBrighten(const uint8_t pixel) noexcept
+        {
             return pixel & 0x2;
         }
-        inline static constexpr bool isDarken(const uint8_t pixel) noexcept {
+        inline static constexpr bool isDarken(const uint8_t pixel) noexcept
+        {
             return (pixel & 0x2) == 0;
         }
 
-        inline constexpr uint8_t apply(const uint8_t input, const int index) const noexcept {
+        inline constexpr uint8_t apply(const uint8_t input, const int index) const noexcept
+        {
             const uint8_t pixel = pixels[index];
+
             if (isIgnore(pixel)) {
                 return input;
             }
@@ -178,8 +185,9 @@ public:
 
         uint8_t lightmapIndex = m_masks[patterns[0]].pixels[lightIndex] >> 2 & 0x1F;
 
-        for (size_t i=1; i < patterns.size(); i++) {
+        for (size_t i = 1; i < patterns.size(); i++) {
             const uint8_t pixel = m_masks[patterns[i]].pixels[lightIndex];
+
             if (PatternMask::isIgnore(pixel)) {
                 continue;
             }
@@ -202,7 +210,8 @@ public:
         return icmFile.maps[icmIndex];
     }
 
-    operator bool() noexcept {
+    operator bool() noexcept
+    {
         return m_loaded;
     }
 
@@ -239,7 +248,8 @@ public:
     };
     std::array<Filtermap, SlopeCount> maps;
 
-    operator bool() noexcept {
+    operator bool() noexcept
+    {
         return m_loaded;
     }
 

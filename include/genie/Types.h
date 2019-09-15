@@ -45,13 +45,11 @@ enum GameVersion {
 
 extern GameVersion GV_LatestTap;
 
-struct XYZF
-{
+struct XYZF {
     float x = 0.f, y = 0.f, z = 0.f;
 };
 
-struct XYF
-{
+struct XYF {
     float x = 0.f, y = 0.f;
 };
 } // namespace genie

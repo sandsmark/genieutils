@@ -26,44 +26,44 @@ namespace genie {
 
 namespace unit {
 
-    class Missile : public ISerializable
-    {
-    public:
-        /// 0. Straight
-        /// 1. Homing?, projectile falls vertically to the bottom of the map
-        /// 2. Velocity homing?
-        /// 3. Teleporting projectile
-        int8_t ProjectileType = 0;
+class Missile : public ISerializable
+{
+public:
+    /// 0. Straight
+    /// 1. Homing?, projectile falls vertically to the bottom of the map
+    /// 2. Velocity homing?
+    /// 3. Teleporting projectile
+    int8_t ProjectileType = 0;
 
-        /// Effect attribute 19 changes this
-        /// 0. Shoot where the target is now
-        /// 1. Shoot where the target is going to be
-        int8_t SmartMode = 0;
+    /// Effect attribute 19 changes this
+    /// 0. Shoot where the target is now
+    /// 1. Shoot where the target is going to be
+    int8_t SmartMode = 0;
 
-        /// 0. Continue after hitting an obstacle
-        /// 1. Disappear once an obstacle is hit
-        /// 2. Hit all. Damages target and resting position?
-        int8_t HitMode = 0;
+    /// 0. Continue after hitting an obstacle
+    /// 1. Disappear once an obstacle is hit
+    /// 2. Hit all. Damages target and resting position?
+    int8_t HitMode = 0;
 
-        /// Affects the graphics so that they pass through the target instead of stopping
-        /// 1 allows the projectile to pass through, a value of 0 stops the projectile.
-        /// Only affects graphic not pass through damage.
-        int8_t VanishMode = 0;
+    /// Affects the graphics so that they pass through the target instead of stopping
+    /// 1 allows the projectile to pass through, a value of 0 stops the projectile.
+    /// Only affects graphic not pass through damage.
+    int8_t VanishMode = 0;
 
-        /// 0 Normal
-        /// 1 Random (bullets)
-        /// 2 Random explosions
-        int8_t AreaEffectSpecials = 0;
+    /// 0 Normal
+    /// 1 Random (bullets)
+    /// 2 Random explosions
+    int8_t AreaEffectSpecials = 0;
 
-        /// Determines the arc a projectile follows.
-        /// Enter a non-negative value.
-        /// The higher the value, the higher the arc will be that the projectile travels.
-        /// The graphics do not change, so a scorpion bolt will still always point forwards,
-        /// even if it has a very high arc.
-        float ProjectileArc = 0;
+    /// Determines the arc a projectile follows.
+    /// Enter a non-negative value.
+    /// The higher the value, the higher the arc will be that the projectile travels.
+    /// The graphics do not change, so a scorpion bolt will still always point forwards,
+    /// even if it has a very high arc.
+    float ProjectileArc = 0;
 
-    protected:
-        void serializeObject(void) override;
-    };
+protected:
+    void serializeObject(void) override;
+};
 } // namespace unit
 } // namespace genie

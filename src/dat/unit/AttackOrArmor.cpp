@@ -23,10 +23,10 @@
 namespace genie {
 
 namespace unit {
-    void AttackOrArmor::serializeObject(void)
-    {
-        serialize<int16_t>(Class);
-        serialize<int16_t>(Amount);
-    }
+void AttackOrArmor::serializeObject(void)
+{
+    serialize<int16_t>(Class);
+    serialize<int16_t>(Amount);
+}
 } // namespace unit
 } // namespace genie

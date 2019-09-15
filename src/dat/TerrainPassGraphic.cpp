@@ -28,11 +28,12 @@ namespace genie {
 //------------------------------------------------------------------------------
 void TerrainPassGraphic::serializeObject()
 {
-  GameVersion gv = getGameVersion();
+    GameVersion gv = getGameVersion();
 
     serialize<int32_t>(ExitTileSpriteID);
     serialize<int32_t>(EnterTileSpriteID);
     serialize<int32_t>(WalkTileSpriteID);
+
     if (gv < GV_SWGB && gv > GV_LatestTap) {
         int32_t replicationAmount = WalkSpriteRate;
         serialize<int32_t>(replicationAmount);

@@ -108,6 +108,7 @@ std::string BinaFile::filetype(std::istream *istr)
     char content[17];
     istr->read(content, 17);
     size_t readCount = istr->gcount();
+
     if (readCount < 4) {
         return "corrupted";
     }
@@ -135,6 +136,7 @@ std::string BinaFile::filetype(std::istream *istr)
     if (std::string(content, std::min(size_t(17), readCount)) == std::string("0\r\n1\r\n2\r\n3\r\n4\r\n5\r")) {
         return "counting file?";
     }
+
     if (content[0] == '1' && content[1] == ' ' && content[2] == ' ' && content[3] == ' ') {
         return "campaign button location data";
     }
