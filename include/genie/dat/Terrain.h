@@ -28,8 +28,6 @@ namespace genie {
 class Terrain : public SharedTerrain
 {
 public:
-    Terrain();
-
     void setGameVersion(GameVersion gv) override;
     static unsigned short getTerrainCount(GameVersion gv);
     static void setTerrainCount(unsigned short cnt);
@@ -50,7 +48,7 @@ public:
 
     /// Tile Graphics: flat, 2 x 8 elevation, 2 x 1:1
     ///  Frame Count, Animations, Frame Index
-    std::vector<FrameData> ElevationGraphics;
+    std::array<FrameData, TILE_TYPE_COUNT> ElevationGraphics;
 
     int16_t TerrainToDraw = 0;
     std::pair<int16_t, int16_t> TerrainDimensions = { 0, 0 }; // rows + cols
@@ -58,16 +56,16 @@ public:
     /// These refer to terrain borders, which are actually used only in AoE and RoR.
     std::vector<int16_t> Borders;
 
-    static const unsigned short TERRAIN_UNITS_SIZE = 30;
-    std::vector<int16_t> TerrainUnitID;
-    std::vector<int16_t> TerrainUnitDensity;
+    static constexpr unsigned short TERRAIN_UNITS_SIZE = 30;
+    std::array<int16_t, TERRAIN_UNITS_SIZE> TerrainUnitID;
+    std::array<int16_t, TERRAIN_UNITS_SIZE> TerrainUnitDensity;
 
     /// If two terrain units are to be placed on same spot, this selects which one will prevail others.
     /// 1 = prevails, others don't.
     /// Centralize
     /// 0   Place randomly on the tile
     /// 1   Place in middle of the tile
-    std::vector<int8_t> TerrainUnitCentering;
+    std::array<int8_t, TERRAIN_UNITS_SIZE> TerrainUnitCentering;
 
     int16_t NumberOfTerrainUnitsUsed = 0;
 

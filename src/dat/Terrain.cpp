@@ -24,14 +24,6 @@ namespace genie {
 
 unsigned short Terrain::terrain_count_ = 0;
 
-//------------------------------------------------------------------------------
-Terrain::Terrain() :
-    ElevationGraphics(TILE_TYPE_COUNT),
-    TerrainUnitID(TERRAIN_UNITS_SIZE), TerrainUnitDensity(TERRAIN_UNITS_SIZE),
-    TerrainUnitCentering(TERRAIN_UNITS_SIZE)
-{
-}
-
 void Terrain::setGameVersion(GameVersion gv)
 {
     ISerializable::setGameVersion(gv);
@@ -125,19 +117,22 @@ void Terrain::serializeObject(void)
     serialize<int8_t>(FrameChanged);
     serialize<int8_t>(Drawn);
 
-    serialize(ElevationGraphics, TILE_TYPE_COUNT);
+    serialize(ElevationGraphics);
     serialize<int16_t>(TerrainToDraw);
     serializePair<int16_t>(TerrainDimensions);
-    if (isOperation(OP_READ))
+    if (isOperation(OP_READ)) {
         serialize<int16_t>(Borders, getTerrainCount(gv));
-    else
+    } else {
         serialize<int16_t>(Borders, Borders.size());
-    serialize<int16_t>(TerrainUnitID, TERRAIN_UNITS_SIZE);
-    serialize<int16_t>(TerrainUnitDensity, TERRAIN_UNITS_SIZE);
-    serialize<int8_t>(TerrainUnitCentering, TERRAIN_UNITS_SIZE);
+    }
+
+    serialize(TerrainUnitID);
+    serialize(TerrainUnitDensity);
+    serialize(TerrainUnitCentering);
     serialize<int16_t>(NumberOfTerrainUnitsUsed);
 
-    if (gv < GV_SWGB)
+    if (gv < GV_SWGB) {
         serialize<int16_t>(Phantom);
+    }
 }
 } // namespace genie

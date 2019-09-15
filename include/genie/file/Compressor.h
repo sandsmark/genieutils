@@ -55,7 +55,7 @@ public:
 private:
     ISerializable *obj_ = nullptr;
 
-    std::istream *istream_ = 0;
+    std::istream *istream_ = nullptr;
     std::shared_ptr<std::istream> uncompressedIstream_;
 
     std::ostream *ostream_ = nullptr;

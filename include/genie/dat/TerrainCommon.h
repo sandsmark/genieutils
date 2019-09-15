@@ -38,7 +38,7 @@ class SharedTerrain : public ISerializable
 {
 public:
     // Was 17 before increased to 19.
-    static const unsigned short TILE_TYPE_COUNT = 19;
+    static constexpr unsigned short TILE_TYPE_COUNT = 19;
 
     int8_t Enabled = 0; //must be one or the game will crash
     int8_t Random = 0;

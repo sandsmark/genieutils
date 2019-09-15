@@ -137,7 +137,7 @@ public:
     int8_t EnableTargeting = 0;
 
     /// Unused Flag
-    int8_t CombatLevelFlag = false;
+    int8_t CombatLevelFlag = 0;
 
     /// Work Flag 1
     /// AoE 1: Used when farm is dead but still exists

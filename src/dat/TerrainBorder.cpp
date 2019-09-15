@@ -23,8 +23,7 @@
 namespace genie {
 
 //------------------------------------------------------------------------------
-TerrainBorder::TerrainBorder() :
-    Borders(TILE_TYPE_COUNT)
+TerrainBorder::TerrainBorder()
 {
 }
 
