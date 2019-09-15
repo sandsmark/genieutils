@@ -95,9 +95,6 @@ private:
 class AiFile : public ISerializable
 {
 public:
-    AiFile();
-    ~AiFile() override;
-
     uint32_t aiFilenameSize;
     uint32_t cityFileSize;
     uint32_t perFileSize;
@@ -119,8 +116,6 @@ public:
         Timed,
         Custom
     };
-    ScnVictory();
-    ~ScnVictory() override;
 
     uint32_t conquestRequired;
     uint32_t unused1;
@@ -140,9 +135,6 @@ private:
 class ScnDiplomacy : public ISerializable
 {
 public:
-    ScnDiplomacy();
-    ~ScnDiplomacy() override;
-
     std::vector<std::vector<uint32_t>> stances;
     std::vector<std::vector<uint32_t>> individualVictory;
 
@@ -153,9 +145,6 @@ private:
 class ScnDisables : public ISerializable
 {
 public:
-    ScnDisables();
-    ~ScnDisables() override;
-
     std::vector<uint32_t> numDisabledTechs;
     std::vector<std::vector<uint32_t>> disabledTechs;
     std::vector<uint32_t> numDisabledUnits;
@@ -326,9 +315,6 @@ private:
 class ScnMorePlayerData : public ISerializable
 {
 public:
-    ScnMorePlayerData();
-    ~ScnMorePlayerData() override;
-
     std::string playerName;
     float initCameraX = 0.f;
     float initCameraY = 0.f;

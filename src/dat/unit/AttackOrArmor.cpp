@@ -23,12 +23,6 @@
 namespace genie {
 
 namespace unit {
-    //------------------------------------------------------------------------------
-    void AttackOrArmor::setGameVersion(GameVersion gv)
-    {
-        ISerializable::setGameVersion(gv);
-    }
-
     void AttackOrArmor::serializeObject(void)
     {
         serialize<int16_t>(Class);

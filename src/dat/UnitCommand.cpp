@@ -24,12 +24,6 @@
 
 namespace genie {
 
-//------------------------------------------------------------------------------
-void Task::setGameVersion(GameVersion gv)
-{
-    ISerializable::setGameVersion(gv);
-}
-
 const std::string &Task::actionTypeName(const int16_t type)
 {
     static const std::unordered_map<int16_t, std::string> knownNames = {

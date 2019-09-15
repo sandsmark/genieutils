@@ -200,14 +200,6 @@ void ScnFile::serializeObject(void)
     compressor_.endCompression();
 }
 
-ScnPersonalityScript::ScnPersonalityScript()
-{
-}
-
-ScnPersonalityScript::~ScnPersonalityScript()
-{
-}
-
 void ScnPersonalityScript::serializeObject(void)
 {
     serializeSizedString<uint32_t>(filename, false);

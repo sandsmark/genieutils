@@ -27,8 +27,6 @@ namespace genie {
 class GraphicAngleSound : public ISerializable
 {
 public:
-    void setGameVersion(GameVersion gv) override;
-
     //TODO: Array
     int16_t FrameNum = -1;
     int16_t SoundID = -1;

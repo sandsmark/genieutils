@@ -29,12 +29,6 @@ TerrainBorder::TerrainBorder() :
 }
 
 //------------------------------------------------------------------------------
-void TerrainBorder::setGameVersion(GameVersion gv)
-{
-    ISerializable::setGameVersion(gv);
-}
-
-//------------------------------------------------------------------------------
 unsigned short TerrainBorder::getNameSize()
 {
     return 13;

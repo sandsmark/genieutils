@@ -26,8 +26,6 @@ namespace genie {
 class FrameData : public ISerializable
 {
 public:
-    void setGameVersion(GameVersion gv) override;
-
     int16_t FrameCount = 0;
     int16_t AngleCount = 0;
     int16_t ShapeID = 0;

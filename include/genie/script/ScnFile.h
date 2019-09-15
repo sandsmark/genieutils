@@ -69,9 +69,6 @@ private:
 class ScnPersonalityScript : public ISerializable
 {
 public:
-    ScnPersonalityScript();
-    ~ScnPersonalityScript() override;
-
     std::string filename;
     std::string content;
 

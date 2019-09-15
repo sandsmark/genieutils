@@ -30,7 +30,6 @@ class TerrainBorder : public SharedTerrain
 {
 public:
     TerrainBorder();
-    void setGameVersion(GameVersion gv) override;
 
     unsigned short getNameSize(void) override;
 

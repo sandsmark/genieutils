@@ -31,8 +31,6 @@ namespace unit {
     class Moving : public ISerializable
     {
     public:
-        virtual void setGameVersion(GameVersion gv);
-
         int16_t WalkingGraphic = -1;
         int16_t RunningGraphic = -1;
         float RotationSpeed = 0;

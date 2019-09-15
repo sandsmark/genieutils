@@ -23,12 +23,6 @@
 namespace genie {
 
 //------------------------------------------------------------------------------
-void UnitLine::setGameVersion(GameVersion gv)
-{
-    ISerializable::setGameVersion(gv);
-}
-
-//------------------------------------------------------------------------------
 void UnitLine::serializeObject(void)
 {
     serialize<int16_t>(ID);

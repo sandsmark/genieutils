@@ -23,12 +23,6 @@
 namespace genie {
 
 namespace unit {
-    //------------------------------------------------------------------------------
-    void Missile::setGameVersion(GameVersion gv)
-    {
-        ISerializable::setGameVersion(gv);
-    }
-
     void Missile::serializeObject(void)
     {
         serialize<int8_t>(ProjectileType);

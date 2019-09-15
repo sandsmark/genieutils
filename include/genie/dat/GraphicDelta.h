@@ -27,8 +27,6 @@ namespace genie {
 class GraphicDelta : public ISerializable
 {
 public:
-    void setGameVersion(GameVersion gv) override;
-
     int16_t GraphicID = -1;
     int16_t Padding1 = 0;
     int32_t SpritePtr = 0;

@@ -23,12 +23,6 @@
 namespace genie {
 
 //------------------------------------------------------------------------------
-void EffectCommand::setGameVersion(GameVersion gv)
-{
-    ISerializable::setGameVersion(gv);
-}
-
-//------------------------------------------------------------------------------
 void EffectCommand::serializeObject(void)
 {
     serialize<int8_t>(Type);

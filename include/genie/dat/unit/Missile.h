@@ -29,8 +29,6 @@ namespace unit {
     class Missile : public ISerializable
     {
     public:
-        void setGameVersion(GameVersion gv) override;
-
         /// 0. Straight
         /// 1. Homing?, projectile falls vertically to the bottom of the map
         /// 2. Velocity homing?

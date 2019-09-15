@@ -56,10 +56,6 @@ namespace techtree {
     class Common : public ISerializable
     {
     public:
-        Common() {}
-
-        ~Common() override {}
-
         void setGameVersion(GameVersion gv) override
         {
             ISerializable::setGameVersion(gv);

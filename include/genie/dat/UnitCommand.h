@@ -27,8 +27,6 @@ namespace genie {
 class Task : public ISerializable
 {
 public:
-    void setGameVersion(GameVersion gv) override;
-
     // Always 1?
     int16_t TaskType = 1;
 

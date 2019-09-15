@@ -30,8 +30,6 @@ namespace genie {
 class EffectCommand : public ISerializable
 {
 public:
-    void setGameVersion(GameVersion gv) override;
-
     enum EffectType {
         AbsoluteAttributeModifier = 0,
         ResourceModifier = 1,

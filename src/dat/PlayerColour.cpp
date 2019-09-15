@@ -23,12 +23,6 @@
 
 namespace genie {
 
-//------------------------------------------------------------------------------
-void PlayerColour::setGameVersion(GameVersion gv)
-{
-    ISerializable::setGameVersion(gv);
-}
-
 void PlayerColour::serializeObject(void)
 {
     if (getGameVersion() < GV_AoKE3) {

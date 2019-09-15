@@ -271,14 +271,6 @@ void ScnMainPlayerData::serializeBitmap(void)
     }
 }
 
-AiFile::AiFile()
-{
-}
-
-AiFile::~AiFile()
-{
-}
-
 void AiFile::serializeObject(void)
 {
     serializeSize<uint32_t>(aiFilenameSize, aiFilename, true);
@@ -291,14 +283,6 @@ void AiFile::serializeObject(void)
     serialize(cityFilename, cityFileSize);
     if (scn_plr_data_ver > 1.07f)
         serialize(perFilename, perFileSize);
-}
-
-ScnVictory::ScnVictory()
-{
-}
-
-ScnVictory::~ScnVictory()
-{
 }
 
 void ScnVictory::serializeObject(void)
@@ -317,14 +301,6 @@ void ScnVictory::serializeObject(void)
         serialize<uint32_t>(scoreRequired);
         serialize<uint32_t>(timeForTimedGame);
     }
-}
-
-ScnDiplomacy::ScnDiplomacy()
-{
-}
-
-ScnDiplomacy::~ScnDiplomacy()
-{
 }
 
 void ScnDiplomacy::serializeObject(void)
@@ -351,14 +327,6 @@ void ScnDiplomacy::serializeObject(void)
 */
 }
 
-ScnDisables::ScnDisables()
-{
-}
-
-ScnDisables::~ScnDisables()
-{
-}
-
 void ScnDisables::serializeObject(void)
 {
     if (scn_plr_data_ver > 1.17f)
@@ -370,14 +338,6 @@ void ScnDisables::serializeObject(void)
         serialize<uint32_t>(numDisabledBuildings, 16);
         serialize<uint32_t>(disabledBuildings, 16, scn_plr_data_ver < 1.3f ? 20 : 60);
     }
-}
-
-ScnMorePlayerData::ScnMorePlayerData()
-{
-}
-
-ScnMorePlayerData::~ScnMorePlayerData()
-{
 }
 
 void ScnMorePlayerData::serializeObject(void)

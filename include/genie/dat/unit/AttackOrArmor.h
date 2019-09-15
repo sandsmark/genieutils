@@ -30,8 +30,6 @@ namespace unit {
     class AttackOrArmor : public ISerializable
     {
     public:
-        void setGameVersion(GameVersion gv) override;
-
         enum Class {
             Unused = 0,
             Infantry = 1,

@@ -30,8 +30,6 @@ namespace genie {
 class UnitLine : public ISerializable
 {
 public:
-    void setGameVersion(GameVersion gv) override;
-
     int16_t ID = -1;
 
     std::string Name = "";
