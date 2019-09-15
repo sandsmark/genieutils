@@ -34,11 +34,6 @@ TerrainRestriction::TerrainRestriction() :
 }
 
 //------------------------------------------------------------------------------
-TerrainRestriction::~TerrainRestriction()
-{
-}
-
-//------------------------------------------------------------------------------
 void TerrainRestriction::setGameVersion(GameVersion gv)
 {
     ISerializable::setGameVersion(gv);

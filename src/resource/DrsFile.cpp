@@ -33,16 +33,6 @@ using std::string;
 Logger &DrsFile::log = Logger::getLogger("freeaoe.DrsFile");
 
 //------------------------------------------------------------------------------
-DrsFile::DrsFile()
-{
-}
-
-//------------------------------------------------------------------------------
-DrsFile::~DrsFile()
-{
-}
-
-//------------------------------------------------------------------------------
 SlpFilePtr DrsFile::getSlpFile(uint32_t id)
 {
     std::unordered_map<uint32_t, SlpFilePtr>::iterator i = slp_map_.find(id);

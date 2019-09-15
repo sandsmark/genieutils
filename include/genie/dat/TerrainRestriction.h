@@ -30,7 +30,6 @@ class TerrainRestriction : public ISerializable
 {
 public:
     TerrainRestriction();
-    ~TerrainRestriction() override;
     void setGameVersion(GameVersion gv) override;
 
     /// Accessibility and Damage Multiplier

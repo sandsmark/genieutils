@@ -37,11 +37,6 @@ DatFile::DatFile() :
 }
 
 //------------------------------------------------------------------------------
-DatFile::~DatFile()
-{
-}
-
-//------------------------------------------------------------------------------
 void DatFile::setGameVersion(GameVersion gv)
 {
     ISerializable::setGameVersion(gv);

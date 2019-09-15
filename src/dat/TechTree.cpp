@@ -23,16 +23,6 @@
 namespace genie {
 
 //------------------------------------------------------------------------------
-TechTree::TechTree()
-{
-}
-
-//------------------------------------------------------------------------------
-TechTree::~TechTree()
-{
-}
-
-//------------------------------------------------------------------------------
 void TechTree::setGameVersion(GameVersion gv)
 {
     ISerializable::setGameVersion(gv);
@@ -76,20 +66,10 @@ void TechTree::serializeObject(void)
 
     serialize<int32_t>(TotalUnitTechGroups); // 9.39
 
-    serializeSub<TechTreeAge>(TechTreeAges, age_count);
-    serializeSub<BuildingConnection>(BuildingConnections, building_count);
-    serializeSub<UnitConnection>(UnitConnections, unit_count);
-    serializeSub<ResearchConnection>(ResearchConnections, research_count);
-}
-
-//------------------------------------------------------------------------------
-TechTreeAge::TechTreeAge()
-{
-}
-
-//------------------------------------------------------------------------------
-TechTreeAge::~TechTreeAge()
-{
+    serializeSub(TechTreeAges, age_count);
+    serializeSub(BuildingConnections, building_count);
+    serializeSub(UnitConnections, unit_count);
+    serializeSub(ResearchConnections, research_count);
 }
 
 void TechTreeAge::setGameVersion(GameVersion gv)
@@ -160,11 +140,6 @@ BuildingConnection::BuildingConnection() :
 {
 }
 
-//------------------------------------------------------------------------------
-BuildingConnection::~BuildingConnection()
-{
-}
-
 void BuildingConnection::setGameVersion(GameVersion gv)
 {
     ISerializable::setGameVersion(gv);
@@ -211,16 +186,6 @@ void BuildingConnection::serializeObject(void)
     }
 }
 
-//------------------------------------------------------------------------------
-UnitConnection::UnitConnection()
-{
-}
-
-//------------------------------------------------------------------------------
-UnitConnection::~UnitConnection()
-{
-}
-
 void UnitConnection::setGameVersion(GameVersion gv)
 {
     ISerializable::setGameVersion(gv);
@@ -255,16 +220,6 @@ void UnitConnection::serializeObject(void)
         serialize<int32_t>(LineMode); // 9.51
         serialize<int32_t>(EnablingResearch); // 9.91
     }
-}
-
-//------------------------------------------------------------------------------
-ResearchConnection::ResearchConnection()
-{
-}
-
-//------------------------------------------------------------------------------
-ResearchConnection::~ResearchConnection()
-{
 }
 
 void ResearchConnection::setGameVersion(GameVersion gv)

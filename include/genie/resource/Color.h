@@ -30,15 +30,9 @@ class Color
 {
 public:
     //----------------------------------------------------------------------------
-    /// Creates a basic black color (0, 0, 0)
     //
-    Color();
-
-    //----------------------------------------------------------------------------
-    //
+    Color() = default; /// Black
     Color(uint8_t red, uint8_t green, uint8_t blue);
-
-    virtual ~Color();
 
     uint8_t r = 0; /// Red
     uint8_t g = 0; /// Green

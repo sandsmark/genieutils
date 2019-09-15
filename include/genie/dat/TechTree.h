@@ -32,8 +32,6 @@ class ResearchConnection;
 class TechTree : public ISerializable
 {
 public:
-    TechTree();
-    ~TechTree() override;
     void setGameVersion(GameVersion gv) override;
 
     /// Number of total unit/tech groups
@@ -101,9 +99,7 @@ namespace techtree {
 class TechTreeAge : public ISerializable
 {
 public:
-    TechTreeAge();
-    virtual ~TechTreeAge();
-    virtual void setGameVersion(GameVersion gv);
+    void setGameVersion(GameVersion gv) override;
 
     int32_t ID = -1; //Age ID
     int8_t Status = 2; //Always 2
@@ -129,7 +125,6 @@ class BuildingConnection : public ISerializable
 {
 public:
     BuildingConnection();
-    ~BuildingConnection() override;
     void setGameVersion(GameVersion gv) override;
 
     int32_t ID = -1;
@@ -178,8 +173,6 @@ private:
 class UnitConnection : public ISerializable
 {
 public:
-    UnitConnection();
-    ~UnitConnection() override;
     void setGameVersion(GameVersion gv) override;
 
     int32_t ID = -1;
@@ -208,8 +201,6 @@ private:
 class ResearchConnection : public ISerializable
 {
 public:
-    ResearchConnection();
-    ~ResearchConnection() override;
     void setGameVersion(GameVersion gv) override;
 
     int32_t ID = -1;

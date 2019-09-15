@@ -23,15 +23,6 @@
 namespace genie {
 
 namespace unit {
-
-    Combat::Combat() //: Bird()
-    {
-    }
-
-    Combat::~Combat()
-    {
-    }
-
     //------------------------------------------------------------------------------
     void Combat::setGameVersion(GameVersion gv)
     {

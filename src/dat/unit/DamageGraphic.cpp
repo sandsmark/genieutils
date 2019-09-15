@@ -23,21 +23,6 @@
 namespace genie {
 
 namespace unit {
-
-    DamageGraphic::DamageGraphic()
-    {
-    }
-
-    DamageGraphic::~DamageGraphic()
-    {
-    }
-
-    //------------------------------------------------------------------------------
-    void DamageGraphic::setGameVersion(GameVersion gv)
-    {
-        ISerializable::setGameVersion(gv);
-    }
-
     void DamageGraphic::serializeObject(void)
     {
         serialize<int16_t>(GraphicID);

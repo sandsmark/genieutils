@@ -47,11 +47,6 @@ public:
     SlpFile(const size_t size);
 
     //----------------------------------------------------------------------------
-    /// Destructor
-    //
-    virtual ~SlpFile();
-
-    //----------------------------------------------------------------------------
     /// Frees all content of a slp file.
     //
     void unload() override;

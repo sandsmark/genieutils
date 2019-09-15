@@ -31,17 +31,6 @@
 namespace genie {
 
 Logger &SlpFrame::log = Logger::getLogger("genie.SlpFrame");
-const char *CNT_SETS[] = { "CNT_LEFT", "CNT_SAME", "CNT_DIFF", "CNT_TRANSPARENT", "CNT_FEATHERING", "CNT_PLAYER", "CNT_SHIELD", "CNT_PC_OUTLINE", "CNT_SHADOW" };
-
-//------------------------------------------------------------------------------
-SlpFrame::SlpFrame()
-{
-}
-
-//------------------------------------------------------------------------------
-SlpFrame::~SlpFrame()
-{
-}
 
 //------------------------------------------------------------------------------
 void SlpFrame::setSlpFilePos(std::streampos pos)

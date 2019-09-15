@@ -31,8 +31,6 @@ namespace unit {
     {
     public:
         Creatable();
-        ~Creatable() override;
-        void setGameVersion(GameVersion gv) override;
 
         static unsigned short getResourceCostsSize();
 

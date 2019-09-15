@@ -23,24 +23,6 @@
 namespace genie {
 
 namespace unit {
-
-    Building::Building() :
-        //Creatable(),
-        Annexes(BUILDING_ANNEXES_SIZE),
-        LootingTable(LOOTABLE_RES_COUNT)
-    {
-    }
-
-    Building::~Building()
-    {
-    }
-
-    //------------------------------------------------------------------------------
-    void Building::setGameVersion(GameVersion gv)
-    {
-        ISerializable::setGameVersion(gv);
-    }
-
     void Building::serializeObject(void)
     {
         GameVersion gv = getGameVersion();
@@ -79,11 +61,6 @@ namespace unit {
                 serialize<int8_t>(LootingTable, LOOTABLE_RES_COUNT); // 9.26
             }
         }
-    }
-
-    void BuildingAnnex::setGameVersion(GameVersion gv)
-    {
-        ISerializable::setGameVersion(gv);
     }
 
     void BuildingAnnex::serializeObject()

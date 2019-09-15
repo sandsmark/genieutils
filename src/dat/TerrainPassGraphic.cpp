@@ -26,16 +26,6 @@
 namespace genie {
 
 //------------------------------------------------------------------------------
-TerrainPassGraphic::TerrainPassGraphic()
-{
-}
-
-//------------------------------------------------------------------------------
-TerrainPassGraphic::~TerrainPassGraphic()
-{
-}
-
-//------------------------------------------------------------------------------
 void TerrainPassGraphic::setGameVersion(GameVersion gv)
 {
     ISerializable::setGameVersion(gv);

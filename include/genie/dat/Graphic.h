@@ -29,9 +29,7 @@ namespace genie {
 class Graphic : public ISerializable
 {
 public:
-    Graphic();
-    virtual ~Graphic();
-    virtual void setGameVersion(GameVersion gv);
+    void setGameVersion(GameVersion gv) override;
 
     /// Returns the size of Name
     unsigned short getNameSize(void);

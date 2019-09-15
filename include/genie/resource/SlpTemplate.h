@@ -274,11 +274,6 @@ public:
     };
 
     //----------------------------------------------------------------------------
-    /// Destructor
-    //
-    virtual ~SlpTemplateFile();
-
-    //----------------------------------------------------------------------------
     /// Frees all content of a slp file.
     //
     void unload() noexcept override;

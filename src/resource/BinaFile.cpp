@@ -28,10 +28,6 @@ BinaFile::BinaFile(uint32_t size) :
 {
 }
 
-BinaFile::~BinaFile()
-{
-}
-
 std::shared_ptr<PalFile> BinaFile::readPalFile(std::istream *istr)
 {
     std::shared_ptr<PalFile> pal = std::make_shared<PalFile>();

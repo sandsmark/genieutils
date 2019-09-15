@@ -30,9 +30,7 @@ namespace genie {
 class UnitLine : public ISerializable
 {
 public:
-    UnitLine();
-    virtual ~UnitLine();
-    virtual void setGameVersion(GameVersion gv);
+    void setGameVersion(GameVersion gv) override;
 
     int16_t ID = -1;
 

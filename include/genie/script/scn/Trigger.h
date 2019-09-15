@@ -65,9 +65,6 @@ public:
         ConditionsTypeCount
     };
 
-    TriggerCondition();
-    ~TriggerCondition() override;
-
     int32_t type = 0;
     int32_t usedVariables = 0; //always = 0x10 (for internal use)
     int32_t amount = -1; //of objects, difficult level
@@ -158,9 +155,6 @@ public:
     };
 
 
-    TriggerEffect();
-    ~TriggerEffect() override;
-
     int32_t type = 0;
     int32_t usedVariables = 0;
     int32_t aiGoal = -1;
@@ -194,9 +188,6 @@ private:
 class Trigger : public ISerializable
 {
 public:
-    Trigger();
-    ~Trigger() override;
-
     int32_t startingState;
     int8_t looping;
     int32_t stringTableID;

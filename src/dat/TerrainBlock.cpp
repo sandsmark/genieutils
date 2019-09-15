@@ -22,16 +22,6 @@
 namespace genie {
 
 //------------------------------------------------------------------------------
-TerrainBlock::TerrainBlock()
-{
-}
-
-//------------------------------------------------------------------------------
-TerrainBlock::~TerrainBlock()
-{
-}
-
-//------------------------------------------------------------------------------
 void TerrainBlock::setGameVersion(GameVersion gv)
 {
     ISerializable::setGameVersion(gv);
@@ -162,16 +152,6 @@ void TerrainBlock::serializeObject(void)
 
     // Few pointers and small numbers.
     serialize<int32_t>(SomeInt32, getSomethingSize());
-}
-
-//------------------------------------------------------------------------------
-TileSize::TileSize()
-{
-}
-
-//------------------------------------------------------------------------------
-TileSize::~TileSize()
-{
 }
 
 //------------------------------------------------------------------------------

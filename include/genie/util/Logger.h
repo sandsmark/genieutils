@@ -183,9 +183,6 @@ protected:
     std::string getLogLevelName(LogLevel loglevel);
 
 private:
-    Logger();
-    virtual ~Logger();
-
     static std::ostream *global_out_;
 
 private:

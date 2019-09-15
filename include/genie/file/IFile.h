@@ -33,11 +33,10 @@ namespace genie {
 class IFile : public ISerializable
 {
 public:
+    IFile() = default;
+
     IFile(const IFile &) = delete;
     IFile &operator=(const IFile &) = delete;
-
-    //----------------------------------------------------------------------------
-    IFile();
 
     //----------------------------------------------------------------------------
     ~IFile() override;

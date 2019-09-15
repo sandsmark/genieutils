@@ -23,14 +23,6 @@
 
 namespace genie {
 
-GraphicAngleSound::GraphicAngleSound()
-{
-}
-
-GraphicAngleSound::~GraphicAngleSound()
-{
-}
-
 //------------------------------------------------------------------------------
 void GraphicAngleSound::setGameVersion(GameVersion gv)
 {

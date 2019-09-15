@@ -25,18 +25,9 @@
 
 namespace genie {
 
-Compressor::Compressor()
-{
-}
-
 //------------------------------------------------------------------------------
 Compressor::Compressor(ISerializable *obj) :
     obj_(obj)
-{
-}
-
-//------------------------------------------------------------------------------
-Compressor::~Compressor()
 {
 }
 

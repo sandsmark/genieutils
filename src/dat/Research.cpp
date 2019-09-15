@@ -28,11 +28,6 @@ Tech::Tech() :
 {
 }
 
-//------------------------------------------------------------------------------
-Tech::~Tech()
-{
-}
-
 void Tech::setGameVersion(GameVersion gv)
 {
     ISerializable::setGameVersion(gv);

@@ -22,14 +22,6 @@
 
 namespace genie {
 
-Civ::Civ()
-{
-}
-
-Civ::~Civ()
-{
-}
-
 void Civ::setGameVersion(GameVersion gv)
 {
     ISerializable::setGameVersion(gv);

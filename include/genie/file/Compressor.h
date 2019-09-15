@@ -44,9 +44,6 @@ public:
     Compressor(ISerializable *obj);
 
     //----------------------------------------------------------------------------
-    virtual ~Compressor();
-
-    //----------------------------------------------------------------------------
     void beginCompression(void);
 
     //----------------------------------------------------------------------------
@@ -56,15 +53,15 @@ public:
     static void decompress(std::istream &source, std::ostream &sink);
 
 private:
-    ISerializable *obj_;
+    ISerializable *obj_ = nullptr;
 
     std::istream *istream_ = 0;
     std::shared_ptr<std::istream> uncompressedIstream_;
 
-    std::ostream *ostream_;
+    std::ostream *ostream_ = nullptr;
     std::shared_ptr<std::ostream> bufferedStream_;
 
-    Compressor();
+    Compressor() = default;
 
     //----------------------------------------------------------------------------
     /// Decompresses istream and sets uncompressedIstream_.

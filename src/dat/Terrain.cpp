@@ -32,11 +32,6 @@ Terrain::Terrain() :
 {
 }
 
-//------------------------------------------------------------------------------
-Terrain::~Terrain()
-{
-}
-
 void Terrain::setGameVersion(GameVersion gv)
 {
     ISerializable::setGameVersion(gv);

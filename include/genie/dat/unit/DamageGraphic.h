@@ -29,10 +29,6 @@ namespace unit {
     class DamageGraphic : public ISerializable
     {
     public:
-        DamageGraphic();
-        ~DamageGraphic() override;
-        void setGameVersion(GameVersion gv) override;
-
         int16_t GraphicID = -1;
 
         /// Percentage damage this appears at

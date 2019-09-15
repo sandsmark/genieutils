@@ -44,15 +44,6 @@ class DrsFile : public IFile
     static constexpr char slpTableHeader[] = " pls";
 
 public:
-    //----------------------------------------------------------------------------
-    /// Default Constructor.
-    //
-    DrsFile();
-
-    //----------------------------------------------------------------------------
-    /// Destructor
-    //
-    virtual ~DrsFile();
 
     //----------------------------------------------------------------------------
     /// Get a shared pointer to a slp file.

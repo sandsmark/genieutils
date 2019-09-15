@@ -87,7 +87,6 @@ class ScnFile : public IFile
 {
 public:
     ScnFile();
-    ~ScnFile() override;
 
     //----------------------------------------------------------------------------
     /// Extracts a scenario (for debugging purpose).
@@ -174,7 +173,6 @@ private:
 class CpxFile : public IFile
 {
 public:
-    CpxFile();
     void serializeObject(void) override;
 
     std::vector<std::string> getFilenames() const;

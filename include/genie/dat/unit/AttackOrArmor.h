@@ -30,9 +30,7 @@ namespace unit {
     class AttackOrArmor : public ISerializable
     {
     public:
-        AttackOrArmor();
-        virtual ~AttackOrArmor();
-        virtual void setGameVersion(GameVersion gv);
+        void setGameVersion(GameVersion gv) override;
 
         enum Class {
             Unused = 0,

@@ -23,15 +23,6 @@
 namespace genie {
 
 namespace unit {
-
-    Action::Action() //: DeadFish()
-    {
-    }
-
-    Action::~Action()
-    {
-    }
-
     //------------------------------------------------------------------------------
     void Action::setGameVersion(GameVersion gv)
     {

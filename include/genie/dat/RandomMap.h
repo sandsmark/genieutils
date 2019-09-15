@@ -27,8 +27,6 @@ namespace genie {
 class MapElevation : public ISerializable
 {
 public:
-    MapElevation();
-    ~MapElevation() override;
     void setGameVersion(GameVersion gv) override;
 
     int32_t Proportion = 0;
@@ -45,8 +43,6 @@ private:
 class MapUnit : public ISerializable
 {
 public:
-    MapUnit();
-    ~MapUnit() override;
     void setGameVersion(GameVersion gv) override;
 
     int32_t Unit = -1;
@@ -70,8 +66,6 @@ private:
 class MapTerrain : public ISerializable
 {
 public:
-    MapTerrain();
-    ~MapTerrain() override;
     void setGameVersion(GameVersion gv) override;
 
     int32_t Proportion = 0;
@@ -82,14 +76,12 @@ public:
     int32_t Clumpiness = 0;
 
 private:
-    virtual void serializeObject(void);
+    void serializeObject(void) override;
 };
 
 class MapLand : public ISerializable
 {
 public:
-    MapLand();
-    virtual ~MapLand();
     void setGameVersion(GameVersion gv) override;
 
     int32_t LandID = 1;
@@ -115,8 +107,6 @@ private:
 class MapInfo : public ISerializable
 {
 public:
-    MapInfo();
-    ~MapInfo() override;
     void setGameVersion(GameVersion gv) override;
 
     int32_t MapID = -1;
@@ -151,8 +141,6 @@ private:
 class RandomMaps : public ISerializable
 {
 public:
-    RandomMaps();
-    ~RandomMaps() override;
     void setGameVersion(GameVersion gv) override;
 
     // Overwritten

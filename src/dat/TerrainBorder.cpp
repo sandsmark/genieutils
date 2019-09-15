@@ -29,11 +29,6 @@ TerrainBorder::TerrainBorder() :
 }
 
 //------------------------------------------------------------------------------
-TerrainBorder::~TerrainBorder()
-{
-}
-
-//------------------------------------------------------------------------------
 void TerrainBorder::setGameVersion(GameVersion gv)
 {
     ISerializable::setGameVersion(gv);

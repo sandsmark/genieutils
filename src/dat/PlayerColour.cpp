@@ -23,14 +23,6 @@
 
 namespace genie {
 
-PlayerColour::PlayerColour()
-{
-}
-
-PlayerColour::~PlayerColour()
-{
-}
-
 //------------------------------------------------------------------------------
 void PlayerColour::setGameVersion(GameVersion gv)
 {

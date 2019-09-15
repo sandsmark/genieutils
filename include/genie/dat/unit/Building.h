@@ -30,13 +30,6 @@ namespace unit {
     class BuildingAnnex : public ISerializable
     {
     public:
-        BuildingAnnex() {}
-        virtual ~BuildingAnnex() {}
-        virtual void setGameVersion(GameVersion gv)
-        {
-            ISerializable::setGameVersion(gv);
-        }
-
         int16_t UnitID = -1;
         std::pair<float, float> Misplacement = { 0.f, 0.f };
 
@@ -47,10 +40,6 @@ namespace unit {
     class Building : public ISerializable
     {
     public:
-        Building();
-        virtual ~Building();
-        virtual void setGameVersion(GameVersion gv);
-
         int16_t ConstructionGraphicID = -1;
         int16_t SnowGraphicID = -1; //not in aok/aoe/ror
 
@@ -91,8 +80,8 @@ namespace unit {
         /// Unused in AoC?
         int8_t CanBurn = 0;
 
-        static const unsigned short BUILDING_ANNEXES_SIZE = 4;
-        std::vector<unit::BuildingAnnex> Annexes;
+        static constexpr unsigned short BUILDING_ANNEXES_SIZE = 4;
+        std::array<unit::BuildingAnnex, BUILDING_ANNEXES_SIZE> Annexes;
 
         /// The building that an annex building is attached to
         int16_t HeadUnit = -1;
@@ -128,8 +117,8 @@ namespace unit {
 
         /// Related to annexes in any way?
         /// Widespread usage in the AoK alpha 09.07.0222
-        static const unsigned short LOOTABLE_RES_COUNT = 6;
-        std::vector<int8_t> LootingTable;
+        static constexpr unsigned short LOOTABLE_RES_COUNT = 6;
+        std::array<int8_t, LOOTABLE_RES_COUNT> LootingTable{};
 
     protected:
         void serializeObject(void) override;

@@ -30,9 +30,6 @@ namespace genie {
 class MapTile : public ISerializable
 {
 public:
-    MapTile();
-    ~MapTile() override;
-
     uint8_t terrainID = 0;
     uint8_t elevation = 0;
 
@@ -47,9 +44,6 @@ private:
 class ScnMap : public ISerializable
 {
 public:
-    ScnMap();
-    ~ScnMap() override;
-
     /// AoK caps at 256
     uint32_t width = 0;
 

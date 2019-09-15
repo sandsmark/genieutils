@@ -29,8 +29,6 @@ class Effect : public ISerializable
 {
 
 public:
-    Effect();
-    ~Effect() override;
     void setGameVersion(GameVersion gv) override;
 
     static unsigned short getNameSize(void);

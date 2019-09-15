@@ -26,10 +26,6 @@ namespace genie {
 
 bool CombinedResources::playerInfo = false;
 
-ScnMainPlayerData::ScnMainPlayerData()
-{
-}
-
 ScnMainPlayerData::~ScnMainPlayerData()
 {
     delete bitmap;
@@ -182,14 +178,6 @@ void ScnMainPlayerData::serializeObject(void)
     }
 }
 
-CombinedResources::CombinedResources()
-{
-}
-
-CombinedResources::~CombinedResources()
-{
-}
-
 void CombinedResources::serializeObject(void)
 {
     if (playerInfo || scn_plr_data_ver < 1.14f)
@@ -211,14 +199,6 @@ void CombinedResources::serializeObject(void)
         if (scn_plr_data_ver > 1.23f)
             serialize<uint32_t>(goods);
     }
-}
-
-Timeline::Timeline()
-{
-}
-
-Timeline::~Timeline()
-{
 }
 
 void Timeline::serializeObject(void)

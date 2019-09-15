@@ -25,14 +25,6 @@
 
 namespace genie {
 
-ScnPlayerResources::ScnPlayerResources()
-{
-}
-
-ScnPlayerResources::~ScnPlayerResources()
-{
-}
-
 void ScnPlayerResources::serializeObject(void)
 {
     serialize<float>(food);
@@ -54,26 +46,10 @@ void ScnPlayerResources::serializeObject(void)
     }
 }
 
-ScnPlayerUnits::ScnPlayerUnits()
-{
-}
-
-ScnPlayerUnits::~ScnPlayerUnits()
-{
-}
-
 void ScnPlayerUnits::serializeObject(void)
 {
     serializeSize<uint32_t>(unitCount_, units.size());
     serializeSub<ScnUnit>(units, unitCount_);
-}
-
-ScnUnit::ScnUnit()
-{
-}
-
-ScnUnit::~ScnUnit()
-{
 }
 
 void ScnUnit::serializeObject(void)

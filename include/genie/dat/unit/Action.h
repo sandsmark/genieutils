@@ -30,9 +30,7 @@ namespace unit {
 class Action : public ISerializable
 {
 public:
-    Action();
-    virtual ~Action();
-    virtual void setGameVersion(GameVersion gv);
+    void setGameVersion(GameVersion gv) override;
 
     /// Unit task ID executed when idle.
     /// To get the unit auto-converted to enemy,\nuse unit command 107, which sheep and monument have.

@@ -28,9 +28,7 @@ namespace genie {
 class UnitHeader : public ISerializable
 {
 public:
-    UnitHeader();
-    virtual ~UnitHeader();
-    virtual void setGameVersion(GameVersion gv);
+    void setGameVersion(GameVersion gv) override;
 
     int8_t Exists = 1;
     std::vector<Task> TaskList;

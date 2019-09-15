@@ -37,11 +37,6 @@ SlpFile::SlpFile(const size_t size) :
 }
 
 //------------------------------------------------------------------------------
-SlpFile::~SlpFile()
-{
-}
-
-//------------------------------------------------------------------------------
 void SlpFile::serializeObject()
 {
     if (isOperation(OP_READ) && !loaded_) {

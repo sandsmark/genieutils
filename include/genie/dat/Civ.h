@@ -29,9 +29,7 @@ namespace genie {
 class Civ : public ISerializable
 {
 public:
-    Civ();
-    virtual ~Civ();
-    virtual void setGameVersion(GameVersion gv);
+    void setGameVersion(GameVersion gv) override;
 
     /// Always one
     int8_t PlayerType = 1;

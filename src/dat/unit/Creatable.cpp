@@ -30,16 +30,6 @@ namespace unit {
     {
     }
 
-    Creatable::~Creatable()
-    {
-    }
-
-    //------------------------------------------------------------------------------
-    void Creatable::setGameVersion(GameVersion gv)
-    {
-        ISerializable::setGameVersion(gv);
-    }
-
     unsigned short Creatable::getResourceCostsSize()
     {
         return 3;

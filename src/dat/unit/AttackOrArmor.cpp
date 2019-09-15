@@ -23,15 +23,6 @@
 namespace genie {
 
 namespace unit {
-
-    AttackOrArmor::AttackOrArmor()
-    {
-    }
-
-    AttackOrArmor::~AttackOrArmor()
-    {
-    }
-
     //------------------------------------------------------------------------------
     void AttackOrArmor::setGameVersion(GameVersion gv)
     {

@@ -37,11 +37,6 @@ namespace genie {
 Logger &SlpTemplateFile::log = Logger::getLogger("genie.SlpTemplate");
 
 //------------------------------------------------------------------------------
-SlpTemplateFile::~SlpTemplateFile()
-{
-}
-
-//------------------------------------------------------------------------------
 void SlpTemplateFile::serializeObject()
 {
     if (isOperation(OP_READ) && !loaded_) {

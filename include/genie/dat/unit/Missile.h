@@ -29,8 +29,6 @@ namespace unit {
     class Missile : public ISerializable
     {
     public:
-        Missile();
-        ~Missile() override;
         void setGameVersion(GameVersion gv) override;
 
         /// 0. Straight

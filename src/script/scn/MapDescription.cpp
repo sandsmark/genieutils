@@ -24,28 +24,12 @@
 
 namespace genie {
 
-ScnMap::ScnMap()
-{
-}
-
-ScnMap::~ScnMap()
-{
-}
-
 void ScnMap::serializeObject(void)
 {
     serialize<uint32_t>(width);
     serialize<uint32_t>(height);
 
     serializeSub<MapTile>(tiles, width * height);
-}
-
-MapTile::MapTile()
-{
-}
-
-MapTile::~MapTile()
-{
 }
 
 void MapTile::serializeObject(void)

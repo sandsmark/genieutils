@@ -27,8 +27,6 @@ namespace genie {
 class SoundItem : public ISerializable
 {
 public:
-    SoundItem();
-    ~SoundItem() override;
     void setGameVersion(GameVersion gv) override;
 
     unsigned short getFileNameSize();

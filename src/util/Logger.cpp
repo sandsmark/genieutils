@@ -82,16 +82,6 @@ std::ostream *Logger::getGlobalOutputStream(void)
     return global_out_;
 }
 
-//------------------------------------------------------------------------------
-Logger::Logger()
-{
-}
-
-//------------------------------------------------------------------------------
-Logger::~Logger()
-{
-}
-
 void Logger::log(LogLevel loglevel, const std::string &format)
 {
     *global_out_ << getLogLevelName(loglevel) << ": " << format << std::endl;

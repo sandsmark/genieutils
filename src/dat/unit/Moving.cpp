@@ -23,15 +23,6 @@
 namespace genie {
 
 namespace unit {
-
-    Moving::Moving() //: Unit()
-    {
-    }
-
-    Moving::~Moving()
-    {
-    }
-
     //------------------------------------------------------------------------------
     void Moving::setGameVersion(GameVersion gv)
     {

@@ -23,15 +23,6 @@
 namespace genie {
 
 namespace unit {
-
-    Missile::Missile() //: Type50()
-    {
-    }
-
-    Missile::~Missile()
-    {
-    }
-
     //------------------------------------------------------------------------------
     void Missile::setGameVersion(GameVersion gv)
     {

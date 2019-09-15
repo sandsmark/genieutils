@@ -29,8 +29,6 @@ namespace genie {
 class TileSize : public ISerializable
 {
 public:
-    TileSize();
-    ~TileSize() override;
     void setGameVersion(GameVersion gv) override;
 
     int16_t Width;
@@ -44,8 +42,6 @@ private:
 class TerrainBlock : public ISerializable
 {
 public:
-    TerrainBlock();
-    ~TerrainBlock() override;
     void setGameVersion(GameVersion gv) override;
 
     int32_t VirtualFunctionPtr;

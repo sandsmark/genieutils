@@ -38,11 +38,6 @@ BlendomaticFile::BlendomaticFile() :
 }
 
 //------------------------------------------------------------------------------
-BlendomaticFile::~BlendomaticFile()
-{
-}
-
-//------------------------------------------------------------------------------
 void BlendomaticFile::serializeObject()
 {
     serialize(modeCount_);

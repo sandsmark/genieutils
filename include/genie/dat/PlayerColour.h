@@ -27,8 +27,6 @@ namespace genie {
 class PlayerColour : public ISerializable
 {
 public:
-    PlayerColour();
-    ~PlayerColour() override;
     void setGameVersion(GameVersion gv) override;
 
     int32_t ID = -1;

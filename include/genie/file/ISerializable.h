@@ -41,10 +41,7 @@ class ISerializable
 
 public:
     //----------------------------------------------------------------------------
-    ISerializable() {}
-
-    //----------------------------------------------------------------------------
-    virtual ~ISerializable() {}
+    virtual ~ISerializable() = default;
 
     //----------------------------------------------------------------------------
     /// Set position to start reading the object from stream
@@ -425,6 +422,64 @@ protected:
         }
     }
 
+    /// std::array with a plain old data type (could probably use is_trivial, but not needed)
+    template <typename T, std::size_t N,
+                  std::enable_if_t<std::is_pod<T>::value, int> = 0
+              >
+    void serialize(std::array<T, N> &vec)
+    {
+        switch (getOperation()) {
+        case OP_WRITE:
+            for (typename std::array<T, N>::const_iterator it = vec.cbegin(); it != vec.cend(); ++it) {
+                write<T>(*it);
+            }
+
+            break;
+
+        case OP_READ:
+            for (size_t i = 0; i < N; ++i)
+                vec[i] = read<T>();
+
+            break;
+
+        case OP_CALC_SIZE:
+            size_ += vec.size() * sizeof(T);
+            break;
+
+        case OP_INVALID:
+            assert(operation_ != OP_INVALID);
+            break;
+        }
+    }
+
+    //----------------------------------------------------------------------------
+    /// Reads or writes array of complex data types to/from a vector dependent on operation.
+    //
+    template <typename T,
+              std::size_t N,
+                  std::enable_if_t<std::is_base_of<ISerializable, T>::value, int> = 0
+        >
+    void serialize(std::array<T, N> &vec)
+    {
+        assert(operation_ != OP_INVALID);
+
+        if (isOperation(OP_WRITE) || isOperation(OP_CALC_SIZE)) {
+            for (typename std::array<T, N>::iterator it = vec.begin(); it != vec.end(); ++it) {
+                ISerializable *data = dynamic_cast<ISerializable *>(&(*it));
+
+                data->serializeSubObject(this);
+
+                if (isOperation(OP_CALC_SIZE))
+                    size_ += data->objectSize();
+            }
+        } else {
+            for (size_t i = 0; i < N; ++i) {
+                ISerializable *cast_obj = dynamic_cast<ISerializable *>(&vec[i]);
+                cast_obj->serializeSubObject(this);
+            }
+        }
+    }
+
     //----------------------------------------------------------------------------
     /// Reads or writes an array of data to/from a vector dependent on operation.
     //
@@ -645,7 +700,7 @@ private:
 
     GameVersion gameVersion_ = GV_None;
 
-    size_t size_;
+    size_t size_ = 0;
 };
 
 //----------------------------------------------------------------------------

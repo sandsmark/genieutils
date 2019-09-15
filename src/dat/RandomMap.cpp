@@ -22,16 +22,6 @@
 namespace genie {
 
 //------------------------------------------------------------------------------
-RandomMaps::RandomMaps()
-{
-}
-
-//------------------------------------------------------------------------------
-RandomMaps::~RandomMaps()
-{
-}
-
-//------------------------------------------------------------------------------
 void RandomMaps::setGameVersion(GameVersion gv)
 {
     ISerializable::setGameVersion(gv);
@@ -60,16 +50,6 @@ void RandomMaps::serializeObject()
         serializeSub<MapInfo>(Maps, random_map_count);
         serializeSub<MapInfo>(Maps, random_map_count);
     }
-}
-
-//------------------------------------------------------------------------------
-MapInfo::MapInfo()
-{
-}
-
-//------------------------------------------------------------------------------
-MapInfo::~MapInfo()
-{
 }
 
 //------------------------------------------------------------------------------
@@ -130,16 +110,6 @@ void MapInfo::serializeObject(void)
 }
 
 //------------------------------------------------------------------------------
-MapLand::MapLand()
-{
-}
-
-//------------------------------------------------------------------------------
-MapLand::~MapLand()
-{
-}
-
-//------------------------------------------------------------------------------
 void MapLand::setGameVersion(GameVersion gv)
 {
     ISerializable::setGameVersion(gv);
@@ -166,16 +136,6 @@ void MapLand::serializeObject(void)
 }
 
 //------------------------------------------------------------------------------
-MapTerrain::MapTerrain()
-{
-}
-
-//------------------------------------------------------------------------------
-MapTerrain::~MapTerrain()
-{
-}
-
-//------------------------------------------------------------------------------
 void MapTerrain::setGameVersion(GameVersion gv)
 {
     ISerializable::setGameVersion(gv);
@@ -190,16 +150,6 @@ void MapTerrain::serializeObject(void)
     serialize<int32_t>(EdgeSpacing);
     serialize<int32_t>(PlacementTerrain);
     serialize<int32_t>(Clumpiness);
-}
-
-//------------------------------------------------------------------------------
-MapUnit::MapUnit()
-{
-}
-
-//------------------------------------------------------------------------------
-MapUnit::~MapUnit()
-{
 }
 
 //------------------------------------------------------------------------------
@@ -224,16 +174,6 @@ void MapUnit::serializeObject(void)
     serialize<int32_t>(SetPlaceForAllPlayers);
     serialize<int32_t>(MinDistanceToPlayers);
     serialize<int32_t>(MaxDistanceToPlayers);
-}
-
-//------------------------------------------------------------------------------
-MapElevation::MapElevation()
-{
-}
-
-//------------------------------------------------------------------------------
-MapElevation::~MapElevation()
-{
 }
 
 //------------------------------------------------------------------------------

@@ -27,8 +27,6 @@ namespace genie {
 class TerrainPassGraphic : public ISerializable
 {
 public:
-    TerrainPassGraphic();
-    ~TerrainPassGraphic() override;
     void setGameVersion(GameVersion gv) override;
 
     int32_t ExitTileSpriteID = -1;

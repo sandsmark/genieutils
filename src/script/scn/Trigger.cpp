@@ -24,14 +24,6 @@
 
 namespace genie {
 
-Trigger::Trigger()
-{
-}
-
-Trigger::~Trigger()
-{
-}
-
 void Trigger::serializeObject(void)
 {
     serialize<int32_t>(startingState);
@@ -51,14 +43,6 @@ void Trigger::serializeObject(void)
     serializeSub<TriggerCondition>(conditions, numConditions_);
     if (scn_trigger_ver > 1.2f)
         serialize<int32_t>(conditionDisplayOrder, numConditions_);
-}
-
-TriggerCondition::TriggerCondition()
-{
-}
-
-TriggerCondition::~TriggerCondition()
-{
 }
 
 void TriggerCondition::serializeObject(void)
@@ -82,14 +66,6 @@ void TriggerCondition::serializeObject(void)
 
     int32_t *start = &amount;
     serialize<int32_t>(&start, usedVariables);
-}
-
-TriggerEffect::TriggerEffect()
-{
-}
-
-TriggerEffect::~TriggerEffect()
-{
 }
 
 void TriggerEffect::serializeObject(void)

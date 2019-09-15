@@ -30,9 +30,7 @@ namespace genie {
 class Sound : public ISerializable
 {
 public:
-    Sound();
-    virtual ~Sound();
-    virtual void setGameVersion(GameVersion gv);
+    void setGameVersion(GameVersion gv) override;
 
     int16_t ID = -1;
     int16_t PlayDelay = 0;

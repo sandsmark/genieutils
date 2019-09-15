@@ -23,16 +23,6 @@
 namespace genie {
 
 //------------------------------------------------------------------------------
-EffectCommand::EffectCommand()
-{
-}
-
-//------------------------------------------------------------------------------
-EffectCommand::~EffectCommand()
-{
-}
-
-//------------------------------------------------------------------------------
 void EffectCommand::setGameVersion(GameVersion gv)
 {
     ISerializable::setGameVersion(gv);

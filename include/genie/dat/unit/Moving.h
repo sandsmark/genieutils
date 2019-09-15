@@ -31,8 +31,6 @@ namespace unit {
     class Moving : public ISerializable
     {
     public:
-        Moving();
-        ~Moving() override;
         virtual void setGameVersion(GameVersion gv);
 
         int16_t WalkingGraphic = -1;

@@ -31,9 +31,6 @@ namespace genie {
 class ScnUnit : public ISerializable
 {
 public:
-    ScnUnit();
-    ~ScnUnit() override;
-
     enum States {
         Ready,
         Placed,
@@ -58,9 +55,6 @@ private:
 class ScnPlayerResources : public ISerializable
 {
 public:
-    ScnPlayerResources();
-    ~ScnPlayerResources() override;
-
     float food = 0;
     float wood = 0;
     float gold = 0;
@@ -77,9 +71,6 @@ private:
 class ScnPlayerUnits : public ISerializable
 {
 public:
-    ScnPlayerUnits();
-    ~ScnPlayerUnits() override;
-
     std::vector<ScnUnit> units;
 
 private:

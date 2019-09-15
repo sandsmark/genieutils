@@ -45,11 +45,6 @@ public:
     static const PalFile null;
 
     //----------------------------------------------------------------------------
-    /// Destructor
-    //
-    virtual ~PalFile();
-
-    //----------------------------------------------------------------------------
     /// Returns a color at given index.
     ///
     /// @param index index of color in palette

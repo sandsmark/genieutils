@@ -29,7 +29,7 @@ class Terrain : public SharedTerrain
 {
 public:
     Terrain();
-    ~Terrain() override;
+
     void setGameVersion(GameVersion gv) override;
     static unsigned short getTerrainCount(GameVersion gv);
     static void setTerrainCount(unsigned short cnt);

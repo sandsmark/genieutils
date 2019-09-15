@@ -30,7 +30,6 @@ class Tech : public ISerializable
 {
 public:
     Tech();
-    ~Tech() override;
     void setGameVersion(GameVersion gv) override;
 
     /// Size of RequiredTechs vector (4 in aoe/ror and 6 in games >= aok)

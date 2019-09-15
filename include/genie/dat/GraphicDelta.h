@@ -27,9 +27,7 @@ namespace genie {
 class GraphicDelta : public ISerializable
 {
 public:
-    GraphicDelta();
-    virtual ~GraphicDelta();
-    virtual void setGameVersion(GameVersion gv);
+    void setGameVersion(GameVersion gv) override;
 
     int16_t GraphicID = -1;
     int16_t Padding1 = 0;

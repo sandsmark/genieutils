@@ -22,14 +22,6 @@
 
 namespace genie {
 
-GraphicDelta::GraphicDelta()
-{
-}
-
-GraphicDelta::~GraphicDelta()
-{
-}
-
 //------------------------------------------------------------------------------
 void GraphicDelta::setGameVersion(GameVersion gv)
 {

@@ -30,8 +30,6 @@ namespace unit {
     class Combat : public ISerializable
     {
     public:
-        Combat();
-        ~Combat() override;
         void setGameVersion(GameVersion gv) override;
 
         /// This armor is used for attack types that have no corresponding armor type

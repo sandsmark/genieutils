@@ -40,9 +40,7 @@ namespace genie {
 class Unit : public ISerializable
 {
 public:
-    Unit();
-    virtual ~Unit();
-    virtual void setGameVersion(GameVersion gv);
+    void setGameVersion(GameVersion gv) override;
 
     /// Available unit types
     enum UnitType : uint8_t {

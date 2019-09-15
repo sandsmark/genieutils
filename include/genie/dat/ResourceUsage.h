@@ -263,10 +263,6 @@ template <typename A, typename E>
 class Resource : public ISerializable
 {
 public:
-    Resource() {}
-
-    ~Resource() override {}
-
     void setGameVersion(GameVersion gv) override
     {
         ISerializable::setGameVersion(gv);

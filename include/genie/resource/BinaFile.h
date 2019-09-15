@@ -37,7 +37,6 @@ class BinaFile : public ISerializable
 {
 public:
     BinaFile(uint32_t size);
-    ~BinaFile() override;
 
     std::shared_ptr<PalFile> readPalFile(std::istream *istr);
     UIFilePtr readUIFile(std::istream *istr);

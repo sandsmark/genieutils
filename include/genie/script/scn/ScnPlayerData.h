@@ -32,9 +32,6 @@ namespace genie {
 class CombinedResources : public ISerializable
 {
 public:
-    CombinedResources();
-    ~CombinedResources() override;
-
     uint32_t enabled;
     uint32_t isHuman;
     uint32_t civilizationID = 0;
@@ -85,9 +82,6 @@ private:
 class Timeline : public ISerializable
 {
 public:
-    Timeline();
-    ~Timeline() override;
-
     uint16_t entryCount;
     uint16_t availableId;
     float time;
@@ -176,7 +170,6 @@ private:
 class ScnMainPlayerData : public ISerializable
 {
 public:
-    ScnMainPlayerData();
     ~ScnMainPlayerData() override;
 
     float playerDataVersion = 0.f;

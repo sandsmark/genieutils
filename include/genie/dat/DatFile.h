@@ -55,7 +55,7 @@ public:
     //----------------------------------------------------------------------------
     /// Destructor
     //
-    ~DatFile() override;
+    ~DatFile() override = default;
 
     //----------------------------------------------------------------------------
     void setGameVersion(GameVersion gv) override;

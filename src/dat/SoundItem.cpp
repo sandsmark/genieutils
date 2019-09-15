@@ -23,14 +23,6 @@
 
 namespace genie {
 
-SoundItem::SoundItem()
-{
-}
-
-SoundItem::~SoundItem()
-{
-}
-
 //------------------------------------------------------------------------------
 void SoundItem::setGameVersion(GameVersion gv)
 {

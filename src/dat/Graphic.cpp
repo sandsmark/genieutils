@@ -25,14 +25,6 @@
 
 namespace genie {
 
-Graphic::Graphic()
-{
-}
-
-Graphic::~Graphic()
-{
-}
-
 //------------------------------------------------------------------------------
 void Graphic::setGameVersion(GameVersion gv)
 {

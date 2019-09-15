@@ -42,11 +42,6 @@ ScnFile::ScnFile() :
     scn_internal_ver = 0.f;
 }
 
-//------------------------------------------------------------------------------
-ScnFile::~ScnFile()
-{
-}
-
 void ScnFile::extractRaw(const char *from, const char *to)
 {
     std::ifstream ifs;
@@ -342,11 +337,6 @@ void ScnMainPlayerData::serializePlayerDataVersion(void)
     else
       setGameVersion(genie::GV_AoE);
   }*/
-}
-
-CpxFile::CpxFile()
-{
-
 }
 
 void CpxFile::serializeObject()
