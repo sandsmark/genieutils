@@ -167,7 +167,7 @@ public:
     };
     int16_t Class = InvalidClass;
     static const std::string &className(const int16_t classId, const GameVersion gameVersion = GV_TC);
-    const std::string &className() const { return className(Class); }
+    [[nodiscard]] const std::string &className() const { return className(Class); }
 
     /// Default standing graphic
     /// Half of units in group use 1st,

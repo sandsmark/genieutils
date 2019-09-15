@@ -67,7 +67,7 @@ protected:
 private:
     static Logger &log;
 
-    struct pcr_file *pfile_;
+    struct pcr_file *pfile_ = nullptr;
 
     uint32_t defaultCultureId_;
     uint32_t defaultCodepage_;
@@ -77,8 +77,8 @@ private:
 
     std::string systemDefaultCharset_; // all strings will be converted from/to this charset
 
-    iconv_t toDefaultCharsetCd_;
-    iconv_t fromDefaultCharsetCd_;
+    iconv_t toDefaultCharsetCd_{};
+    iconv_t fromDefaultCharsetCd_{};
 
     /// Convert a utf8 string to codepage
     std::string convertTo(const std::string &in, uint32_t codepage);
