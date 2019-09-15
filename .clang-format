@@ -12,14 +12,19 @@
 BasedOnStyle: WebKit
 
 Standard: Cpp11
-ColumnLimit: 0
+ColumnLimit: 120
 
 # Disable reflow of qdoc comments: indentation rules are different.
 # Translation comments are also excluded
 CommentPragmas: "^!|^:"
-# BreakConstructorInitializersBeforeComma: false
+BreakConstructorInitializersBeforeComma: false
 BreakConstructorInitializers: AfterColon
+#AllowAllConstructorInitializersOnNextLine: false
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
 
+SpaceBeforeCpp11BracedList: false
+
+ContinuationIndentWidth: 2
 # We want a space between the type and the star for pointer types
 PointerBindsToType: false
 
@@ -37,9 +42,13 @@ BraceWrapping:
     AfterObjCDeclaration: false
     AfterStruct: true
     AfterUnion: false
+    AfterExternBlock: false
     BeforeCatch: false
     BeforeElse: false
     IndentBraces: false
+    SplitEmptyFunction: true
+    SplitEmptyRecord: true
+    SplitEmptyNamespace: true
 
 # The coding style does not specify the following, but this is what gives
 # results closest to the existing code.
@@ -48,7 +57,8 @@ AlwaysBreakTemplateDeclarations: true
 
 # Ideally we should also allow less short function in a single line, but
 # clang-format does not handle that
-AllowShortFunctionsOnASingleLine: Inline
+AllowShortFunctionsOnASingleLine: None
+AllowShortBlocksOnASingleLine: false
 
 # The coding style specifies some include order categories, but also tells to
 # separate categories with an empty line. It does not specify the order within
@@ -58,3 +68,6 @@ SortIncludes: false
 
 # macros for which the opening brace stays attached
 ForEachMacros:   [ foreach, Q_FOREACH, BOOST_FOREACH, forever, Q_FOREVER, QBENCHMARK, QBENCHMARK_ONCE ]
+BinPackArguments: true
+BreakBeforeBinaryOperators: None
+AllowAllParametersOfDeclarationOnNextLine: true
