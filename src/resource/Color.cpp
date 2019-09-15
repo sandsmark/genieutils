@@ -28,4 +28,4 @@ Color::Color(uint8_t red, uint8_t green, uint8_t blue) :
 
 //------------------------------------------------------------------------------
 const Color Color::Transparent(0, 0, 0);
-}
+} // namespace genie

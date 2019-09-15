@@ -36,6 +36,6 @@ public:
 private:
     void serializeObject(void) override;
 };
-}
+} // namespace genie
 
 #endif // GENIE_UNITHEADER_H

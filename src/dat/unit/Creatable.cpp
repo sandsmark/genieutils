@@ -70,5 +70,5 @@ namespace unit {
             serialize<int16_t>(DisplayedPierceArmour);
         }
     }
-}
-}
+} // namespace unit
+} // namespace genie

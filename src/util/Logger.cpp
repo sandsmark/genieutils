@@ -101,4 +101,4 @@ std::string Logger::getLogLevelName(Logger::LogLevel loglevel)
 
     return LOG_LEVEL_NAMES[loglevel];
 }
-}
+} // namespace genie

@@ -55,6 +55,6 @@ public:
 private:
     void serializeObject(void) override;
 };
-}
+} // namespace genie
 
 #endif // GENIE_MAP_DESCRIPTION_H

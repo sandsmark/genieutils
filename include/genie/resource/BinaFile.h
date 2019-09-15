@@ -56,6 +56,6 @@ private:
 };
 
 typedef std::shared_ptr<BinaFile> BinaFilePtr;
-}
+} // namespace genie
 
 #endif // GENIE_BINAFILE_H

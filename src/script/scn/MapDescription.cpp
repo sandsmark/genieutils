@@ -38,4 +38,4 @@ void MapTile::serializeObject(void)
     serialize<uint8_t>(elevation);
     serialize<uint8_t>(unused);
 }
-}
+} // namespace genie

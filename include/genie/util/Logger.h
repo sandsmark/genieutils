@@ -188,6 +188,6 @@ private:
 private:
     static LogLevel LOG_LEVEL;
 };
-}
+} // namespace genie
 
 #endif // GENIE_LOGGER_H

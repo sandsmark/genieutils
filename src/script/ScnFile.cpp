@@ -410,4 +410,4 @@ void BlnFile::serializeObject()
     compressor_.endCompression();
 }
 
-}
+} // namespace genie

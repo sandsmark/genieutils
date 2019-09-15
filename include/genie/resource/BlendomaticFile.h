@@ -84,6 +84,6 @@ private:
 };
 
 typedef std::shared_ptr<BlendomaticFile> BlendomaticFilePtr;
-}
+} // namespace genie
 
 #endif // GENIE_BLENDOMATICFILE_H

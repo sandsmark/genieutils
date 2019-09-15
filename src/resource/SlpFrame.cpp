@@ -883,4 +883,4 @@ SlpFramePtr SlpFrame::mirrorX(void)
 
     return mirrored;
 }
-}
+} // namespace genie

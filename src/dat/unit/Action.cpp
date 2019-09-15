@@ -52,5 +52,5 @@ namespace unit {
             serialize(TaskList, task_count);
         }
     }
-}
-}
+} // namespace unit
+} // namespace genie

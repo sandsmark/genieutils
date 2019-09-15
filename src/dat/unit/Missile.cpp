@@ -32,5 +32,5 @@ namespace unit {
         serialize<int8_t>(AreaEffectSpecials);
         serialize<float>(ProjectileArc);
     }
-}
-}
+} // namespace unit
+} // namespace genie

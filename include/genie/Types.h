@@ -54,6 +54,6 @@ struct XYF
 {
     float x = 0.f, y = 0.f;
 };
-}
+} // namespace genie
 
 #endif //GENIE_TYPES_H

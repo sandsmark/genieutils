@@ -192,4 +192,4 @@ void MapElevation::serializeObject(void)
     serialize<int32_t>(BaseElevation);
     serialize<int32_t>(TileSpacing);
 }
-}
+} // namespace genie

@@ -54,4 +54,4 @@ void SoundItem::serializeObject(void)
         serialize<int16_t>(IconSet);
     }
 }
-}
+} // namespace genie

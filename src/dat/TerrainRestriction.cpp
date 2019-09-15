@@ -57,4 +57,4 @@ void TerrainRestriction::serializeObject(void)
         serialize(TerrainPassGraphics, terrain_count_);
     }
 }
-}
+} // namespace genie

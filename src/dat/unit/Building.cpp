@@ -69,5 +69,5 @@ namespace unit {
         serializePair<float>(Misplacement);
     }
 
-}
-}
+} // namespace unit
+} // namespace genie

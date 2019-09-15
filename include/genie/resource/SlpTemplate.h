@@ -302,4 +302,4 @@ private:
 };
 
 typedef std::shared_ptr<SlpTemplateFile> SlpTemplateFilePtr;
-}
+} // namespace genie

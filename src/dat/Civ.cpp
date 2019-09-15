@@ -70,4 +70,4 @@ void Civ::serializeObject(void)
     serialize<int32_t>(UnitPointers, count);
     serializeSubWithPointers<Unit>(Units, count, UnitPointers);
 }
-}
+} // namespace genie

@@ -66,6 +66,6 @@ public:
     int8_t FrameChanged = 0; // has the DrawFrame changed since terrain was drawn?
     int8_t Drawn = 0;
 };
-}
+} // namespace genie
 
 #endif // GENIE_TERRAINCOMMON_H

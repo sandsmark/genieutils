@@ -43,5 +43,5 @@ namespace unit {
             serialize<float>(MaxYawPerSecondStationary);
         }
     }
-}
-}
+} // namespace unit
+} // namespace genie

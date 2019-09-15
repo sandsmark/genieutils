@@ -284,6 +284,6 @@ private:
         serialize<E>(Paid);
     }
 };
-}
+} // namespace genie
 
 #endif // GENIE_RESOURCEUSAGE_H

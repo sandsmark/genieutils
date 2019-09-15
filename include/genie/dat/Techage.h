@@ -41,6 +41,6 @@ public:
 private:
     void serializeObject(void) override;
 };
-}
+} // namespace genie
 
 #endif // GENIE_TECHAGE_H

@@ -184,6 +184,6 @@ private:
     std::vector<CpxIncludedFile> m_files;
 };
 
-}
+} // namespace genie
 
 #endif // GENIE_SCNFILE_H

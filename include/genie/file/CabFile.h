@@ -99,6 +99,6 @@ private:
     std::vector<Folder> m_folders;
     std::unordered_map<std::string, File> m_files;
 };
-}
+} // namespace genie
 
 #endif // GENIE_CABFILE_H

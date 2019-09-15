@@ -28,5 +28,5 @@ namespace unit {
         serialize<int16_t>(Class);
         serialize<int16_t>(Amount);
     }
-}
-}
+} // namespace unit
+} // namespace genie

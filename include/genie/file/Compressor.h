@@ -79,6 +79,6 @@ private:
     //----------------------------------------------------------------------------
     void stopCompression(void);
 };
-}
+} // namespace genie
 
 #endif // GENIE_COMPRESSOR_H

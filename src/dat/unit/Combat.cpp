@@ -75,5 +75,5 @@ namespace unit {
             serialize<float>(DisplayedReloadTime);
         }
     }
-}
-}
+} // namespace unit
+} // namespace genie

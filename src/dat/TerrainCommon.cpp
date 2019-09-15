@@ -28,4 +28,4 @@ void FrameData::serializeObject(void)
     serialize<int16_t>(AngleCount);
     serialize<int16_t>(ShapeID);
 }
-}
+} // namespace genie

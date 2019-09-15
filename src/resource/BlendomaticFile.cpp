@@ -91,4 +91,4 @@ const BlendMode &BlendomaticFile::getBlendMode(uint32_t id)
 
     return modes_[id];
 }
-}
+} // namespace genie

@@ -54,5 +54,5 @@ private:
 
     void serializeObject(void) override;
 };
-}
+} // namespace genie
 #endif // GENIE_TERRAINRESTRICTION_H

@@ -341,6 +341,6 @@ private:
     uint32_t pointConditionsCount;
     void serializeObject(void) override;
 };
-}
+} // namespace genie
 
 #endif // GENIE_SCN_PLAYER_DATA_H

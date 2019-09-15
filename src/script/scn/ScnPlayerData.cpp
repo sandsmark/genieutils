@@ -436,4 +436,4 @@ void ScnPlayerVictoryCondition::serializeObject()
 //    printf("\n---\n");
 }
 
-}
+} // namespace genie

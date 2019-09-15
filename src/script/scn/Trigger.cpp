@@ -94,4 +94,4 @@ void TriggerEffect::serializeObject(void)
     if (scn_trigger_ver > 1.1f && usedVariables >= 5 && setObjects > 0)
         serialize<int32_t>(selectedUnits, setObjects);
 }
-}
+} // namespace genie

@@ -97,6 +97,6 @@ private:
 };
 
 typedef std::shared_ptr<UIFile> UIFilePtr;
-}
+} // namespace genie
 
 #endif // GENIE_UIFILE_H

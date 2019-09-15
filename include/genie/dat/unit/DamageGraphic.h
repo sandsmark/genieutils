@@ -51,7 +51,7 @@ namespace unit {
     private:
         void serializeObject(void) override;
     };
-}
-}
+} // namespace unit
+} // namespace genie
 
 #endif // GENIE_UNITDAMAGEGRAPHIC_H

@@ -168,4 +168,4 @@ void TileSize::serializeObject(void)
     if (getGameVersion() >= GV_AoE)
         serialize<int16_t>(DeltaY);
 }
-}
+} // namespace genie

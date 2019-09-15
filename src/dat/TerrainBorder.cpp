@@ -72,4 +72,4 @@ void TerrainBorder::serializeObject(void)
     if (gv != GV_MIK)
         serialize<int16_t>(BorderStyle);
 }
-}
+} // namespace genie

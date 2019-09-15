@@ -106,6 +106,6 @@ private:
 
     bool loaded_ = false;
 };
-}
+} // namespace genie
 
 #endif // GENIE_IFILE_H

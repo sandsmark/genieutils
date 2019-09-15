@@ -32,4 +32,4 @@ void GraphicDelta::serializeObject(void)
     serialize<int16_t>(DisplayAngle);
     serialize<int16_t>(Padding2);
 }
-}
+} // namespace genie

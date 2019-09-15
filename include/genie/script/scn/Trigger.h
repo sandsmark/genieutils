@@ -206,6 +206,6 @@ private:
     int32_t numConditions_;
     void serializeObject(void) override;
 };
-}
+} // namespace genie
 
 #endif // GENIE_SCN_TRIGGER_H

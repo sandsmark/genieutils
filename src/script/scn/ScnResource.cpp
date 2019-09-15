@@ -87,4 +87,4 @@ void ScnUnit::serializeObject(void)
         garrisonedInID = -1;
     }
 }
-}
+} // namespace genie

@@ -100,6 +100,6 @@ private:
 
     void serializeObject() override;
 };
-}
+} // namespace genie
 
 #endif // GENIE_DRSFILE_H

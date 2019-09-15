@@ -69,8 +69,8 @@ private:
 
     struct pcr_file *pfile_ = nullptr;
 
-    uint32_t defaultCultureId_;
-    uint32_t defaultCodepage_;
+    uint32_t defaultCultureId_ = 0;
+    uint32_t defaultCodepage_ = 0;
 
     static const unsigned int CONV_BUF_SIZE = 100;
     static const char *CONV_DEFAULT_CHARSET;
@@ -88,6 +88,6 @@ private:
 
     std::string convert(iconv_t cd, const std::string &input);
 };
-}
+} // namespace genie
 
 #endif // GENIE_LANGFILE_H

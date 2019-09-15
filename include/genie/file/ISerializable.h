@@ -723,6 +723,6 @@ void arraycpy(T **dest, const T *src, size_t size)
     memcpy(*dest, src, size * sizeof(T));
   }
 }*/
-}
+} // namespace genie
 
 #endif // GENIE_ISERIALIZABLE_H

@@ -34,4 +34,4 @@ void UnitLine::serializeObject(void)
     serializeSize<uint16_t>(name_len, UnitIDs.size());
     serialize<int16_t>(UnitIDs, name_len);
 }
-}
+} // namespace genie

@@ -110,4 +110,4 @@ void Graphic::serializeObject(void)
         serialize(AngleSounds, AngleCount);
     }
 }
-}
+} // namespace genie

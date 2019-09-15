@@ -197,4 +197,4 @@ void LightmapFile::serializeObject() noexcept
     }
 }
 
-}
+} // namespace genie

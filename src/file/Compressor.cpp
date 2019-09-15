@@ -130,6 +130,6 @@ void Compressor::stopCompression(void)
     ostream_ = 0;
     bufferedStream_.reset();
 }
-}
+} // namespace genie
 
 /* vim: set ts=2 sw=2 tw=0 cindent softtabstop=2 :*/

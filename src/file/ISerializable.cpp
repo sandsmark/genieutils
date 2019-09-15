@@ -126,4 +126,4 @@ void ISerializable::writeString(const std::string &str, size_t len)
 
     delete[] buf;
 }
-}
+} // namespace genie

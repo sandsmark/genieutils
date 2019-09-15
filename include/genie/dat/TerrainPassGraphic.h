@@ -35,6 +35,6 @@ public:
 private:
     void serializeObject(void) override;
 };
-}
+} // namespace genie
 
 #endif // GENIE_TERRAINPASSGRAPHIC_H

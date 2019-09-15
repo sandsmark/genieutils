@@ -103,4 +103,4 @@ void IFile::saveAs(const char *fileName)
 void IFile::unload()
 {
 }
-}
+} // namespace genie

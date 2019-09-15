@@ -51,4 +51,4 @@ void PlayerColour::serializeObject(void)
         serialize<int32_t>(StatisticsText);
     }
 }
-}
+} // namespace genie

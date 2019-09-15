@@ -598,4 +598,4 @@ public:
 protected:
     void serializeObject(void) override;
 };
-}
+} // namespace genie

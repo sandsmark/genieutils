@@ -266,4 +266,4 @@ void ResearchConnection::serializeObject(void)
         serialize<int32_t>(LineMode); // 9.51
     }
 }
-}
+} // namespace genie

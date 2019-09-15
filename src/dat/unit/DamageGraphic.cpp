@@ -30,5 +30,5 @@ namespace unit {
         serialize<int8_t>(OldApplyMode); // This isn't even actual variable
         serialize<int8_t>(ApplyMode);
     }
-}
-}
+} // namespace unit
+} // namespace genie

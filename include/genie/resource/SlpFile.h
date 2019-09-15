@@ -115,6 +115,6 @@ private:
 };
 
 typedef std::shared_ptr<SlpFile> SlpFilePtr;
-}
+} // namespace genie
 
 #endif // GENIE_SLPFILE_H

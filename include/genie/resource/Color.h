@@ -46,6 +46,6 @@ public:
         return (0xffu << 24) | ((b & 0xffu) << 16) | ((g & 0xffu) << 8) | (r & 0xffu);
     }
 };
-}
+} // namespace genie
 
 #endif // GENIE_COLOR_H

@@ -39,6 +39,6 @@ public:
 private:
     void serializeObject(void) override;
 };
-}
+} // namespace genie
 
 #endif // GENIE_UNITLINE_H

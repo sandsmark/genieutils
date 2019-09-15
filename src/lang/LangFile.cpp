@@ -55,14 +55,8 @@ void PcrioError::check(int error)
 
 //------------------------------------------------------------------------------
 LangFile::LangFile() :
-    pfile_(nullptr),
-    toDefaultCharsetCd_(nullptr),
-    fromDefaultCharsetCd_(nullptr)
+    systemDefaultCharset_(CONV_DEFAULT_CHARSET)
 {
-    defaultCultureId_ = 0;
-    defaultCodepage_ = 0;
-
-    systemDefaultCharset_ = CONV_DEFAULT_CHARSET;
 }
 
 //------------------------------------------------------------------------------
@@ -355,4 +349,4 @@ std::string LangFile::convert(iconv_t cd, const std::string &input)
 
     return decodedStr;
 }
-}
+} // namespace genie

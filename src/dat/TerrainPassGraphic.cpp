@@ -41,4 +41,4 @@ void TerrainPassGraphic::serializeObject()
         serialize<float>(WalkSpriteRate);
     }
 }
-}
+} // namespace genie

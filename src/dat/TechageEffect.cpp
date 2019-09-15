@@ -31,4 +31,4 @@ void EffectCommand::serializeObject(void)
     serialize<int16_t>(AttributeID);
     serialize<float>(Amount);
 }
-}
+} // namespace genie

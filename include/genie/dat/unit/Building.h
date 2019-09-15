@@ -123,5 +123,5 @@ namespace unit {
     protected:
         void serializeObject(void) override;
     };
-}
-}
+} // namespace unit
+} // namespace genie

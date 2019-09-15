@@ -118,4 +118,4 @@ void Task::serializeObject(void)
     serialize<int16_t>(ResourceGatheringSoundID);
     serialize<int16_t>(ResourceDepositSoundID);
 }
-}
+} // namespace genie

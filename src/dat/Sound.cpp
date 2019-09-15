@@ -49,4 +49,4 @@ void Sound::serializeObject(void)
 
     serialize(Items, file_count);
 }
-}
+} // namespace genie

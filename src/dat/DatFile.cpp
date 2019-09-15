@@ -281,4 +281,4 @@ void DatFile::unload()
     TechTree.UnitConnections.clear();
     TechTree.ResearchConnections.clear();
 }
-}
+} // namespace genie

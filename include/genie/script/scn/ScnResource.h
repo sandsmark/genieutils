@@ -77,6 +77,6 @@ private:
     uint32_t unitCount_;
     void serializeObject(void) override;
 };
-}
+} // namespace genie
 
 #endif // GENIE_SCN_RESOURCE_H

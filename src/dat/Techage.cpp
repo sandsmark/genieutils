@@ -49,4 +49,4 @@ void Effect::serializeObject(void)
     serializeSize<uint16_t>(command_count, EffectCommands.size());
     serialize(EffectCommands, command_count);
 }
-}
+} // namespace genie

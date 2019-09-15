@@ -89,7 +89,7 @@ namespace techtree {
             serialize<int32_t>(Mode, getSlots());
         }
     };
-}
+} // namespace techtree
 
 /// Contains all items of an age in techtree
 class TechTreeAge : public ISerializable
@@ -218,6 +218,6 @@ public:
 private:
     void serializeObject(void) override;
 };
-}
+} // namespace genie
 
 #endif // GENIE_TECHTREE_H

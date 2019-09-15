@@ -88,4 +88,4 @@ void Tech::serializeObject(void)
         serializeDebugString(Name);
     }
 }
-}
+} // namespace genie

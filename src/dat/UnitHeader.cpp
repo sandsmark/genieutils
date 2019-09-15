@@ -41,4 +41,4 @@ void UnitHeader::serializeObject(void)
         serialize(TaskList, task_count);
     }
 }
-}
+} // namespace genie

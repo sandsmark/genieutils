@@ -140,4 +140,4 @@ void Terrain::serializeObject(void)
     if (gv < GV_SWGB)
         serialize<int16_t>(Phantom);
 }
-}
+} // namespace genie

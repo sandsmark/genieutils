@@ -287,4 +287,4 @@ void Unit::serializeObject(void)
     if (Type == BuildingType)
         serialize<ISerializable>(Building);
 }
-}
+} // namespace genie

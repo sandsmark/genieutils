@@ -141,4 +141,4 @@ bool PalFile::isValid() const
     return !colors_.empty();
 }
 
-}
+} // namespace genie

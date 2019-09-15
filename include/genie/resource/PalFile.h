@@ -90,6 +90,6 @@ private:
     size_t numOfChars(uint8_t number);
 };
 
-}
+} // namespace genie
 
 #endif // GENIE_PALFILE_H

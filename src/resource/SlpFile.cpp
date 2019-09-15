@@ -222,4 +222,4 @@ void SlpFile::serializeHeader()
     serializeSize<uint32_t>(num_frames_, frames_.size());
     serialize(comment, 24);
 }
-}
+} // namespace genie

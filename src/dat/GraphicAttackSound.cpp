@@ -32,4 +32,4 @@ void GraphicAngleSound::serializeObject(void)
     serialize<int16_t>(FrameNum3);
     serialize<int16_t>(SoundID3);
 }
-}
+} // namespace genie

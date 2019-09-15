@@ -306,4 +306,4 @@ void DrsFile::loadHeader()
         header_loaded_ = true;
     }
 }
-}
+} // namespace genie

@@ -179,4 +179,4 @@ bool UIFile::readColor(std::istream *istr, Color *color, const std::string &expe
 
     return true;
 }
-}
+} // namespace genie

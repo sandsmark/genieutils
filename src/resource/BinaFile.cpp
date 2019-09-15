@@ -145,4 +145,4 @@ std::string BinaFile::filetype(std::istream *istr)
 void BinaFile::serializeObject()
 {
 }
-}
+} // namespace genie
