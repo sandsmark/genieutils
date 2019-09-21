@@ -40,65 +40,51 @@ class ISerializable
 {
 
 public:
-    //----------------------------------------------------------------------------
     virtual ~ISerializable() = default;
 
-    //----------------------------------------------------------------------------
     /// Set position to start reading the object from stream
-    //
     inline void setInitialReadPosition(std::streampos pos)
     {
         init_read_pos_ = pos;
     }
 
-    //----------------------------------------------------------------------------
+    /// Where in the input stream this object is starting at
     inline std::streampos getInitialReadPosition(void) const
     {
         return init_read_pos_;
     }
 
-    //----------------------------------------------------------------------------
     /// Read object from istream.
     ///
     /// @param istr Input stream to read from
-    //
     void readObject(std::istream &istr);
 
-    //----------------------------------------------------------------------------
     /// Write object to stream.
     ///
     /// @param ostr Output stream to write to
-    //
     void writeObject(std::ostream &ostr);
 
-    //----------------------------------------------------------------------------
     /// Returns size in bytes.
-    //
     virtual size_t objectSize(void);
 
-    //----------------------------------------------------------------------------
     /// Serialize this object as a subobject of another one.
     ///
     /// @param root The object to serialize from.
-    //
     void serializeSubObject(ISerializable *const root);
 
-    //----------------------------------------------------------------------------
-    ///
-    //
+    /// Sets game version to assume when loading, and used when saving
     virtual inline void setGameVersion(GameVersion gv)
     {
         gameVersion_ = gv;
     }
 
-    //----------------------------------------------------------------------------
+    /// Game version that will be assumed when loading and saving
     inline GameVersion getGameVersion(void) const
     {
         return gameVersion_;
     }
 
-    /// Updates the game version of all objects in vec
-    //
+    /// Updates the game version of all objects in @param vec
     template <typename T>
     static void updateGameVersion(GameVersion gv, std::vector<T> &vec)
     {
@@ -108,27 +94,28 @@ public:
         }
     }
 
-    //----------------------------------------------------------------------------
     /// Needs access to get and set stream methods for (de)compressing.
-    //
     friend class Compressor;
 
-    //----------------------------------------------------------------------------
     /// Versions used to read/write/paste.
 
-    /// 6 to 12
+    /// Internal genie version in the DAT file, values between 6 to 12
     static float dat_internal_ver;
 
-    /// "1.00" to "1.21"
+    /// Scenario file version; "1.00" to "1.21"
     static std::string scn_ver;
 
-    /// 1.0 to 1.30
-    static float scn_plr_data_ver, scn_internal_ver;
+    /// Internal genie PLR version 1.0 to 1.30
+    static float scn_plr_data_ver;
 
-    /// 1.0 to 1.6
+    /// Internal scenario file version
+    static float scn_internal_ver;
+
+    /// Scenario trigger version 1.0 to 1.6
     static double scn_trigger_ver;
 
 protected:
+    /// Defines the current operation when serializing
     enum Operation {
         OP_INVALID = -1,
         OP_READ = 0,
@@ -148,7 +135,6 @@ protected:
     /// Set operation to process
     ///
     /// @param op operation
-    //
     inline void setOperation(Operation op)
     {
         operation_ = op;
@@ -158,7 +144,6 @@ protected:
     /// Get current operation
     ///
     /// @return operation
-    //
     inline Operation getOperation(void) const
     {
         return operation_;
@@ -168,32 +153,31 @@ protected:
     /// Check if given operation is active.
     ///
     /// @param op operation to check
-    //
     inline bool isOperation(Operation op) const
     {
         assert(operation_ != OP_INVALID);
         return (op == operation_);
     }
 
-    //----------------------------------------------------------------------------
+    /// Sets the stream the data should be read from
     inline void setIStream(std::istream &istr)
     {
         istr_ = &istr;
     }
 
-    //----------------------------------------------------------------------------
+    /// Returns the current stream data is read from
     inline std::istream *getIStream(void)
     {
         return istr_;
     }
 
-    //----------------------------------------------------------------------------
+    /// Sets the stream data should be saved to
     inline void setOStream(std::ostream &ostr)
     {
         ostr_ = &ostr;
     }
 
-    //----------------------------------------------------------------------------
+    /// Returns the stream data is saved to
     inline std::ostream *getOStream(void)
     {
         return ostr_;
@@ -287,7 +271,7 @@ protected:
         ostr_->write(reinterpret_cast<const char *const>(*data), sizeof(T) * len);
     }
 
-    // Serializes a string with debug data.
+    /// Serializes a string with debug data.
     void serializeDebugString(std::string &str)
     {
         uint16_t size = 0x0A60;
@@ -312,7 +296,7 @@ protected:
         serialize(str, size);
     }
 
-    // What abomination is this?
+    /// What abomination is this?
     template <typename T>
     void serializeForcedString(std::string &str)
     {
@@ -328,6 +312,7 @@ protected:
         serialize(str, size);
     }
 
+    /// Serializes a string with forced size
     template <typename T>
     void serializeSizedStrings(std::vector<std::string> &vec, size_t size,
                                bool cString = true)
@@ -371,6 +356,7 @@ protected:
         }
     }
 
+    /// Serializes another ISerializable object
     template <typename T>
     void serialize(ISerializable &data)
     {
@@ -383,9 +369,7 @@ protected:
         }
     }
 
-    //----------------------------------------------------------------------------
     /// Reads or writes an array of data dependent on Write_ flag.
-    //
     template <typename T>
     void serialize(T **data, size_t len)
     {
@@ -409,9 +393,7 @@ protected:
         }
     }
 
-    //----------------------------------------------------------------------------
     /// Spezialization of std::strings.
-    //
     void serialize(std::string &str, size_t len)
     {
         assert(operation_ != OP_INVALID);
@@ -468,9 +450,7 @@ protected:
         }
     }
 
-    //----------------------------------------------------------------------------
     /// Reads or writes array of complex data types to/from a vector dependent on operation.
-    //
     template <typename T,
               std::size_t N,
               std::enable_if_t<std::is_base_of<ISerializable, T>::value, int> = 0
@@ -497,9 +477,7 @@ protected:
         }
     }
 
-    //----------------------------------------------------------------------------
     /// Reads or writes an array of data to/from a vector dependent on operation.
-    //
     template <typename T,
               std::enable_if_t<std::is_pod<T>::value, int> = 0
               >
@@ -536,9 +514,7 @@ protected:
         }
     }
 
-    //----------------------------------------------------------------------------
-    /// Reads or writes an array of data to/from a vector of vectors dependent on operation.
-    //
+    /// Reads or writes a vector of data to/from a vector of vectors dependent on operation.
     template <typename T>
     void serialize(std::vector<std::vector<T>> &vec, size_t size, size_t size2)
     {
@@ -578,10 +554,7 @@ protected:
         }
     }
 
-    //----------------------------------------------------------------------------
     /// Serializes a vector of objects that inherit from ISerializable.
-    //
-
     template <typename T,
               std::enable_if_t<std::is_base_of<ISerializable, T>::value, int> = 0
               >
@@ -613,10 +586,8 @@ protected:
         }
     }
 
-    //----------------------------------------------------------------------------
     /// Serialize a vector size number. If size differs, the number will be
     /// updated.
-    //
     template <typename T>
     void serializeSize(T &data, size_t size)
     {
@@ -629,13 +600,11 @@ protected:
         serialize<T>(data);
     }
 
-    //----------------------------------------------------------------------------
-    /// Spezialization of serializeSize for strings.
+    /// Spezialization of @ref serializeSize for strings.
     ///
     /// @param data size to serialize
     /// @param str string to get size from
     /// @param c_str true if cstring (ending with \0).
-    ///
     template <typename T>
     void serializeSize(T &data, std::string str, bool cString = true)
     {
@@ -655,11 +624,9 @@ protected:
         serialize<T>(data);
     }
 
-    //----------------------------------------------------------------------------
     /// Necessary for graphic objects. The pointer array contains entries with
     /// value 0. If a pointer is 0, a empty graphic object will be inserted into
     /// the vector.
-    //
     template <typename T>
     void serializeSubWithPointers(std::vector<T> &vec, size_t size,
                                   std::vector<int32_t> &pointers)
@@ -689,12 +656,10 @@ protected:
         }
     }
 
-    //----------------------------------------------------------------------------
     /// Spezialization of serialize for std::pair.
     ///
     /// @param p pair
     /// @param only_first if true only the first element will be serialized
-    //
     template <typename T>
     void serializePair(std::pair<T, T> &p, bool only_first = false)
     {

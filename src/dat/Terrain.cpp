@@ -38,7 +38,7 @@ void Terrain::setTerrainCount(unsigned short cnt)
 }
 
 //------------------------------------------------------------------------------
-unsigned short Terrain::getTerrainCount(GameVersion gv)
+size_t Terrain::getTerrainCount(GameVersion gv)
 {
     if (terrain_count_) {
         return terrain_count_;

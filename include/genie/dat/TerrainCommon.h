@@ -37,29 +37,32 @@ private:
 class SharedTerrain : public ISerializable
 {
 public:
-    // Was 17 before increased to 19.
+    /// Was 17 before increased to 19.
     static constexpr unsigned short TILE_TYPE_COUNT = 19;
 
-    int8_t Enabled = 0; //must be one or the game will crash
+    /// Must be one or the game will crash
+    int8_t Enabled = 0;
+
     int8_t Random = 0;
 
     virtual size_t getNameSize(void) = 0;
 
     /// Internal long name
     std::string Name = "";
+
     /// Internal SLP name
     std::string Name2 = "";
 
     /// SLP obviously
     int32_t SLP = -1;
 
-    /// Pointer to loaded SLP (when object instatiated)
-    /// You probably don't want to use this
+    /// Pointer to loaded SLP (when object instatiated). You probably don't want to use this
     int32_t ShapePtr = 0;
 
-    /// THe sound to play when visible
+    /// The sound to play when visible
     int32_t SoundID = -1;
 
+    /// Minimap colors
     std::array<uint8_t, 3> Colors = { 0, 0, 0 };
 
     /// If the terrain has animated graphics

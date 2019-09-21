@@ -24,23 +24,23 @@
 namespace genie {
 
 enum GameVersion {
-    GV_None = 0, //Game version not set
-    GV_TEST, // ?
-    GV_MIK, // ?
-    GV_DAVE, // ?
-    GV_MATT, // < 6.92
-    GV_AoEB, // 7.04 - 7.11
-    GV_AoE, // 7.2
-    GV_RoR, // 7.24
-    GV_Tapsa, GV_T2, GV_T3, GV_T4, GV_T5, GV_T6, GV_T7, GV_T8,
-    GV_AoKE3, // 9.36
-    GV_AoKA, // 10.19
-    GV_AoKB, // 11.05
-    GV_AoK, // 11.5
-    GV_TC, // 11.76 - 12.0
-    GV_Cysion, // 12.0
-    GV_SWGB, // 1.0
-    GV_CC // 1.1
+    GV_None = 0, /// Game version not set
+    GV_TEST, /// ?
+    GV_MIK, /// ?
+    GV_DAVE, /// ?
+    GV_MATT, /// < 6.92
+    GV_AoEB, /// 7.04 - 7.11
+    GV_AoE, /// 7.2
+    GV_RoR, /// 7.24
+    GV_Tapsa, GV_T2, GV_T3, GV_T4, GV_T5, GV_T6, GV_T7, GV_T8, /// From Tapsa testing, I think
+    GV_AoKE3, /// 9.36
+    GV_AoKA, /// 10.19
+    GV_AoKB, /// 11.05
+    GV_AoK, /// 11.5
+    GV_TC, /// 11.76 - 12.0
+    GV_Cysion, /// 12.0
+    GV_SWGB, /// 1.0
+    GV_CC /// 1.1
 };
 
 extern GameVersion GV_LatestTap;
