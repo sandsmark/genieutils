@@ -33,7 +33,7 @@ public:
 
     unsigned short getNameSize(void) override;
 
-    std::array<std::vector<FrameData>, TILE_TYPE_COUNT> Borders;
+    std::array<std::vector<FrameData>, TILE_TYPE_COUNT> Borders{};
 
     int16_t DrawTerrain = 0; // always 0
 

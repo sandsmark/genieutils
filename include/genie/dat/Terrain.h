@@ -56,16 +56,16 @@ public:
     /// These refer to terrain borders, which are actually used only in AoE and RoR.
     std::vector<int16_t> Borders;
 
-    static constexpr unsigned short TERRAIN_UNITS_SIZE = 30;
-    std::array<int16_t, TERRAIN_UNITS_SIZE> TerrainUnitID;
-    std::array<int16_t, TERRAIN_UNITS_SIZE> TerrainUnitDensity;
+    static constexpr uint8_t TERRAIN_UNITS_SIZE = 30;
+    std::array<int16_t, TERRAIN_UNITS_SIZE> TerrainUnitID{};
+    std::array<int16_t, TERRAIN_UNITS_SIZE> TerrainUnitDensity{};
 
     /// If two terrain units are to be placed on same spot, this selects which one will prevail others.
     /// 1 = prevails, others don't.
     /// Centralize
     /// 0   Place randomly on the tile
     /// 1   Place in middle of the tile
-    std::array<int8_t, TERRAIN_UNITS_SIZE> TerrainUnitCentering;
+    std::array<int8_t, TERRAIN_UNITS_SIZE> TerrainUnitCentering{};
 
     int16_t NumberOfTerrainUnitsUsed = 0;
 
