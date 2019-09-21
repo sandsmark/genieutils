@@ -43,27 +43,53 @@ public:
     int8_t Enabled = 0; //must be one or the game will crash
     int8_t Random = 0;
 
-    virtual unsigned short getNameSize(void) = 0;
+    virtual size_t getNameSize(void) = 0;
 
     /// Internal long name
     std::string Name = "";
     /// Internal SLP name
     std::string Name2 = "";
+
+    /// SLP obviously
     int32_t SLP = -1;
+
+    /// Pointer to loaded SLP (when object instatiated)
+    /// You probably don't want to use this
     int32_t ShapePtr = 0;
+
+    /// THe sound to play when visible
     int32_t SoundID = -1;
 
-    std::vector<uint8_t> Colors = { 0, 0, 0 };
+    std::array<uint8_t, 3> Colors = { 0, 0, 0 };
 
+    /// If the terrain has animated graphics
     int8_t IsAnimated = 0;
-    int16_t AnimationFrames = 0; // # of frames to animate through
-    int16_t PauseFames = 0; // # of frames to pause animation after last frame is drawn
-    float Interval = 0; // time between frames
-    float PauseBetweenLoops = 0; // time to pause after last frame
-    int16_t Frame = 0; // the current frame (includes animation & pause frames)
-    int16_t DrawFrame = 0; // the current frame to draw
-    float AnimateLast = 0; // last time animation frame was changed
-    int8_t FrameChanged = 0; // has the DrawFrame changed since terrain was drawn?
+
+    /// Number of frames to animate through
+    int16_t AnimationFrames = 0;
+
+    /// Number of frames to pause animation after last frame is drawn
+    int16_t PauseFames = 0;
+
+    /// Time between frames
+    float Interval = 0;
+
+    /// Time to pause after last frame
+    float PauseBetweenLoops = 0;
+
+    /// The current frame (includes animation & pause frames)
+    int16_t Frame = 0;
+
+    /// The current frame to draw
+    int16_t DrawFrame = 0;
+
+    /// Last time animation frame was changed
+    float AnimateLast = 0;
+
+    /// Has the DrawFrame changed since terrain was drawn?
+    int8_t FrameChanged = 0;
+
+    /// Has the DrawFrame been drawn already?
     int8_t Drawn = 0;
 };
 } // namespace genie

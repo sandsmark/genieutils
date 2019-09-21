@@ -31,7 +31,7 @@ class TerrainBorder : public SharedTerrain
 public:
     TerrainBorder();
 
-    unsigned short getNameSize(void) override;
+    size_t getNameSize() override;
 
     std::array<std::vector<FrameData>, TILE_TYPE_COUNT> Borders{};
 

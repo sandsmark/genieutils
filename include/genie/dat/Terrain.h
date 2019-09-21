@@ -37,7 +37,7 @@ public:
     int32_t StringID = 0;
     int16_t Phantom = 0;
 
-    unsigned short getNameSize(void) override;
+    size_t getNameSize() override;
 
     int32_t BlendPriority = 0; //not in aoe/ror
     int32_t BlendType = 0; //not in aoe/ror

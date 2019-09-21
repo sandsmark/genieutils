@@ -28,7 +28,7 @@ TerrainBorder::TerrainBorder()
 }
 
 //------------------------------------------------------------------------------
-unsigned short TerrainBorder::getNameSize()
+size_t TerrainBorder::getNameSize()
 {
     return 13;
 }
@@ -50,7 +50,7 @@ void TerrainBorder::serializeObject(void)
 
     serialize<int32_t>(ShapePtr);
     serialize<int32_t>(SoundID);
-    serialize<uint8_t>(Colors, 3);
+    serialize(Colors);
 
     serialize<int8_t>(IsAnimated);
     serialize<int16_t>(AnimationFrames);

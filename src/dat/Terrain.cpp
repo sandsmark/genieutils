@@ -64,7 +64,7 @@ unsigned short Terrain::getTerrainCount(GameVersion gv)
 }
 
 //------------------------------------------------------------------------------
-unsigned short Terrain::getNameSize()
+size_t Terrain::getNameSize()
 {
     if (getGameVersion() >= GV_SWGB) {
         return 17;
@@ -115,7 +115,7 @@ void Terrain::serializeObject(void)
         serialize<int32_t>(BlendType);
     }
 
-    serialize<uint8_t>(Colors, 3);
+    serialize(Colors);
     serializePair<uint8_t>(CliffColors);
     serialize<int8_t>(PassableTerrain);
     serialize<int8_t>(ImpassableTerrain);
