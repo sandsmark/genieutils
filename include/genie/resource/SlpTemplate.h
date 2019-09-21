@@ -1,5 +1,5 @@
 /*
-    <one line to give the program's name and a brief idea of what it does.>
+    Mostly used for sloped terrains
     Copyright (C) 2018 - 2019 Martin Sandsmark
 
     This program is free software: you can redistribute it and/or modify
@@ -27,7 +27,9 @@
 #include "genie/file/IFile.h"
 #include "genie/util/Logger.h"
 #include "PalFile.h"
+
 #include "Slope.h"
+#include "MaskPattern.h"
 
 namespace genie {
 
@@ -110,55 +112,6 @@ private:
 
     bool m_loaded = true;
 };
-/// @page Pattern
-/// Different light blending patterns, you can see them at this url:\n
-/// https://github.com/aap/geniedoc/blob/master/patternmasks.bmp
-enum Pattern {
-    FlatPattern = 0,
-    BlackPattern = 1,
-    DiagDownPattern = 2,
-    DiagUpPattern = 3,
-    HalfDownPattern = 4,
-    HalfUpPattern = 5,
-    HalfLeftPattern = 6,
-    HalfRightPattern = 7,
-    DownPattern = 8,
-    UpPattern = 9,
-    LeftPattern = 10,
-    RightPattern = 11,
-
-// TODO: find better names for the rest of the values
-    Pattern12 = 12,
-    Pattern13 = 13,
-    Pattern14 = 14,
-    Pattern15 = 15,
-    Pattern16 = 16,
-    Pattern17 = 17,
-    Pattern18 = 18,
-    Pattern19 = 19,
-    Pattern20 = 20,
-    Pattern21 = 21,
-    Pattern22 = 22,
-    Pattern23 = 24,
-    Pattern24 = 24,
-    Pattern25 = 25,
-    Pattern26 = 26,
-    Pattern27 = 27,
-    Pattern28 = 28,
-    Pattern29 = 29,
-    Pattern30 = 30,
-    Pattern31 = 31,
-    Pattern32 = 32,
-    Pattern33 = 33,
-    Pattern34 = 34,
-    Pattern35 = 35,
-    Pattern36 = 36,
-    Pattern37 = 37,
-    Pattern38 = 38,
-    Pattern39 = 39,
-    PatternMasksCount = 40,
-};
-
 /// PatternMasks.dat contains lighting textures used to light sloped
 /// terrain tiles. It is used in conjunction with Lightmaps.dat
 class PatternMasksFile : public IFile
