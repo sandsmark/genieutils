@@ -227,7 +227,23 @@ int SlpFile::frameWidth(const size_t frame)
 void SlpFile::serializeHeader()
 {
     serialize(version, 4);
+
+    if (version != "SMP$") {
+        serializeSize<uint32_t>(num_frames_, frames_.size());
+        serialize(comment, 24);
+        return;
+    }
+
+    serialize(unknown1);
+    serialize(numFrames2);
+    serialize(unknown2);
+
+    // We just assume this is the right number, the other number is probably some special case
     serializeSize<uint32_t>(num_frames_, frames_.size());
-    serialize(comment, 24);
+
+    serialize(maybeChecksom);
+    serialize(size2);
+    serialize(maybeVersion);
+    serialize(comment, 32);
 }
 } // namespace genie
