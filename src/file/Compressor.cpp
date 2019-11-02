@@ -116,7 +116,7 @@ void Compressor::startCompression(void)
 {
     try {
         // Important thing here is window_bits = 15
-        bufferedStream_ = std::make_shared<zstr::ostream>(*ostream_, (std::size_t)1 << 20, false, -15);
+        bufferedStream_ = std::make_shared<zstr::ostream>(*ostream_, (std::size_t)1 << 20, Z_DEFAULT_COMPRESSION, -15);
     } catch (const zstr::Exception &exception) {
         bufferedStream_.reset();
         std::cerr << "Zlib compression failed with error code: "
