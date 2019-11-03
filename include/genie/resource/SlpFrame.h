@@ -34,6 +34,8 @@
 namespace genie {
 
 struct XY {
+    XY(const uint32_t x_, const uint32_t y_) : x(x_), y(y_) {}
+
     uint32_t x;
     uint32_t y;
 };
