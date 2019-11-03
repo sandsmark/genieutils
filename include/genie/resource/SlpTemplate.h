@@ -183,7 +183,7 @@ public:
         // .empty() is very slow with libstdc++; it compares iterators,
         // .size() just compares memory addresses, so this is faster.
         // And this is a very hot path, so yes it matters
-        if (patterns.size() == 0) {
+        if (patterns.size() == 0) { // NOLINT
             return icmFile.maps[IcmFile::Neutral];
         }
 
