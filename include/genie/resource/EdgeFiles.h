@@ -25,14 +25,9 @@
 #include "genie/file/IFile.h"
 #include "genie/util/Logger.h"
 #include "Slope.h"
+#include "TileSpan.h"
 
 namespace genie {
-
-struct TileSpan {
-    int8_t y;
-    int8_t xStart;
-    int8_t xEnd;
-};
 
 struct VisibilityMask {
     enum Visibility {
