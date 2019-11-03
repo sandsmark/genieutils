@@ -524,10 +524,11 @@ protected:
                 std::cerr << "Warning!: vector size differs len!" << vec.size() << " " << size << std::endl;
             }
 
-            for (size_t i = 0; i < size; ++i)
+            for (size_t i = 0; i < size; ++i) {
                 for (typename std::vector<T>::iterator it = vec[i].begin(); it != vec[i].end(); ++it) {
                     write<T>(*it);
                 }
+            }
 
             break;
 
