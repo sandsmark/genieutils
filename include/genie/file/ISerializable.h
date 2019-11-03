@@ -607,7 +607,7 @@ protected:
     /// @param str string to get size from
     /// @param c_str true if cstring (ending with \0).
     template <typename T>
-    void serializeSize(T &data, std::string str, bool cString = true)
+    void serializeSize(T &data, const std::string &str, bool cString = true)
     {
         assert(operation_ != OP_INVALID);
 
