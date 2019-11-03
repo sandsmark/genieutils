@@ -21,7 +21,7 @@
 #pragma once
 
 #include <genie/file/ISerializable.h>
-#include <genie/dat/unit/UnitCommand.h>
+#include <genie/dat/UnitCommand.h>
 
 namespace genie {
 
