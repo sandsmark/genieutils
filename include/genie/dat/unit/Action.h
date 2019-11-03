@@ -20,8 +20,8 @@
 
 #pragma once
 
-#include "genie/file/ISerializable.h"
-#include "../UnitCommand.h"
+#include <genie/file/ISerializable.h>
+#include <genie/dat/unit/UnitCommand.h>
 
 namespace genie {
 

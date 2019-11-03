@@ -20,8 +20,8 @@
 
 #pragma once
 
-#include "genie/file/ISerializable.h"
-#include "../ResourceUsage.h"
+#include <genie/file/ISerializable.h>
+#include <genie/dat/ResourceUsage.h>
 
 namespace genie {
 
