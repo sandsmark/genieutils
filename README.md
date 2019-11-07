@@ -7,6 +7,9 @@ Notice that this library is in developement, that means the API will change.
 Please also backup your files before editing to avoid file corruption
 because of possible bugs.
 
+This repo is originally a fork of https://github.com/Tapsa/genieutils, but
+because a lot of stuff doesn't like github forks, it is now a separate repo.
+
 
 ## Features ###
 
