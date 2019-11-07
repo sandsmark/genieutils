@@ -48,7 +48,7 @@ uint32_t SlpFrame::getHeight(void) const
     return height_;
 }
 
-void SlpFrame::setSize(const uint32_t width, const uint32_t height)
+void SlpFrame::setSize(const size_t width, const size_t height)
 {
 
     width_ = width;
@@ -65,7 +65,7 @@ void SlpFrame::setSize(const uint32_t width, const uint32_t height)
     }
 }
 
-void SlpFrame::enlarge(const uint32_t width, const uint32_t height, const int32_t offset_x, const int32_t offset_y)
+void SlpFrame::enlarge(const size_t width, const size_t height, const int32_t offset_x, const int32_t offset_y)
 {
     if (width_ > width && height_ > height) {
         return;
@@ -454,11 +454,13 @@ void SlpFrame::readImage()
 {
     std::istream &istr = *getIStream();
 
+    const size_t byteCount = width_ * height_;
+
     if (is32bit()) {
-        img_data.bgra_channels.resize(width_ * height_, 0);
+        img_data.bgra_channels.resize(byteCount, 0);
     } else {
-        img_data.pixel_indexes.resize(width_ * height_, 0);
-        img_data.alpha_channel.resize(width_ * height_, 0);
+        img_data.pixel_indexes.resize(byteCount, 0);
+        img_data.alpha_channel.resize(byteCount, 0);
     }
 
     size_t pixelsRead = 0;

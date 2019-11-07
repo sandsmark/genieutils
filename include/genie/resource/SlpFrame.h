@@ -189,8 +189,8 @@ public:
     //
     uint32_t getHeight(void) const;
 
-    void setSize(const uint32_t width, const uint32_t height);
-    void enlarge(const uint32_t width, const uint32_t height, const int32_t offset_x, const int32_t offset_y);
+    void setSize(const size_t width, const size_t height);
+    void enlarge(const size_t width, const size_t height, const int32_t offset_x, const int32_t offset_y);
     void enlargeForMerge(const SlpFrame &frame, int32_t &os_x, int32_t &os_y);
 
     // 0x00 = use default palette

@@ -28,7 +28,7 @@ namespace genie {
 
 class Logger;
 
-typedef std::shared_ptr<char> BmpFilePtr;
+typedef std::shared_ptr<char[]> BmpFilePtr;
 
 //------------------------------------------------------------------------------
 /// Class for loading "bina" files of a drs file.
