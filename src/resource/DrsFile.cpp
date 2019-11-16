@@ -194,7 +194,6 @@ std::shared_ptr<uint8_t[]> DrsFile::getWavPtr(uint32_t id)
     std::unordered_map<uint32_t, uint32_t>::iterator i = wav_offsets_.find(id);
 
     if (i != wav_offsets_.end()) {
-        // FIXME: this gets cleared when it loads the next
         getIStream()->seekg(std::streampos(i->second));
         /*uint32_t type =*/ read<uint32_t>();
         uint32_t size = read<uint32_t>();

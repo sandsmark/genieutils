@@ -165,6 +165,7 @@ set(RESOURCE_SRC
     src/resource/UIFile.cpp
     src/resource/BlendomaticFile.cpp
     src/resource/EdgeFiles.cpp
+    src/resource/WavFile.cpp
     )
 
 set(SCRIPT_SRC
