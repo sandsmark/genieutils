@@ -168,6 +168,9 @@ set(RESOURCE_SRC
     src/resource/WavFile.cpp
     src/resource/SmxFile.cpp
     src/resource/SmxFrame.cpp
+
+    extern/wwisevorbis/vorbis_custom_decoder.cpp
+    extern/wwisevorbis/vorbis_custom_utils_wwise.cpp
     )
 
 set(SCRIPT_SRC
