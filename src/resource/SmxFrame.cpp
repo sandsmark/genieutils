@@ -61,7 +61,7 @@ void SmxFrame::serializeFrameHeader(SmxFrame::FrameHeader &header)
     serialize(header.unknown);
 
     serialize(header.rowEdges, header.height);
-//    log.debug("Size: %x%; Hotspot %,%; Size %; Unknown %", header.width, header.height, header.centerX, header.centerY, header.size, header.unknown);
+    log.debug("Size: %x%; Hotspot %,%; Size %; Unknown %", header.width, header.height, header.centerX, header.centerY, header.size, header.unknown);
 }
 
 static inline uint16_t rotateRight2(const uint16_t n)
@@ -84,150 +84,66 @@ void SmxFrame::readNormalGraphics()
     uint32_t x=0, y=0;
     x = m_normalHeader.rowEdges[0].padLeft;
 
-    const std::streampos expectedEnd = getIStream()->tellg() + std::streampos(pixelDataSize);
+//    std::vector<SmpPixel> unusedPixels;
 
-    std::vector<SmpPixel> unusedPixels;
+    std::vector<uint8_t> pixelData;
+    serialize(pixelData, pixelDataSize);
+    if ((m_bundleHeader.type & BundleHeader::SkipDamageMask)) {
+        std::cerr << "fixme" << std::endl;
+        exit(1);
+    }
+
+    static_assert(sizeof(SmxPixel) == sizeof(SmpPixel));
+
+    const std::vector<SmxPixel> pixelsVector = decode4Plus1(std::move(pixelData));
+    const SmxPixel *pixels = pixelsVector.data();
+    size_t pixelPos = 0;
 
     m_pixels.resize(m_normalHeader.width * m_normalHeader.height);
+    SmpPixel *target = m_pixels.data();
     for (const uint8_t byte : commands) {
-        int amount = (byte >> 2) + 1;
+        const uint8_t amount = (byte >> 2) + 1;
         const uint8_t command = byte & 0b11;
 
-        const uint32_t offset = y * m_normalHeader.width;
+        const size_t offset = y * m_normalHeader.width;
 
         switch(command) {
         case Skip:
             x += amount;
             break;
         case PlayerColor: {
-            //todo refactor reading and use here
-            for (int i=0; i<amount; ) {
-                while (!unusedPixels.empty() && i < amount) {
-                    unusedPixels.pop_back();
-                    x++;
-                    i++;
-                }
-                if (i >= amount) {
-                    break;
-                }
-                if ((m_bundleHeader.type & BundleHeader::SkipDamageMask) == 0) {
-                    SmpPixel p0, p1, p2, p3;
-                    serialize<uint8_t>(p0.index);
-                    serialize<uint8_t>(p1.index);
-                    serialize<uint8_t>(p2.index);
-                    serialize<uint8_t>(p3.index);
-
-                    uint8_t sections = 0;
-                    serialize(sections);
-                    unusedPixels.push_back(p0);
-                    unusedPixels.push_back(p1);
-                    unusedPixels.push_back(p2);
-                    unusedPixels.push_back(p3);
-                } else {
-                    exit(1);
-                    uint8_t bytes1[3];
-                    getIStream()->read(reinterpret_cast<char*>(bytes1), 3);
-
-                    if (i < amount) {
-                        x++;
-                        i++;
-                    }
-                    if (i < amount) {
-                        uint8_t bytes2[2]{};
-                        getIStream()->read(reinterpret_cast<char*>(bytes2), 2);
-                        x++;
-                        i++;
-                    }
-                }
-            }
+            pixelPos += amount;
+            x += amount;
             break;
         }
         case Draw: {
-            // todo :pull this out into a function or something
-            for (int i=0; i<amount; ) {
-                while (!unusedPixels.empty() && i < amount) {
-                    m_pixels[offset + x++] = std::move(unusedPixels.back());
-                    unusedPixels.pop_back();
-                    i++;
-                }
-                if (i >= amount) {
-                    break;
-                }
-
-                if ((m_bundleHeader.type & BundleHeader::SkipDamageMask) == 0) {
-                    SmpPixel p0, p1, p2, p3;
-                    uint8_t sections = 0;
-                    serialize(p0.index);
-                    serialize(p1.index);
-                    serialize(p2.index);
-                    serialize(p3.index);
-                    serialize(sections);
-
-                    p0.palette = (sections >> 6) & 0b11;
-                    p1.palette = (sections >> 4) & 0b11;
-                    p2.palette = (sections >> 2) & 0b11;
-                    p3.palette = (sections >> 0) & 0b11;
-                    unusedPixels.push_back(p0);
-                    unusedPixels.push_back(p1);
-                    unusedPixels.push_back(p2);
-                    unusedPixels.push_back(p3);
-                } else {
-                    exit(1);
-                    // What an absolute clusterfuck, how did you figure this out heinezen
-
-                    uint8_t bytes1[2]{};
-                    getIStream()->read(reinterpret_cast<char*>(bytes1), 2);
-
-                    SmpPixel p0;
-                    serialize(p0.index);
-                    p0.palette = bytes1[0] & 0x03;
-                    p0.damageMask = bytes1[1] & 0xf0;
-                    p0.damageMask2 = bytes1[1] & 0x3f;
-
-                    if (amount-- > 0) {
-                        m_pixels[offset + x++] = std::move(p0);
-                    } else {
-                        std::cerr << " --- too many pixels read?" << std::endl;
-                    }
-                    if (amount-- > 0) {
-                        //uint8_t bytes2[2]{};
-                        //getIStream()->read(reinterpret_cast<char*>(bytes2), 2);
-                        uint16_t bytes2;
-                        serialize(bytes2);
-                        uint16_t part1 = rotateRight2((uint16_t(bytes1[0]) << 8) | bytes1[1]);
-                        uint16_t part2 = rotateRight2(bytes2);
-
-                        SmpPixel p1;
-                        p1.index =       (part1 >> 8) & 0xff;
-                        p1.palette =     (part1 >> 0) & 0x03;
-                        p1.damageMask =  (part2 >> 8) & 0xf0;
-                        p1.damageMask2 = (part2 >> 0) & 0x3f;
-
-                        m_pixels[offset + x++] = std::move(p1);
-                    }
-                }
-            }
+            memcpy(&target[offset + x], &pixels[pixelPos], amount * sizeof(SmpPixel));
+            pixelPos += amount;
+            x += amount;
             break;
         }
         case EndOfRow:
-            assert((x) + m_normalHeader.rowEdges[y].padRight == m_normalHeader.width);
-            y++;
-            assert(y <= m_normalHeader.rowEdges.size());
-            if (y < m_normalHeader.rowEdges.size()) {
+            if (x != 0xFFFF) {
+                if ((x) + m_normalHeader.rowEdges[y].padRight != m_normalHeader.width) {
+                    std::cout << x << std::endl;
+                    std::cout << m_normalHeader.rowEdges[y].padLeft  << std::endl;
+                    std::cout << m_normalHeader.rowEdges[y].padRight  << std::endl;
+                    std::cout << ((x) + m_normalHeader.rowEdges[y].padRight)  << std::endl;
+                    std::cout << m_normalHeader.width << std::endl;
+
+                }
+                assert((x) + m_normalHeader.rowEdges[y].padRight == m_normalHeader.width);
+            }
+            do {
+                y++;
                 x = m_normalHeader.rowEdges[y].padLeft;
-            } else {
+            } while (y < m_normalHeader.rowEdges.size()  && x == 0xFFFF);
+
+            if (y >= m_normalHeader.rowEdges.size()) {
                 x = 0;
             }
             break;
         }
-
-
-    }
-
-    if (getIStream()->tellg() > expectedEnd) {
-        throw std::runtime_error("Overread when reading frame");
-    } else if (getIStream()->tellg() < expectedEnd) {
-        throw std::runtime_error("Underread when reading frame");
     }
 }
 
@@ -244,7 +160,6 @@ void SmxFrame::readShadowGraphics()
 
     std::vector<uint8_t> commands;
     serialize(commands, commandsSize);
-    getIStream()->seekg(getIStream()->tellg() + std::streampos(commandsSize));
 }
 
 void SmxFrame::readOutlineGraphics()
@@ -259,7 +174,37 @@ void SmxFrame::readOutlineGraphics()
 
     std::vector<uint8_t> commands;
     serialize(commands, commandsSize);
-    getIStream()->seekg(getIStream()->tellg() + std::streampos(commandsSize));
+}
+
+std::vector<SmxFrame::SmxPixel> SmxFrame::decode4Plus1(const std::vector<uint8_t> &data)
+{
+    std::vector<SmxPixel> pixelsVector;
+    pixelsVector.resize(data.size() / 1.25);
+    SmxPixel *pixels = pixelsVector.data();
+
+    SmxPixel p0, p1, p2, p3;
+    p0.damageMask = 0;
+    p0.damageMask = 1;
+    size_t pixelsPos = 0;
+    for (size_t i=0; i<data.size(); i += 5) {
+        p0.index = data[i + 0];
+        p1.index = data[i + 1];
+        p2.index = data[i + 2];
+        p3.index = data[i + 3];
+
+        const uint8_t sections = data[i + 4];
+        p0.palette = (sections >> 6) & 0b11;
+        p1.palette = (sections >> 4) & 0b11;
+        p2.palette = (sections >> 2) & 0b11;
+        p3.palette = (sections >> 0) & 0b11;
+
+        pixels[pixelsPos + 0] = p0;
+        pixels[pixelsPos + 1] = p1;
+        pixels[pixelsPos + 2] = p2;
+        pixels[pixelsPos + 3] = p3;
+    }
+
+    return pixelsVector;
 }
 
 

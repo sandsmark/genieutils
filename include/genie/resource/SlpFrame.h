@@ -70,10 +70,10 @@ inline bool operator<(const PlayerColorXY &l, const PlayerColorXY &r)
 #endif
 struct SmpPixel
 {
-    uint8_t index = 0; /// Normal palette index
-    uint8_t palette = 0; /// Need to look up in palette.conf to find the correct color table
-    uint8_t damageMask = 0; /// When units get damaged
-    uint8_t damageMask2 = 0; /// When units get damaged 2
+    uint8_t index; /// Normal palette index
+    uint8_t palette; /// Need to look up in palette.conf to find the correct color table
+    uint8_t damageMask; /// When units get damaged
+    uint8_t damageMask2; /// When units get damaged 2
 
     uint8_t paletteIndex() const { return palette >> 2; }
     uint8_t paletteSection() const { return palette & 0b11; }
