@@ -102,8 +102,6 @@ private:
     FrameHeader m_shadowHeader;
     FrameHeader m_outlineHeader;
 
-    uint32_t m_commandsSize = 0;
-    uint32_t m_pixeldataSize = 0;
 };
 
 } // namespace genie
