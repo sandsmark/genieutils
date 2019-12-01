@@ -110,6 +110,8 @@ void SmxFrame::readNormalGraphics()
     size_t expectPixelsRead = 0;
     int expectPixelsRead2 = 0;
 
+    std::vector<SmpPixel> unusedPixels;
+
     m_pixels.resize(m_normalHeader.width * m_normalHeader.height);
     for (const uint8_t byte : commands) {
         std::cout << "x " << x << " y " << y << std::endl;
@@ -126,48 +128,57 @@ void SmxFrame::readNormalGraphics()
             break;
         case PlayerColor: {
             std::cout << " + player color " << int(amount) << std::endl;
-            std::streampos posbefore = getIStream()->tellg();
-            int expectDataRead = std::ceil(amount / 4.) * 5;
+            std::cout << "starting read at " << (getIStream()->tellg()) << std::endl;
+            ssize_t posbefore = getIStream()->tellg();
+            std::cout << unusedPixels.size() << " unused" << std::endl;
+            int expectDataRead = std::ceil((int(amount) - float(unusedPixels.size())) / 4.) * 5;
             expectPixelsRead += amount;
             //todo refactor reading and use here
             for (int i=0; i<amount; ) {
-                std::streampos posbefore = getIStream()->tellg();
+                ssize_t posbefore = getIStream()->tellg();
+                while (!unusedPixels.empty() && i < amount) {
+                    unusedPixels.pop_back();
+                    x++;
+                    i++;
+                }
+                if (i >= amount) {
+                    break;
+                }
                 if ((m_bundleHeader.type & BundleHeader::SkipDamageMask) == 0) {
+                    std::cout << "reading new chunk at " << (getIStream()->tellg()) << std::endl;
                     SmpPixel p0, p1, p2, p3;
                     serialize<uint8_t>(p0.index);
-                    //if (amount > 1) {
-                        serialize<uint8_t>(p1.index);
-                    //}
-                    //if (amount > 2) {
-                        serialize<uint8_t>(p2.index);
-                    //}
-                    //if (amount > 3) {
-                        serialize<uint8_t>(p3.index);
-                    //}
+                    serialize<uint8_t>(p1.index);
+                    serialize<uint8_t>(p2.index);
+                    serialize<uint8_t>(p3.index);
 
                     uint8_t sections = 0;
                     serialize(sections);
+                    unusedPixels.push_back(p0);
+                    unusedPixels.push_back(p1);
+                    unusedPixels.push_back(p2);
+                    unusedPixels.push_back(p3);
 
-                    if (i < amount) {
-                        pixelsRead++;
-                        x++;
-                        i++;
-                    }
-                    if (i < amount) {
-                        pixelsRead++;
-                        x++;
-                        i++;
-                    }
-                    if (i < amount) {
-                        pixelsRead++;
-                        x++;
-                        i++;
-                    }
-                    if (i < amount) {
-                        pixelsRead++;
-                        x++;
-                        i++;
-                    }
+                    //if (i < amount) {
+                    //    pixelsRead++;
+                    //    x++;
+                    //    i++;
+                    //}
+                    //if (i < amount) {
+                    //    pixelsRead++;
+                    //    x++;
+                    //    i++;
+                    //}
+                    //if (i < amount) {
+                    //    pixelsRead++;
+                    //    x++;
+                    //    i++;
+                    //}
+                    //if (i < amount) {
+                    //    pixelsRead++;
+                    //    x++;
+                    //    i++;
+                    //}
                 } else {
                     exit(1);
                     uint8_t bytes1[3]{};
@@ -185,14 +196,17 @@ void SmxFrame::readNormalGraphics()
                     }
                 }
                 if  (getIStream()->tellg() - posbefore != 5) {
+                    std::cout << getIStream()->tellg() << " " << posbefore << std::endl;
                     std::cout << " * read " << (getIStream()->tellg() - posbefore) << " bytes" << std::endl;
-                    std::cerr << "read invalid amount of bytes" << std::endl;
+                    std::cerr << "read invalid amount of bytes in unpack" << std::endl;
                     exit(1);
                 }
             }
             if  (getIStream()->tellg() - posbefore != expectDataRead) {
+                std::cout << "expected " << expectDataRead << std::endl;
+                std::cout << getIStream()->tellg() << " " << posbefore << std::endl;
                 std::cout << " * read " << (getIStream()->tellg() - posbefore) << " bytes" << std::endl;
-                std::cerr << "read invalid amount of bytes" << std::endl;
+                std::cerr << "read invalid amount of bytes for player color" << std::endl;
                 exit(1);
             }
             shadowRead += (getIStream()->tellg() - posbefore);
@@ -202,53 +216,61 @@ void SmxFrame::readNormalGraphics()
         }
         case Draw: {
             std::cout << " * normal draw " << int(amount) << std::endl;
-            int expectDataRead = std::ceil(amount / 4.) * 5;
+            std::cout << unusedPixels.size() << " unused" << std::endl;
+            int expectDataRead = std::ceil((float(amount) - float(unusedPixels.size())) / 4.) * 5;
             expectPixelsRead += amount;
             std::streampos posbefore = getIStream()->tellg();
             // todo :pull this out into a function or something
             for (int i=0; i<amount; ) {
+                while (!unusedPixels.empty() && i < amount) {
+                    m_pixels[offset + x++] = std::move(unusedPixels.back());
+                    unusedPixels.pop_back();
+                    i++;
+                }
+                if (i >= amount) {
+                    break;
+                }
+
                 std::streampos posbefore = getIStream()->tellg();
                 if ((m_bundleHeader.type & BundleHeader::SkipDamageMask) == 0) {
                     //std::cout << "adding 4" << std::endl;
                     SmpPixel p0, p1, p2, p3;
                     uint8_t sections = 0;
                     serialize(p0.index);
-                    //if (amount > 1) {
-                        serialize(p1.index);
-                    //}
-                    //if (amount > 2) {
-                        serialize(p2.index);
-                    //}
-                    //if (amount > 3) {
-                        serialize(p3.index);
-                    //}
+                    serialize(p1.index);
+                    serialize(p2.index);
+                    serialize(p3.index);
                     serialize(sections);
 
                     p0.palette = (sections >> 6) & 0b11;
                     p1.palette = (sections >> 4) & 0b11;
                     p2.palette = (sections >> 2) & 0b11;
                     p3.palette = (sections >> 0) & 0b11;
+                    unusedPixels.push_back(p0);
+                    unusedPixels.push_back(p1);
+                    unusedPixels.push_back(p2);
+                    unusedPixels.push_back(p3);
 
-                    if (i < amount) {
-                        m_pixels[offset + x++] = std::move(p0);
-                        pixelsRead++;
-                        i++;
-                    }
-                    if (i < amount) {
-                        m_pixels[offset + x++] = std::move(p1);
-                        pixelsRead++;
-                        i++;
-                    }
-                    if (i < amount) {
-                        m_pixels[offset + x++] = std::move(p2);
-                        pixelsRead++;
-                        i++;
-                    }
-                    if (i < amount) {
-                        m_pixels[offset + x++] = std::move(p3);
-                        pixelsRead++;
-                        i++;
-                    }
+                    //if (i < amount) {
+                    //    m_pixels[offset + x++] = std::move(p0);
+                    //    pixelsRead++;
+                    //    i++;
+                    //}
+                    //if (i < amount) {
+                    //    m_pixels[offset + x++] = std::move(p1);
+                    //    pixelsRead++;
+                    //    i++;
+                    //}
+                    //if (i < amount) {
+                    //    m_pixels[offset + x++] = std::move(p2);
+                    //    pixelsRead++;
+                    //    i++;
+                    //}
+                    //if (i < amount) {
+                    //    m_pixels[offset + x++] = std::move(p3);
+                    //    pixelsRead++;
+                    //    i++;
+                    //}
                 } else {
                     exit(1);
                     //std::cout << "adding 2" << std::endl;
@@ -287,6 +309,7 @@ void SmxFrame::readNormalGraphics()
                     }
                 }
                 if  (getIStream()->tellg() - posbefore != 5) {
+                    std::cout << getIStream()->tellg() << " " << posbefore << std::endl;
                     std::cout << " * read " << (getIStream()->tellg() - posbefore) << " bytes" << std::endl;
                     std::cerr << "read invalid amount of bytes" << std::endl;
                     exit(1);
@@ -295,6 +318,7 @@ void SmxFrame::readNormalGraphics()
             normalRead += (getIStream()->tellg() - posbefore);
             if  (getIStream()->tellg() - posbefore != expectDataRead) {
                     std::cout << " * read " << (getIStream()->tellg() - posbefore) << " bytes" << std::endl;
+                    std::cout << "expected: " << expectDataRead << std::endl;
                     std::cerr << "read invalid amount of bytes" << std::endl;
                     exit(1);
             }
@@ -303,12 +327,12 @@ void SmxFrame::readNormalGraphics()
         }
         case EndOfRow:
             expectPixelsRead2 += ((x) -m_normalHeader.rowEdges[y].padLeft);
-            std::cout << "-------" << std::endl;
-            //std::cout << " ! pixels read: " << (x) << std::endl;
-            //std::cout << " ! full width: " << ((x) +m_normalHeader.rowEdges[y].padRight) << std::endl;
+            std::cout << " ! pixels read: " << (x) << std::endl;
+            std::cout << " ! full width: " << ((x) +m_normalHeader.rowEdges[y].padRight) << std::endl;
 //            std::cout << " ! expected: " << (m_normalHeader.width - (m_normalHeader.rowEdges[y].padLeft + m_normalHeader.rowEdges[y].padRight) + 1) << std::endl;
-            //std::cout << " ! frame width: " << m_normalHeader.width << std::endl;
-            //std::cout << " ! padleft: " << m_normalHeader.rowEdges[y].padLeft << " padright "  << m_normalHeader.rowEdges[y].padRight << std::endl;
+            std::cout << " ! frame width: " << m_normalHeader.width << std::endl;
+            std::cout << " ! padleft: " << m_normalHeader.rowEdges[y].padLeft << " padright "  << m_normalHeader.rowEdges[y].padRight << std::endl;
+            std::cout << "-------" << std::endl;
             assert((x) + m_normalHeader.rowEdges[y].padRight == m_normalHeader.width);
             y++;
             assert(y <= m_normalHeader.rowEdges.size());
@@ -331,8 +355,10 @@ void SmxFrame::readNormalGraphics()
     std::cout << "expected pos  " << expectedEnd << " but is at " << getIStream()->tellg() << std::endl;
     if (getIStream()->tellg() > expectedEnd) {
         std::cerr << "overshoot: " << (getIStream()->tellg() - expectedEnd) << std::endl;
+        exit(1);
     } else if (getIStream()->tellg() < expectedEnd) {
         std::cerr << "undershoot: " << (expectedEnd - getIStream()->tellg()) << std::endl;
+        exit(1);
     }
     std::cerr << "bytes for shadow frame: " << shadowRead << std::endl;
     std::cerr << "bytes for normal frame: " << normalRead << std::endl;
