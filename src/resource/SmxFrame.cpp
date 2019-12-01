@@ -104,8 +104,9 @@ void SmxFrame::readNormalGraphics()
             x += amount;
             break;
         case PlayerColor: {
-            pixelPos += amount;
-            x += amount;
+            for (size_t i=0; i<amount; i++) {
+                m_playerColorPixels.push_back({x++, y, pixels[pixelPos++]});
+            }
             break;
         }
         case Draw: {
