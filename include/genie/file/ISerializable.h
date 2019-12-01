@@ -581,6 +581,7 @@ protected:
             vec.resize(size);
 
             for (size_t i = 0; i < size; ++i) {
+                assert(getIStream()->good());
                 ISerializable *cast_obj = static_cast<ISerializable *>(&vec[i]);
                 cast_obj->serializeSubObject(this);
             }
