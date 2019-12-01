@@ -377,35 +377,22 @@ KEEP_COLOR:
 //------------------------------------------------------------------------------
 void SlpFrame::serializeHeader(void)
 {
-    if (m_version == Version::Slp) {
-        serialize<uint32_t>(cmd_table_offset_);
-        serialize<uint32_t>(outline_table_offset_);
-        serialize<uint32_t>(palette_offset_);
+    serialize<uint32_t>(cmd_table_offset_);
+    serialize<uint32_t>(outline_table_offset_);
+    serialize<uint32_t>(palette_offset_);
 
-        // 0x00 = use default palette
-        // 0x08 = only 1 pcs in TC, seems to be useless leftover from AoE 1, mostly containing player colors.
-        // 0x10 = tree SLPs 147 and 152 in RoR have two shadows, mask and black pixels. Has pure black shadow? No
-        // 0x18 = use default palette, 0x08 uses outline? No
-        // 0x78 = has embedded palette at palette offset: 4 bytes tell RGB count, then 3 bytes per each RGB
-        serialize<uint32_t>(properties_);
-    }
+    // 0x00 = use default palette
+    // 0x08 = only 1 pcs in TC, seems to be useless leftover from AoE 1, mostly containing player colors.
+    // 0x10 = tree SLPs 147 and 152 in RoR have two shadows, mask and black pixels. Has pure black shadow? No
+    // 0x18 = use default palette, 0x08 uses outline? No
+    // 0x78 = has embedded palette at palette offset: 4 bytes tell RGB count, then 3 bytes per each RGB
+    serialize<uint32_t>(properties_);
 
     serialize<uint32_t>(width_);
     serialize<uint32_t>(height_);
 
     serialize<int32_t>(hotspot_x);
     serialize<int32_t>(hotspot_y);
-
-    if (m_version == Version::Smp) {
-        serialize(m_frameType); // is this maybe palette offset, and heinezen misunderstood? Can't check until it is released so I can buy it
-
-        serialize(outline_table_offset_);
-        serialize(cmd_table_offset_);
-
-        // Just assume this is properties for now
-        // 0x01, 0x02 or 0x80 are example values from heinezen
-        serialize(properties_);
-    }
 
     /*#ifndef NDEBUG
     log.debug("Frame header [%u], [%u], [%u], [%u], [%u], [%u], [%d], [%d], ",
@@ -478,33 +465,6 @@ void SlpFrame::readImage()
         }
 
         uint32_t pix_pos = left_edges_[row]; //pos where to start putting pixels
-
-        if (m_version == Version::Smp) {
-            while (true) {
-                const uint8_t data = read<uint8_t>();
-                if (data == 3) { // end of row
-                    break;
-                }
-
-                const uint32_t pix_cnt = (data >> 2) + 1;
-
-                switch(data & 0b11) {
-                case 0: // Skip
-                    break;
-                case 1: // Normal colors
-                    readSmpPixelstoImage(row, pix_pos, pix_cnt, false);
-                    break;
-                case 2: // Player colors
-                    readSmpPixelstoImage(row, pix_pos, pix_cnt, true);
-                    break;
-                }
-
-                pix_pos += pix_cnt;
-                pixelsRead += pix_cnt;
-
-            }
-            continue;
-        }
 
         while (true) {
             const uint8_t data = read<uint8_t>();
@@ -712,27 +672,6 @@ void SlpFrame::readPixelsToImage32(uint32_t row, uint32_t &col,
         } else if (special == 2) {
             img_data.transparency_mask.push_back({ col, row });
         }
-
-        ++col;
-    }
-}
-
-void SlpFrame::readSmpPixelstoImage(uint32_t row, uint32_t &col, uint32_t count, bool player_col)
-{
-    if (!player_col) {
-        getIStream()->read((char *)&img_data.pixel_indexes.data()[row * width_ + col], count * sizeof(SmpPixel));
-        col += count;
-        return;
-    }
-
-    std::vector<char> bgras(count);
-    getIStream()->read(bgras.data(), count);
-
-    uint32_t to_pos = col + count;
-    while (col < to_pos) {
-        SmpPixel pixel;
-        getIStream()->read((char *)&pixel, sizeof(SmpPixel));
-        img_data.smp_player_color_mask.push_back({ col, row, pixel });
 
         ++col;
     }

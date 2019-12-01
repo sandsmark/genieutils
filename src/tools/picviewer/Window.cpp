@@ -8,6 +8,7 @@
 #include <QApplication>
 #include <QScreen>
 #include <QMouseEvent>
+#include <QElapsedTimer>
 
 Window::Window(QWidget *parent)
     : QWidget(parent)
@@ -76,7 +77,9 @@ bool Window::load(QString path)
     if (path.endsWith(".smx")) {
         try {
             genie::SmxFile smxFile;
+            QElapsedTimer timer; timer.start();
             smxFile.load(path.toStdString());
+            qDebug() << "loaded in" << timer.elapsed() << "ms";
             m_pixmap = createPixmap(smxFile.frame());
 
         } catch (const std::exception &e) {

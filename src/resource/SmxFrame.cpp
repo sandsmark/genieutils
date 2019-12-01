@@ -75,26 +75,27 @@ void SmxFrame::readNormalGraphics()
     uint32_t pixelDataSize = 0;
     serialize(pixelDataSize);
 
-    std::vector<uint8_t> commands;
-    serialize(commands, commandsSize);
-    uint32_t x=0, y=0;
-    x = m_normalHeader.rowEdges[0].padLeft;
+    std::vector<uint8_t> commands(commandsSize);
+    getIStream()->read(reinterpret_cast<char*>(commands.data()), commandsSize);
 
-//    std::vector<SmpPixel> unusedPixels;
-
-    std::vector<uint8_t> pixelData;
-    serialize(pixelData, pixelDataSize);
+    std::vector<uint8_t> pixelData(pixelDataSize);
+    getIStream()->read(reinterpret_cast<char*>(pixelData.data()), pixelDataSize);
 
     const std::vector<SmpPixel> pixelsVector = m_bundleHeader.type & BundleHeader::HasDamageMask ?
                 decode8To5(std::move(pixelData)) :
                 decode4Plus1(std::move(pixelData));
 
+    m_mask.resize(m_normalHeader.width * m_normalHeader.height);
+    m_pixels.resize(m_normalHeader.width * m_normalHeader.height);
+
+    SmpPixel *target = m_pixels.data();
+    uint8_t *maskData = m_mask.data();
     const SmpPixel *pixels = pixelsVector.data();
     size_t pixelPos = 0;
 
-    m_mask.resize(m_normalHeader.width * m_normalHeader.height);
-    m_pixels.resize(m_normalHeader.width * m_normalHeader.height);
-    SmpPixel *target = m_pixels.data();
+    uint32_t x=0, y=0;
+    x = m_normalHeader.rowEdges[0].padLeft;
+
     for (const uint8_t byte : commands) {
         const uint8_t amount = (byte >> 2) + 1;
         const uint8_t command = byte & 0b11;
@@ -114,9 +115,7 @@ void SmxFrame::readNormalGraphics()
         case Draw: {
             memcpy(&target[offset + x], &pixels[pixelPos], amount * sizeof(SmpPixel));
             pixelPos += amount;
-            for (size_t i=0; i<amount; i++) {
-                m_mask[y * m_normalHeader.width + x + i] = true;
-            }
+            memset(&maskData[offset + x], 1, amount * sizeof(uint8_t));
             x += amount;
             break;
         }
@@ -174,8 +173,7 @@ void SmxFrame::readOutlineGraphics()
 
 std::vector<SmpPixel> SmxFrame::decode4Plus1(const std::vector<uint8_t> &data)
 {
-    std::vector<SmpPixel> pixelsVector;
-    pixelsVector.resize(data.size() / 1.25);
+    std::vector<SmpPixel> pixelsVector(data.size() / 1.25);
     SmpPixel *pixels = pixelsVector.data();
 
     SmpPixel p0, p1, p2, p3;

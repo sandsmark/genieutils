@@ -1,9 +1,11 @@
 #pragma once
 
-#include "SlpFrame.h"
+#include "SmpFrame.h"
 
 #include "genie/file/ISerializable.h"
 #include "genie/util/Logger.h"
+
+#include <memory>
 
 namespace genie {
 
@@ -82,7 +84,7 @@ private:
     std::vector<SmpPlayerColorXY> m_playerColorPixels;
 
     std::vector<SmpPixel> m_pixels;
-    std::vector<bool> m_mask;
+    std::vector<uint8_t> m_mask;
 
     enum SmpCommand {
         Skip = 0b00,
