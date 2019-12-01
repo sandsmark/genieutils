@@ -27,6 +27,7 @@ private slots:
 
 protected:
     void paintEvent(QPaintEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
 
 private:
     const genie::PalFile &loadPalette(const QString &palettePath, const QString &drsPath);
@@ -48,5 +49,7 @@ private:
     QString m_dataPath;
 
     QRect m_maxRect;
+    genie::SmxFrame m_smxFrame;
+    QString m_debugString;
 };
 #endif // WINDOW_H

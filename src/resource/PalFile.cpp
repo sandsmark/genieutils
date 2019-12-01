@@ -70,6 +70,7 @@ void PalFile::serializeObject()
         }
 
         *istr >> num_colors_;
+        log.debug("% colors", num_colors_);
 
         for (uint32_t i = 0; i < num_colors_; i++) {
             uint32_t r, g, b, a = 255;

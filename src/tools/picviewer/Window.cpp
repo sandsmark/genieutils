@@ -7,6 +7,7 @@
 #include <QPainter>
 #include <QApplication>
 #include <QScreen>
+#include <QMouseEvent>
 
 Window::Window(QWidget *parent)
     : QWidget(parent)
@@ -49,9 +50,6 @@ bool Window::setPalette(const QString &name, const QString &drsFile)
         } catch (const std::exception &e) {
             QMessageBox::warning(this, "Failed to load palette file " + name, e.what());
             return false;
-        }
-        for (int i=0; i<10; i++) {
-            qDebug() << m_palette.colors_[i].r << m_palette.colors_[i].g << m_palette.colors_[i].b;
         }
         colors = m_palette.colors_;
     } else {
@@ -252,6 +250,7 @@ QPixmap Window::createPixmap(const genie::SmxFrame &frame)
 //        return QPixmap();
 //    }
 
+    m_smxFrame = frame;
     QImage image(frame.width(), frame.height(), QImage::Format_ARGB32_Premultiplied);
     for (int x=0; x<frame.width(); x++) {
         for (int y=0; y<frame.height(); y++) {
@@ -259,7 +258,7 @@ QPixmap Window::createPixmap(const genie::SmxFrame &frame)
                 continue;
             }
             const size_t palIndex = frame.paletteIndex(x, y);
-            qDebug() << palIndex << frame.pixel(x, y).index << frame.pixel(x, y).palette << frame.paletteIndex(x, y);
+//            qDebug() << palIndex << frame.pixel(x, y).index << frame.pixel(x, y).section << frame.paletteIndex(x, y);
             assert(palIndex < m_palette.colors_.size());
             const genie::Color &color = m_palette.colors_[palIndex];
 //            qDebug() << color.a << color.g << color.b << color.a;
@@ -270,13 +269,42 @@ QPixmap Window::createPixmap(const genie::SmxFrame &frame)
     return QPixmap::fromImage(image);
 }
 
+void Window::mousePressEvent(QMouseEvent *event)
+{
+    float scale = qMin(width()/float(m_pixmap.width()), height()/float(m_pixmap.height()));
+    int x = event->x() / scale;
+    int y = event->y() / scale;
+    if (x > m_smxFrame.width() || y > m_smxFrame.height()) {
+        return;
+    }
+    m_debugString = "X: " + QString::number(x) + "\nY: " + QString::number(y) + "\nIndex: " + QString::number(m_smxFrame.pixel(x, y).index) + "\nSection: " + QString::number(m_smxFrame.pixel(x, y).section) + "\nPalette index: " + QString::number(m_smxFrame.paletteIndex(x, y)) + "\nX % 4: " + QString::number(x % 4);
+    update();
+}
+
 void Window::paintEvent(QPaintEvent *event)
 {
     QPainter p(this);
-    QPixmap scaled;
-    p.fillRect(rect(), Qt::DiagCrossPattern);
-    scaled = m_pixmap.scaled(width(), height(), Qt::KeepAspectRatio);
-    p.drawPixmap(width()/2 - scaled.width()/2, height() / 2 - scaled.height()/2, scaled);
+    p.fillRect(rect(), Qt::transparent);
+
+    const float scale = qMin(width()/float(m_pixmap.width()), height()/float(m_pixmap.height()));
+    const int checkerboardSize = qMax(5.f, 5 * scale);
+    for (int x = 0; x<width()/checkerboardSize+1; x++) {
+        for (int y = 0; y<height()/checkerboardSize+1; y++) {
+            if ((x+y) % 2 == 0) {
+                p.fillRect(x*checkerboardSize, y*checkerboardSize, checkerboardSize, checkerboardSize, QColor(32, 32, 32));
+            } else {
+                p.fillRect(x*checkerboardSize, y*checkerboardSize, checkerboardSize, checkerboardSize, Qt::black);
+
+            }
+        }
+    }
+//    p.setCompositionMode(QPainter::CompositionMode_Plus);
+    p.drawPixmap(0, 0, m_pixmap.scaled(m_pixmap.width() * scale, m_pixmap.height() * scale));
+
+    QFont font = p.font();
+    font.setBold(true);
+    p.setFont(font);
+    p.drawText(rect(), Qt::AlignRight | Qt::AlignBottom, m_debugString);
 }
 
 const genie::PalFile &Window::loadPalette(const QString &palettePath, const QString &drsPath)

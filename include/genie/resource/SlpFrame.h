@@ -71,12 +71,12 @@ inline bool operator<(const PlayerColorXY &l, const PlayerColorXY &r)
 struct SmpPixel
 {
     uint8_t index; /// Normal palette index
-    uint8_t palette; /// Need to look up in palette.conf to find the correct color table
+    uint8_t section; /// Need to look up in palette.conf to find the correct color table
     uint8_t damageMask; /// When units get damaged
     uint8_t damageMask2; /// When units get damaged 2
 
-    inline uint8_t paletteIndex() const noexcept { return palette >> 2; }
-    inline uint8_t paletteSection() const noexcept { return palette & 0b11; }
+    inline uint8_t paletteIndex() const noexcept { return section >> 2; }
+    inline uint8_t paletteSection() const noexcept { return section & 0b11; }
     inline bool isMasked1() const noexcept { return damageMask & 0x80; }
     inline bool isMasked2() const noexcept { return damageMask & 3; }
 }

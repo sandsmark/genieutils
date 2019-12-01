@@ -41,7 +41,7 @@ public:
         const size_t pixelIndex = x + y * m_normalHeader.width;
         assert(pixelIndex < m_pixels.size());
         assert(m_pixels[pixelIndex].paletteSection() <= 4);
-        return m_pixels[pixelIndex].palette * 256 + m_pixels[pixelIndex].index;
+        return m_pixels[pixelIndex].paletteSection() * 256 + m_pixels[pixelIndex].index;
 //        return m_pixels[pixelIndex].paletteSection() * 256 + m_pixels[pixelIndex].paletteIndex();
     }
 
