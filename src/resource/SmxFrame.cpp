@@ -176,6 +176,8 @@ std::vector<SmpPixel> SmxFrame::decode4Plus1(const std::vector<uint8_t> &data)
     std::vector<SmpPixel> pixelsVector(data.size() / 1.25);
     SmpPixel *pixels = pixelsVector.data();
 
+    const uint8_t *source = data.data();
+
     SmpPixel p0, p1, p2, p3;
     p0.damageMask = 0;
     p0.damageMask2 = 0;
@@ -188,12 +190,12 @@ std::vector<SmpPixel> SmxFrame::decode4Plus1(const std::vector<uint8_t> &data)
 
     size_t pixelsPos = 0;
     for (size_t i=0; i<data.size(); i += 5) {
-        p0.index = uint32_t(data[i + 0]);
-        p1.index = uint32_t(data[i + 1]);
-        p2.index = uint32_t(data[i + 2]);
-        p3.index = uint32_t(data[i + 3]);
+        p0.index = uint32_t(source[i + 0]);
+        p1.index = uint32_t(source[i + 1]);
+        p2.index = uint32_t(source[i + 2]);
+        p3.index = uint32_t(source[i + 3]);
 
-        const uint8_t sections = data[i + 4];
+        const uint8_t sections = source[i + 4];
         p0.section = (sections >> 0) & 0b11;
         p1.section = (sections >> 2) & 0b11;
         p2.section = (sections >> 4) & 0b11;
