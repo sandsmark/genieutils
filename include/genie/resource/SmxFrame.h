@@ -54,7 +54,7 @@ private:
     void readOutlineGraphics();
 
     std::vector<SmpPixel> decode4Plus1(const std::vector<uint8_t> &data);
-    std::vector<SmpPixel> decode8To5();
+    std::vector<SmpPixel> decode8To5(const std::vector<uint8_t> &data);
 
     std::vector<SmpPlayerColorXY> m_playerColorPixels;
 
@@ -79,7 +79,7 @@ private:
 
             /// Determines the compression algorithm for the main graphic frame.
             /// 0 = 4plus1; 1 = 8to5 (see the Compression Algorithms section)
-            SkipDamageMask = 1 << 3,
+            HasDamageMask = 1 << 3,
 
             /// If set to 1, the bundle contains an outline frame
             OutlineFrame = 1 << 2,

@@ -19,8 +19,8 @@ void SmxFrame::serializeObject()
     serialize(m_bundleHeader.palette);
     serialize(m_bundleHeader.maybeSize);
 
-    if (m_bundleHeader.type & BundleHeader::SkipDamageMask) {
-        log.debug("No damage masks");
+    if (m_bundleHeader.type & BundleHeader::HasDamageMask) {
+        log.debug("Has damage masks");
     }
 
     //log.debug("Palette: %", m_bundleHeader.palette);
@@ -64,11 +64,6 @@ void SmxFrame::serializeFrameHeader(SmxFrame::FrameHeader &header)
 //    log.debug("Size: %x%; Hotspot %,%; Size %; Unknown %", header.width, header.height, header.centerX, header.centerY, header.size, header.unknown);
 }
 
-static inline uint16_t rotateRight2(const uint16_t n)
-{
-    return (n >> 2) | (n << (16 - 2));
-}
-
 void SmxFrame::readNormalGraphics()
 {
     serializeFrameHeader(m_normalHeader);
@@ -88,12 +83,11 @@ void SmxFrame::readNormalGraphics()
 
     std::vector<uint8_t> pixelData;
     serialize(pixelData, pixelDataSize);
-    if ((m_bundleHeader.type & BundleHeader::SkipDamageMask)) {
-        std::cerr << "fixme" << std::endl;
-        exit(1);
-    }
 
-    const std::vector<SmpPixel> pixelsVector = decode4Plus1(std::move(pixelData));
+    const std::vector<SmpPixel> pixelsVector = m_bundleHeader.type & BundleHeader::HasDamageMask ?
+                decode8To5(std::move(pixelData)) :
+                decode4Plus1(std::move(pixelData));
+
     const SmpPixel *pixels = pixelsVector.data();
     size_t pixelPos = 0;
 
@@ -182,7 +176,14 @@ std::vector<SmpPixel> SmxFrame::decode4Plus1(const std::vector<uint8_t> &data)
 
     SmpPixel p0, p1, p2, p3;
     p0.damageMask = 0;
-    p0.damageMask2 = 1;
+    p0.damageMask2 = 0;
+    p1.damageMask = 0;
+    p1.damageMask2 = 0;
+    p2.damageMask = 0;
+    p2.damageMask2 = 0;
+    p3.damageMask = 0;
+    p3.damageMask2 = 0;
+
     size_t pixelsPos = 0;
     for (size_t i=0; i<data.size(); i += 5) {
         p0.index = data[i + 0];
@@ -196,10 +197,53 @@ std::vector<SmpPixel> SmxFrame::decode4Plus1(const std::vector<uint8_t> &data)
         p2.palette = (sections >> 2) & 0b11;
         p3.palette = (sections >> 0) & 0b11;
 
-        pixels[pixelsPos + 0] = p0;
-        pixels[pixelsPos + 1] = p1;
-        pixels[pixelsPos + 2] = p2;
-        pixels[pixelsPos + 3] = p3;
+        pixels[pixelsPos++] = p0;
+        pixels[pixelsPos++] = p1;
+        pixels[pixelsPos++] = p2;
+        pixels[pixelsPos++] = p3;
+    }
+
+    return pixelsVector;
+}
+
+static inline uint16_t rotateRight2(const uint16_t n)
+{
+    return (n >> 2) | (n << (16 - 2));
+}
+
+std::vector<SmpPixel> SmxFrame::decode8To5(const std::vector<uint8_t> &data)
+{
+    // untested, haven't found any that needs this yet
+
+    std::vector<SmpPixel> pixelsVector;
+    pixelsVector.resize(0.4 * data.size());
+    SmpPixel *pixels = pixelsVector.data();
+
+    SmpPixel p0, p1;
+    size_t pixelsPos = 0;
+
+    for (size_t i=0; i<data.size(); i += 5) {
+        const uint8_t byte1 = data[i + 0];
+        const uint8_t byte2 = data[i + 1];
+        const uint8_t byte3 = data[i + 2];
+        const uint8_t byte4 = data[i + 3];
+        const uint8_t byte5 = data[i + 4];
+
+        p0.index =       byte1 & 0xff;
+        p0.palette =     byte1 & 0x03;
+        p0.damageMask =  byte2 & 0xf0;
+        p0.damageMask2 = byte2 & 0x3f;
+
+        uint16_t part1 = rotateRight2((uint16_t(byte2) << 8) | byte3);
+        uint16_t part2 = rotateRight2((uint16_t(byte4) << 8) | byte5);
+
+        p1.index =       (part1 >> 8) & 0xff;
+        p1.palette =     (part1 >> 0) & 0x03;
+        p1.damageMask =  (part2 >> 8) & 0xf0;
+        p1.damageMask2 = (part2 >> 0) & 0x3f;
+
+        pixels[pixelsPos++] = p0;
+        pixels[pixelsPos++] = p1;
     }
 
     return pixelsVector;
