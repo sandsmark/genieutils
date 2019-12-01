@@ -6,6 +6,7 @@
 namespace genie {
 
 Logger &SmxFrame::log = Logger::getLogger("genie.SmxFrame");
+SmxFrame SmxFrame::null;
 
 void SmxFrame::serializeObject()
 {
@@ -91,6 +92,7 @@ void SmxFrame::readNormalGraphics()
     const SmpPixel *pixels = pixelsVector.data();
     size_t pixelPos = 0;
 
+    m_mask.resize(m_normalHeader.width * m_normalHeader.height);
     m_pixels.resize(m_normalHeader.width * m_normalHeader.height);
     SmpPixel *target = m_pixels.data();
     for (const uint8_t byte : commands) {
@@ -112,21 +114,22 @@ void SmxFrame::readNormalGraphics()
         case Draw: {
             memcpy(&target[offset + x], &pixels[pixelPos], amount * sizeof(SmpPixel));
             pixelPos += amount;
+            for (size_t i=0; i<amount; i++) {
+                m_mask[y * m_normalHeader.width + x + i] = true;
+            }
             x += amount;
             break;
         }
         case EndOfRow:
-            if (x != 0xFFFF) {
-                if ((x) + m_normalHeader.rowEdges[y].padRight != m_normalHeader.width) {
-                    std::cout << x << std::endl;
-                    std::cout << m_normalHeader.rowEdges[y].padLeft  << std::endl;
-                    std::cout << m_normalHeader.rowEdges[y].padRight  << std::endl;
-                    std::cout << ((x) + m_normalHeader.rowEdges[y].padRight)  << std::endl;
-                    std::cout << m_normalHeader.width << std::endl;
-
-                }
-                assert((x) + m_normalHeader.rowEdges[y].padRight == m_normalHeader.width);
+            if ((x) + m_normalHeader.rowEdges[y].padRight != m_normalHeader.width) {
+                std::cout << x << std::endl;
+                std::cout << m_normalHeader.rowEdges[y].padLeft  << std::endl;
+                std::cout << m_normalHeader.rowEdges[y].padRight  << std::endl;
+                std::cout << ((x) + m_normalHeader.rowEdges[y].padRight)  << std::endl;
+                std::cout << m_normalHeader.width << std::endl;
+                throw std::runtime_error("Failed to read data for frame");
             }
+            assert((x) + m_normalHeader.rowEdges[y].padRight == m_normalHeader.width);
             do {
                 y++;
                 x = m_normalHeader.rowEdges[y].padLeft;
@@ -187,16 +190,16 @@ std::vector<SmpPixel> SmxFrame::decode4Plus1(const std::vector<uint8_t> &data)
 
     size_t pixelsPos = 0;
     for (size_t i=0; i<data.size(); i += 5) {
-        p0.index = data[i + 0];
-        p1.index = data[i + 1];
-        p2.index = data[i + 2];
-        p3.index = data[i + 3];
+        p0.index = data[i + 3];
+        p1.index = data[i + 2];
+        p2.index = data[i + 1];
+        p3.index = data[i + 0];
 
         const uint8_t sections = data[i + 4];
-        p0.palette = (sections >> 6) & 0b11;
-        p1.palette = (sections >> 4) & 0b11;
-        p2.palette = (sections >> 2) & 0b11;
-        p3.palette = (sections >> 0) & 0b11;
+        p0.palette = (sections >> 0) & 0b11;
+        p1.palette = (sections >> 2) & 0b11;
+        p2.palette = (sections >> 4) & 0b11;
+        p3.palette = (sections >> 6) & 0b11;
 
         pixels[pixelsPos++] = p0;
         pixels[pixelsPos++] = p1;

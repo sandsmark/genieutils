@@ -25,6 +25,15 @@ class SmxFile : public IFile
 {
     static constexpr std::array<uint8_t, 4> defaultHeader = {'S', 'M', 'P', 'X' };
 
+public:
+    const SmxFrame &frame(size_t frameNum = 0) {
+        if (frameNum >= m_frames.size()) {
+            std::cerr << "invalid framenum" << frameNum << std::endl;
+            return SmxFrame::null;
+        }
+        return m_frames[frameNum];
+    }
+
     // ISerializable interface
 protected:
     void serializeObject() override;

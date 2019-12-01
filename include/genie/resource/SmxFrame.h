@@ -20,6 +20,30 @@ class SmxFrame : public ISerializable
 {
     static Logger &log;
 
+public:
+    static SmxFrame null;
+
+    inline int width() const noexcept { return m_normalHeader.width; }
+    inline int height() const noexcept { return m_normalHeader.height; }
+
+    inline const SmpPixel &pixel(const uint32_t x, const uint32_t y) const {
+        const size_t pixelIndex = x + y * m_normalHeader.width;
+        assert(pixelIndex < m_pixels.size());
+        return m_pixels[pixelIndex];
+    }
+    inline bool isVisible(const uint32_t x, const uint32_t y) const {
+        const size_t pixelIndex = x + y * m_normalHeader.width;
+        assert(pixelIndex < m_pixels.size());
+        return m_mask[pixelIndex];
+    }
+
+    inline int paletteIndex(const uint32_t x, const uint32_t y) const {
+        const size_t pixelIndex = x + y * m_normalHeader.width;
+        assert(pixelIndex < m_pixels.size());
+        assert(m_pixels[pixelIndex].paletteSection() <= 4);
+        return m_pixels[pixelIndex].palette * 256 + m_pixels[pixelIndex].index;
+//        return m_pixels[pixelIndex].paletteSection() * 256 + m_pixels[pixelIndex].paletteIndex();
+    }
 
 protected:
     void serializeObject() override;
@@ -59,6 +83,7 @@ private:
     std::vector<SmpPlayerColorXY> m_playerColorPixels;
 
     std::vector<SmpPixel> m_pixels;
+    std::vector<bool> m_mask;
 
     enum SmpCommand {
         Skip = 0b00,
@@ -104,7 +129,8 @@ private:
     FrameHeader m_normalHeader;
     FrameHeader m_shadowHeader;
     FrameHeader m_outlineHeader;
-
 };
+
+typedef std::shared_ptr<SmxFrame> SmxFramePtr;
 
 } // namespace genie

@@ -42,10 +42,24 @@ bool Window::setDrsPath(const QString &path)
 
 bool Window::setPalette(const QString &name, const QString &drsFile)
 {
-    std::vector<genie::Color> colors = loadPalette(name, drsFile).colors_;
-    if (colors.empty()) {
-        qWarning() << "Failed to load palette";
-        return false;
+    std::vector<genie::Color> colors;
+    if (drsFile.isEmpty()) {
+        try {
+            m_palette.load(name.toStdString());
+        } catch (const std::exception &e) {
+            QMessageBox::warning(this, "Failed to load palette file " + name, e.what());
+            return false;
+        }
+        for (int i=0; i<10; i++) {
+            qDebug() << m_palette.colors_[i].r << m_palette.colors_[i].g << m_palette.colors_[i].b;
+        }
+        colors = m_palette.colors_;
+    } else {
+        colors = loadPalette(name, drsFile).colors_;
+        if (colors.empty()) {
+            qWarning() << "Failed to load palette";
+            return false;
+        }
     }
 
     for (unsigned i=0; i<colors.size(); i++) {
@@ -60,6 +74,18 @@ bool Window::load(QString path)
     if (path.isEmpty()) {
         QMessageBox::warning(this, "No path set", "No path passed");
         return false;
+    }
+    if (path.endsWith(".smx")) {
+        try {
+            genie::SmxFile smxFile;
+            smxFile.load(path.toStdString());
+            m_pixmap = createPixmap(smxFile.frame());
+
+        } catch (const std::exception &e) {
+            QMessageBox::warning(this, "Failed to load SMX file", e.what());
+            return false;
+        }
+        return true;
     }
 
     int id = -1;
@@ -92,27 +118,9 @@ bool Window::load(QString path)
         return false;
     }
 
+
     try {
-        genie::SlpFilePtr slp;
-        if (id != -1) {
-            slp = m_drsFile->getSlpFile(id);
-            if (!slp) {
-                std::cout << "Valid SLP IDs:" << std::endl;
-                for (const int id : m_drsFile->slpFileIds()) {
-                    std::cout << " " << id << std::endl;
-                }
-                QMessageBox::warning(this, "Failed to load SLP", "SLP file " + QString::number(id) + " could not be loaded");
-                return false;
-            }
-        } else {
-            slp = std::make_shared<genie::SlpFile>(QFileInfo(path).size());
-            slp->load(path.toStdString());
-        }
-        if (!slp) {
-            QMessageBox::warning(this, "Failed to load SLP", "SLP " + path + " could not be loaded.");
-            return false;
-        }
-        m_pixmap = createPixmap(slp->getFrame());
+        loadSlp(path);
     } catch (const std::exception &e) {
         QMessageBox::warning(this, "Failed to load SLP file", e.what());
         return false;
@@ -192,6 +200,38 @@ bool Window::loadDataTC(const QString &dataPath)
     return true;
 }
 
+bool Window::loadSlp(const QString &path)
+{
+    genie::SlpFilePtr slp;
+    bool ok;
+    int id = path.toInt(&ok);
+    if (!ok) {
+        QMessageBox::warning(this, "Invalid ID", "Can't pass numerical ID and not specify DRS file");
+        return false;
+    }
+    if (id != -1) {
+        slp = m_drsFile->getSlpFile(id);
+        if (!slp) {
+            std::cout << "Valid SLP IDs:" << std::endl;
+            for (const int id : m_drsFile->slpFileIds()) {
+                std::cout << " " << id << std::endl;
+            }
+            QMessageBox::warning(this, "Failed to load SLP", "SLP file " + QString::number(id) + " could not be loaded");
+            return false;
+        }
+    } else {
+        slp = std::make_shared<genie::SlpFile>(QFileInfo(path).size());
+        slp->load(path.toStdString());
+    }
+    if (!slp) {
+        QMessageBox::warning(this, "Failed to load SLP", "SLP " + path + " could not be loaded.");
+        return false;
+    }
+    m_pixmap = createPixmap(slp->getFrame());
+
+    return true;
+}
+
 QPixmap Window::createPixmap(genie::SlpFramePtr frame)
 {
     if (!frame) {
@@ -205,10 +245,36 @@ QPixmap Window::createPixmap(genie::SlpFramePtr frame)
     return QPixmap::fromImage(image);
 }
 
+QPixmap Window::createPixmap(const genie::SmxFrame &frame)
+{
+//    if (!frame) {
+//        qWarning() << "no SMX passed";
+//        return QPixmap();
+//    }
+
+    QImage image(frame.width(), frame.height(), QImage::Format_ARGB32_Premultiplied);
+    for (int x=0; x<frame.width(); x++) {
+        for (int y=0; y<frame.height(); y++) {
+            if (!frame.isVisible(x, y)) {
+                continue;
+            }
+            const size_t palIndex = frame.paletteIndex(x, y);
+            qDebug() << palIndex << frame.pixel(x, y).index << frame.pixel(x, y).palette << frame.paletteIndex(x, y);
+            assert(palIndex < m_palette.colors_.size());
+            const genie::Color &color = m_palette.colors_[palIndex];
+//            qDebug() << color.a << color.g << color.b << color.a;
+            image.setPixel(x, y, qRgba(color.r, color.g, color.b, color.a));
+        }
+    }
+
+    return QPixmap::fromImage(image);
+}
+
 void Window::paintEvent(QPaintEvent *event)
 {
     QPainter p(this);
     QPixmap scaled;
+    p.fillRect(rect(), Qt::DiagCrossPattern);
     scaled = m_pixmap.scaled(width(), height(), Qt::KeepAspectRatio);
     p.drawPixmap(width()/2 - scaled.width()/2, height() / 2 - scaled.height()/2, scaled);
 }

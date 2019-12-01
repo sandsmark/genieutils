@@ -3,6 +3,7 @@
 
 #include <genie/resource/DrsFile.h>
 #include <genie/resource/PalFile.h>
+#include <genie/resource/SmxFile.h>
 
 #include <QWidget>
 
@@ -17,7 +18,7 @@ public:
     ~Window();
 
     bool setDrsPath(const QString &path);
-    bool setPalette(const QString &name, const QString &drsFile);
+    bool setPalette(const QString &name, const QString &drsFile = QString());
 
     bool load(QString path);
 
@@ -30,7 +31,11 @@ protected:
 private:
     const genie::PalFile &loadPalette(const QString &palettePath, const QString &drsPath);
     bool loadDataTC(const QString &dataPath);
+    bool loadSlp(const QString &path);
     QPixmap createPixmap(genie::SlpFramePtr frame);
+    QPixmap createPixmap(const genie::SmxFrame &frame);
+
+    std::string m_palettePath;
 
     genie::DrsFile m_interfaceFile;
     std::shared_ptr<genie::DrsFile> m_drsFile;

@@ -75,10 +75,10 @@ struct SmpPixel
     uint8_t damageMask; /// When units get damaged
     uint8_t damageMask2; /// When units get damaged 2
 
-    uint8_t paletteIndex() const { return palette >> 2; }
-    uint8_t paletteSection() const { return palette & 0b11; }
-    bool isMasked1() const { return damageMask & 0x80; }
-    bool isMasked2() const { return damageMask & 3; }
+    inline uint8_t paletteIndex() const noexcept { return palette >> 2; }
+    inline uint8_t paletteSection() const noexcept { return palette & 0b11; }
+    inline bool isMasked1() const noexcept { return damageMask & 0x80; }
+    inline bool isMasked2() const noexcept { return damageMask & 3; }
 }
 #ifndef _MSC_VER
 __attribute__((packed));

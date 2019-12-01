@@ -72,9 +72,15 @@ void PalFile::serializeObject()
         *istr >> num_colors_;
 
         for (uint32_t i = 0; i < num_colors_; i++) {
-            uint32_t r, g, b;
+            uint32_t r, g, b, a = 255;
             *istr >> r >> g >> b;
-            colors_.push_back(Color(r, g, b));
+
+            // aoede and aoe2de have alpha, TODO: set and use gameversion
+            if (istr->peek() == ' ') {
+                *istr >> a;
+            }
+
+            colors_.push_back(Color(r, g, b, a));
         }
     } else {
         std::ostream *ostr = getOStream();
