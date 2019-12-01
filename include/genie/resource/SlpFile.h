@@ -77,24 +77,6 @@ public:
     /// For normal SLPs, e. g. '2.0N', for new SMP from Aoe2:DE 'SMP$'
     std::string version;
 
-    /// AoE2:DE only, "256, 0x00000100 (same value for almost all units)" from heinezen
-    uint32_t unknown1 = 256;
-
-    /// AoE2:DE only, apparently they write number of frames twice
-    uint32_t numFrames2 = 0;
-
-    /// AoE2:DE only, "1, 0x0000001 (almost always 0x00000001)" from heinezen
-    uint32_t unknown2 = 1;
-
-    /// AoE2:DE only, Example value from doc from heinezen
-    uint32_t maybeChecksom = 0x8554F6F3;
-
-    /// AoE2:DE only, file size in bytes
-    uint32_t size2 = 0;
-
-    /// AoE2:DE only, 0x0B or 0x0C according to heinezen
-    uint32_t maybeVersion = 0;
-
     std::string comment;
 
     const std::vector<uint8_t> &fileData() const { return m_graphicsFileData; }

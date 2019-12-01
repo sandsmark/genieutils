@@ -92,10 +92,6 @@ class SlpFrame : protected ISerializable
 {
 
 public:
-    enum class Version {
-        Slp,
-    };
-
     enum Commands : uint8_t {
         EndOfRow = 0xF,
         LesserBlockCopy = 0x0,
