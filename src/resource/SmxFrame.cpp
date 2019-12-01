@@ -9,7 +9,8 @@ Logger &SmxFrame::log = Logger::getLogger("genie.SmxFrame");
 
 void SmxFrame::serializeObject()
 {
-    std::cerr << " ======= starting bundle at " << getIStream()->tellg() << std::endl;
+//    log.debug(" ======= starting bundle at %", getIStream()->tellg());
+
     serialize(m_bundleHeader.type);
     if (m_bundleHeader.type == 0) {
         std::cerr << "invalid bundle" << std::endl;
@@ -19,30 +20,30 @@ void SmxFrame::serializeObject()
     serialize(m_bundleHeader.maybeSize);
 
     if (m_bundleHeader.type & BundleHeader::SkipDamageMask) {
-        std::cout << "supercompressed" << std::endl;
+        log.debug("No damage masks");
     }
-    std::cerr << "palette: " << int(m_bundleHeader.palette) << std::endl;
-    std::cerr << "maybesize: " << m_bundleHeader.maybeSize << std::endl;
-    std::cerr << "type: " << uint16_t(m_bundleHeader.type) << std::endl;
+
+    //log.debug("Palette: %", m_bundleHeader.palette);
+    //log.debug("Maybe size: %", m_bundleHeader.maybeSize);
+    //log.debug("Type: %", m_bundleHeader.type);
 
     if (getOperation() != OP_READ) {
-        log.error("Operation not supported yet");
+        log.error("Operation % not supported yet", getOperation());
         return;
     }
 
     if (m_bundleHeader.type & BundleHeader::NormalFrame) {
-        std::cerr << "normal frame" << std::endl;
+        //log.debug("Contains normal frame");
         readNormalGraphics();
     }
 
     if (m_bundleHeader.type & BundleHeader::ShadowFrame) {
-        std::cerr << "shadow frame" << std::endl;
+//        log.debug("Contains shadow frame");
         readShadowGraphics();
     }
-    exit(0);
 
     if (m_bundleHeader.type & BundleHeader::OutlineFrame) {
-        std::cerr << "outline frame" << std::endl;
+//        log.debug("Contains outline frame");
         readOutlineGraphics();
     }
 
@@ -50,8 +51,6 @@ void SmxFrame::serializeObject()
 
 void SmxFrame::serializeFrameHeader(SmxFrame::FrameHeader &header)
 {
-    std::cerr << " ----------- starting frame at " << getIStream()->tellg() << " ------------" << std::endl;
-
     serialize(header.width);
     serialize(header.height);
 
@@ -62,13 +61,7 @@ void SmxFrame::serializeFrameHeader(SmxFrame::FrameHeader &header)
     serialize(header.unknown);
 
     serialize(header.rowEdges, header.height);
-    std::cout << "width: " << header.width << std::endl;
-    std::cout << "height: " << header.height << std::endl;
-    std::cout << "cx: " << header.centerX << std::endl;
-    std::cout << "cy: " << header.centerY << std::endl;
-    std::cout << "size: " << header.size << std::endl;
-    std::cout << "unk: " << header.unknown << std::endl;
-
+//    log.debug("Size: %x%; Hotspot %,%; Size %; Unknown %", header.width, header.height, header.centerX, header.centerY, header.size, header.unknown);
 }
 
 static inline uint16_t rotateRight2(const uint16_t n)
@@ -79,7 +72,6 @@ static inline uint16_t rotateRight2(const uint16_t n)
 void SmxFrame::readNormalGraphics()
 {
     serializeFrameHeader(m_normalHeader);
-    std::cout << "before sizes: " << (getIStream()->tellg()) << std::endl;
 
     uint32_t commandsSize = 0;
     serialize(commandsSize);
@@ -87,34 +79,17 @@ void SmxFrame::readNormalGraphics()
     uint32_t pixelDataSize = 0;
     serialize(pixelDataSize);
 
-    std::cout << "after sizes: " << (getIStream()->tellg()) << std::endl;
-
-
-    std::cout << "commands: " << commandsSize << std::endl;
-    std::cout << "start: " << (getIStream()->tellg()) << std::endl;
-
     std::vector<uint8_t> commands;
     serialize(commands, commandsSize);
-    std::cout << "after commands: " << (getIStream()->tellg()) << std::endl;
     uint32_t x=0, y=0;
     x = m_normalHeader.rowEdges[0].padLeft;
 
-    std::streampos expectedEnd = getIStream()->tellg() + std::streampos(pixelDataSize);
-    std::streampos posbefore = getIStream()->tellg();
-    std::cout << "expected end: " << expectedEnd << std::endl;
-
-    size_t shadowRead = 0;
-    size_t normalRead = 0;
-    size_t pixelsRead = 0;
-    size_t skipped = 0;
-    size_t expectPixelsRead = 0;
-    int expectPixelsRead2 = 0;
+    const std::streampos expectedEnd = getIStream()->tellg() + std::streampos(pixelDataSize);
 
     std::vector<SmpPixel> unusedPixels;
 
     m_pixels.resize(m_normalHeader.width * m_normalHeader.height);
     for (const uint8_t byte : commands) {
-        std::cout << "x " << x << " y " << y << std::endl;
         int amount = (byte >> 2) + 1;
         const uint8_t command = byte & 0b11;
 
@@ -122,20 +97,11 @@ void SmxFrame::readNormalGraphics()
 
         switch(command) {
         case Skip:
-            std::cout << " - skipping " << amount << std::endl;
-            skipped += amount;
             x += amount;
             break;
         case PlayerColor: {
-            std::cout << " + player color " << int(amount) << std::endl;
-            std::cout << "starting read at " << (getIStream()->tellg()) << std::endl;
-            ssize_t posbefore = getIStream()->tellg();
-            std::cout << unusedPixels.size() << " unused" << std::endl;
-            int expectDataRead = std::ceil((int(amount) - float(unusedPixels.size())) / 4.) * 5;
-            expectPixelsRead += amount;
             //todo refactor reading and use here
             for (int i=0; i<amount; ) {
-                ssize_t posbefore = getIStream()->tellg();
                 while (!unusedPixels.empty() && i < amount) {
                     unusedPixels.pop_back();
                     x++;
@@ -145,7 +111,6 @@ void SmxFrame::readNormalGraphics()
                     break;
                 }
                 if ((m_bundleHeader.type & BundleHeader::SkipDamageMask) == 0) {
-                    std::cout << "reading new chunk at " << (getIStream()->tellg()) << std::endl;
                     SmpPixel p0, p1, p2, p3;
                     serialize<uint8_t>(p0.index);
                     serialize<uint8_t>(p1.index);
@@ -158,30 +123,9 @@ void SmxFrame::readNormalGraphics()
                     unusedPixels.push_back(p1);
                     unusedPixels.push_back(p2);
                     unusedPixels.push_back(p3);
-
-                    //if (i < amount) {
-                    //    pixelsRead++;
-                    //    x++;
-                    //    i++;
-                    //}
-                    //if (i < amount) {
-                    //    pixelsRead++;
-                    //    x++;
-                    //    i++;
-                    //}
-                    //if (i < amount) {
-                    //    pixelsRead++;
-                    //    x++;
-                    //    i++;
-                    //}
-                    //if (i < amount) {
-                    //    pixelsRead++;
-                    //    x++;
-                    //    i++;
-                    //}
                 } else {
                     exit(1);
-                    uint8_t bytes1[3]{};
+                    uint8_t bytes1[3];
                     getIStream()->read(reinterpret_cast<char*>(bytes1), 3);
 
                     if (i < amount) {
@@ -195,31 +139,10 @@ void SmxFrame::readNormalGraphics()
                         i++;
                     }
                 }
-                if  (getIStream()->tellg() - posbefore != 5) {
-                    std::cout << getIStream()->tellg() << " " << posbefore << std::endl;
-                    std::cout << " * read " << (getIStream()->tellg() - posbefore) << " bytes" << std::endl;
-                    std::cerr << "read invalid amount of bytes in unpack" << std::endl;
-                    exit(1);
-                }
             }
-            if  (getIStream()->tellg() - posbefore != expectDataRead) {
-                std::cout << "expected " << expectDataRead << std::endl;
-                std::cout << getIStream()->tellg() << " " << posbefore << std::endl;
-                std::cout << " * read " << (getIStream()->tellg() - posbefore) << " bytes" << std::endl;
-                std::cerr << "read invalid amount of bytes for player color" << std::endl;
-                exit(1);
-            }
-            shadowRead += (getIStream()->tellg() - posbefore);
-            //std::cout << " + read " << (getIStream()->tellg() - posbefore) << " bytes" << std::endl;
-
             break;
         }
         case Draw: {
-            std::cout << " * normal draw " << int(amount) << std::endl;
-            std::cout << unusedPixels.size() << " unused" << std::endl;
-            int expectDataRead = std::ceil((float(amount) - float(unusedPixels.size())) / 4.) * 5;
-            expectPixelsRead += amount;
-            std::streampos posbefore = getIStream()->tellg();
             // todo :pull this out into a function or something
             for (int i=0; i<amount; ) {
                 while (!unusedPixels.empty() && i < amount) {
@@ -231,9 +154,7 @@ void SmxFrame::readNormalGraphics()
                     break;
                 }
 
-                std::streampos posbefore = getIStream()->tellg();
                 if ((m_bundleHeader.type & BundleHeader::SkipDamageMask) == 0) {
-                    //std::cout << "adding 4" << std::endl;
                     SmpPixel p0, p1, p2, p3;
                     uint8_t sections = 0;
                     serialize(p0.index);
@@ -250,30 +171,8 @@ void SmxFrame::readNormalGraphics()
                     unusedPixels.push_back(p1);
                     unusedPixels.push_back(p2);
                     unusedPixels.push_back(p3);
-
-                    //if (i < amount) {
-                    //    m_pixels[offset + x++] = std::move(p0);
-                    //    pixelsRead++;
-                    //    i++;
-                    //}
-                    //if (i < amount) {
-                    //    m_pixels[offset + x++] = std::move(p1);
-                    //    pixelsRead++;
-                    //    i++;
-                    //}
-                    //if (i < amount) {
-                    //    m_pixels[offset + x++] = std::move(p2);
-                    //    pixelsRead++;
-                    //    i++;
-                    //}
-                    //if (i < amount) {
-                    //    m_pixels[offset + x++] = std::move(p3);
-                    //    pixelsRead++;
-                    //    i++;
-                    //}
                 } else {
                     exit(1);
-                    //std::cout << "adding 2" << std::endl;
                     // What an absolute clusterfuck, how did you figure this out heinezen
 
                     uint8_t bytes1[2]{};
@@ -281,7 +180,6 @@ void SmxFrame::readNormalGraphics()
 
                     SmpPixel p0;
                     serialize(p0.index);
-                    //p0.index = bytes1[0] & 0xff;
                     p0.palette = bytes1[0] & 0x03;
                     p0.damageMask = bytes1[1] & 0xf0;
                     p0.damageMask2 = bytes1[1] & 0x3f;
@@ -308,31 +206,10 @@ void SmxFrame::readNormalGraphics()
                         m_pixels[offset + x++] = std::move(p1);
                     }
                 }
-                if  (getIStream()->tellg() - posbefore != 5) {
-                    std::cout << getIStream()->tellg() << " " << posbefore << std::endl;
-                    std::cout << " * read " << (getIStream()->tellg() - posbefore) << " bytes" << std::endl;
-                    std::cerr << "read invalid amount of bytes" << std::endl;
-                    exit(1);
-                }
             }
-            normalRead += (getIStream()->tellg() - posbefore);
-            if  (getIStream()->tellg() - posbefore != expectDataRead) {
-                    std::cout << " * read " << (getIStream()->tellg() - posbefore) << " bytes" << std::endl;
-                    std::cout << "expected: " << expectDataRead << std::endl;
-                    std::cerr << "read invalid amount of bytes" << std::endl;
-                    exit(1);
-            }
-            //std::cout << " * read " << (getIStream()->tellg() - posbefore) << " bytes" << std::endl;
             break;
         }
         case EndOfRow:
-            expectPixelsRead2 += ((x) -m_normalHeader.rowEdges[y].padLeft);
-            std::cout << " ! pixels read: " << (x) << std::endl;
-            std::cout << " ! full width: " << ((x) +m_normalHeader.rowEdges[y].padRight) << std::endl;
-//            std::cout << " ! expected: " << (m_normalHeader.width - (m_normalHeader.rowEdges[y].padLeft + m_normalHeader.rowEdges[y].padRight) + 1) << std::endl;
-            std::cout << " ! frame width: " << m_normalHeader.width << std::endl;
-            std::cout << " ! padleft: " << m_normalHeader.rowEdges[y].padLeft << " padright "  << m_normalHeader.rowEdges[y].padRight << std::endl;
-            std::cout << "-------" << std::endl;
             assert((x) + m_normalHeader.rowEdges[y].padRight == m_normalHeader.width);
             y++;
             assert(y <= m_normalHeader.rowEdges.size());
@@ -346,23 +223,12 @@ void SmxFrame::readNormalGraphics()
 
 
     }
-    std::cout << "height " << m_normalHeader.height << std::endl;
-    std::cout << "pixels read: " << pixelsRead << std::endl;
-    std::cout << "expect pixels read: " << expectPixelsRead << std::endl;
-    std::cout << "expect pixels read 2: " << (expectPixelsRead2 - skipped) << std::endl;
-    std::cout << "bytes read: " << (shadowRead + normalRead) << std::endl;
-    std::cout << "expect bytes read: " << pixelDataSize << std::endl;
-    std::cout << "expected pos  " << expectedEnd << " but is at " << getIStream()->tellg() << std::endl;
+
     if (getIStream()->tellg() > expectedEnd) {
-        std::cerr << "overshoot: " << (getIStream()->tellg() - expectedEnd) << std::endl;
-        exit(1);
+        throw std::runtime_error("Overread when reading frame");
     } else if (getIStream()->tellg() < expectedEnd) {
-        std::cerr << "undershoot: " << (expectedEnd - getIStream()->tellg()) << std::endl;
-        exit(1);
+        throw std::runtime_error("Underread when reading frame");
     }
-    std::cerr << "bytes for shadow frame: " << shadowRead << std::endl;
-    std::cerr << "bytes for normal frame: " << normalRead << std::endl;
-    //getIStream()->seekg(expectedEnd);
 }
 
 void SmxFrame::readShadowGraphics()
@@ -378,6 +244,7 @@ void SmxFrame::readShadowGraphics()
 
     std::vector<uint8_t> commands;
     serialize(commands, commandsSize);
+    getIStream()->seekg(getIStream()->tellg() + std::streampos(commandsSize));
 }
 
 void SmxFrame::readOutlineGraphics()
@@ -392,6 +259,7 @@ void SmxFrame::readOutlineGraphics()
 
     std::vector<uint8_t> commands;
     serialize(commands, commandsSize);
+    getIStream()->seekg(getIStream()->tellg() + std::streampos(commandsSize));
 }
 
 
