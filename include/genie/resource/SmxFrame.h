@@ -40,9 +40,8 @@ public:
     inline int paletteIndex(const uint32_t x, const uint32_t y) const {
         const size_t pixelIndex = x + y * m_normalHeader.width;
         assert(pixelIndex < m_pixels.size());
-        assert(m_pixels[pixelIndex].paletteSection() <= 4);
-        return m_pixels[pixelIndex].paletteSection() * 256 + m_pixels[pixelIndex].index;
-//        return m_pixels[pixelIndex].paletteSection() * 256 + m_pixels[pixelIndex].paletteIndex();
+        assert(m_pixels[pixelIndex].section <= 4);
+        return m_pixels[pixelIndex].section * 256 + m_pixels[pixelIndex].index;
     }
 
 protected:

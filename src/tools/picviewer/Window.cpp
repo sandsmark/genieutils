@@ -277,7 +277,15 @@ void Window::mousePressEvent(QMouseEvent *event)
     if (x > m_smxFrame.width() || y > m_smxFrame.height()) {
         return;
     }
-    m_debugString = "X: " + QString::number(x) + "\nY: " + QString::number(y) + "\nIndex: " + QString::number(m_smxFrame.pixel(x, y).index) + "\nSection: " + QString::number(m_smxFrame.pixel(x, y).section) + "\nPalette index: " + QString::number(m_smxFrame.paletteIndex(x, y)) + "\nX % 4: " + QString::number(x % 4);
+    const size_t palIndex = m_smxFrame.paletteIndex(x, y);
+    const genie::Color &color = m_palette.colors_[palIndex];
+    m_debugString = "X: " + QString::number(x) + " Y: " + QString::number(y) +
+            "\nRGBA: " + QString::number(color.r) + " " + QString::number(color.g) + " " + QString::number(color.b) + " " + QString::number(color.a) +
+            "\nIndex: " + QString::number(m_smxFrame.pixel(x, y).index) +
+            "\nSection: " + QString::number(m_smxFrame.pixel(x, y).section) +
+            "\nPalette index: " + QString::number(m_smxFrame.paletteIndex(x, y)) +
+            "\nX % 4: " + QString::number(x % 4)
+            ;
     update();
 }
 
@@ -304,6 +312,7 @@ void Window::paintEvent(QPaintEvent *event)
     QFont font = p.font();
     font.setBold(true);
     p.setFont(font);
+    p.setPen(Qt::white);
     p.drawText(rect(), Qt::AlignRight | Qt::AlignBottom, m_debugString);
 }
 

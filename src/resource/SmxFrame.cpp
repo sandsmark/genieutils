@@ -24,7 +24,7 @@ void SmxFrame::serializeObject()
         log.debug("Has damage masks");
     }
 
-    //log.debug("Palette: %", m_bundleHeader.palette);
+//    log.debug("Palette: %", m_bundleHeader.palette);
     //log.debug("Maybe size: %", m_bundleHeader.maybeSize);
     //log.debug("Type: %", m_bundleHeader.type);
 
