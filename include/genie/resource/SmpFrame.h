@@ -8,6 +8,12 @@ namespace genie {
 class SmpFrame : public ISerializable
 {
     static Logger &log;
+
+public:
+    static SmpFrame null;
+
+protected:
+    void serializeObject() override;
 };
 
 }//namespace genie

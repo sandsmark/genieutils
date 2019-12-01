@@ -167,6 +167,7 @@ set(RESOURCE_SRC
     src/resource/EdgeFiles.cpp
     src/resource/WavFile.cpp
     src/resource/SmpFrame.cpp
+    src/resource/SmpFile.cpp
     src/resource/SmxFile.cpp
     src/resource/SmxFrame.cpp
     )
