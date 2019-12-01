@@ -25,16 +25,6 @@ protected:
     void serializeObject() override;
 
 private:
-    typedef SmpPixel SmxPixel;
-//     Same as SmpPixel, just no default initializer
-//    struct SmxPixel {
-//        // No default values by design, to improve speed
-//        uint8_t index; /// Normal palette index
-//        uint8_t palette; /// Need to look up in palette.conf to find the correct color table
-//        uint8_t damageMask; /// When units get damaged
-//        uint8_t damageMask2; /// When units get damaged 2
-//    };
-
     struct FrameHeader {
         uint16_t width = 0; /// Width of image
         uint16_t height = 0; /// Height of image
@@ -63,7 +53,7 @@ private:
     void readShadowGraphics();
     void readOutlineGraphics();
 
-    std::vector<SmxPixel> decode4Plus1(const std::vector<uint8_t> &data);
+    std::vector<SmpPixel> decode4Plus1(const std::vector<uint8_t> &data);
     std::vector<SmpPixel> decode8To5();
 
     std::vector<SmpPlayerColorXY> m_playerColorPixels;

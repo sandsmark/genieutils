@@ -93,10 +93,8 @@ void SmxFrame::readNormalGraphics()
         exit(1);
     }
 
-    static_assert(sizeof(SmxPixel) == sizeof(SmpPixel));
-
-    const std::vector<SmxPixel> pixelsVector = decode4Plus1(std::move(pixelData));
-    const SmxPixel *pixels = pixelsVector.data();
+    const std::vector<SmpPixel> pixelsVector = decode4Plus1(std::move(pixelData));
+    const SmpPixel *pixels = pixelsVector.data();
     size_t pixelPos = 0;
 
     m_pixels.resize(m_normalHeader.width * m_normalHeader.height);
@@ -176,15 +174,15 @@ void SmxFrame::readOutlineGraphics()
     serialize(commands, commandsSize);
 }
 
-std::vector<SmxFrame::SmxPixel> SmxFrame::decode4Plus1(const std::vector<uint8_t> &data)
+std::vector<SmpPixel> SmxFrame::decode4Plus1(const std::vector<uint8_t> &data)
 {
-    std::vector<SmxPixel> pixelsVector;
+    std::vector<SmpPixel> pixelsVector;
     pixelsVector.resize(data.size() / 1.25);
-    SmxPixel *pixels = pixelsVector.data();
+    SmpPixel *pixels = pixelsVector.data();
 
-    SmxPixel p0, p1, p2, p3;
+    SmpPixel p0, p1, p2, p3;
     p0.damageMask = 0;
-    p0.damageMask = 1;
+    p0.damageMask2 = 1;
     size_t pixelsPos = 0;
     for (size_t i=0; i<data.size(); i += 5) {
         p0.index = data[i + 0];
