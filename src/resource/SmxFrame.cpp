@@ -61,7 +61,7 @@ void SmxFrame::serializeFrameHeader(SmxFrame::FrameHeader &header)
     serialize(header.unknown);
 
     serialize(header.rowEdges, header.height);
-    log.debug("Size: %x%; Hotspot %,%; Size %; Unknown %", header.width, header.height, header.centerX, header.centerY, header.size, header.unknown);
+//    log.debug("Size: %x%; Hotspot %,%; Size %; Unknown %", header.width, header.height, header.centerX, header.centerY, header.size, header.unknown);
 }
 
 static inline uint16_t rotateRight2(const uint16_t n)
