@@ -4,8 +4,20 @@
 #include <QCommandLineParser>
 #include <iostream>
 
+#include "genie/resource/SmxFile.h"
+
+
 int main(int argc, char *argv[])
 {
+    if (argc < 2) {
+        return 1;
+    }
+    genie::Logger::setLogLevel(genie::Logger::L_DEBUG);
+
+    genie::SmxFile smxfile;
+    smxfile.load(argv[1]);
+
+    return 0;
     QApplication a(argc, argv);
     a.setApplicationName("picviewer");
     a.setOrganizationName("genieutils");
