@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2019  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -29,6 +29,7 @@ namespace genie {
 
 float ISerializable::dat_internal_ver = 0.f;
 GameVersion GV_LatestTap = GV_T8;
+GameVersion GV_LatestDE2 = GV_C14;
 
 //------------------------------------------------------------------------------
 DatFile::DatFile() :
@@ -84,7 +85,35 @@ void DatFile::serializeObject(void)
     serialize(FileVersion, FILE_VERSION_SIZE);
 
     // Handle all different versions while in development.
-    if (getGameVersion() == GV_Tapsa) {
+    if (getGameVersion() == GV_C2) { // 5.8
+        if("VER 7.1" == FileVersion) {
+            setGameVersion(GV_C14);
+        } else if("VER 7.0" == FileVersion) {
+            setGameVersion(GV_C13);
+        } else if("VER 6.9" == FileVersion) {
+            setGameVersion(GV_C12);
+        } else if("VER 6.8" == FileVersion) {
+            setGameVersion(GV_C11);
+        } else if("VER 6.7" == FileVersion) {
+            setGameVersion(GV_C10);
+        } else if("VER 6.6" == FileVersion) {
+            setGameVersion(GV_C9);
+        } else if("VER 6.5" == FileVersion) {
+            setGameVersion(GV_C8);
+        } else if("VER 6.4" == FileVersion) {
+            setGameVersion(GV_C7);
+        } else if("VER 6.3" == FileVersion) {
+            setGameVersion(GV_C6);
+        } else if("VER 6.2" == FileVersion) {
+            setGameVersion(GV_C5);
+        } else if("VER 6.1" == FileVersion) {
+            setGameVersion(GV_CK);
+        } else if("VER 6.0" == FileVersion) {
+            setGameVersion(GV_C4);
+        } else if("VER 5.9" == FileVersion) {
+            setGameVersion(GV_C3);
+        }
+    } else if(getGameVersion() == GV_Tapsa) {
         if ("VER 4.5" == FileVersion) {
             setGameVersion(GV_T8);
         } else if ("VER 4.4" == FileVersion) {

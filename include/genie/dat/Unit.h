@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2019  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -206,6 +206,9 @@ public:
     /// Sound played when the unit is created
     int16_t TrainSound = -1;
     int16_t DamageSound = -1;
+
+    uint32_t WwiseTrainSoundID = 0; // TODO doc, new in DE
+    uint32_t WwiseDamageSoundID = 0; // TODO doc, new in DE
 
     /// ID of the unit to change to when this one dies.
     int16_t DeadUnitID = -1;
@@ -552,6 +555,9 @@ public:
     /// Sound that is played when this unit is selected
     int16_t SelectionSound = -1;
     int16_t DyingSound = -1;
+
+    uint32_t WwiseSelectionSoundID = 0; // TODO doc, new in DE
+    uint32_t WwiseDyingSoundID = 0; // TODO doc, new in DE
 
     /// 0   None
     /// 1   Run

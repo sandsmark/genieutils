@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2019  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -42,6 +42,11 @@ class Building : public ISerializable
 public:
     int16_t ConstructionGraphicID = -1;
     int16_t SnowGraphicID = -1; //not in aok/aoe/ror
+
+    int16_t DestructionGraphicID = -1;
+    int16_t DestructionRubbleGraphicID = -1;
+    int16_t ResearchingGraphic = -1;
+    int16_t ResearchCompletedGraphic = -1;
 
     /// Enabler for annex units.
     /// 0   Default
@@ -93,6 +98,8 @@ public:
     int16_t TransformSound = -1;
 
     int16_t ConstructionSound = -1;
+    uint32_t WwiseTransformSoundID = 0;
+    uint32_t WwiseConstructionSoundID = 0;
 
     /// Bit field for what can be garrisoned
     /// You can garrison any type,

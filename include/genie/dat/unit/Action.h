@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2019  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -56,6 +56,9 @@ public:
 
     int16_t AttackSound = -1;
     int16_t MoveSound = -1;
+
+    uint32_t WwiseAttackSoundID = 0;
+    uint32_t WwiseMoveSoundID = 0;
 
     /// Some animals have this.
     enum RunPatterns : int8_t {

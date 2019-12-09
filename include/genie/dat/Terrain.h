@@ -53,6 +53,9 @@ public:
     /// Only in versions before SWGB
     int16_t Phantom = 0;
 
+    uint32_t WwiseSoundID = 0; // TODO doc, new in DE
+    uint32_t WwiseSoundStopID = 0; // TODO doc, new in DE;
+
     size_t getNameSize() override;
 
     /// Priority for blending over neighbouring tiles, not in AoE/RoR.
@@ -60,6 +63,8 @@ public:
 
     /// The combination of this + the terrain to blend with defines which type of blending, not in aoe/ror.
     int32_t BlendType = 0;
+
+    std::string OverlayMaskName = ""; // TODO doc, new in DE
 
     std::pair<uint8_t, uint8_t> CliffColors = { 0, 0 };
 
@@ -85,6 +90,8 @@ public:
     static constexpr uint8_t TERRAIN_UNITS_SIZE = 30;
     std::array<int16_t, TERRAIN_UNITS_SIZE> TerrainUnitID{};
     std::array<int16_t, TERRAIN_UNITS_SIZE> TerrainUnitDensity{};
+
+    std::array<int16_t, TERRAIN_UNITS_SIZE> TerrainUnitMaskedDensity{}; // TODO doc, new in DE
 
     /// If two terrain units are to be placed on same spot, this selects which one will prevail over others.\n
     /// 1 = prevails, others don't.\n

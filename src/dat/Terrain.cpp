@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2019  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -52,6 +52,14 @@ size_t Terrain::getTerrainCount(GameVersion gv)
         return 96;
     }
 
+    if (gv >= GV_C8 && gv <= GV_LatestDE2) {
+        return 200;
+    }
+
+    if (gv >= GV_C2 && gv <= GV_C7) {
+        return 110;
+    }
+
     if (gv == GV_Cysion) {
         return 100;
     }
@@ -81,15 +89,17 @@ void Terrain::serializeObject(void)
     serialize<int8_t>(Enabled);
     serialize<int8_t>(Random);
 
-    if (gv > GV_LatestTap || gv < GV_Tapsa) {
+    if ((gv > GV_LatestTap && gv < GV_C2) || gv < GV_Tapsa || gv > GV_LatestDE2) {
         serialize(Name, getNameSize());
         serialize(Name2, getNameSize());
     } else {
-        if (gv >= GV_T2) {
+        if ((gv >= GV_T2 && gv < GV_C2) || (gv >= GV_C8 && gv <= GV_LatestDE2)) {
             serialize<int8_t>(IsWater);
             serialize<int8_t>(HideInEditor);
             serialize<int32_t>(StringID);
+        }
 
+        if (gv >= GV_T2 && gv < GV_C2) {
             int16_t blend = BlendPriority;
             serialize<int16_t>(blend);
             BlendPriority = blend;
@@ -110,9 +120,22 @@ void Terrain::serializeObject(void)
     serialize<int32_t>(ShapePtr);
     serialize<int32_t>(SoundID);
 
+    if (gv <= GV_LatestDE2) {
+        if (gv >= GV_C6) {
+            if (gv >= GV_C11) {
+                serialize<uint32_t>(WwiseSoundID);
+            }
+            serialize<uint32_t>(WwiseSoundStopID);
+        }
+    }
+
     if (gv >= GV_AoKB) {
         serialize<int32_t>(BlendPriority);
         serialize<int32_t>(BlendType);
+
+        if (gv >= GV_C3 && gv <= GV_LatestDE2) {
+            serializeDebugString(OverlayMaskName);
+        }
     }
 
     serialize(Colors);
@@ -135,10 +158,14 @@ void Terrain::serializeObject(void)
     serialize<int16_t>(TerrainToDraw);
     serializePair<int16_t>(TerrainDimensions);
 
-    if (isOperation(OP_READ)) {
-        serialize<int16_t>(Borders, getTerrainCount(gv));
+    if (gv >= GV_C8 && gv <= GV_LatestDE2) {
+        serialize<int16_t>(TerrainUnitMaskedDensity);
     } else {
-        serialize<int16_t>(Borders, Borders.size());
+        if (isOperation(OP_READ)) {
+            serialize<int16_t>(Borders, getTerrainCount(gv));
+        } else {
+            serialize<int16_t>(Borders, Borders.size());
+        }
     }
 
     serialize(TerrainUnitID);

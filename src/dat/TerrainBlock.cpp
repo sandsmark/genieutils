@@ -1,7 +1,7 @@
 /*
     genie/dat - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2014 - 2017  Mikko "Tapsa" P
+    Copyright (C) 2014 - 2019  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -120,11 +120,13 @@ void TerrainBlock::serializeObject(void)
         serialize<int16_t>(AoEAlphaUnknown, (16 * 1888) / 2);
     }
 
-    // TerrainBorders seem to be unused (are empty) in GV > AoK Alpha
-    serialize(TerrainBorders, 16); //TODO: fixed size?
+    if (gv < GV_C9 || gv > GV_LatestDE2) {
+        // TerrainBorders seem to be unused (are empty) in GV > AoK Alpha
+        serialize(TerrainBorders, 16); //TODO: fixed size?
 
-    // Probably filled after loading map in game.
-    serialize<int32_t>(MapRowOffset);
+        // Probably filled after loading map in game.
+        serialize<int32_t>(MapRowOffset);
+    }
 
     if (gv >= GV_AoKA) {
         serialize<float>(MapMinX);
@@ -175,12 +177,14 @@ void TerrainBlock::serializeObject(void)
     serialize<int8_t>(MapVisibleFlag);
     serialize<int8_t>(FogFlag); // Always 1
 
-    //From here on data is filled in game anyway.
-    //There are two 32-bit pointers random map and game world, rest should be all 0.
-    serialize<int8_t>(SomeBytes, getBytesSize());
+    if (gv < GV_C9 || gv > GV_LatestDE2) {
+        //From here on data is filled in game anyway.
+        //There are two 32-bit pointers random map and game world, rest should be all 0.
+        serialize<int8_t>(SomeBytes, getBytesSize());
 
-    // Few pointers and small numbers.
-    serialize<int32_t>(SomeInt32, getSomethingSize());
+        // Few pointers and small numbers.
+        serialize<int32_t>(SomeInt32, getSomethingSize());
+    }
 }
 
 //------------------------------------------------------------------------------

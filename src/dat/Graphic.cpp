@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2019  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -56,14 +56,17 @@ void Graphic::serializeObject(void)
 {
     GameVersion gv = getGameVersion();
 
-    if (gv > GV_LatestTap || gv < GV_Tapsa) {
+    if ((gv > GV_LatestTap && gv < GV_C2) || gv < GV_Tapsa || gv > GV_LatestDE2) {
         serialize(Name, getNameSize());
         serialize(FileName, getFilenameSize());
     } else {
         serializeDebugString(Name);
         serializeDebugString(FileName);
 
-        if (gv >= GV_T3) {
+        if (gv >= GV_C5 && gv <= GV_LatestDE2) {
+            serializeDebugString(ParticleEffectName);
+        }
+        if (gv >= GV_T3 && gv < GV_C2) {
             serialize<uint16_t>(FirstFrame);
         }
     }
@@ -88,11 +91,18 @@ void Graphic::serializeObject(void)
     uint16_t delta_count{};
     serializeSize<uint16_t>(delta_count, Deltas.size());
     serialize<int16_t>(SoundID);
+
+    if (gv >= GV_C4 && gv <= GV_LatestDE2) {
+        serialize<uint32_t>(WwiseSoundID);
+    }
+
     serialize<int8_t>(AngleSoundsUsed);
     serialize<uint16_t>(FrameCount);
     serialize<uint16_t>(AngleCount);
     serialize<float>(SpeedMultiplier);
+    FrameDuration = FrameCount ? AnimationDuration / FrameCount : 0;
     serialize<float>(FrameDuration);
+    AnimationDuration = FrameDuration * FrameCount;
     serialize<float>(ReplayDelay);
     serialize<uint8_t>(SequenceType);
     serialize<int16_t>(ID);

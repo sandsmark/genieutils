@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2019  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -190,6 +190,9 @@ public:
 
     /// Example: Plays when lumberjack drops his wood into TC
     int16_t ResourceDepositSoundID = -1;
+
+    uint32_t WwiseResourceGatheringSoundID = 0; // TODO doc, new in de
+    uint32_t WwiseResourceDepositSoundID = 0; // TODO doc, new in de
 
 private:
     void serializeObject(void) override;

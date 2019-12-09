@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2019  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -71,6 +71,8 @@ public:
 
     /// Max yaw change per second when not moving forward, changed while playing
     float MaxYawPerSecondStationary = std::numeric_limits<float>::max();
+
+    float MinCollisionSizeMultiplier = 1.0f;
 
 protected:
     void serializeObject(void) override;
