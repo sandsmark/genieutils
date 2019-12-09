@@ -537,6 +537,10 @@ int LZXdecompress(struct LZXstate *pState, unsigned char *inpos, unsigned char *
                     BUILD_TABLE(ALIGNED);
                     /* rest of aligned header is same as verbatim */
 
+#ifdef __GNUC__
+                    // Can't get the magic fallthrough comment stuff to work
+                    __attribute__ ((fallthrough));
+#endif
                 case LZX_BLOCKTYPE_VERBATIM:
                     READ_LENGTHS(MAINTREE, 0, 256);
                     READ_LENGTHS(MAINTREE, 256, pState->main_elements);
