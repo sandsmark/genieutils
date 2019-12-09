@@ -75,11 +75,11 @@ void SmxFrame::readNormalGraphics()
     uint32_t pixelDataSize = 0;
     serialize(pixelDataSize);
 
-    std::vector<uint8_t> commands(commandsSize);
-    getIStream()->read(reinterpret_cast<char*>(commands.data()), commandsSize);
+    std::vector<uint8_t> commands;
+    serialize(commands, commandsSize);
 
-    std::vector<uint8_t> pixelData(pixelDataSize);
-    getIStream()->read(reinterpret_cast<char*>(pixelData.data()), pixelDataSize);
+    std::vector<uint8_t> pixelData;
+    serialize(pixelData, pixelDataSize);
 
     const std::vector<SmpPixel> pixelsVector = m_bundleHeader.type & BundleHeader::HasDamageMask ?
                 decode8To5(std::move(pixelData)) :
