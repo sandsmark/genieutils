@@ -435,16 +435,12 @@ protected:
     {
         switch (getOperation()) {
         case OP_WRITE:
-            for (typename std::array<T, N>::const_iterator it = vec.cbegin(); it != vec.cend(); ++it) {
-                write<T>(*it);
-            }
+            ostr_->write(reinterpret_cast<const char *const>(vec.data()), sizeof(T) *  N);
 
             break;
 
         case OP_READ:
-            for (size_t i = 0; i < N; ++i) {
-                vec[i] = read<T>();
-            }
+            istr_->read(reinterpret_cast<char *>(vec.data()), sizeof(T) * N);
 
             break;
 
@@ -496,19 +492,12 @@ protected:
             if (vec.size() != size) {
                 std::cerr << "Warning!: vector size differs len!" << vec.size() << " " << size << std::endl;
             }
-
-            for (typename std::vector<T>::iterator it = vec.begin(); it != vec.end(); ++it) {
-                write<T>(*it);
-            }
-
+            ostr_->write(reinterpret_cast<const char *const>(vec.data()), sizeof(T) * std::min(size, vec.size()));
             break;
 
         case OP_READ:
             vec.resize(size);
-
-            for (size_t i = 0; i < size; ++i) {
-                vec[i] = read<T>();
-            }
+            istr_->read(reinterpret_cast<char *>(vec.data()), sizeof(T) * size);
 
             break;
 
