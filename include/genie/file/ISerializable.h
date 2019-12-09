@@ -224,7 +224,9 @@ protected:
     ///
     /// @return read data
     //
-    template <typename T>
+    template <typename T,
+              std::enable_if_t<std::is_pod<T>::value, int> = 0
+              >
     T read()
     {
         T ret = {};
@@ -241,7 +243,9 @@ protected:
     ///
     /// @param data to write.
     //
-    template <typename T>
+    template <typename T,
+              std::enable_if_t<std::is_pod<T>::value, int> = 0
+              >
     void write(const T &data)
     {
         ostr_->write(reinterpret_cast<const char *>(&data), sizeof(T));
@@ -250,7 +254,9 @@ protected:
     //----------------------------------------------------------------------------
     /// Generic read method for arrays. It allocates new space if pointer is 0.
     //
-    template <typename T>
+    template <typename T,
+              std::enable_if_t<std::is_pod<T>::value, int> = 0
+              >
     void read(T **array, size_t len)
     {
         if (!istr_->eof()) {
@@ -265,7 +271,9 @@ protected:
     //----------------------------------------------------------------------------
     /// Writes an array to file.
     //
-    template <typename T>
+    template <typename T,
+              std::enable_if_t<std::is_pod<T>::value, int> = 0
+              >
     void write(const T *const *data, size_t len)
     {
         ostr_->write(reinterpret_cast<const char *const>(*data), sizeof(T) * len);

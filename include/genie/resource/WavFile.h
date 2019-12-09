@@ -16,13 +16,13 @@ public:
 
     struct WavHeader {
         // RIFF header
-        uint32_t ChunkID{};
-        uint32_t ChunkSize{};
-        uint32_t Format{};
+        uint32_t ChunkID;
+        uint32_t ChunkSize;
+        uint32_t Format;
 
         // fmt subchunk
-        uint32_t Subchunk1ID{};
-        uint32_t Subchunk1Size{};
+        uint32_t Subchunk1ID;
+        uint32_t Subchunk1Size;
 
         enum AudioFormats {
             PCM = 0x1,
@@ -32,17 +32,17 @@ public:
             MULaw = 0x7,
             DVIADPCM = 0x11
         };
-        uint16_t AudioFormat{};
+        uint16_t AudioFormat;
 
-        uint16_t NumChannels{};
-        uint32_t SampleRate{};
-        uint32_t ByteRate{};
-        uint16_t BlockAlign{};
-        uint16_t BitsPerSample{};
+        uint16_t NumChannels;
+        uint32_t SampleRate;
+        uint32_t ByteRate;
+        uint16_t BlockAlign;
+        uint16_t BitsPerSample;
 
         // data subchunk
-        uint32_t Subchunk2ID{};
-        uint32_t Subchunk2Size{};
+        uint32_t Subchunk2ID;
+        uint32_t Subchunk2Size;
     };
 
     const WavHeader &header() { return m_header; }
@@ -58,7 +58,7 @@ private:
 
     uint32_t m_size = 0;
     uint32_t m_type = 0;
-    WavHeader m_header;
+    WavHeader m_header{};
     std::vector<uint8_t> m_data;
 };
 
