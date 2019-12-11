@@ -463,20 +463,11 @@ protected:
     {
         assert(operation_ != OP_INVALID);
 
-        if (isOperation(OP_WRITE) || isOperation(OP_CALC_SIZE)) {
-            for (typename std::array<T, N>::iterator it = vec.begin(); it != vec.end(); ++it) {
-                ISerializable *data = dynamic_cast<ISerializable *>(&(*it));
+        for (T &item : vec) {
+            item.serializeSubObject(this);
 
-                data->serializeSubObject(this);
-
-                if (isOperation(OP_CALC_SIZE)) {
-                    size_ += data->objectSize();
-                }
-            }
-        } else {
-            for (size_t i = 0; i < N; ++i) {
-                ISerializable *cast_obj = dynamic_cast<ISerializable *>(&vec[i]);
-                cast_obj->serializeSubObject(this);
+            if (isOperation(OP_CALC_SIZE)) {
+                size_ += item.objectSize();
             }
         }
     }
@@ -559,28 +550,15 @@ protected:
     void serialize(std::vector<T> &vec, size_t size)
     {
         assert(operation_ != OP_INVALID);
-
-        if (isOperation(OP_WRITE) || isOperation(OP_CALC_SIZE)) {
-            if (vec.size() != size) {
-                std::cerr << "Warning!: vector size differs size!" << vec.size() << " " << size << std::endl;
-            }
-
-            for (typename std::vector<T>::iterator it = vec.begin(); it != vec.end(); ++it) {
-                ISerializable *data = static_cast<ISerializable *>(&(*it));
-
-                data->serializeSubObject(this);
-
-                if (isOperation(OP_CALC_SIZE)) {
-                    size_ += data->objectSize();
-                }
-            }
-        } else {
+        if (isOperation(OP_READ)) {
             vec.resize(size);
+        }
 
-            for (size_t i = 0; i < size; ++i) {
-                assert(getIStream()->good());
-                ISerializable *cast_obj = static_cast<ISerializable *>(&vec[i]);
-                cast_obj->serializeSubObject(this);
+        for (T &item : vec) {
+            item.serializeSubObject(this);
+
+            if (isOperation(OP_CALC_SIZE)) {
+                size_ += item.objectSize();
             }
         }
     }
@@ -633,26 +611,18 @@ protected:
                                   std::vector<int32_t> &pointers)
     {
         assert(operation_ != OP_INVALID);
-
-        if (isOperation(OP_WRITE) || isOperation(OP_CALC_SIZE)) {
-            for (size_t i = 0; i < size; ++i) {
-                if (pointers[i]) {
-                    ISerializable *data = dynamic_cast<ISerializable *>(&vec[i]);
-                    data->serializeSubObject(this);
-
-                    if (isOperation(OP_CALC_SIZE)) {
-                        size_ += data->objectSize();
-                    }
-                }
-            }
-        } else {
+        if (isOperation(OP_READ)) {
             vec.resize(size);
+        }
+        for (size_t i = 0; i < size; ++i) {
+            if (!pointers[i]) {
+                continue;
+            }
 
-            for (size_t i = 0; i < size; ++i) {
-                if (pointers[i]) {
-                    ISerializable *cast_obj = dynamic_cast<ISerializable *>(&vec[i]);
-                    cast_obj->serializeSubObject(this);
-                }
+            vec[i].serializeSubObject(this);
+
+            if (isOperation(OP_CALC_SIZE)) {
+                size_ += vec[i].objectSize();
             }
         }
     }
