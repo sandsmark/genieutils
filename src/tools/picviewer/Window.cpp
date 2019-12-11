@@ -79,7 +79,14 @@ bool Window::load(QString path)
             genie::SmxFile smxFile;
             QElapsedTimer timer; timer.start();
             smxFile.load(path.toStdString());
-            qDebug() << "loaded in" << timer.restart() << "ms";
+            qDebug() << "loaded in" << timer.elapsed() << "ms";
+
+            if (smxFile.frameCount() <= 0) {
+                qWarning() << "No frames!";
+                return false;
+            }
+            qDebug() << "Average" << (timer.restart() / smxFile.frameCount()) << "ms per frame";
+
             m_pixmap = createPixmap(smxFile.frame());
             qDebug() << "created pixmap in" << timer.elapsed() << "ms";
 
