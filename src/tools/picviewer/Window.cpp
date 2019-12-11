@@ -79,8 +79,9 @@ bool Window::load(QString path)
             genie::SmxFile smxFile;
             QElapsedTimer timer; timer.start();
             smxFile.load(path.toStdString());
-            qDebug() << "loaded in" << timer.elapsed() << "ms";
+            qDebug() << "loaded in" << timer.restart() << "ms";
             m_pixmap = createPixmap(smxFile.frame());
+            qDebug() << "created pixmap in" << timer.elapsed() << "ms";
 
         } catch (const std::exception &e) {
             QMessageBox::warning(this, "Failed to load SMX file", e.what());
