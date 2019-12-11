@@ -85,7 +85,7 @@ private:
             mask.lines.push_back(std::move(span));
 
             // just in case we read random gurba (good norwegian expression)
-            if (mask.lines.size() > 100) {
+            if (mask.lines.size() > 200) {
                 log.error("invalid size %", mask.lines.size());
                 return {};
             }
