@@ -626,7 +626,9 @@ protected:
     /// Necessary for graphic objects. The pointer array contains entries with
     /// value 0. If a pointer is 0, a empty graphic object will be inserted into
     /// the vector.
-    template <typename T>
+    template <typename T,
+              std::enable_if_t<std::is_base_of<ISerializable, T>::value, int> = 0
+              >
     void serializeSubWithPointers(std::vector<T> &vec, size_t size,
                                   std::vector<int32_t> &pointers)
     {
