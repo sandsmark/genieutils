@@ -75,6 +75,12 @@ public:
         return m_pixels[pixelIndex].section * 256 + m_pixels[pixelIndex].index;
     }
 
+    bool isLoaded() const {
+        return m_isLoaded;
+    }
+
+    bool load();
+
 protected:
     void serializeObject() override;
 
@@ -100,6 +106,10 @@ private:
         };
         /// Directly after the frame header, an array of smp_frame_row_edge (of length height) structs begins. These work exactly like the row edges in the SMP files.
         std::vector<RowEdge> rowEdges;
+
+        std::streampos filePosition;
+        uint32_t commandsSize = 0;
+        uint32_t pixelDataSize = 0; // only normal graphics
     };
     void serializeFrameHeader(FrameHeader &header);
 
@@ -159,6 +169,8 @@ private:
     FrameHeader m_normalHeader;
     FrameHeader m_shadowHeader;
     FrameHeader m_outlineHeader;
+
+    bool m_isLoaded = false;
 };
 
 typedef std::shared_ptr<SmxFrame> SmxFramePtr;

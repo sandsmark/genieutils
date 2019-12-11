@@ -31,7 +31,16 @@ public:
             std::cerr << "invalid framenum" << frameNum << std::endl;
             return SmxFrame::null;
         }
+        if (!m_frames[frameNum].isLoaded() && !m_frames[frameNum].load()) {
+            std::cerr << "Failed to load framenum" << frameNum << std::endl;
+            return SmxFrame::null;
+        }
+
         return m_frames[frameNum];
+    }
+
+    inline int frameCount() const {
+        return m_numFrames;
     }
 
     // ISerializable interface

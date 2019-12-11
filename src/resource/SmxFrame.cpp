@@ -34,20 +34,51 @@ void SmxFrame::serializeObject()
     }
 
     if (m_bundleHeader.type & BundleHeader::NormalFrame) {
-        //log.debug("Contains normal frame");
+        serializeFrameHeader(m_normalHeader);
+        serialize(m_normalHeader.pixelDataSize);
+        m_normalHeader.filePosition = tellg();
+
+        getIStream()->seekg(m_normalHeader.filePosition + std::streampos(m_normalHeader.commandsSize + m_normalHeader.pixelDataSize));
+    }
+
+    if (m_bundleHeader.type & BundleHeader::ShadowFrame) {
+
+        serializeFrameHeader(m_shadowHeader);
+        m_shadowHeader.filePosition = tellg();
+
+        getIStream()->seekg(m_shadowHeader.filePosition + std::streampos(m_shadowHeader.commandsSize));
+    }
+
+    if (m_bundleHeader.type & BundleHeader::OutlineFrame) {
+        serializeFrameHeader(m_outlineHeader);
+        m_outlineHeader.filePosition = tellg();
+
+        getIStream()->seekg(m_outlineHeader.filePosition + std::streampos(m_outlineHeader.commandsSize));
+    }
+
+}
+
+bool SmxFrame::load()
+{
+    if (m_bundleHeader.type & BundleHeader::NormalFrame) {
+        log.debug("Contains normal frame");
+        getIStream()->seekg(m_normalHeader.filePosition);
         readNormalGraphics();
     }
 
     if (m_bundleHeader.type & BundleHeader::ShadowFrame) {
-//        log.debug("Contains shadow frame");
+        log.debug("Contains shadow frame");
+        getIStream()->seekg(m_shadowHeader.filePosition);
         readShadowGraphics();
     }
 
     if (m_bundleHeader.type & BundleHeader::OutlineFrame) {
-//        log.debug("Contains outline frame");
+        log.debug("Contains outline frame");
+        getIStream()->seekg(m_outlineHeader.filePosition);
         readOutlineGraphics();
     }
 
+    return true;
 }
 
 void SmxFrame::serializeFrameHeader(SmxFrame::FrameHeader &header)
@@ -62,24 +93,18 @@ void SmxFrame::serializeFrameHeader(SmxFrame::FrameHeader &header)
     serialize(header.unknown);
 
     serialize(header.rowEdges, header.height);
-//    log.debug("Size: %x%; Hotspot %,%; Size %; Unknown %", header.width, header.height, header.centerX, header.centerY, header.size, header.unknown);
+
+    serialize(header.commandsSize);
+    //log.debug("Size: %x%; Hotspot %,%; Size %; Unknown %", header.width, header.height, header.centerX, header.centerY, header.size, header.unknown);
 }
 
 void SmxFrame::readNormalGraphics()
 {
-    serializeFrameHeader(m_normalHeader);
-
-    uint32_t commandsSize = 0;
-    serialize(commandsSize);
-
-    uint32_t pixelDataSize = 0;
-    serialize(pixelDataSize);
-
     std::vector<uint8_t> commands;
-    serialize(commands, commandsSize);
+    serialize(commands, m_normalHeader.commandsSize);
 
     std::vector<uint8_t> pixelData;
-    serialize(pixelData, pixelDataSize);
+    serialize(pixelData, m_normalHeader.pixelDataSize);
 
     const std::vector<SmpPixel> pixelsVector = m_bundleHeader.type & BundleHeader::HasDamageMask ?
                 decode8To5(std::move(pixelData)) :
@@ -144,31 +169,14 @@ void SmxFrame::readNormalGraphics()
 
 void SmxFrame::readShadowGraphics()
 {
-    serializeFrameHeader(m_shadowHeader);
-    if (m_shadowHeader.width > 1000 || m_shadowHeader.height > 1000) {
-        std::cerr << "invalid size" << std::endl;
-        return;
-    }
-
-    uint32_t commandsSize = 0;
-    serialize(commandsSize);
-
     std::vector<uint8_t> commands;
-    serialize(commands, commandsSize);
+    serialize(commands, m_shadowHeader.commandsSize);
 }
 
 void SmxFrame::readOutlineGraphics()
 {
-    serializeFrameHeader(m_outlineHeader);
-    if (m_outlineHeader.width > 1000 || m_outlineHeader.height > 1000) {
-        std::cerr << "invalid size" << std::endl;
-        return;
-    }
-    uint32_t commandsSize = 0;
-    serialize(commandsSize);
-
     std::vector<uint8_t> commands;
-    serialize(commands, commandsSize);
+    serialize(commands, m_outlineHeader.commandsSize);
 }
 
 std::vector<SmpPixel> SmxFrame::decode4Plus1(const std::vector<uint8_t> &data)
