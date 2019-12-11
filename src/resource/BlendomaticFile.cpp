@@ -46,7 +46,7 @@ void BlendomaticFile::serializeObject()
     modes_.resize(modeCount_);
 
     for (uint32_t i = 0; i < modeCount_; i++) {
-        log.debug("reading mode %d", i);
+        log.debug("reading mode %", i);
 
         // number of pixels
         serialize(modes_[i].pixelCount);
@@ -87,7 +87,7 @@ void BlendomaticFile::setBlendMode(uint32_t number, const BlendMode &mode)
 const BlendMode &BlendomaticFile::getBlendMode(uint32_t id)
 {
     if (id > modes_.size()) {
-        log.error("Invalid blendomatic id %d", id);
+        log.error("Invalid blendomatic id %", id);
         return BlendMode::null;
     }
 
