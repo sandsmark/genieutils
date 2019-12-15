@@ -6,6 +6,8 @@
 #include "genie/util/Logger.h"
 
 #include <memory>
+#include <algorithm>
+#include <cmath>
 
 namespace genie {
 

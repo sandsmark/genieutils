@@ -15,13 +15,33 @@ struct SmpPixel
 {
     uint8_t index; /// Normal palette index
     uint8_t section; /// Need to look up in palette.conf to find the correct color table
-    uint8_t damageMask; /// When units get damaged
-    uint8_t damageMask2; /// When units get damaged 2
+    uint16_t damageMask; /// When units get damaged
 
     inline uint8_t paletteIndex() const noexcept { return section >> 2; }
     inline uint8_t paletteSection() const noexcept { return section & 0b11; }
-    inline bool isMasked1() const noexcept { return damageMask & 0x80; }
-    inline bool isMasked2() const noexcept { return damageMask & 3; }
+
+    inline bool damageFlag() const noexcept {
+        return damageMask & (1 << 9);
+    }
+
+    inline float damageRgbMultiplier(const float damagePercent) const noexcept {
+        const float damageWindow99To50 = std::clamp(damagePercent * 2.0f, 0.f, 1.f);
+        const float damageWindow74To25 = std::clamp(damageWindow99To50 - 0.5f, 0.f, 1.f);
+        const float damageWindow49To0 =  std::clamp(damageWindow74To25 - 0.5f, 0.f, 1.f);
+
+        const float damage_modifier = (damageMask >> 4) & 0x1ff;
+
+        float a = std::floor(damage_modifier / 64.f);
+        float temp = damage_modifier - 64.f * a + 0.5f;
+        float b = std::floor(temp / 8.f);
+        float c = temp - 8.f * b;
+
+        a = a * damageWindow99To50;
+        b = b * damageWindow74To25;
+        c = c * damageWindow49To0;
+
+        return 1.f - std::clamp((a + b + c) / 7.f, 0.0f, 0.65f);
+    }
 }
 #ifndef _MSC_VER
 __attribute__((packed));
