@@ -3,6 +3,8 @@
 #include "genie/file/ISerializable.h"
 #include "genie/util/Logger.h"
 
+#include <algorithm>
+#include <cmath>
 #include <memory>
 
 namespace genie {
@@ -50,13 +52,13 @@ __attribute__((packed));
 #pragma pack(pop)
 #endif
 
-/// TODO: unify smp and non-smp
-struct SmpPlayerColorXY {
+struct SmpPlayerColorXY
+{
+    uint32_t index;
     uint32_t x;
     uint32_t y;
-    SmpPixel pixel;
-};
 
+};
 
 class SmpFrame : public ISerializable
 {
@@ -78,19 +80,7 @@ public:
         return hotspot_y;
     }
 
-    const SmpPixel &pixel(const uint32_t x, const uint32_t y) const  {
-        const uint32_t index = x + y * width_;
-        assert(index < smp_pixels.size());
-        return smp_pixels[index];
-    }
-
-    uint8_t pixelIndex(const uint32_t x, const uint32_t y) const  {
-        const uint32_t index = x + y * width_;
-        assert(index < smp_pixels.size());
-        return smp_pixels[index].index;
-    }
-
-    const std::vector<SmpPixel> &pixels() const {
+    const std::vector<uint32_t> &pixels() const {
         return smp_pixels;
     }
     const std::vector<uint8_t> &alphaMask() const {
@@ -109,7 +99,7 @@ private:
     void readSmpPixelstoImage(uint32_t row, uint32_t &col, uint32_t count,
                            bool player_col = false);
 
-    std::vector<SmpPixel> smp_pixels;
+    std::vector<uint32_t> smp_pixels;
     std::vector<SmpPlayerColorXY> smp_player_color_mask;
     std::vector<uint8_t> smp_alpha_mask;
 

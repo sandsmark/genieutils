@@ -6,10 +6,15 @@
 #include "genie/util/Logger.h"
 
 #include <memory>
-#include <algorithm>
-#include <cmath>
 
 namespace genie {
+
+/// TODO: unify smp and non-smp
+struct SmxPlayerColorXY {
+    uint32_t x;
+    uint32_t y;
+    SmpPixel pixel;
+};
 
 /**
  * @brief The SmxFrame class
@@ -93,7 +98,7 @@ private:
     std::vector<SmpPixel> decode4Plus1(const std::vector<uint8_t> &data);
     std::vector<SmpPixel> decode8To5(const std::vector<uint8_t> &data);
 
-    std::vector<SmpPlayerColorXY> m_playerColorPixels;
+    std::vector<SmxPlayerColorXY> m_playerColorPixels;
 
     std::vector<SmpPixel> m_pixels;
     std::vector<uint8_t> m_mask;

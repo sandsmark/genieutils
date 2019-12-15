@@ -96,7 +96,7 @@ void SmpFrame::readImage()
 void SmpFrame::readSmpPixelstoImage(uint32_t row, uint32_t &col, uint32_t count, bool player_col)
 {
     if (!player_col) {
-        getIStream()->read((char *)&smp_pixels.data()[row * width_ + col], count * sizeof(SmpPixel));
+        getIStream()->read((char *)&smp_pixels.data()[row * width_ + col], count * sizeof(uint32_t));
         col += count;
         memset(&smp_alpha_mask[row * width_ + col], 255, count);
         return;
@@ -107,8 +107,8 @@ void SmpFrame::readSmpPixelstoImage(uint32_t row, uint32_t &col, uint32_t count,
 
     uint32_t to_pos = col + count;
     while (col < to_pos) {
-        SmpPixel pixel;
-        getIStream()->read((char *)&pixel, sizeof(SmpPixel));
+        uint32_t pixel;
+        getIStream()->read((char *)&pixel, sizeof(uint32_t));
         smp_alpha_mask[col] = 255;
         smp_player_color_mask.push_back({ col, row, pixel });
 
