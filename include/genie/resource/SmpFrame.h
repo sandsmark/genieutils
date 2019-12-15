@@ -3,6 +3,8 @@
 #include "genie/file/ISerializable.h"
 #include "genie/util/Logger.h"
 
+#include <memory>
+
 namespace genie {
 
 /// New crap style for AoE2:DE
@@ -43,6 +45,42 @@ class SmpFrame : public ISerializable
 public:
     static SmpFrame null;
 
+    int width() const {
+        return width_;
+    }
+    int height() const {
+        return height_;
+    }
+    int hotspotX() const {
+        return hotspot_x;
+    }
+    int hotspotY() const {
+        return hotspot_y;
+    }
+
+    const SmpPixel &pixel(const uint32_t x, const uint32_t y) const  {
+        const uint32_t index = x + y * width_;
+        assert(index < smp_pixels.size());
+        return smp_pixels[index];
+    }
+
+    uint8_t pixelIndex(const uint32_t x, const uint32_t y) const  {
+        const uint32_t index = x + y * width_;
+        assert(index < smp_pixels.size());
+        return smp_pixels[index].index;
+    }
+
+    const std::vector<SmpPixel> &pixels() const {
+        return smp_pixels;
+    }
+    const std::vector<uint8_t> &alphaMask() const {
+        return smp_alpha_mask;
+    }
+
+    const std::vector<SmpPlayerColorXY> &playerColors() const {
+        return smp_player_color_mask;
+    }
+
 protected:
     void serializeObject() override;
 
@@ -53,6 +91,7 @@ private:
 
     std::vector<SmpPixel> smp_pixels;
     std::vector<SmpPlayerColorXY> smp_player_color_mask;
+    std::vector<uint8_t> smp_alpha_mask;
 
     uint32_t width_;
     uint32_t height_;
@@ -70,5 +109,7 @@ private:
     uint32_t outline_table_offset_;
     std::streampos slp_file_pos_;
 };
+
+using SmpFramePtr = std::shared_ptr<SmpFrame>;
 
 }//namespace genie

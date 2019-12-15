@@ -41,10 +41,9 @@ void SmpFrame::serializeObject()
 
 void SmpFrame::readImage()
 {
-    std::istream &istr = *getIStream();
-
     const size_t byteCount = width_ * height_;
     smp_pixels.resize(byteCount);
+    smp_alpha_mask.resize(byteCount, 0);
 
     size_t pixelsRead = 0;
 
@@ -99,6 +98,7 @@ void SmpFrame::readSmpPixelstoImage(uint32_t row, uint32_t &col, uint32_t count,
     if (!player_col) {
         getIStream()->read((char *)&smp_pixels.data()[row * width_ + col], count * sizeof(SmpPixel));
         col += count;
+        memset(&smp_alpha_mask[row * width_ + col], 255, count);
         return;
     }
 
@@ -109,6 +109,7 @@ void SmpFrame::readSmpPixelstoImage(uint32_t row, uint32_t &col, uint32_t count,
     while (col < to_pos) {
         SmpPixel pixel;
         getIStream()->read((char *)&pixel, sizeof(SmpPixel));
+        smp_alpha_mask[col] = 255;
         smp_player_color_mask.push_back({ col, row, pixel });
 
         ++col;

@@ -22,13 +22,23 @@ class SmpFile : public IFile
     static constexpr std::array<uint8_t, 4> smpHeader = {'S', 'M', 'P', '$' };
 
 public:
-    const SmpFrame &frame(size_t frameNum = 0) {
+    SmpFramePtr frame(size_t frameNum = 0) {
+        if (!m_loaded) {
+            readObject(*getIStream());
+        }
+
         if (frameNum >= m_frames.size()) {
             std::cerr << "invalid framenum" << frameNum << std::endl;
-            return SmpFrame::null;
+            return nullptr;
         }
         return m_frames[frameNum];
     }
+    void unload() override;
+
+    int frameCount() {
+        return m_frames.size();
+    }
+
 
     // ISerializable interface
 protected:
@@ -77,7 +87,10 @@ private:
     /// Always empty, 32 bytes
     std::string m_comment;
 
-    std::vector<SmpFrame> m_frames;
+    std::vector<SmpFramePtr> m_frames;
+
+    bool m_loaded = false;
 };
+using SmpFilePtr = std::shared_ptr<SmpFile>;
 
 } // namespace genie

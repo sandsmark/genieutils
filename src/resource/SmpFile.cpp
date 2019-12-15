@@ -4,6 +4,16 @@ namespace genie {
 
 Logger &SmpFile::log = Logger::getLogger("genie.SmpFile");
 
+void SmpFile::unload()
+{
+    if ((!m_loaded)) {
+        log.error("Trying to unload, but not loaded");
+    }
+
+    m_frames.clear();
+    m_loaded = false;
+}
+
 void SmpFile::serializeObject()
 {
     serialize(m_header);
@@ -15,7 +25,7 @@ void SmpFile::serializeObject()
 
 
     serialize(m_version2);
-    serialize(m_numFrames);
+    serializeSize(m_numFrames, m_frames.size());
     serialize(m_size);
     serialize(m_unknown);
     serialize(m_numFrames2);
@@ -27,6 +37,8 @@ void SmpFile::serializeObject()
     log.warn("ver % frames % size % source % comment %", m_version, m_numFrames, m_size, m_byteCount, m_comment);
 
     serialize(m_frames, m_numFrames);
+
+    m_loaded = true;
 }
 
 } // namespace genie

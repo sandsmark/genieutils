@@ -30,6 +30,7 @@
 #include <string.h>
 #include <stdint.h>
 #include <cassert>
+#include <memory>
 
 namespace genie {
 
@@ -559,6 +560,44 @@ protected:
 
             if (isOperation(OP_CALC_SIZE)) {
                 size_ += item.objectSize();
+            }
+        }
+    }
+
+    /// Serializes a vector of objects that inherit from ISerializable.
+    template <typename T,
+              std::enable_if_t<std::is_base_of<ISerializable, T>::value, int> = 0
+              >
+    void serialize(std::vector<std::shared_ptr<T>> &vec, size_t size)
+    {
+        assert(operation_ != OP_INVALID);
+
+        if (isOperation(OP_WRITE) || isOperation(OP_CALC_SIZE)) {
+            if (vec.size() != size) {
+                std::cerr << "Warning!: vector size differs size!" << vec.size() << " " << size << std::endl;
+            }
+
+            for (typename std::vector<std::shared_ptr<T>>::iterator it = vec.begin(); it != vec.end(); ++it) {
+                assert(*it);
+                if (!*it) {
+                    *it = std::make_shared<T>();
+                }
+
+                (*it)->serializeSubObject(this);
+
+                if (isOperation(OP_CALC_SIZE)) {
+                    size_ += (*it)->objectSize();
+                }
+            }
+        } else {
+            vec.resize(size);
+
+            for (size_t i = 0; i < size; ++i) {
+                assert(getIStream()->good());
+                if (!vec[i]) {
+                    vec[i] = std::make_shared<T>();
+                }
+                vec[i]->serializeSubObject(this);
             }
         }
     }
