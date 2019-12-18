@@ -10,47 +10,47 @@ SmxFrame SmxFrame::null;
 
 void SmxFrame::serializeObject()
 {
-//    log.debug(" ======= starting bundle at %", getIStream()->tellg());
+//    log.debug(" ======= starting frame at %", getIStream()->tellg());
 
-    serialize(m_bundleHeader.type);
-    if (m_bundleHeader.type == 0) {
+    serialize(m_frameHeader.frameType);
+    if (m_frameHeader.frameType == 0) {
         std::cerr << "invalid bundle" << std::endl;
         return;
     }
-    serialize(m_bundleHeader.palette);
-    serialize(m_bundleHeader.maybeSize);
+    serialize(m_frameHeader.palette);
+    serialize(m_frameHeader.size);
 
-    if (m_bundleHeader.type & BundleHeader::HasDamageMask) {
+    if (m_frameHeader.frameType & FrameHeader::HasDamageModifier) {
         log.debug("Has damage masks");
     }
 
-//    log.debug("Palette: %", m_bundleHeader.palette);
-    //log.debug("Maybe size: %", m_bundleHeader.maybeSize);
-    //log.debug("Type: %", m_bundleHeader.type);
+//    log.debug("Palette: %", m_layerHeader.palette);
+    //log.debug("Size: %", m_layerHeader.size);
+    //log.debug("Type: %", m_frameHeader.frameType);
 
     if (getOperation() != OP_READ) {
         log.error("Operation % not supported yet", getOperation());
         return;
     }
 
-    if (m_bundleHeader.type & BundleHeader::NormalFrame) {
-        //log.debug("Contains normal frame");
-        readNormalGraphics();
+    if (m_frameHeader.frameType & FrameHeader::NormalLayer) {
+        //log.debug("Contains normal layer");
+        readNormalLayer();
     }
 
-    if (m_bundleHeader.type & BundleHeader::ShadowFrame) {
-//        log.debug("Contains shadow frame");
-        readShadowGraphics();
+    if (m_frameHeader.frameType & FrameHeader::ShadowLayer) {
+//        log.debug("Contains shadow layer");
+        readShadowLayer();
     }
 
-    if (m_bundleHeader.type & BundleHeader::OutlineFrame) {
-//        log.debug("Contains outline frame");
-        readOutlineGraphics();
+    if (m_frameHeader.frameType & FrameHeader::OutlineLayer) {
+//        log.debug("Contains outline layer");
+        readOutlineLayer();
     }
 
 }
 
-void SmxFrame::serializeFrameHeader(SmxFrame::FrameHeader &header)
+void SmxFrame::serializeLayerHeader(SmxFrame::LayerHeader &header)
 {
     serialize(header.width);
     serialize(header.height);
@@ -65,9 +65,9 @@ void SmxFrame::serializeFrameHeader(SmxFrame::FrameHeader &header)
 //    log.debug("Size: %x%; Hotspot %,%; Size %; Unknown %", header.width, header.height, header.centerX, header.centerY, header.size, header.unknown);
 }
 
-void SmxFrame::readNormalGraphics()
+void SmxFrame::readNormalLayer()
 {
-    serializeFrameHeader(m_normalHeader);
+    serializeLayerHeader(m_normalHeader);
 
     uint32_t commandsSize = 0;
     serialize(commandsSize);
@@ -81,7 +81,7 @@ void SmxFrame::readNormalGraphics()
     std::vector<uint8_t> pixelData;
     serialize(pixelData, pixelDataSize);
 
-    const std::vector<SmpPixel> pixelsVector = m_bundleHeader.type & BundleHeader::HasDamageMask ?
+    const std::vector<SmpPixel> pixelsVector = m_frameHeader.frameType & FrameHeader::HasDamageModifier ?
                 decode8To5(std::move(pixelData)) :
                 decode4Plus1(std::move(pixelData));
 
@@ -142,9 +142,9 @@ void SmxFrame::readNormalGraphics()
     }
 }
 
-void SmxFrame::readShadowGraphics()
+void SmxFrame::readShadowLayer()
 {
-    serializeFrameHeader(m_shadowHeader);
+    serializeLayerHeader(m_shadowHeader);
     if (m_shadowHeader.width > 1000 || m_shadowHeader.height > 1000) {
         std::cerr << "invalid size" << std::endl;
         return;
@@ -157,9 +157,9 @@ void SmxFrame::readShadowGraphics()
     serialize(commands, commandsSize);
 }
 
-void SmxFrame::readOutlineGraphics()
+void SmxFrame::readOutlineLayer()
 {
-    serializeFrameHeader(m_outlineHeader);
+    serializeLayerHeader(m_outlineHeader);
     if (m_outlineHeader.width > 1000 || m_outlineHeader.height > 1000) {
         std::cerr << "invalid size" << std::endl;
         return;
@@ -179,14 +179,14 @@ std::vector<SmpPixel> SmxFrame::decode4Plus1(const std::vector<uint8_t> &data)
     const uint8_t *source = data.data();
 
     SmpPixel p0, p1, p2, p3;
-    p0.damageMask = 0;
-    p0.damageMask2 = 0;
-    p1.damageMask = 0;
-    p1.damageMask2 = 0;
-    p2.damageMask = 0;
-    p2.damageMask2 = 0;
-    p3.damageMask = 0;
-    p3.damageMask2 = 0;
+    p0.damageModifier = 0;
+    p0.damageModifier2 = 0;
+    p1.damageModifier = 0;
+    p1.damageModifier2 = 0;
+    p2.damageModifier = 0;
+    p2.damageModifier2 = 0;
+    p3.damageModifier = 0;
+    p3.damageModifier2 = 0;
 
     size_t pixelsPos = 0;
     for (size_t i=0; i<data.size(); i += 5) {
@@ -217,7 +217,7 @@ static inline uint16_t rotateRight2(const uint16_t n)
 
 std::vector<SmpPixel> SmxFrame::decode8To5(const std::vector<uint8_t> &data)
 {
-    // untested, haven't found any that needs this yet
+    // used for buildings
 
     std::vector<SmpPixel> pixelsVector;
     pixelsVector.resize(0.4 * data.size());
@@ -235,16 +235,16 @@ std::vector<SmpPixel> SmxFrame::decode8To5(const std::vector<uint8_t> &data)
 
         p0.index =       byte1 & 0xff;
         p0.section =     byte1 & 0x03;
-        p0.damageMask =  byte2 & 0xf0;
-        p0.damageMask2 = byte2 & 0x3f;
+        p0.damageModifier =  byte2 & 0xf0;
+        p0.damageModifier2 = byte2 & 0x3f;
 
         uint16_t part1 = rotateRight2((uint16_t(byte2) << 8) | byte3);
         uint16_t part2 = rotateRight2((uint16_t(byte4) << 8) | byte5);
 
         p1.index =       (part1 >> 8) & 0xff;
         p1.section =     (part1 >> 0) & 0x03;
-        p1.damageMask =  (part2 >> 8) & 0xf0;
-        p1.damageMask2 = (part2 >> 0) & 0x3f;
+        p1.damageModifier =  (part2 >> 8) & 0xf0;
+        p1.damageModifier2 = (part2 >> 0) & 0x3f;
 
         pixels[pixelsPos++] = p0;
         pixels[pixelsPos++] = p1;

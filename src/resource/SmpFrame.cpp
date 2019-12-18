@@ -14,21 +14,21 @@ void SmpFrame::serializeObject()
     serialize<int32_t>(hotspot_x);
     serialize<int32_t>(hotspot_y);
 
-    serialize(m_frameType); // is this maybe palette offset, and heinezen misunderstood? Can't check until it is released so I can buy it
+    serialize(m_layerType);
 
     serialize(outline_table_offset_);
     serialize(cmd_table_offset_);
 
-    // Just assume this is properties for now
-    // 0x01, 0x02 or 0x80 are example values from heinezen
-    serialize(properties_);
+    // Flags, but we don't know exactly what they do
+    // 0x01, 0x02, 0x80 or 0xA0 are example values from heinezen
+    serialize(flags_);
 
     //----------------------------------------------------------------------------
     /// Reads the edges of the frame. An edge int is the number of pixels in
     /// a row which are transparent. There are two 16 bit unsigned integers for
     /// each side of a row. One starting from left and the other starting from the
     /// right side.
-    getIStream()->seekg(slp_file_pos_ + std::streampos(outline_table_offset_));
+    getIStream()->seekg(smp_file_pos_ + std::streampos(outline_table_offset_));
 
     left_edges_.resize(height_, 0);
     right_edges_.resize(height_, 0);
@@ -48,7 +48,7 @@ void SmpFrame::readImage()
 
     size_t pixelsRead = 0;
 
-    // Each row has it's commands, 0x0F signals the end of a rows commands.
+    // Each row has it's commands, 0x03 signals the end of a rows commands.
     for (uint32_t row = 0; row < height_; ++row) {
 //        istr.seekg(slp_file_pos_ + std::streampos(cmd_offsets_[row]));
 //        std::cout << "command offset: " << cmd_offsets_[row] << std::endl;
@@ -56,7 +56,7 @@ void SmpFrame::readImage()
         assert(!istr.eof());
 
         // Transparent rows apparently read one byte anyway. NO THEY DO NOT! Ignore and use seekg()
-        if (0x8000 == left_edges_[row] || 0x8000 == right_edges_[row]) { // Remember signedness!
+        if (0xFFFF == left_edges_[row] || 0xFFFF == right_edges_[row]) { // Remember signedness!
             continue; // Pretend it does not exist.
         }
 

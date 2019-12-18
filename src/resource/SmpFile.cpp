@@ -13,18 +13,16 @@ void SmpFile::serializeObject()
         return;
     }
 
-
-    serialize(m_version2);
-    serialize(m_numFrames);
-    serialize(m_size);
-    serialize(m_unknown);
-    serialize(m_numFrames2);
-    serialize(m_checksum);
-    serialize(m_byteCount);
     serialize(m_version);
+    serialize(m_numFrames);
+    serialize(m_facetNum);
+    serialize(m_framesPerFacet);
+    serialize(m_checksum);
+    serialize(m_size);
+    serialize(m_source_format);
     serialize(m_comment, 32);
 
-    log.warn("ver % frames % size % source % comment %", m_version, m_numFrames, m_size, m_byteCount, m_comment);
+    log.warn("ver % frames % size % comment %", m_version, m_numFrames, m_size, m_comment);
 
     serialize(m_frames, m_numFrames);
 }

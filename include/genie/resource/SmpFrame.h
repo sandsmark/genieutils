@@ -13,13 +13,13 @@ struct SmpPixel
 {
     uint8_t index; /// Normal palette index
     uint8_t section; /// Need to look up in palette.conf to find the correct color table
-    uint8_t damageMask; /// When units get damaged
-    uint8_t damageMask2; /// When units get damaged 2
+    uint8_t damageModifier; /// When units get damaged
+    uint8_t damageModifier2; /// When units get damaged 2
 
     inline uint8_t paletteIndex() const noexcept { return section >> 2; }
     inline uint8_t paletteSection() const noexcept { return section & 0b11; }
-    inline bool isMasked1() const noexcept { return damageMask & 0x80; }
-    inline bool isMasked2() const noexcept { return damageMask & 3; }
+    inline bool isMasked1() const noexcept { return damageModifier & 0x80; }
+    inline bool isMasked2() const noexcept { return damageModifier & 3; }
 }
 #ifndef _MSC_VER
 __attribute__((packed));
@@ -60,15 +60,15 @@ private:
     int32_t hotspot_x = 0;
     int32_t hotspot_y = 0;
 
-    uint32_t m_frameType = 0;
+    uint32_t m_layerType = 0;
 
     std::vector<uint16_t> left_edges_;
     std::vector<uint16_t> right_edges_;
 
-    uint32_t properties_;
+    uint32_t flags_;
     uint32_t cmd_table_offset_;
     uint32_t outline_table_offset_;
-    std::streampos slp_file_pos_;
+    std::streampos smp_file_pos_;
 };
 
 }//namespace genie
