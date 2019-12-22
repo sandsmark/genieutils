@@ -206,11 +206,11 @@ bool Window::loadSlp(const QString &path)
     genie::SlpFilePtr slp;
     bool ok;
     int id = path.toInt(&ok);
-    if (!ok) {
-        QMessageBox::warning(this, "Invalid ID", "Can't pass numerical ID and not specify DRS file");
-        return false;
-    }
-    if (id != -1) {
+    if (ok) {
+        if (!m_drsFile) {
+            QMessageBox::warning(this, "Invalid ID", "Can't pass numerical ID and not specify DRS file");
+            return false;
+        }
         slp = m_drsFile->getSlpFile(id);
         if (!slp) {
             std::cout << "Valid SLP IDs:" << std::endl;
@@ -242,17 +242,13 @@ QPixmap Window::createPixmap(genie::SlpFramePtr frame)
 
     QImage image(frame->img_data.pixel_indexes.data(), frame->getWidth(), frame->getHeight(), frame->getWidth(), QImage::Format_Indexed8);
     image.setColorTable(m_colorTable);
+    qDebug() << "Size:" << image.size();
 
     return QPixmap::fromImage(image);
 }
 
 QPixmap Window::createPixmap(const genie::SmxFrame &frame)
 {
-//    if (!frame) {
-//        qWarning() << "no SMX passed";
-//        return QPixmap();
-//    }
-
     m_smxFrame = frame;
     QImage image(frame.width(), frame.height(), QImage::Format_ARGB32_Premultiplied);
     for (int x=0; x<frame.width(); x++) {
@@ -261,10 +257,8 @@ QPixmap Window::createPixmap(const genie::SmxFrame &frame)
                 continue;
             }
             const size_t palIndex = frame.paletteIndex(x, y);
-//            qDebug() << palIndex << frame.pixel(x, y).index << frame.pixel(x, y).section << frame.paletteIndex(x, y);
             assert(palIndex < m_palette.colors_.size());
             const genie::Color &color = m_palette.colors_[palIndex];
-//            qDebug() << color.a << color.g << color.b << color.a;
             image.setPixel(x, y, qRgba(color.r, color.g, color.b, color.a));
         }
     }
