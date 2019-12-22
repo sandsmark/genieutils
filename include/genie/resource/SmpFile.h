@@ -1,119 +1,83 @@
-/*
-    <one line to give the program's name and a brief idea of what it does.>
-    Copyright (C) 2018  Mikko "Tapsa" P
+#pragma once
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Lesser General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
-#ifndef GENIE_SMPFILE_H
-#define GENIE_SMPFILE_H
-
-#include <istream>
-#include <vector>
+// Documentation copyright Christoph Heine, because I can't be assed to rewrite what he wrote
+// From openage/doc/media/smx-files.md
+// From openage/doc/media/smp-files.md
 
 #include "genie/file/IFile.h"
 #include "genie/util/Logger.h"
-#include "PalFile.h"
+
 #include "SmpFrame.h"
 
-namespace genie
-{
+#include <array>
 
-//------------------------------------------------------------------------------
-/// A smp file stores one or several images encoded using simple commands.
-/// The image is stored as 8 bits per pixel, that means only the index of a
-/// color in a palette is saved.
-//
+namespace genie {
+
+/**
+ * @brief SMP is the sprite storage format of Age of Empires: Definitive Edition
+ */
+
 class SmpFile : public IFile
 {
+    static constexpr std::array<uint8_t, 4> smpHeader = {'S', 'M', 'P', '$' };
 
 public:
-  //----------------------------------------------------------------------------
-  /// Constructor
-  //
-  SmpFile();
+    const SmpFrame &frame(size_t frameNum = 0) {
+        if (frameNum >= m_frames.size()) {
+            std::cerr << "invalid framenum" << frameNum << std::endl;
+            return SmpFrame::null;
+        }
+        return m_frames[frameNum];
+    }
 
-  //----------------------------------------------------------------------------
-  /// Destructor
-  //
-  virtual ~SmpFile();
-
-  //----------------------------------------------------------------------------
-  /// Frees all content of a smp file.
-  //
-  void unload(void);
-
-  //----------------------------------------------------------------------------
-  /// Check whether the files content is loaded or not.
-  //
-  bool isLoaded(void) const;
-
-  //----------------------------------------------------------------------------
-  /// Return number of frames stored in the file. Available after load.
-  ///
-  /// @return number of frames
-  //
-  uint32_t getFrameCount(void);
-  void setFrameCount(uint32_t);
-
-  //----------------------------------------------------------------------------
-  /// Returns the smp frame at given frame index.
-  ///
-  /// @param frame frame index
-  /// @return SmpFrame
-  //
-  SmpFramePtr getFrame(uint32_t frame=0);
-  void setFrame(uint32_t, SmpFramePtr);
-
-  std::string signature;
-  std::string comment;
-  uint32_t version;
-  uint32_t num_animations;
-  uint32_t num_frames_per_animation;
-  uint32_t checksum;
-  uint32_t size;
-  uint32_t resource_id;
+    // ISerializable interface
+protected:
+    void serializeObject() override;
 
 private:
-  static Logger &log;
+    static Logger &log;
 
-  bool loaded_ = false;
+    /// File descriptor
+    /// Always SMPX
+    std::array<uint8_t, 4> m_header = {'S', 'M', 'P', '$' };
 
-  uint32_t num_frames_ = 0;
+    /// possibly version
+    /// Ex: 256, 0x00000100 (same value for almost all units)
+    int32_t m_version2 = 0;
 
-  std::vector<uint32_t> frame_offsets_;
-  typedef std::vector<SmpFramePtr> FrameVector;
-  FrameVector frames_;
+    /// Number of frames
+    /// Ex: 721, 0x000002D1
+    int32_t m_numFrames = 0;
 
-  // Used to calculate offsets when saving the SMP.
-  uint32_t smp_offset_;
+    /// File size SMX (this file)
+    /// Ex: 2706603, 0x000294CAB (size without header)
+    uint32_t m_size = 0;
 
-  //----------------------------------------------------------------------------
-  virtual void serializeObject(void);
+    /// ??
+    /// 1, 0x0000001 (almost always 0x00000001)
+    int32_t m_unknown;
 
-  //----------------------------------------------------------------------------
-  /// Loads the file and its frames.
-  //
-  void loadFile(void);
-  void saveFile(void);
+    /// Number of frames
+    /// 721, 0x000002D1 (0x00000001 for version 0x0B)
+    int32_t m_numFrames2;
 
-  //----------------------------------------------------------------------------
-  void serializeHeader(void);
+    ///  possibly checksum
+    /// 0x8554F6F3
+    int32_t m_checksum;
+
+    /// File size in bytes
+    /// Ex:  0x003D5800
+    int32_t m_byteCount;
+
+    /// Actually used version?
+    /// 0x0B or 0x0C
+    int32_t m_version;
+
+    /// Comment
+    /// Always empty, 32 bytes
+    std::string m_comment;
+
+    std::vector<SmpFrame> m_frames;
 };
 
-typedef std::shared_ptr<SmpFile> SmpFilePtr;
-
-}
-
-#endif // GENIE_SMPFILE_H
+} // namespace genie
