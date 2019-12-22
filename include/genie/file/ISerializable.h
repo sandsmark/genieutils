@@ -270,6 +270,19 @@ protected:
     }
 
     //----------------------------------------------------------------------------
+    /// Generic read method for arrays.
+    //
+    template <typename T,
+              std::enable_if_t<std::is_pod<T>::value, int> = 0
+              >
+    void read(T *array, size_t len)
+    {
+        if (!istr_->eof()) {
+            istr_->read(reinterpret_cast<char *>(array), sizeof(T) * len);
+        }
+    }
+
+    //----------------------------------------------------------------------------
     /// Writes an array to file.
     //
     template <typename T,

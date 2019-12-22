@@ -4,116 +4,201 @@ namespace genie {
 Logger &SmpFrame::log = Logger::getLogger("genie.SmpFrame");
 SmpFrame SmpFrame::null;
 
+const SmpBaseLayer &SmpFrame::baseLayer()
+{
+    if (!hasBaseLayer()) {
+        throw std::out_of_range("No base layer!");
+    }
+    if (!m_baseLayer->isLoaded) {
+        loadLayer(*m_baseLayer);
+        loadLayerContent(*m_baseLayer);
+    }
+    return *m_baseLayer;
+}
+
+const SmpSimpleLayer &SmpFrame::shadowLayer()
+{
+    if (!hasShadowLayer()) {
+        throw std::out_of_range("No shadow layer");
+    }
+    if (!m_shadowLayer->isLoaded) {
+        loadLayer(*m_shadowLayer);
+        loadLayerContent(*m_shadowLayer);
+    }
+    return *m_shadowLayer;
+}
+
+const SmpSimpleLayer &SmpFrame::outlineLayer()
+{
+    if (!hasShadowLayer()) {
+        throw std::out_of_range("No outline layer");
+    }
+    if (!m_shadowLayer->isLoaded) {
+        loadLayer(*m_shadowLayer);
+        loadLayerContent(*m_shadowLayer);
+    }
+    return *m_shadowLayer;
+}
+
 void SmpFrame::serializeObject()
 {
-    assert(false && "not implemented");
+    // Skip 28 unused bytes (same as SLP frame header, but unused)
+    //  uint32 width, height, hotspotX, hotspotY, type, diffusePaletteXid, diffusePaletteNum
+    getIStream()->seekg(28, std::ios_base::cur);
 
-    serialize<uint32_t>(width_);
-    serialize<uint32_t>(height_);
-
-    serialize<int32_t>(hotspot_x);
-    serialize<int32_t>(hotspot_y);
-
-    serialize(m_frameType); // is this maybe palette offset, and heinezen misunderstood? Can't check until it is released so I can buy it
-
-    serialize(outline_table_offset_);
-    serialize(cmd_table_offset_);
-
-    // Just assume this is properties for now
-    // 0x01, 0x02 or 0x80 are example values from heinezen
-    serialize(properties_);
-
-    //----------------------------------------------------------------------------
-    /// Reads the edges of the frame. An edge int is the number of pixels in
-    /// a row which are transparent. There are two 16 bit unsigned integers for
-    /// each side of a row. One starting from left and the other starting from the
-    /// right side.
-    getIStream()->seekg(slp_file_pos_ + std::streampos(outline_table_offset_));
-
-    left_edges_.resize(height_, 0);
-    right_edges_.resize(height_, 0);
-
-    for (uint32_t row = 0; row < height_; ++row) {
-        serialize<uint16_t>(left_edges_[row]);
-        serialize<uint16_t>(right_edges_[row]);
-    }
-}
-
-void SmpFrame::readImage()
-{
-    const size_t byteCount = width_ * height_;
-    smp_pixels.resize(byteCount);
-    smp_alpha_mask.resize(byteCount, 0);
-
-    size_t pixelsRead = 0;
-
-    // Each row has it's commands, 0x0F signals the end of a rows commands.
-    for (uint32_t row = 0; row < height_; ++row) {
-//        istr.seekg(slp_file_pos_ + std::streampos(cmd_offsets_[row]));
-//        std::cout << "command offset: " << cmd_offsets_[row] << std::endl;
-//        std::cout << "file pos: " << slp_file_pos_ << std::endl;
-        assert(!istr.eof());
-
-        // Transparent rows apparently read one byte anyway. NO THEY DO NOT! Ignore and use seekg()
-        if (0x8000 == left_edges_[row] || 0x8000 == right_edges_[row]) { // Remember signedness!
-            continue; // Pretend it does not exist.
-        }
-
-        uint32_t pix_pos = left_edges_[row]; //pos where to start putting pixels
-
-        while (true) {
-            const uint8_t data = read<uint8_t>();
-            if (data == 3) { // end of row
-                break;
-            }
-
-            const uint32_t pix_cnt = (data >> 2) + 1;
-
-            switch(data & 0b11) {
-            case 0: // Skip
-                break;
-            case 1: // Normal colors
-                readSmpPixelstoImage(row, pix_pos, pix_cnt, false);
-                break;
-            case 2: // Player colors
-                readSmpPixelstoImage(row, pix_pos, pix_cnt, true);
-                break;
-            }
-
-            pix_pos += pix_cnt;
-            pixelsRead += pix_cnt;
-
-        }
-    }
-
-    if (pixelsRead == 0) {
-        width_ = 0;
-        height_ = 0;
-    }
-
-}
-
-void SmpFrame::readSmpPixelstoImage(uint32_t row, uint32_t &col, uint32_t count, bool player_col)
-{
-    if (!player_col) {
-        getIStream()->read((char *)&smp_pixels.data()[row * width_ + col], count * sizeof(uint32_t));
-        col += count;
-        memset(&smp_alpha_mask[row * width_ + col], 255, count);
+    serialize(m_layerCount);
+    if (!m_layerCount) {
         return;
     }
 
-    std::vector<char> bgras(count);
-    getIStream()->read(bgras.data(), count);
+    m_baseLayer = std::make_unique<SmpBaseLayer>();
 
-    uint32_t to_pos = col + count;
-    while (col < to_pos) {
-        uint32_t pixel;
-        getIStream()->read((char *)&pixel, sizeof(uint32_t));
-        smp_alpha_mask[col] = 255;
-        smp_player_color_mask.push_back({ col, row, pixel });
+    static_assert(sizeof(SmpLayerHeader) == 32);
+    serialize(m_baseLayer->header);
 
-        ++col;
+    for (uint32_t i=1; i<m_layerCount; i++) {
+        std::unique_ptr<SmpSimpleLayer> layer = std::make_unique<SmpSimpleLayer>();
+        serialize(layer->header);
+        if (layer->header.type == SmpLayerHeader::Shadow) {
+            m_shadowLayer = std::move(layer);
+        } else if (layer->header.type == SmpLayerHeader::Outline) {
+            m_outlineLayer = std::move(layer);
+        } else {
+            log.warn("Invalid layer type %", layer->header.type);
+        }
     }
+}
+
+void SmpFrame::loadLayer(SmpLayer &layer)
+{
+    std::istream *istr = getIStream();
+    std::cout << "Loaded" << std::endl;
+    istr->seekg(getInitialReadPosition() + std::streampos(layer.header.paddingTableOffset));
+    layer.leftEdges.resize(layer.header.height);
+    layer.rightEdges.resize(layer.header.height);
+    for (uint32_t y=0; y<layer.header.height; y++) {
+        serialize<uint16_t>(layer.leftEdges[y]);
+        serialize<uint16_t>(layer.rightEdges[y]);
+    }
+
+
+    istr->seekg(getInitialReadPosition() + std::streampos(layer.header.pixelDataOffset));
+    layer.rowOffsets.resize(layer.header.height);
+    serialize(layer.rowOffsets, layer.header.height);
+
+    log.debug("width: % height: % hsx: % hsx: %", layer.header.width, layer.header.height, layer.header.hotspotX, layer.header.hotspotY);
+    log.debug("padding table: % pixel data: %", layer.header.paddingTableOffset, layer.header.pixelDataOffset);
+}
+
+void SmpFrame::loadLayerContent(SmpBaseLayer &layer)
+{
+    std::istream *istr = getIStream();
+
+    const size_t pixelCount = layer.header.width * layer.header.height;
+    layer.pixels.resize(pixelCount);
+    layer.alphaMask.resize(pixelCount);
+
+    SmpPixel *pixelData = layer.pixels.data();
+    uint8_t *alphaData = layer.alphaMask.data();
+    memset(alphaData, 0, layer.alphaMask.size());
+
+    for (uint32_t row = 0; row < layer.header.height; ++row) {
+        if (0xFFFF == layer.leftEdges[row] || 0xFFFF == layer.rightEdges[row]) {
+            std::cout << "skipping" << std::endl;
+            continue; // Pretend it does not exist.
+        }
+
+        // don't really need to use them, everything is sequential
+        istr->seekg(getInitialReadPosition() + std::streampos(layer.rowOffsets[row]));
+
+        uint16_t pixelPos = layer.leftEdges[row];
+        if (pixelPos >= layer.header.width) {
+            throw std::out_of_range("Left edge (" + std::to_string(pixelPos) + ") bigger than width (" + std::to_string(layer.leftEdges[row]) + ")");
+        }
+
+        const int toRead = int(layer.header.width) - layer.rightEdges[row];
+
+        while (pixelPos < toRead && istr->good()) {
+            const uint8_t data = read<uint8_t>();
+            if (data == EndOfRow) {
+                break;
+            }
+
+            const uint32_t count = (data >> 2) + 1;
+            const size_t dataOffset = row * layer.header.width + pixelPos;
+
+            const uint8_t command = data & 0b11;
+
+            if (command == SkipPixels) {
+                pixelPos += count;
+                continue;
+
+            }
+
+            read(&pixelData[dataOffset], count);
+            memset(&alphaData[dataOffset], 255, count);
+
+            if (command == DrawPlayerColor) {
+                for (uint32_t i = 0; i<count; i++)  {
+                    layer.playerColors.push_back({ pixelData[dataOffset + i], i + pixelPos, row  });
+                }
+            }
+
+            pixelPos += count;
+        }
+    }
+    layer.isLoaded = true;
+}
+
+void SmpFrame::loadLayerContent(SmpSimpleLayer &layer)
+{
+    std::istream *istr = getIStream();
+
+    const size_t pixelCount = layer.header.width * layer.header.height;
+    layer.colors.resize(pixelCount);
+
+    uint8_t *pixelData = layer.colors.data();
+
+    for (uint32_t row = 0; row < layer.header.height; ++row) {
+        if (0xFFFF == layer.leftEdges[row] || 0xFFFF == layer.rightEdges[row]) {
+            std::cout << "skipping" << std::endl;
+            continue; // Pretend it does not exist.
+        }
+
+        // don't really need to use them, everything is sequential
+        istr->seekg(getInitialReadPosition() + std::streampos(layer.rowOffsets[row]));
+
+        uint16_t pixelPos = layer.leftEdges[row];
+        if (pixelPos >= layer.header.width) {
+            throw std::out_of_range("Left edge (" + std::to_string(pixelPos) + ") bigger than width (" + std::to_string(layer.leftEdges[row]) + ")");
+        }
+
+        const int toRead = int(layer.header.width) - layer.rightEdges[row];
+
+        while (pixelPos < toRead && istr->good()) {
+            const uint8_t data = read<uint8_t>();
+            if (data == EndOfRow) {
+                break;
+            }
+
+            const uint32_t count = (data >> 2) + 1;
+            const size_t dataOffset = row * layer.header.width + pixelPos;
+
+            const uint8_t command = data & 0b11;
+
+            if (command == SkipPixels) {
+                pixelPos += count;
+                continue;
+
+            }
+
+            read(&pixelData[dataOffset], count);
+
+            pixelPos += count;
+        }
+    }
+    layer.isLoaded = true;
+
 }
 
 }//namespace genie

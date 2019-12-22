@@ -200,10 +200,10 @@ std::vector<SmpPixel> SmxFrame::decode4Plus1(const std::vector<uint8_t> &data)
         p3.index = uint32_t(source[i + 3]);
 
         const uint8_t sections = source[i + 4];
-        p0.section = (sections >> 0) & 0b11;
-        p1.section = (sections >> 2) & 0b11;
-        p2.section = (sections >> 4) & 0b11;
-        p3.section = (sections >> 6) & 0b11;
+        p0.palette = (sections >> 0) & 0b11;
+        p1.palette = (sections >> 2) & 0b11;
+        p2.palette = (sections >> 4) & 0b11;
+        p3.palette = (sections >> 6) & 0b11;
 
         pixels[pixelsPos++] = p0;
         pixels[pixelsPos++] = p1;
@@ -238,14 +238,14 @@ std::vector<SmpPixel> SmxFrame::decode8To5(const std::vector<uint8_t> &data)
         const uint8_t byte5 = data[i + 4];
 
         p0.index =       byte1 & 0xff;
-        p0.section =     byte1 & 0x03;
+        p0.palette =     byte1 & 0x03;
         p0.damageMask =  ((byte2 << 8) | byte3) & 0xf03f;
 
         uint16_t part1 = rotateRight2((uint16_t(byte2) << 8) | byte3);
         uint16_t part2 = rotateRight2((uint16_t(byte4) << 8) | byte5);
 
         p1.index = part1 & 0xff;
-        p1.section =  (part1 >> 10) & 0x3f;
+        p1.palette =  (part1 >> 10) & 0x3f;
         p1.damageMask =  part2 & 0xf03f;
 
         pixels[pixelsPos++] = p0;

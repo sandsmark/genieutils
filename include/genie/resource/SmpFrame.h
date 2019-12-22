@@ -16,11 +16,11 @@ namespace genie {
 struct SmpPixel
 {
     uint8_t index; /// Normal palette index
-    uint8_t section; /// Need to look up in palette.conf to find the correct color table
+    uint8_t palette; /// Need to look up in palette.conf to find the correct color table
     uint16_t damageMask; /// When units get damaged
 
-    inline uint8_t paletteIndex() const noexcept { return section >> 2; }
-    inline uint8_t paletteSection() const noexcept { return section & 0b11; }
+    inline uint8_t paletteNumber() const noexcept { return palette >> 2; }
+    inline uint16_t colorNumber() const noexcept { return (palette & 0b11) * 256 + index; }
 
     inline bool damageFlag() const noexcept {
         return damageMask & (1 << 9);
@@ -34,7 +34,7 @@ struct SmpPixel
         const float damage_modifier = (damageMask >> 4) & 0x1ff;
 
         float a = std::floor(damage_modifier / 64.f);
-        float temp = damage_modifier - 64.f * a + 0.5f;
+        const float temp = damage_modifier - 64.f * a + 0.5f;
         float b = std::floor(temp / 8.f);
         float c = temp - 8.f * b;
 
@@ -43,6 +43,11 @@ struct SmpPixel
         c = c * damageWindow49To0;
 
         return 1.f - std::clamp((a + b + c) / 7.f, 0.0f, 0.65f);
+    }
+
+    operator uint32_t() const {
+        // I'm lazy, sue me
+        return *reinterpret_cast<const uint32_t*>(this);
     }
 }
 #ifndef _MSC_VER
@@ -57,8 +62,66 @@ struct SmpPlayerColorXY
     uint32_t index;
     uint32_t x;
     uint32_t y;
-
 };
+
+struct SmpLayerHeader {
+    enum  Type {
+        Base,
+        Shadow,
+        Outline
+    };
+
+    uint32_t width;
+    uint32_t height;
+    uint32_t hotspotX;
+    uint32_t hotspotY;
+    uint32_t type;
+    uint32_t paddingTableOffset;
+    uint32_t pixelDataOffset;
+    uint32_t flags;
+};
+
+class SmpFrame;
+struct SmpLayer
+{
+    SmpLayerHeader header;
+
+    std::vector<uint16_t> leftEdges;
+    std::vector<uint16_t> rightEdges;
+
+    std::vector<uint32_t> rowOffsets;
+
+private:
+    friend class SmpFrame;
+    bool isLoaded = false;
+};
+
+struct SmpBaseLayer : public SmpLayer
+{
+    inline bool isVisible(const uint32_t x, const uint32_t y) const {
+        const size_t pixelIndex = x + y * header.width;
+        assert(pixelIndex < alphaMask.size());
+        return alphaMask[pixelIndex] > 0;
+    }
+    inline int colorNumber(const uint32_t x, const uint32_t y) const {
+        const size_t pixelIndex = x + y * header.width;
+        return pixels[pixelIndex].colorNumber();
+    }
+    inline int paletteNumber(const uint32_t x, const uint32_t y) const {
+        const size_t pixelIndex = x + y * header.width;
+        return pixels[pixelIndex].paletteNumber();
+    }
+
+    std::vector<SmpPixel> pixels;
+    std::vector<SmpPlayerColorXY> playerColors;
+    std::vector<uint8_t> alphaMask;
+};
+
+struct SmpSimpleLayer : public SmpLayer
+{
+    std::vector<uint8_t> colors;
+};
+
 
 class SmpFrame : public ISerializable
 {
@@ -67,57 +130,35 @@ class SmpFrame : public ISerializable
 public:
     static SmpFrame null;
 
-    int width() const {
-        return width_;
-    }
-    int height() const {
-        return height_;
-    }
-    int hotspotX() const {
-        return hotspot_x;
-    }
-    int hotspotY() const {
-        return hotspot_y;
-    }
+    bool hasBaseLayer() const { return m_baseLayer != nullptr; }
+    bool hasShadowLayer() const { return m_shadowLayer != nullptr; }
+    bool hasOutlineLayer() const { return m_outlineLayer != nullptr; }
 
-    const std::vector<uint32_t> &pixels() const {
-        return smp_pixels;
-    }
-    const std::vector<uint8_t> &alphaMask() const {
-        return smp_alpha_mask;
-    }
-
-    const std::vector<SmpPlayerColorXY> &playerColors() const {
-        return smp_player_color_mask;
-    }
+    const SmpBaseLayer &baseLayer();
+    const SmpSimpleLayer &shadowLayer();
+    const SmpSimpleLayer &outlineLayer();
 
 protected:
     void serializeObject() override;
 
 private:
-    void readImage();
-    void readSmpPixelstoImage(uint32_t row, uint32_t &col, uint32_t count,
-                           bool player_col = false);
+    enum SmpCommand : uint8_t {
+        SkipPixels = 0b00,
+        DrawPixels = 0b01,
+        DrawPlayerColor = 0b10,
+        EndOfRow = 0b11
+    };
 
-    std::vector<uint32_t> smp_pixels;
-    std::vector<SmpPlayerColorXY> smp_player_color_mask;
-    std::vector<uint8_t> smp_alpha_mask;
+    void loadLayer(SmpLayer &layer);
+    void loadLayerContent(SmpBaseLayer &layer);
+    void loadLayerContent(SmpSimpleLayer &layer);
 
-    uint32_t width_;
-    uint32_t height_;
+    uint32_t m_layerCount = 0;
+    std::vector<uint8_t> m_outlineValues;
 
-    int32_t hotspot_x = 0;
-    int32_t hotspot_y = 0;
-
-    uint32_t m_frameType = 0;
-
-    std::vector<uint16_t> left_edges_;
-    std::vector<uint16_t> right_edges_;
-
-    uint32_t properties_;
-    uint32_t cmd_table_offset_;
-    uint32_t outline_table_offset_;
-    std::streampos slp_file_pos_;
+    std::unique_ptr<SmpBaseLayer> m_baseLayer;
+    std::unique_ptr<SmpSimpleLayer> m_shadowLayer;
+    std::unique_ptr<SmpSimpleLayer> m_outlineLayer;
 };
 
 using SmpFramePtr = std::shared_ptr<SmpFrame>;

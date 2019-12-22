@@ -4,6 +4,7 @@
 #include <genie/resource/DrsFile.h>
 #include <genie/resource/PalFile.h>
 #include <genie/resource/SmxFile.h>
+#include <genie/resource/SmpFile.h>
 
 #include <QWidget>
 
@@ -33,6 +34,8 @@ private:
     const genie::PalFile &loadPalette(const QString &palettePath, const QString &drsPath);
     bool loadDataTC(const QString &dataPath);
     bool loadSlp(const QString &path);
+    bool loadSmp(const QString &path);
+    QPixmap createPixmap(genie::SmpFramePtr frame);
     QPixmap createPixmap(genie::SlpFramePtr frame);
     QPixmap createPixmap(const genie::SmxFrame &frame);
 

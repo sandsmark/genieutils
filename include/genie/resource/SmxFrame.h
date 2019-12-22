@@ -49,8 +49,8 @@ public:
     inline int paletteIndex(const uint32_t x, const uint32_t y) const {
         const size_t pixelIndex = x + y * m_normalHeader.width;
         assert(pixelIndex < m_pixels.size());
-        assert(m_pixels[pixelIndex].section <= 4);
-        return m_pixels[pixelIndex].section * 256 + m_pixels[pixelIndex].index;
+        assert(m_pixels[pixelIndex].palette <= 4);
+        return m_pixels[pixelIndex].palette * 256 + m_pixels[pixelIndex].index;
     }
 
     bool isLoaded() const {

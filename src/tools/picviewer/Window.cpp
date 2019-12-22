@@ -74,38 +74,39 @@ bool Window::load(QString path)
         QMessageBox::warning(this, "No path set", "No path passed");
         return false;
     }
-    if (path.endsWith(".smx")) {
-        try {
-            genie::SmxFile smxFile;
-            QElapsedTimer timer; timer.start();
-            smxFile.load(path.toStdString());
-            qDebug() << "loaded in" << timer.elapsed() << "ms";
 
-            if (smxFile.frameCount() <= 0) {
-                qWarning() << "No frames!";
-                return false;
-            }
-            qDebug() << "Average" << (timer.restart() / smxFile.frameCount()) << "ms per frame";
+    bool isSmx = false, isSmp = false;
 
-            m_pixmap = createPixmap(smxFile.frame());
-            qDebug() << "created pixmap in" << timer.elapsed() << "ms";
+    bool isNumber = false;
+    int id = path.toInt(&isNumber);
 
-        } catch (const std::exception &e) {
-            QMessageBox::warning(this, "Failed to load SMX file", e.what());
-            return false;
+    if (!isNumber) {
+        if (!QFile::exists(path)) {
+            path.prepend(m_dataPath);
         }
-        return true;
     }
 
-    int id = -1;
     std::string name = path.toStdString();
-    if (!QFile::exists(path) && !m_drsFile) {
+    if (QFile::exists(path)) {
+        QFile file(path);
+        if (!file.open(QIODevice::ReadOnly)) {
+            QMessageBox::warning(this, "Failed to open file", file.errorString());
+            return false;
+        }
+        QByteArray type = file.read(4);
+        qDebug() << type;
+        if (type == "SMPX") {
+            isSmx = true;
+        } else if (type == "SMP$") {
+            isSmp = true;
+        }
+    } else if (!m_drsFile) {
         QMessageBox::warning(this, "No DRS specified", "DRS not specified and image is not a valid path");
         return false;
     }
 
     // assume name in drs
-    if (!QFile::exists(path)) {
+    if (isNumber) {
         qDebug() << "trying to find in DRS";
 
         bool ok;
@@ -116,12 +117,6 @@ bool Window::load(QString path)
         }
     }
 
-    if (!QFile::exists(path)) {
-        if (!QFile::exists(path)) {
-            path.prepend(m_dataPath);
-        }
-    }
-
     if (!m_drsFile && !QFile::exists(path)) {
         QMessageBox::warning(this, "Invalid path", "Either pass a numeric ID and DRS or a valid filename");
         return false;
@@ -129,9 +124,28 @@ bool Window::load(QString path)
 
 
     try {
-        loadSlp(path);
+        if (isSmx) {
+            qDebug() << "Loading SMX";
+            genie::SmxFile smxFile;
+            QElapsedTimer timer; timer.start();
+            smxFile.load(path.toStdString());
+            qDebug() << "loaded in" << timer.elapsed() << "ms";
+            if (smxFile.frameCount() <= 0) {
+                qWarning() << "No frames!";
+                return false;
+            }
+            qDebug() << "Average" << (timer.restart() / smxFile.frameCount()) << "ms per frame";
+            m_pixmap = createPixmap(smxFile.frame());
+            qDebug() << "created pixmap in" << timer.elapsed() << "ms";
+        } else if (isSmp) {
+            qDebug() << "Loading SMP";
+            loadSmp(path);
+        } else {
+            qDebug() << "Loading SLP";
+            loadSlp(path);
+        }
     } catch (const std::exception &e) {
-        QMessageBox::warning(this, "Failed to load SLP file", e.what());
+        QMessageBox::warning(this, "Failed to load file", e.what());
         return false;
     }
 
@@ -232,13 +246,51 @@ bool Window::loadSlp(const QString &path)
         slp = std::make_shared<genie::SlpFile>(QFileInfo(path).size());
         slp->load(path.toStdString());
     }
+
     if (!slp) {
         QMessageBox::warning(this, "Failed to load SLP", "SLP " + path + " could not be loaded.");
         return false;
     }
+
     m_pixmap = createPixmap(slp->getFrame());
 
     return true;
+}
+
+bool Window::loadSmp(const QString &path)
+{
+    genie::SmpFilePtr smp = std::make_shared<genie::SmpFile>();
+    smp->load(path.toStdString());
+    m_pixmap = createPixmap(smp->frame());
+
+    return true;
+}
+
+QPixmap Window::createPixmap(genie::SmpFramePtr frame)
+{
+    if (!frame) {
+        qWarning() << "No frame read";
+        return QPixmap();
+    }
+    const genie::SmpBaseLayer &layer = frame->baseLayer();
+    QImage image(layer.header.width, layer.header.height, QImage::Format_ARGB32_Premultiplied);
+    image.fill(Qt::transparent);
+    QSet<int> usedPalettes;
+    for (int x=0; x<image.width(); x++) {
+        for (int y=0; y<image.height(); y++) {
+            if (!layer.isVisible(x, y)) {
+                continue;
+            }
+            const size_t palIndex = layer.colorNumber(x, y);
+            usedPalettes.insert(layer.paletteNumber(x, y));
+            assert(palIndex < m_palette.colors_.size());
+            const genie::Color &color = m_palette.colors_[palIndex];
+            image.setPixel(x, y, qRgba(color.r, color.g, color.b, color.a));
+        }
+    }
+    qDebug() << usedPalettes;
+
+    return QPixmap::fromImage(image);
 }
 
 QPixmap Window::createPixmap(genie::SlpFramePtr frame)
@@ -287,7 +339,7 @@ void Window::mousePressEvent(QMouseEvent *event)
     m_debugString = "X: " + QString::number(x) + " Y: " + QString::number(y) +
             "\nRGBA: " + QString::number(color.r) + " " + QString::number(color.g) + " " + QString::number(color.b) + " " + QString::number(color.a) +
             "\nIndex: " + QString::number(m_smxFrame.pixel(x, y).index) +
-            "\nSection: " + QString::number(m_smxFrame.pixel(x, y).section) +
+            "\nSection: " + QString::number(m_smxFrame.pixel(x, y).palette) +
             "\nPalette index: " + QString::number(m_smxFrame.paletteIndex(x, y)) +
             "\nX % 4: " + QString::number(x % 4)
             ;

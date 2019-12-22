@@ -24,11 +24,12 @@ class SmpFile : public IFile
 public:
     SmpFramePtr frame(size_t frameNum = 0) {
         if (!m_loaded) {
+            std::cout << "not loaded, loading" << std::endl;
             readObject(*getIStream());
         }
 
         if (frameNum >= m_frames.size()) {
-            std::cerr << "invalid framenum" << frameNum << std::endl;
+            std::cerr << "invalid framenum " << frameNum << std::endl;
             return nullptr;
         }
         return m_frames[frameNum];
@@ -53,23 +54,18 @@ private:
 
     /// possibly version
     /// Ex: 256, 0x00000100 (same value for almost all units)
-    int32_t m_version2 = 0;
+    uint32_t m_sourceFormat = 0;
 
     /// Number of frames
     /// Ex: 721, 0x000002D1
-    int32_t m_numFrames = 0;
+    uint32_t m_numFrames = 0;
+
+    int32_t m_numFacets = 0;
+    int32_t m_framesPerFacet = 0;
 
     /// File size SMX (this file)
     /// Ex: 2706603, 0x000294CAB (size without header)
     uint32_t m_size = 0;
-
-    /// ??
-    /// 1, 0x0000001 (almost always 0x00000001)
-    int32_t m_unknown;
-
-    /// Number of frames
-    /// 721, 0x000002D1 (0x00000001 for version 0x0B)
-    int32_t m_numFrames2;
 
     ///  possibly checksum
     /// 0x8554F6F3
@@ -81,12 +77,13 @@ private:
 
     /// Actually used version?
     /// 0x0B or 0x0C
-    int32_t m_version;
+    uint32_t m_version;
 
     /// Comment
     /// Always empty, 32 bytes
     std::string m_comment;
 
+    std::vector<uint32_t> m_frameOffsets;
     std::vector<SmpFramePtr> m_frames;
 
     bool m_loaded = false;
