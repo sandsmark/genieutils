@@ -32,7 +32,8 @@ enum GameVersion {
     GV_AoEB, /// 7.04 - 7.11
     GV_AoE, /// 7.2
     GV_RoR, /// 7.24
-    GV_Tapsa, GV_T2, GV_T3, GV_T4, GV_T5, GV_T6, GV_T7, GV_T8, /// From Tapsa testing, I think
+    GV_Tapsa, /// I think maybe AoE1 Definitive Edition? Based on commit messages from Tapsa
+    GV_T2, GV_T3, GV_T4, GV_T5, GV_T6, GV_T7, GV_T8, /// From Tapsa testing, I think
     GV_AoKE3, /// 9.36
     GV_AoKA, /// 10.19
     GV_AoKB, /// 11.05
@@ -42,6 +43,15 @@ enum GameVersion {
     // 12.0 - 12.74
     GV_SWGB, /// 1.0
     GV_CC /// 1.1
+};
+
+enum class GenieGame {
+    Unknown,
+    AgeOfEmpires1,
+    AgeOfEmpires2,
+    StarWarsGalacticBattlegrounds,
+    AgeOfEmpiresDefinitiveEdition,
+    AgeOfEmpires2DefinitiveEdition
 };
 
 extern GameVersion GV_LatestTap, GV_LatestDE2;

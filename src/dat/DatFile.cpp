@@ -22,6 +22,7 @@
 
 #include <fstream>
 #include <vector>
+#include <unordered_map>
 
 #include "genie/Types.h"
 
@@ -35,6 +36,156 @@ GameVersion GV_LatestDE2 = GV_C14;
 DatFile::DatFile() :
     compressor_(this)
 {
+}
+
+const std::string &DatFile::gameName()
+{
+    static const std::unordered_map<genie::GameVersion, std::string> versionNames({
+        { genie::GV_TEST, "Test" },
+        { genie::GV_MIK, "Mike" },
+        { genie::GV_DAVE, "Dave" },
+        { genie::GV_MATT, "Matt" },
+        { genie::GV_AoEB, "Age of Empires Beta" },
+        { genie::GV_AoE, "Age of Empires" },
+        { genie::GV_RoR, "Age of Empires: Rise of Rome" },
+        { genie::GV_Tapsa, "Age of Empires 2: Tapsa Test" },
+        { genie::GV_T2, "Age of Empires 2: Tapsa Test 2" },
+        { genie::GV_T3, "Age of Empires 2: Tapsa Test 3" },
+        { genie::GV_T4, "Age of Empires 2: Tapsa Test 4" },
+        { genie::GV_T5, "Age of Empires 2: Tapsa Test 5" },
+        { genie::GV_T6, "Age of Empires 2: Tapsa Test 6" },
+        { genie::GV_T7, "Age of Empires 2: Tapsa Test 7" },
+        { genie::GV_T8, "Age of Empires 2: Tapsa Test 8" },
+        { genie::GV_AoKE3, "Age of Empires 2: Age of Kings E3 Preview" },
+        { genie::GV_AoKA, "Age of Empires 2: Age of Kings Alpha" },
+        { genie::GV_AoKB, "Age of Empires 2: Age of Kings Beta" },
+        { genie::GV_AoK, "Age of Empires 2: Age of Kings" },
+        { genie::GV_TC, "Age of Empires 2: The Conquerors" },
+        { genie::GV_Cysion, "Age of Empires 2: Cysion" },
+        { genie::GV_C2, "Age of Empires 2: Definitive Edition" },
+        { genie::GV_SWGB, "Star Wars: Galactic Battlegrounds" },
+        { genie::GV_CC, "Star Wars: Galactic Battlegrounds: Clone Campaigns" },
+    });
+    if (versionNames.find(getGameVersion()) != versionNames.end()) {
+        return versionNames.at(getGameVersion());
+    }
+
+    return FileVersion;
+}
+
+GenieGame DatFile::game() const
+{
+    GameVersion version = getGameVersion();
+    if (version <= GV_RoR) {
+        return GenieGame::AgeOfEmpires1;
+    }
+    if (version <= GV_TC) {
+        return GenieGame::AgeOfEmpires2;
+    }
+    if (version >= GV_SWGB) {
+        return GenieGame::StarWarsGalacticBattlegrounds;
+    }
+
+    if (version >= GV_Cysion && version <= GV_LatestDE2) {
+        return GenieGame::AgeOfEmpires2DefinitiveEdition;
+    }
+
+    return GenieGame::Unknown;
+}
+
+GameVersion DatFile::gameVersionFromString(const std::string &name)
+{
+    if (name.size() != 7) {
+        std::cerr << "Invalid length of name" << std::endl;
+        return GV_None;
+    }
+    int major = name[4] - '0';
+    int minor = name[6] - '0';
+    if (major < 0 || major > 9) {
+        std::cerr << "Invalid major version in name " << name << std::endl;
+        return GV_None;
+    }
+    if (minor < 0 || minor > 9) {
+        std::cerr << "Invalid minor version in name " << name << std::endl;
+        return GV_None;
+    }
+    switch (major) {
+    case 7:
+        switch(minor) {
+        case 0:
+            return GV_C13;
+        case 1:
+            return GV_C13;
+        default:
+            break;
+        }
+    case 6:
+        switch(minor) {
+        case 0:
+            return GV_C4;
+        case 1:
+            return GV_CK;
+        case 2:
+            return GV_C5;
+        case 3:
+            return GV_C6;
+        case 4:
+            return GV_C7;
+        case 5:
+            return GV_C8;
+        case 6:
+            return GV_C9;
+        case 7:
+            return GV_C10;
+        case 8:
+            return GV_C11;
+        case 9:
+            return GV_C12;
+        default:
+            break;
+        }
+    case 5:
+        switch(minor) {
+        case 7:
+            return GV_TC;
+        case 8:
+            return GV_C2;
+        case 9:
+            return GV_C3;
+        default:
+            break;
+        }
+    case 4:
+        switch(minor) {
+        case 0:
+            return GV_T3;
+        case 1:
+            return GV_T4;
+        case 2:
+            return GV_T5;
+        case 3:
+            return GV_T6;
+        case 4:
+            return GV_T7;
+        case 5:
+            return GV_T8;
+        default:
+            break;
+        }
+    case 3:
+        switch(minor) {
+        case 9:
+            return GV_T2;
+        default:
+            break;
+        }
+    default:
+        break;
+    }
+
+    std::cout << "Unknown game version " << name << std::endl;
+
+    return GV_None;
 }
 
 //------------------------------------------------------------------------------
@@ -82,56 +233,36 @@ void DatFile::serializeObject(void)
 {
     compressor_.beginCompression();
 
-    serialize(FileVersion, FILE_VERSION_SIZE);
+    std::vector<uint8_t> dumm(FILE_VERSION_SIZE);
+    serialize(dumm, FILE_VERSION_SIZE);
+    for (const uint8_t &f : dumm) {
+        std::cout << int(f) << " " << f << std::endl;
+    }
+    FileVersion = std::string((char*)dumm.data(), FILE_VERSION_SIZE);
+//    serialize(FileVersion, FILE_VERSION_SIZE);
+    std::cout << "file version: " << FileVersion << std::endl;
+
+    gameVersionFromString(FileVersion);
+    std::cout << getGameVersion() << std::endl;
 
     // Handle all different versions while in development.
     if (getGameVersion() == GV_C2) { // 5.8
-        if("VER 7.1" == FileVersion) {
-            setGameVersion(GV_C14);
-        } else if("VER 7.0" == FileVersion) {
-            setGameVersion(GV_C13);
-        } else if("VER 6.9" == FileVersion) {
-            setGameVersion(GV_C12);
-        } else if("VER 6.8" == FileVersion) {
-            setGameVersion(GV_C11);
-        } else if("VER 6.7" == FileVersion) {
-            setGameVersion(GV_C10);
-        } else if("VER 6.6" == FileVersion) {
-            setGameVersion(GV_C9);
-        } else if("VER 6.5" == FileVersion) {
-            setGameVersion(GV_C8);
-        } else if("VER 6.4" == FileVersion) {
-            setGameVersion(GV_C7);
-        } else if("VER 6.3" == FileVersion) {
-            setGameVersion(GV_C6);
-        } else if("VER 6.2" == FileVersion) {
-            setGameVersion(GV_C5);
-        } else if("VER 6.1" == FileVersion) {
-            setGameVersion(GV_CK);
-        } else if("VER 6.0" == FileVersion) {
-            setGameVersion(GV_C4);
-        } else if("VER 5.9" == FileVersion) {
-            setGameVersion(GV_C3);
+        GameVersion guessedVersion = gameVersionFromString(FileVersion);
+        if (guessedVersion != GV_None) {
+            setGameVersion(guessedVersion);
         }
     } else if(getGameVersion() == GV_Tapsa) {
-        if ("VER 4.5" == FileVersion) {
-            setGameVersion(GV_T8);
-        } else if ("VER 4.4" == FileVersion) {
-            setGameVersion(GV_T7);
-        } else if ("VER 4.3" == FileVersion) {
-            setGameVersion(GV_T6);
-        } else if ("VER 4.2" == FileVersion) {
-            setGameVersion(GV_T5);
-        } else if ("VER 4.1" == FileVersion) {
-            setGameVersion(GV_T4);
-        } else if ("VER 4.0" == FileVersion) {
-            setGameVersion(GV_T3);
-        } else if ("VER 3.9" == FileVersion) {
-            setGameVersion(GV_T2);
+        GameVersion guessedVersion = gameVersionFromString(FileVersion);
+        if (guessedVersion != GV_None) {
+            setGameVersion(guessedVersion);
         }
     }
 
     GameVersion gv = getGameVersion();
+    if (gv == GV_None) {
+        throw std::runtime_error("No game version defined!");
+    }
+
     uint16_t count16{};
     uint32_t count32{};
 
