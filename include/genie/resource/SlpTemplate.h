@@ -26,7 +26,6 @@
 
 #include "genie/file/IFile.h"
 #include "genie/util/Logger.h"
-#include "PalFile.h"
 
 #include "Slope.h"
 #include "MaskPattern.h"
