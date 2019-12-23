@@ -42,8 +42,6 @@ public:
     static const std::string &actionTypeName(const int16_t type);
     const std::string &actionTypeName() const { return actionTypeName(int(ActionType)); }
 
-    genie::ActionType type() const { return genie::ActionType(ActionType); }
-
     int16_t ClassID = -1;
     int16_t UnitID = -1;
     int16_t TerrainID = -1;
