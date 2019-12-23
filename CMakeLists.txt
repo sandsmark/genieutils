@@ -248,7 +248,7 @@ target_link_libraries(${Genieutils_LIBRARY} ${ZLIB_LIBRARIES} ${ICONV_LIBRARIES}
 # Dev tools:
 #------------------------------------------------------------------------------#
 
-find_package(Qt5 OPTIONAL_COMPONENTS Widgets)
+find_package(Qt5 OPTIONAL_COMPONENTS Widgets QUIET)
 if (Qt5Widgets_FOUND)
     message("Qt5 Widgets found, enabling viewer for SLP/SMP files")
     add_subdirectory(src/tools/picviewer)
