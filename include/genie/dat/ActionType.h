@@ -6,8 +6,7 @@ namespace genie {
 
 /// What type of command/action is it
 /// From AGE
-namespace ActionType {
-enum Types : int16_t {
+enum class ActionType : int16_t {
     None = 0, // not set for anything
 
     /// In AoC
@@ -64,6 +63,5 @@ enum Types : int16_t {
     AboutFace = 10001, // not used in aoc
     Wheel = 10002, // not used in aoc
 };
-} //namespace Actions
 
 } // namespace genie

@@ -22,6 +22,8 @@
 #define GENIE_UNITCOMMAND_H
 #include "genie/file/ISerializable.h"
 
+#include "ActionType.h"
+
 namespace genie {
 
 class Task : public ISerializable
@@ -39,6 +41,8 @@ public:
     int16_t ActionType = 0;
     static const std::string &actionTypeName(const int16_t type);
     const std::string &actionTypeName() const { return actionTypeName(ActionType); }
+
+    genie::ActionType type() const { return genie::ActionType(ActionType); }
 
     int16_t ClassID = -1;
     int16_t UnitID = -1;
