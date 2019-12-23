@@ -378,6 +378,33 @@ protected:
         }
     }
 
+    template <typename T, typename E,
+              std::enable_if_t<std::is_enum<E>::value, int> = 0
+              >
+    void serialize(E &data)
+    {
+        assert(operation_ != OP_INVALID);
+        static_assert(sizeof(T) == sizeof(E));
+
+        switch (getOperation()) {
+        case OP_WRITE:
+            write<T>(T(data));
+            break;
+
+        case OP_READ:
+            data = E(read<T>());
+            break;
+
+        case OP_CALC_SIZE:
+            size_ += sizeof(E);
+            break;
+
+        case OP_INVALID:
+            assert(operation_ != OP_INVALID);
+            break;
+        }
+    }
+
     /// Serializes another ISerializable object
     template <typename T>
     void serialize(ISerializable &data)
