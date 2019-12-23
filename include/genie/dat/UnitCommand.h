@@ -38,9 +38,9 @@ public:
     /// Used to setup task when discovered,
     /// but you can directly set it in unit data
     int8_t IsDefault = false;
-    int16_t ActionType = 0;
+    genie::ActionType ActionType = ActionType::None;
     static const std::string &actionTypeName(const int16_t type);
-    const std::string &actionTypeName() const { return actionTypeName(ActionType); }
+    const std::string &actionTypeName() const { return actionTypeName(int(ActionType)); }
 
     genie::ActionType type() const { return genie::ActionType(ActionType); }
 
