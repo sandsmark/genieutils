@@ -305,6 +305,15 @@ public:
     /// 3   Civilian
     /// 4   Soldier
     /// 5   Priest/Monk
+    enum CombatLevelType {
+        NoCombatLevel = 0,
+        BaseCombatLevel = 1,
+        BuildingCombatLevel = 2,
+        CivilianCombatLevel = 3,
+        SoldierCombatLevel = 4,
+        PriestMonkCombatLevel = 4,
+    };
+
     int8_t CombatLevel = 0;
 
     enum InteractionModes : int8_t {
