@@ -19,11 +19,11 @@ struct SmxPlayerColorXY {
 /**
  * @brief The SmxFrame class
  * The frame definitions start directly after the file header.
- * Like in the SMP format, the frames come in bundles that consist of up to 3 images:
- *  - main sprite
- *  - shadow for that sprite (optional)
- *  - outline (optional)
- * Which of these images are present in a bundle is determined by the value bundle_type from the bundle header.
+ * Like in the SMP format, the frames have up to 3 images:
+ *  - main layer
+ *  - shadow layer (optional)
+ *  - outline layer (optional)
+ * Which of these layers are present in a frame is determined by the value frame_type from the frame header.
  */
 class SmxFrame : public ISerializable
 {
@@ -63,7 +63,7 @@ protected:
     void serializeObject() override;
 
 private:
-    struct FrameHeader {
+    struct LayerHeader {
         uint16_t width = 0; /// Width of image
         uint16_t height = 0; /// Height of image
 
@@ -82,18 +82,18 @@ private:
                 serialize(padRight);
             }
         };
-        /// Directly after the frame header, an array of smp_frame_row_edge (of length height) structs begins. These work exactly like the row edges in the SMP files.
+        /// Directly after the layer header, an array of smp_layer_row_edge (of length height) structs begins. These work exactly like the row edges in the SMP files.
         std::vector<RowEdge> rowEdges;
 
         std::streampos filePosition;
         uint32_t commandsSize = 0;
         uint32_t pixelDataSize = 0; // only normal graphics
     };
-    void serializeFrameHeader(FrameHeader &header);
+    void serializeLayerHeader(LayerHeader &header);
 
-    void readNormalGraphics();
-    void readShadowGraphics();
-    void readOutlineGraphics();
+    void readNormalLayer();
+    void readShadowLayer();
+    void readOutlineLayer();
 
     std::vector<SmpPixel> decode4Plus1(const std::vector<uint8_t> &data);
     std::vector<SmpPixel> decode8To5(const std::vector<uint8_t> &data);
@@ -110,8 +110,8 @@ private:
         EndOfRow = 0b11
     };
 
-    /// SMX Bundle header
-    struct BundleHeader {
+    /// SMX Frame header
+    struct FrameHeader {
         enum TypeBits : uint8_t {
             Unused1 = 1 << 7,
             Unused2 = 1 << 6,
@@ -122,31 +122,31 @@ private:
 
             /// Determines the compression algorithm for the main graphic frame.
             /// 0 = 4plus1; 1 = 8to5 (see the Compression Algorithms section)
-            HasDamageMask = 1 << 3,
+            HasDamageModifier = 1 << 3,
 
             /// If set to 1, the bundle contains an outline frame
-            OutlineFrame = 1 << 2,
+            OutlineLayer = 1 << 2,
 
             /// If set to 1, the bundle contains a shadow frame
-            ShadowFrame = 1 << 1,
+            ShadowLayer = 1 << 1,
 
             /// If set to 1, the bundle contains a main graphic frame
-            NormalFrame = 1 << 0
+            NormalLayer = 1 << 0
         };
 
-        /// Bundle Type
-        /// bundle_type is a bit field. This means that every bit set to 1 in this values tells us something about the bundle.
-        uint8_t type = 0;
+        /// Frame Type
+        /// frame_type is a bit field. This means that every bit set to 1 in this values tells us something about the bundle.
+        uint8_t frameType = 0;
 
         /// Palette number
         uint8_t palette = 0;
         /// possibly uncompressed size
-        uint32_t maybeSize = 0;
-    } m_bundleHeader;
+        uint32_t size = 0;
+    } m_frameHeader;
 
-    FrameHeader m_normalHeader;
-    FrameHeader m_shadowHeader;
-    FrameHeader m_outlineHeader;
+    LayerHeader m_normalHeader;
+    LayerHeader m_shadowHeader;
+    LayerHeader m_outlineHeader;
 
     bool m_isLoaded = false;
 };

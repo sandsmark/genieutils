@@ -52,35 +52,36 @@ private:
     /// Always SMPX
     std::array<uint8_t, 4> m_header = {'S', 'M', 'P', '$' };
 
-    /// possibly version
+    /// Version
     /// Ex: 256, 0x00000100 (same value for almost all units)
-    uint32_t m_sourceFormat = 0;
+    int32_t m_version = 0;
 
     /// Number of frames
     /// Ex: 721, 0x000002D1
-    uint32_t m_numFrames = 0;
+    int32_t m_numFrames = 0;
 
-    int32_t m_numFacets = 0;
-    int32_t m_framesPerFacet = 0;
+    /// Number of facets
+    /// 1, 0x0000001 (almost always 0x00000001)
+    int32_t m_facetNum;
 
-    /// File size SMX (this file)
-    /// Ex: 2706603, 0x000294CAB (size without header)
-    uint32_t m_size = 0;
+    /// Number of frames per facet
+    /// 721, 0x000002D1 (0x00000001 for version 0x0B)
+    int32_t m_framesPerFacet;
 
-    ///  possibly checksum
+    /// Checksum
     /// 0x8554F6F3
     int32_t m_checksum;
 
     /// File size in bytes
     /// Ex:  0x003D5800
-    int32_t m_byteCount;
+    int32_t m_size;
 
-    /// Actually used version?
-    /// 0x0B or 0x0C
-    uint32_t m_version;
+    /// Source format
+    /// 0x0B (SLP) or 0x0C (PSD)
+    int32_t m_source_format;
 
     /// Comment
-    /// Always empty, 32 bytes
+    /// 32 bytes
     std::string m_comment;
 
     std::vector<uint32_t> m_frameOffsets;

@@ -104,7 +104,6 @@ void SmpFrame::loadLayerContent(SmpBaseLayer &layer)
 
     for (uint32_t row = 0; row < layer.header.height; ++row) {
         if (0xFFFF == layer.leftEdges[row] || 0xFFFF == layer.rightEdges[row]) {
-            std::cout << "skipping" << std::endl;
             continue; // Pretend it does not exist.
         }
 

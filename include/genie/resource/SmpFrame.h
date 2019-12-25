@@ -17,13 +17,13 @@ struct SmpPixel
 {
     uint8_t index; /// Normal palette index
     uint8_t palette; /// Need to look up in palette.conf to find the correct color table
-    uint16_t damageMask; /// When units get damaged
+    uint16_t damageModifier; /// When units get damaged
 
     inline uint8_t paletteNumber() const noexcept { return palette >> 2; }
     inline uint16_t colorNumber() const noexcept { return (palette & 0b11) * 256 + index; }
 
     inline bool damageFlag() const noexcept {
-        return damageMask & (1 << 9);
+        return damageModifier & (1 << 9);
     }
 
     inline float damageRgbMultiplier(const float damagePercent) const noexcept {
@@ -31,7 +31,7 @@ struct SmpPixel
         const float damageWindow74To25 = std::clamp(damageWindow99To50 - 0.5f, 0.f, 1.f);
         const float damageWindow49To0 =  std::clamp(damageWindow74To25 - 0.5f, 0.f, 1.f);
 
-        const float damage_modifier = (damageMask >> 4) & 0x1ff;
+        const float damage_modifier = (damageModifier >> 4) & 0x1ff;
 
         float a = std::floor(damage_modifier / 64.f);
         const float temp = damage_modifier - 64.f * a + 0.5f;
@@ -78,6 +78,9 @@ struct SmpLayerHeader {
     uint32_t type;
     uint32_t paddingTableOffset;
     uint32_t pixelDataOffset;
+
+    // Flags, but we don't know exactly what they do
+    // 0x01, 0x02, 0x80 or 0xA0 are example values from heinezen
     uint32_t flags;
 };
 

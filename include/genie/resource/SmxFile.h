@@ -54,7 +54,7 @@ private:
     /// Always SMPX
     std::array<uint8_t, 4> m_header = {'S', 'M', 'P', 'X' };
 
-    /// probably version
+    /// Version
     /// 2, 0x0002 (for almost all units, some have 0x0001)
     uint16_t m_version = 0;
 
