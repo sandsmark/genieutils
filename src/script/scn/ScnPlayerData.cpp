@@ -28,7 +28,7 @@ bool CombinedResources::playerInfo = false;
 
 ScnMainPlayerData::~ScnMainPlayerData()
 {
-    delete bitmap;
+    delete []bitmap;
     delete bmpHeader;
 }
 
