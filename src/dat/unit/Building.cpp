@@ -20,9 +20,43 @@
 
 #include "genie/dat/unit/Building.h"
 
+#include "../TestHelpers.h"
+
 namespace genie {
 
 namespace unit {
+bool Building::compareTo(const Building &other) const
+{
+    COMPARE_MEMBER(GarrisonHealRate);
+    COMPARE_MEMBER(GarrisonRepairRate);
+    COMPARE_MEMBER(ConstructionGraphicID);
+    COMPARE_MEMBER(ConstructionSound);
+    COMPARE_MEMBER(DestructionGraphicID);
+    COMPARE_MEMBER(DestructionRubbleGraphicID);
+    COMPARE_MEMBER(FoundationTerrainID);
+    COMPARE_MEMBER(GraphicsAngle);
+    COMPARE_MEMBER(HeadUnit);
+    COMPARE_MEMBER(OldOverlayID);
+    COMPARE_MEMBER(PileUnit);
+    COMPARE_MEMBER(ResearchCompletedGraphic);
+    COMPARE_MEMBER(ResearchingGraphic);
+    COMPARE_MEMBER(SnowGraphicID);
+    COMPARE_MEMBER(StackUnitID);
+    COMPARE_MEMBER(TechID);
+    COMPARE_MEMBER(TransformSound);
+    COMPARE_MEMBER(TransformUnit);
+    COMPARE_MEMBER(AdjacentMode);
+    COMPARE_MEMBER(CanBurn);
+    COMPARE_MEMBER(DisappearsWhenBuilt);
+    COMPARE_MEMBER(GarrisonType);
+    COMPARE_MEMBER(LootingTable);;
+    COMPARE_MEMBER_VEC(Annexes);
+    COMPARE_MEMBER(WwiseConstructionSoundID);
+    COMPARE_MEMBER(WwiseTransformSoundID);
+
+    return true;
+}
+
 void Building::serializeObject(void)
 {
     GameVersion gv = getGameVersion();
@@ -83,6 +117,14 @@ void Building::serializeObject(void)
             serialize<int8_t>(LootingTable); // 9.26
         }
     }
+}
+
+bool BuildingAnnex::compareTo(const BuildingAnnex &other) const
+{
+    COMPARE_MEMBER(UnitID);
+    COMPARE_MEMBER(Misplacement);
+
+    return true;
 }
 
 void BuildingAnnex::serializeObject()

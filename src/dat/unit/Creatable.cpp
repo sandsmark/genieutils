@@ -20,6 +20,8 @@
 
 #include "genie/dat/unit/Creatable.h"
 
+#include "../TestHelpers.h"
+
 namespace genie {
 
 namespace unit {
@@ -33,6 +35,30 @@ Creatable::Creatable() :
 unsigned short Creatable::getResourceCostsSize()
 {
     return 3;
+}
+
+bool Creatable::compareTo(const Creatable &other) const
+{
+    COMPARE_MEMBER(FlankAttackModifier);
+    COMPARE_MEMBER(RearAttackModifier);
+    COMPARE_MEMBER(TotalProjectiles);
+    COMPARE_MEMBER(DisplayedPierceArmour);
+    COMPARE_MEMBER(SpawningGraphic);
+    COMPARE_MEMBER(TrainLocationID);
+    COMPARE_MEMBER(TrainTime);
+    COMPARE_MEMBER(UpgradeGraphic);
+    COMPARE_MEMBER(GarrisonGraphic);
+    COMPARE_MEMBER(SecondaryProjectileUnit);
+    COMPARE_MEMBER(SpecialGraphic);
+    COMPARE_MEMBER(ButtonID);
+    COMPARE_MEMBER(CreatableType);
+    COMPARE_MEMBER(HeroMode);
+    COMPARE_MEMBER(MaxTotalProjectiles);
+    COMPARE_MEMBER(SpecialAbility);
+    COMPARE_MEMBER_VEC(ResourceCosts);
+    COMPARE_MEMBER(ProjectileSpawningArea);
+
+    return true;
 }
 
 void Creatable::serializeObject(void)

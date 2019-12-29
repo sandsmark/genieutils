@@ -74,6 +74,8 @@ public:
 
     float MinCollisionSizeMultiplier = 1.0f;
 
+    bool compareTo(const Moving &other) const;
+
 protected:
     void serializeObject(void) override;
 };

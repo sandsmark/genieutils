@@ -20,9 +20,20 @@
 
 #include "genie/dat/unit/AttackOrArmor.h"
 
+#include "../TestHelpers.h"
+
 namespace genie {
 
 namespace unit {
+
+bool AttackOrArmor::compareTo(const AttackOrArmor &other) const
+{
+    COMPARE_MEMBER(Class);
+    COMPARE_MEMBER(Amount);
+
+    return true;
+}
+
 void AttackOrArmor::serializeObject(void)
 {
     serialize<int16_t>(Class);

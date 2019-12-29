@@ -20,6 +20,8 @@
 
 #include "genie/dat/unit/Action.h"
 
+#include "../TestHelpers.h"
+
 namespace genie {
 
 namespace unit {
@@ -29,6 +31,23 @@ void Action::setGameVersion(GameVersion gv)
     ISerializable::setGameVersion(gv);
 
     updateGameVersion(TaskList);
+}
+
+bool Action::compareTo(const Action &other) const
+{
+    COMPARE_MEMBER(SearchRadius);
+    COMPARE_MEMBER(WorkRate);
+    COMPARE_MEMBER(AttackSound);
+    COMPARE_MEMBER(DefaultTaskID);
+    COMPARE_MEMBER(MoveSound);
+    COMPARE_MEMBER(RunPattern);
+    COMPARE_MEMBER(TaskSwapGroup);
+    COMPARE_MEMBER(DropSite);
+    COMPARE_MEMBER_VEC(TaskList);
+    COMPARE_MEMBER(WwiseAttackSoundID);
+    COMPARE_MEMBER(WwiseMoveSoundID);
+
+    return true;
 }
 
 void Action::serializeObject(void)

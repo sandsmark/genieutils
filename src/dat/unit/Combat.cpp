@@ -20,6 +20,8 @@
 
 #include "genie/dat/unit/Combat.h"
 
+#include "../TestHelpers.h"
+
 namespace genie {
 
 namespace unit {
@@ -30,6 +32,32 @@ void Combat::setGameVersion(GameVersion gv)
 
     updateGameVersion(Attacks);
     updateGameVersion(Armours);
+}
+
+bool Combat::compareTo(const Combat &other) const
+{
+    COMPARE_MEMBER(AccuracyDispersion);
+    COMPARE_MEMBER(BlastWidth);
+    COMPARE_MEMBER(DisplayedRange);
+    COMPARE_MEMBER(DisplayedReloadTime);
+    COMPARE_MEMBER(MaxRange);
+    COMPARE_MEMBER(MinRange);
+    COMPARE_MEMBER(ReloadTime);
+    COMPARE_MEMBER(AccuracyPercent);
+    COMPARE_MEMBER(AttackGraphic);
+    COMPARE_MEMBER(BaseArmor);
+    COMPARE_MEMBER(DefenseTerrainBonus);
+    COMPARE_MEMBER(DisplayedAttack);
+    COMPARE_MEMBER(DisplayedMeleeArmour);
+    COMPARE_MEMBER(FrameDelay);
+    COMPARE_MEMBER(ProjectileUnitID);
+    COMPARE_MEMBER(BlastAttackLevel);
+    COMPARE_MEMBER(BreakOffCombat);
+    COMPARE_MEMBER(GraphicDisplacement);
+    COMPARE_MEMBER_VEC(Armours);
+    COMPARE_MEMBER_VEC(Attacks);
+
+    return true;
 }
 
 void Combat::serializeObject(void)

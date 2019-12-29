@@ -33,6 +33,8 @@ public:
     int16_t UnitID = -1;
     std::pair<float, float> Misplacement = { 0.f, 0.f };
 
+    bool compareTo(const BuildingAnnex &other) const;
+
 private:
     void serializeObject(void) override;
 };
@@ -126,6 +128,8 @@ public:
     /// Widespread usage in the AoK alpha 09.07.0222
     static constexpr unsigned short LOOTABLE_RES_COUNT = 6;
     std::array<int8_t, LOOTABLE_RES_COUNT> LootingTable{};
+
+    bool compareTo(const Building &other) const;
 
 protected:
     void serializeObject(void) override;

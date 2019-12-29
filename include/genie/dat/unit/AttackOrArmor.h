@@ -67,6 +67,8 @@ public:
     int16_t Class = -1;
     int16_t Amount = 0;
 
+    bool compareTo(const AttackOrArmor &other) const;
+
 private:
     void serializeObject(void) override;
 };

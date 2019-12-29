@@ -127,6 +127,8 @@ public:
     int16_t SpawningGraphic = -1;
     int16_t UpgradeGraphic = -1;
 
+    bool compareTo(const Creatable &other) const;
+
 protected:
     void serializeObject(void) override;
 };

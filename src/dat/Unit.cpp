@@ -207,15 +207,13 @@ bool Unit::compareTo(const Unit &other) const
     COMPARE_MEMBER(OcclusionMode);
     COMPARE_MEMBER(Trait);
 
-    // TODO
-//    unit::Moving Moving;
-//    unit::Action Action;
-//    unit::Combat Combat;
-//    unit::Missile Missile;
-//    unit::Creatable Creatable;
-//    unit::Building Building;
 
-    return true;
+    return Moving.compareTo(other.Moving) &&
+            Action.compareTo(other.Action) &&
+            Combat.compareTo(other.Combat) &&
+            Missile.compareTo(other.Missile) &&
+            Creatable.compareTo(other.Creatable) &&
+            Building.compareTo(other.Building);
 }
 
 //------------------------------------------------------------------------------

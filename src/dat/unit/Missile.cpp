@@ -20,9 +20,24 @@
 
 #include "genie/dat/unit/Missile.h"
 
+#include "../TestHelpers.h"
+
 namespace genie {
 
 namespace unit {
+
+bool Missile::compareTo(const Missile &other) const
+{
+    COMPARE_MEMBER(ProjectileArc);
+    COMPARE_MEMBER(AreaEffectSpecials);
+    COMPARE_MEMBER(HitMode);
+    COMPARE_MEMBER(ProjectileType);
+    COMPARE_MEMBER(SmartMode);
+    COMPARE_MEMBER(VanishMode);
+
+    return true;
+}
+
 void Missile::serializeObject(void)
 {
     serialize<int8_t>(ProjectileType);

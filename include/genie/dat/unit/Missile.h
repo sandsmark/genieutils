@@ -62,6 +62,8 @@ public:
     /// even if it has a very high arc.
     float ProjectileArc = 0;
 
+    bool compareTo(const Missile &other) const;
+
 protected:
     void serializeObject(void) override;
 };

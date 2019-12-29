@@ -20,9 +20,32 @@
 
 #include "genie/dat/unit/Moving.h"
 
+#include "../TestHelpers.h"
+
 namespace genie {
 
 namespace unit {
+
+bool Moving::compareTo(const Moving &other) const
+{
+    COMPARE_MEMBER(MaxYawPerSecondMoving);
+    COMPARE_MEMBER(MaxYawPerSecondStationary);
+    COMPARE_MEMBER(MinCollisionSizeMultiplier);
+    COMPARE_MEMBER(RotationSpeed);
+    COMPARE_MEMBER(StationaryYawRevolutionTime);
+    COMPARE_MEMBER(TrackingUnitDensity);
+    COMPARE_MEMBER(TurnRadius);
+    COMPARE_MEMBER(TurnRadiusSpeed);
+    COMPARE_MEMBER(RunningGraphic);
+    COMPARE_MEMBER(TrackingUnit);
+    COMPARE_MEMBER(WalkingGraphic);
+    COMPARE_MEMBER(OldMoveAlgorithm);
+    COMPARE_MEMBER(OldSizeClass);
+    COMPARE_MEMBER(TrackingUnitMode);
+
+    return true;
+}
+
 void Moving::serializeObject(void)
 {
     GameVersion gv = getGameVersion();

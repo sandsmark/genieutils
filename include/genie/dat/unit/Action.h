@@ -69,6 +69,8 @@ public:
 
     std::vector<Task> TaskList; //only in aoe/ror
 
+    bool compareTo(const Action &other) const;
+
 protected:
     void serializeObject(void) override;
 };

@@ -90,6 +90,8 @@ public:
     float DisplayedRange = 0;
     float DisplayedReloadTime = 0;
 
+    bool compareTo(const Combat &other) const;
+
 protected:
     void serializeObject(void) override;
 };
