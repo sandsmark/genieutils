@@ -90,7 +90,7 @@ public:
     /// @exception std::ios_base::failure thrown if file can't be written (
     ///                                   insufficient rights...)
     //
-    virtual void saveAs(const char *fileName);
+    virtual void saveAs(const std::string &fileName);
 
 protected:
     //----------------------------------------------------------------------------

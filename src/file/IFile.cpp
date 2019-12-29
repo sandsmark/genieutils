@@ -82,11 +82,11 @@ void IFile::save()
         throw std::ios_base::failure("Save: File name not set");
     }
 
-    saveAs(fileName_.c_str());
+    saveAs(fileName_);
 }
 
 //------------------------------------------------------------------------------
-void IFile::saveAs(const char *fileName)
+void IFile::saveAs(const std::string &fileName)
 {
     std::ofstream file;
 

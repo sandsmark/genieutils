@@ -69,7 +69,10 @@ public:
     //----------------------------------------------------------------------------
     /// Uncompress dat file.
     //
-    void extractRaw(const char *inFile, const char *outFile);
+    static void extractRaw(const std::string &inFile, const std::string &outFile);
+
+    /// Save raw file
+    void saveRaw(const std::string &outFile);
 
     //----------------------------------------------------------------------------
     /// Debug information will be printed to stdout if activated.
@@ -134,6 +137,8 @@ public:
 private:
     // if true print debug messages
     bool verbose_ = false;
+
+    bool m_rawMode = false;
 
     std::string file_name_;
     std::fstream *file_ = nullptr;

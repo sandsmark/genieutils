@@ -223,7 +223,7 @@ set(BINCOMP_SRC src/tools/bincompare/bincomp.cpp
 # Executeable:
 #------------------------------------------------------------------------------#
 
-set(COMMON_LIBRARIES  ${ICONV_LIBRARIES} ${ZLIB_LIBRARIES})
+set(COMMON_LIBRARIES ${PCRIO_LIBRARIES} ${ICONV_LIBRARIES} ${ZLIB_LIBRARIES})
 
 set(ALL_SRC
     ${FILE_SRC} ${LANG_SRC} ${DAT_SRC}
@@ -252,7 +252,7 @@ else()
 endif()
 
 
-target_link_libraries(${Genieutils_LIBRARY} ${PCRIO_LIBRARIES} ${ZLIB_LIBRARIES})
+target_link_libraries(${Genieutils_LIBRARY} ${COMMON_LIBRARIES})
 
 
 #add_executable(main main.cpp)
@@ -277,7 +277,6 @@ if (GUTILS_TOOLS)
 
   add_executable(datextract ${EXTRACT_SRC} $<TARGET_OBJECTS:genieutils_common>)
   target_link_libraries(datextract ${Boost_LIBRARIES} ${COMMON_LIBRARIES})
-#  target_link_libraries(datextract ${ZLIB_LIBRARIES} ${Boost_LIBRARIES} ${Genieutils_LIBRARY})
 
   add_executable(bincomp ${BINCOMP_SRC})
 endif (GUTILS_TOOLS)
@@ -286,10 +285,28 @@ endif (GUTILS_TOOLS)
 # Debug/Test:
 #------------------------------------------------------------------------------#
 if (GUTILS_TEST)
+  add_library(genieutils_tests_common OBJECT
+      src/tools/bincompare/bincomp.cpp
+      )
+
   set(GU_INCLUDE_DIRS ${GU_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
 
-  add_executable(main main.cpp $<TARGET_OBJECTS:genieutils_common>)
-  target_link_libraries(main ${Boost_LIBRARIES} ${COMMON_LIBRARIES})
+  add_executable(wtftest main.cpp $<TARGET_OBJECTS:genieutils_common>)
+  target_link_libraries(wtftest ${Boost_LIBRARIES} ${COMMON_LIBRARIES})
+
+  add_executable(DatTest
+      tests/DatTest.cpp
+      $<TARGET_OBJECTS:genieutils_tests_common>
+      $<TARGET_OBJECTS:genieutils_common>
+      )
+  target_link_libraries(DatTest ${Boost_LIBRARIES} ${COMMON_LIBRARIES})
+
+  add_executable(LangTest
+      tests/LangTest.cpp
+      $<TARGET_OBJECTS:genieutils_tests_common>
+      $<TARGET_OBJECTS:genieutils_common>
+      )
+  target_link_libraries(LangTest ${Boost_LIBRARIES} ${COMMON_LIBRARIES})
 endif(GUTILS_TEST)
 
 if (ENABLE_CLANG_TIDY)

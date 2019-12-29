@@ -124,14 +124,14 @@ std::string DatFile::versionName(const GameVersion version)
 
 GameVersion DatFile::gameVersionFromString(const std::string &name)
 {
-    if (name.size() != 7) {
-        std::cerr << "Invalid length of name" << std::endl;
+    if (name.size() != FILE_VERSION_SIZE - 1) { // null terminated in file, std::string does not count that
+        std::cerr << "Invalid length of name, " << name.size() << " vs expected " << (FILE_VERSION_SIZE - 1) << std::endl;
         return GV_None;
     }
     int major = name[4] - '0';
     int minor = name[6] - '0';
     if (major < 0 || major > 9) {
-        std::cerr << "Invalid major version in name " << name << std::endl;
+        std::cerr << "Invalid major version '" << major << "' (" << char(name[4]) << ") in name " << name << std::endl;
         return GV_None;
     }
     if (minor < 0 || minor > 9) {
@@ -237,7 +237,7 @@ void DatFile::setGameVersion(GameVersion gv)
 }
 
 //------------------------------------------------------------------------------
-void DatFile::extractRaw(const char *inFile, const char *outFile)
+void DatFile::extractRaw(const std::string &inFile, const std::string &outFile)
 {
     std::ifstream ifs;
     std::ofstream ofs;
@@ -245,10 +245,39 @@ void DatFile::extractRaw(const char *inFile, const char *outFile)
     ifs.open(inFile, std::ios::binary);
     ofs.open(outFile, std::ios::binary);
 
+    if (!ifs.is_open()) {
+        throw std::ios_base::failure("Can't open input file '" + inFile + "'");
+    }
+
+    if (!ofs.is_open()) {
+        throw std::ios_base::failure("Can't open output file '" + outFile + "'");
+    }
+
     Compressor::decompress(ifs, ofs);
 
     ifs.close();
     ofs.close();
+}
+
+void DatFile::saveRaw(const std::string &outFile) try
+{
+    std::ofstream file;
+
+    file.open(outFile, std::ofstream::binary);
+
+    if (file.fail()) {
+        file.close();
+        throw std::ios_base::failure("Can't write to file: '" + outFile + "'");
+    } else {
+        m_rawMode = true;
+        writeObject(file);
+    }
+
+    file.close();
+} catch (const std::exception &e) {
+    // make sure we always set it back
+    m_rawMode = false;
+    throw e;
 }
 
 //------------------------------------------------------------------------------
@@ -299,19 +328,24 @@ bool DatFile::compareTo(const DatFile &other) const
 //------------------------------------------------------------------------------
 void DatFile::serializeObject(void)
 {
-    compressor_.beginCompression();
-
-    std::vector<uint8_t> dumm(FILE_VERSION_SIZE);
-    serialize(dumm, FILE_VERSION_SIZE);
-    for (const uint8_t &f : dumm) {
-        std::cout << int(f) << " " << f << std::endl;
+    if (!m_rawMode) {
+        compressor_.beginCompression();
     }
-    FileVersion = std::string((char*)dumm.data(), FILE_VERSION_SIZE);
-//    serialize(FileVersion, FILE_VERSION_SIZE);
+
+    serialize(FileVersion, FILE_VERSION_SIZE);
+
+//    std::cout << "file version: " << FileVersion << std::endl;
+//    std::vector<uint8_t> dumm(FILE_VERSION_SIZE);
+//    serialize(dumm, FILE_VERSION_SIZE);
+//    for (const uint8_t &f : dumm) {
+//        std::cout << int(f) << " " << f << std::endl;
+//    }
+//    FileVersion = std::string((char*)dumm.data(), FILE_VERSION_SIZE);
+////    serialize(FileVersion, FILE_VERSION_SIZE);
     std::cout << "file version: " << FileVersion << std::endl;
 
     gameVersionFromString(FileVersion);
-    std::cout << getGameVersion() << std::endl;
+//    std::cout << getGameVersion() << std::endl;
 
     // Handle all different versions while in development.
     if (getGameVersion() == GV_C2) { // 5.8
@@ -491,7 +525,9 @@ void DatFile::serializeObject(void)
 //        std::cout << " to 0x" << tellg() << std::dec << ") size " << pos_cnt << std::endl;
 //    }
 
-    compressor_.endCompression();
+    if (!m_rawMode) {
+        compressor_.endCompression();
+    }
 }
 
 //------------------------------------------------------------------------------

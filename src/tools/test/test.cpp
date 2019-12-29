@@ -3,7 +3,8 @@
 #include <iostream>
 
 #include <boost/test/unit_test.hpp>
-#include "genie/dat/File.h"
+#include "genie/dat/DatFile.h"
+#include "genie/util/Utility.h"
 #include "../bincompare/bincomp.h"
 
 const char *const DAT_PATH = "tmp/";
@@ -39,21 +40,34 @@ std::string getFileName(genie::GameVersion gv)
 
     case genie::GV_None:
         break;
+    default:
+        BOOST_FAIL("Invalid game version: " + std::to_string(int(gv)));
+        break;
     }
 
-    return file_name;
+    const std::string resolved = genie::util::resolvePathCaseInsensitive(file_name, genie::util::executableDirectory());
+    if (resolved.empty()) {
+        BOOST_FAIL("Failed to resolve " + file_name + " relative to " + genie::util::executableDirectory());
+    }
+
+//    BOOST_CHECK_(!file_name.empty());
+
+    return resolved;
 }
 
-genie::File *openFile(genie::GameVersion gv)
+std::unique_ptr<genie::DatFile> openFile(genie::GameVersion gv)
 {
-    return new genie::File(getFileName(gv), gv);
+    std::unique_ptr<genie::DatFile> file = std::make_unique<genie::DatFile>();
+    file->setFileName(getFileName(gv));
+    file->setGameVersion(gv);
+    return file;
 }
 
 BOOST_AUTO_TEST_CASE(simple_change_values_test)
 {
-    genie::File *file = openFile(genie::GV_TC);
+    std::unique_ptr<genie::DatFile> file = openFile(genie::GV_TC);
 
-    std::cout << file->Civs[0].size() << std::endl;
+    std::cout << file->Civs.size() << std::endl;
 
     /*file->Civs[0].Units[4].DeadFish.TrackingUnit = 5;
     file->Civs[0].Units[4].Creatable.TrainTime = 999;
@@ -89,12 +103,23 @@ BOOST_AUTO_TEST_CASE(simple_change_values_test)
 
 int readWriteDiff(genie::GameVersion gv)
 {
-    genie::File file;
+    std::cout << "Testing version " << genie::DatFile::versionName(gv) << std::endl;
+    genie::DatFile file;
     file.setGameVersion(gv);
 
-    file.extractRaw(getFileName(gv), getFileName(gv) + ".raw_orig");
+    genie::DatFile::extractRaw(getFileName(gv), getFileName(gv) + ".raw_orig");
+    std::cout << "Loading " << getFileName(gv) << std::endl;
     file.load(getFileName(gv));
-    file.save(getFileName(gv) + ".raw_genie", true);
+    file.saveAs(getFileName(gv) + ".saved");
+
+    {
+        genie::DatFile reloaded;
+        reloaded.setGameVersion(gv);
+        reloaded.load(getFileName(gv) + ".saved");
+        BOOST_CHECK(reloaded.compareTo(file));
+    }
+    std::cout << "Saving " << (getFileName(gv) + ".raw_genie") << std::endl;
+    file.saveRaw(getFileName(gv) + ".raw_genie");
 
     return binaryCompare((getFileName(gv) + ".raw_orig").c_str(),
                          (getFileName(gv) + ".raw_genie").c_str());

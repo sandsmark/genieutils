@@ -82,10 +82,22 @@ void Compressor::decompress(std::istream &source, std::ostream &sink)
     cmp.istream_ = &source;
     cmp.startDecompression();
 
+    char buffer[4096];
+
     while (!cmp.uncompressedIstream_->eof() && sink.good()) {
-        char buffer[4096];
-        source.get(buffer, sizeof buffer);
-        sink.write(buffer, source.gcount());
+        if (!source.good()) {
+            throw std::ios_base::failure("Can't read decompress source");
+        }
+        if (!sink.good()) {
+            throw std::ios_base::failure("Can't write read decompress target");
+        }
+
+        cmp.uncompressedIstream_->read(buffer, sizeof buffer);
+        if (cmp.uncompressedIstream_->gcount() <= 0) {
+            break;
+        }
+
+        sink.write(buffer, cmp.uncompressedIstream_->gcount());
     }
 }
 

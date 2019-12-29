@@ -29,10 +29,10 @@ int binaryCompare(const char *file1, const char *file2)
     int cnt = 0;
 
     while (!f1.eof() && !f2.eof()) {
-        char c1, c2;
+        uint8_t c1, c2;
 
-        f1.read(&c1, 1);
-        f2.read(&c2, 1);
+        f1.read((char*)&c1, 1);
+        f2.read((char*)&c2, 1);
 
         if (c1 != c2) {
             std::cout << f1.tellg() << ": " << std::hex << (short)c1 << " "

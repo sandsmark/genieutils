@@ -145,7 +145,7 @@ void LangFile::load(const std::string &filename)
 }
 
 //------------------------------------------------------------------------------
-void LangFile::saveAs(const char *filename)
+void LangFile::saveAs(const std::string &filename)
 {
     pcr_error_code errorCode = PCR_ERROR_NONE;
 
@@ -154,7 +154,7 @@ void LangFile::saveAs(const char *filename)
                                      + std::string(filename));
     }
 
-    pcr_write_file(filename, pfile_, &errorCode);
+    pcr_write_file(filename.c_str(), pfile_, &errorCode);
 
     PcrioError::check(errorCode);
 }

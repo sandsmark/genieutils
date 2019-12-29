@@ -49,7 +49,7 @@ public:
     ~LangFile() override;
 
     void load(const std::string &fileName) override;
-    void saveAs(const char *fileName) override;
+    void saveAs(const std::string &fileName) override;
 
     // get/set strings in default_charset (utf-8)
     std::string getString(unsigned int id);
