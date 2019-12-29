@@ -35,6 +35,8 @@ public:
     int16_t Height;
     int16_t DeltaY;
 
+    bool compareTo(const TileSize &other) const;
+
 private:
     void serializeObject(void) override;
 };
@@ -93,6 +95,8 @@ public:
     std::vector<int8_t> SomeBytes;
     unsigned short getSomethingSize(void);
     std::vector<int32_t> SomeInt32;
+
+    bool compareTo(const TerrainBlock &other) const;
 
 private:
     void serializeObject(void) override;

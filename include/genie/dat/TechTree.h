@@ -47,6 +47,8 @@ public:
 
     static unsigned short getCount(); //GameVersion gv);
 
+    bool compareTo(const TechTree &other) const;
+
 private:
     void serializeObject(void) override;
 };
@@ -82,6 +84,8 @@ public:
         }
     }
 
+    bool compareTo(const Common &other) const;
+
 private:
     void serializeObject(void) override // 84 bytes, 164 in SWGB
     {
@@ -113,6 +117,8 @@ public:
     int32_t LineMode = 0;
 
     unsigned short getZoneCount();
+
+    bool compareTo(const TechTreeAge &other) const;
 
 private:
     void serializeObject(void) override;
@@ -163,6 +169,8 @@ public:
     /// Makes available. Used by buildings, which need a research to be available.
     int32_t EnablingResearch = 0;
 
+    bool compareTo(const BuildingConnection &other) const;
+
 private:
     void serializeObject(void) override;
 };
@@ -191,6 +199,8 @@ public:
     /// Makes available. Used by units, which need a research to be available.
     int32_t EnablingResearch = -1;
 
+    bool compareTo(const UnitConnection &other) const;
+
 private:
     void serializeObject(void) override;
 };
@@ -215,6 +225,8 @@ public:
     int32_t LocationInAge = 0;
     /// 0 First Age. Others.
     int32_t LineMode = 0;
+
+    bool compareTo(const ResearchConnection &other) const;
 
 private:
     void serializeObject(void) override;

@@ -42,6 +42,8 @@ public:
     int16_t Civilization = -1; //not in aoe/ror
     int16_t IconSet = -1; //not in aoe/ror
 
+    bool compareTo(const SoundItem &other) const;
+
 private:
     void serializeObject(void) override;
 };

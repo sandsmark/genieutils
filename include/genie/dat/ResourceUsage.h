@@ -48,6 +48,22 @@ public:
     /// Bool that determines whether it is paid or only needed.
     E Paid = 0;
 
+    bool compareTo (const Resource<A, E> &other) const {
+        if (Type != other.Type) {
+            std::cerr << "Type mismatch" << std::endl;
+            return false;
+        }
+        if (Amount != other.Amount) {
+            std::cerr << "Amount mismatch" << std::endl;
+            return false;
+        }
+        if (Paid != other.Paid) {
+            std::cerr << "Paid mismatch" << std::endl;
+            return false;
+        }
+        return true;
+    }
+
 private:
     void serializeObject(void) override
     {

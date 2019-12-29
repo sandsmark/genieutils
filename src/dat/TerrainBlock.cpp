@@ -19,6 +19,8 @@
 
 #include "genie/dat/TerrainBlock.h"
 
+#include "TestHelpers.h"
+
 namespace genie {
 
 //------------------------------------------------------------------------------
@@ -81,6 +83,52 @@ unsigned short TerrainBlock::getSomethingSize(void)
     }
 
     return 65;
+}
+
+bool TerrainBlock::compareTo(const TerrainBlock &other) const
+{
+    COMPARE_MEMBER(MapMaxX);
+    COMPARE_MEMBER(MapMaxXplus1);
+    COMPARE_MEMBER(MapMaxY);
+    COMPARE_MEMBER(MapMaxYplus1);
+    COMPARE_MEMBER(MapMinX);
+    COMPARE_MEMBER(MapMinY);
+    COMPARE_MEMBER(BlockBegCol);
+    COMPARE_MEMBER(BlockBegRow);
+    COMPARE_MEMBER(BlockEndCol);
+    COMPARE_MEMBER(BlockEndRow);
+    COMPARE_MEMBER(CurCol);
+    COMPARE_MEMBER(CurRow);
+    COMPARE_MEMBER(ElevHeight);
+    COMPARE_MEMBER(MaxTerrain);
+    COMPARE_MEMBER(PaddingTS);
+    COMPARE_MEMBER(TileHalfHeight);
+    COMPARE_MEMBER(TileHalfWidth);
+    COMPARE_MEMBER(TileHeight);
+    COMPARE_MEMBER(TileWidth);
+    COMPARE_MEMBER(MapHeight);
+    COMPARE_MEMBER(MapPointer);
+    COMPARE_MEMBER(MapRowOffset);
+    COMPARE_MEMBER(MapWidth);
+    COMPARE_MEMBER(SearchMapPtr);
+    COMPARE_MEMBER(SearchMapRowsPtr);
+    COMPARE_MEMBER(VirtualFunctionPtr);
+    COMPARE_MEMBER(WorldHeight);
+    COMPARE_MEMBER(WorldWidth);
+    COMPARE_MEMBER(AnyFrameChange);
+    COMPARE_MEMBER(FogFlag);
+    COMPARE_MEMBER(MapVisibleFlag);
+    COMPARE_MEMBER(BordersUsed);
+    COMPARE_MEMBER(RemovedBlocksUsed);
+    COMPARE_MEMBER(TerrainsUsed2);
+    COMPARE_MEMBER_VEC(Terrains);
+    COMPARE_MEMBER_VEC(TerrainBorders);
+    COMPARE_MEMBER_VEC(TileSizes);
+    COMPARE_MEMBER(AoEAlphaUnknown); // These are very similar to borders
+    COMPARE_MEMBER(SomeInt32);
+    COMPARE_MEMBER(SomeBytes);
+
+    return true;
 }
 
 //------------------------------------------------------------------------------
@@ -191,6 +239,15 @@ void TerrainBlock::serializeObject(void)
 void TileSize::setGameVersion(GameVersion gv)
 {
     ISerializable::setGameVersion(gv);
+}
+
+bool TileSize::compareTo(const TileSize &other) const
+{
+    COMPARE_MEMBER(Width);
+    COMPARE_MEMBER(Height);
+    COMPARE_MEMBER(DeltaY);
+
+    return true;
 }
 
 //------------------------------------------------------------------------------

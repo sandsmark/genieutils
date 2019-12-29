@@ -20,12 +20,23 @@
 
 #include "genie/dat/TerrainPassGraphic.h"
 
+#include "TestHelpers.h"
+
 #include <iostream>
 #include <string.h>
 
 namespace genie {
 
 //------------------------------------------------------------------------------
+bool TerrainPassGraphic::compareTo(const TerrainPassGraphic &other) const
+{
+    COMPARE_MEMBER(ExitTileSpriteID);
+    COMPARE_MEMBER(WalkTileSpriteID);
+    COMPARE_MEMBER(WalkSpriteRate);
+
+    return true;
+}
+
 void TerrainPassGraphic::serializeObject()
 {
     GameVersion gv = getGameVersion();

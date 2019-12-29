@@ -36,6 +36,8 @@ public:
 
     std::vector<int16_t> UnitIDs;
 
+    bool compareTo(const UnitLine &other) const;
+
 private:
     void serializeObject(void) override;
 };

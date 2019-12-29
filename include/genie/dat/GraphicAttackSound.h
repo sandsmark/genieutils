@@ -40,6 +40,8 @@ public:
     int16_t SoundID3 = -1;
     uint32_t WwiseSoundID3 = 0;
 
+    bool compareTo(const GraphicAngleSound &other) const;
+
 private:
     void serializeObject(void) override;
 };

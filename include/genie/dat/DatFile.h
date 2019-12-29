@@ -77,6 +77,8 @@ public:
     //
     void setVerboseMode(bool verbose);
 
+    bool compareTo(const DatFile &other) const;
+
     // File data
     static const unsigned short FILE_VERSION_SIZE = 8;
     std::string FileVersion;

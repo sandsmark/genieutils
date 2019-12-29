@@ -35,6 +35,8 @@ public:
     int16_t DisplayAngle = -1;
     int16_t Padding2 = 0;
 
+    bool compareTo(const GraphicDelta &other) const;
+
 private:
     void serializeObject(void) override;
 };

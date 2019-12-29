@@ -20,7 +20,22 @@
 
 #include "genie/dat/GraphicDelta.h"
 
+#include "TestHelpers.h"
+
 namespace genie {
+
+bool GraphicDelta::compareTo(const GraphicDelta &other) const
+{
+    COMPARE_MEMBER(GraphicID);
+    COMPARE_MEMBER(Padding1);
+    COMPARE_MEMBER(SpritePtr);
+    COMPARE_MEMBER(OffsetX);
+    COMPARE_MEMBER(OffsetY);
+    COMPARE_MEMBER(DisplayAngle);
+    COMPARE_MEMBER(Padding2);
+
+    return true;
+}
 
 void GraphicDelta::serializeObject(void)
 {

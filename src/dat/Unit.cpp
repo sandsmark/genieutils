@@ -19,6 +19,9 @@
 */
 
 #include "genie/dat/Unit.h"
+
+#include "TestHelpers.h"
+
 #include <unordered_map>
 
 namespace genie {
@@ -124,6 +127,95 @@ const std::string &Unit::className(const int16_t classId, const GameVersion game
     }
 
     return knownNames.at(classId);
+}
+
+bool Unit::compareTo(const Unit &other) const
+{
+    COMPARE_MEMBER(ClearanceSize);
+    COMPARE_MEMBER(OutlineSize);
+    COMPARE_MEMBER(Size);
+    COMPARE_MEMBER(HPBarHeight);
+    COMPARE_MEMBER(LineOfSight);
+    COMPARE_MEMBER(MultipleAttributeMode);
+    COMPARE_MEMBER(ResourceDecay);
+    COMPARE_MEMBER(Speed);
+    COMPARE_MEMBER(BaseID);
+    COMPARE_MEMBER(BloodUnitID);
+    COMPARE_MEMBER(Class);
+    COMPARE_MEMBER(CopyID);
+    COMPARE_MEMBER(DamageSound);
+    COMPARE_MEMBER(DeadUnitID);
+    COMPARE_MEMBER(DyingGraphic);
+    COMPARE_MEMBER(DyingSound);
+    COMPARE_MEMBER(HitPoints);
+    COMPARE_MEMBER(ID);
+    COMPARE_MEMBER(IconID);
+    COMPARE_MEMBER(Nothing);
+    COMPARE_MEMBER(OldPortraitPict);
+    COMPARE_MEMBER(ResourceCapacity);
+    COMPARE_MEMBER(SelectionSound);
+    COMPARE_MEMBER(TelemetryID);
+    COMPARE_MEMBER(TerrainRestriction);
+    COMPARE_MEMBER(TrainSound);
+    COMPARE_MEMBER(UndeadGraphic);
+    COMPARE_MEMBER(Unitline);
+    COMPARE_MEMBER(HotKey);
+    COMPARE_MEMBER(LanguageDLLHelp);
+    COMPARE_MEMBER(LanguageDLLHotKeyText);
+    COMPARE_MEMBER(BlastDefenseLevel);
+    COMPARE_MEMBER(CanBeBuiltOn);
+    COMPARE_MEMBER(CanBeGathered);
+    COMPARE_MEMBER(Civilization);
+    COMPARE_MEMBER(CombatLevel);
+    COMPARE_MEMBER(ConvertTerrain);
+    COMPARE_MEMBER(CreateDoppelgangerOnDeath);
+    COMPARE_MEMBER(Disabled);
+    COMPARE_MEMBER(Enabled);
+    COMPARE_MEMBER(FlyMode);
+    COMPARE_MEMBER(FogVisibility);
+    COMPARE_MEMBER(GarrisonCapacity);
+    COMPARE_MEMBER(HideInEditor);
+    COMPARE_MEMBER(HillMode);
+    COMPARE_MEMBER(InteractionMode);
+    COMPARE_MEMBER(InterfaceKind);
+    COMPARE_MEMBER(MinTechLevel);
+    COMPARE_MEMBER(MinimapMode);
+    COMPARE_MEMBER(ObstructionClass);
+    COMPARE_MEMBER(ObstructionType);
+    COMPARE_MEMBER(OldAttackReaction);
+    COMPARE_MEMBER(Recyclable);
+    COMPARE_MEMBER(ResourceGatherGroup);
+    COMPARE_MEMBER(SelectionEffect);
+    COMPARE_MEMBER(SortNumber);
+    COMPARE_MEMBER(Type);
+    COMPARE_MEMBER(UndeadMode);
+    COMPARE_MEMBER(PlacementSideTerrain);
+    COMPARE_MEMBER(PlacementTerrain);
+    COMPARE_MEMBER(StandingGraphic);
+    COMPARE_MEMBER(Name);
+    COMPARE_MEMBER(Name2);
+    COMPARE_MEMBER_VEC(ResourceStorages);
+    COMPARE_MEMBER_VEC(DamageGraphics);
+    COMPARE_MEMBER(LanguageDLLCreation);
+    COMPARE_MEMBER(LanguageDLLName);
+    COMPARE_MEMBER(WwiseDamageSoundID);
+    COMPARE_MEMBER(WwiseDyingSoundID);
+    COMPARE_MEMBER(WwiseSelectionSoundID);
+    COMPARE_MEMBER(WwiseTrainSoundID);
+    COMPARE_MEMBER(EditorSelectionColour);
+    COMPARE_MEMBER(MinimapColor);
+    COMPARE_MEMBER(OcclusionMode);
+    COMPARE_MEMBER(Trait);
+
+    // TODO
+//    unit::Moving Moving;
+//    unit::Action Action;
+//    unit::Combat Combat;
+//    unit::Missile Missile;
+//    unit::Creatable Creatable;
+//    unit::Building Building;
+
+    return true;
 }
 
 //------------------------------------------------------------------------------

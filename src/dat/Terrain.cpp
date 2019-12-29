@@ -20,6 +20,8 @@
 
 #include "genie/dat/Terrain.h"
 
+#include "TestHelpers.h"
+
 namespace genie {
 
 unsigned short Terrain::terrain_count_ = 0;
@@ -79,6 +81,33 @@ size_t Terrain::getNameSize()
     } else {
         return 13;
     }
+}
+
+bool Terrain::compareTo(const Terrain &other) const
+{
+    COMPARE_MEMBER(NumberOfTerrainUnitsUsed);
+    COMPARE_MEMBER(Phantom);
+    COMPARE_MEMBER(TerrainToDraw);
+    COMPARE_MEMBER(BlendPriority);
+    COMPARE_MEMBER(BlendType);
+    COMPARE_MEMBER(StringID);
+    COMPARE_MEMBER(HideInEditor);
+    COMPARE_MEMBER(ImpassableTerrain);
+    COMPARE_MEMBER(IsWater);
+    COMPARE_MEMBER(PassableTerrain);
+    COMPARE_MEMBER_VEC(ElevationGraphics);
+    COMPARE_MEMBER(TerrainUnitDensity);
+    COMPARE_MEMBER(TerrainUnitID);
+    COMPARE_MEMBER(TerrainUnitMaskedDensity);
+    COMPARE_MEMBER(TerrainUnitCentering);
+    COMPARE_MEMBER(TerrainDimensions);
+    COMPARE_MEMBER(CliffColors);
+    COMPARE_MEMBER(OverlayMaskName);
+    COMPARE_MEMBER(Borders);
+    COMPARE_MEMBER(WwiseSoundID);
+    COMPARE_MEMBER(WwiseSoundStopID);
+
+    return true;
 }
 
 //------------------------------------------------------------------------------

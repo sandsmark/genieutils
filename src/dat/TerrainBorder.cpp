@@ -20,6 +20,8 @@
 
 #include "genie/dat/TerrainBorder.h"
 
+#include "TestHelpers.h"
+
 namespace genie {
 
 //------------------------------------------------------------------------------
@@ -31,6 +33,16 @@ TerrainBorder::TerrainBorder()
 size_t TerrainBorder::getNameSize()
 {
     return 13;
+}
+
+bool TerrainBorder::compareTo(const TerrainBorder &other) const
+{
+    COMPARE_MEMBER(BorderStyle);
+    COMPARE_MEMBER(DrawTerrain);
+    COMPARE_MEMBER(UnderlayTerrain);
+    COMPARE_MEMBER_VEC_VEC(Borders);
+
+    return true;
 }
 
 //------------------------------------------------------------------------------

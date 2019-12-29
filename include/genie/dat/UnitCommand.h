@@ -136,6 +136,8 @@ public:
     uint32_t WwiseResourceGatheringSoundID = 0; // TODO doc, new in de
     uint32_t WwiseResourceDepositSoundID = 0; // TODO doc, new in de
 
+    bool compareTo(const Task &other) const;
+
 private:
     void serializeObject(void) override;
 };

@@ -134,6 +134,8 @@ public:
     std::vector<GraphicDelta> Deltas;
     std::vector<GraphicAngleSound> AngleSounds;
 
+    bool compareTo(const Graphic &other) const;
+
 private:
     void serializeObject(void) override;
 };

@@ -20,6 +20,8 @@
 
 #include "genie/dat/Sound.h"
 
+#include "TestHelpers.h"
+
 namespace genie {
 
 //------------------------------------------------------------------------------
@@ -28,6 +30,17 @@ void Sound::setGameVersion(GameVersion gv)
     ISerializable::setGameVersion(gv);
 
     updateGameVersion(Items);
+}
+
+bool Sound::compareTo(const Sound &other) const
+{
+    COMPARE_MEMBER(ID);
+    COMPARE_MEMBER(PlayDelay);
+    COMPARE_MEMBER(CacheTime); // 5 minutes
+    COMPARE_MEMBER(TotalProbability);
+    COMPARE_MEMBER_VEC(Items);
+
+    return true;
 }
 
 void Sound::serializeObject(void)

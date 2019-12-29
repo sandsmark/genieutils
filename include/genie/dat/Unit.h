@@ -610,6 +610,8 @@ public:
 
     unit::Building Building;
 
+    bool compareTo(const Unit &other) const;
+
 protected:
     void serializeObject(void) override;
 };

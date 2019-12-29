@@ -38,6 +38,8 @@ public:
 
     std::vector<EffectCommand> EffectCommands;
 
+    bool compareTo(const Effect &other) const;
+
 private:
     void serializeObject(void) override;
 };

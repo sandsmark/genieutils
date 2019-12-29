@@ -49,6 +49,8 @@ public:
 
     static void setTerrainCount(unsigned short cnt);
 
+    bool compareTo(const TerrainRestriction &other) const;
+
 private:
     static unsigned short terrain_count_;
 

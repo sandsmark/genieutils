@@ -20,6 +20,8 @@
 
 #include "genie/dat/Research.h"
 
+#include "TestHelpers.h"
+
 namespace genie {
 
 //------------------------------------------------------------------------------
@@ -43,6 +45,30 @@ unsigned short Tech::getRequiredTechsSize()
     } else {
         return 4;
     }
+}
+
+bool Tech::compareTo(const Tech &other) const
+{
+    COMPARE_MEMBER(Civ);
+    COMPARE_MEMBER(EffectID);
+    COMPARE_MEMBER(FullTechMode);
+    COMPARE_MEMBER(IconID);
+    COMPARE_MEMBER(RequiredTechCount);
+    COMPARE_MEMBER(ResearchLocation);
+    COMPARE_MEMBER(ResearchTime);
+    COMPARE_MEMBER(Type);
+    COMPARE_MEMBER(HotKey);
+    COMPARE_MEMBER(LanguageDLLHelp);
+    COMPARE_MEMBER(LanguageDLLTechTree);
+    COMPARE_MEMBER(ButtonID);
+    COMPARE_MEMBER(Name);
+    COMPARE_MEMBER(Name2);
+    COMPARE_MEMBER_VEC(ResourceCosts);
+    COMPARE_MEMBER(RequiredTechs);
+    COMPARE_MEMBER(LanguageDLLDescription);
+    COMPARE_MEMBER(LanguageDLLName);
+
+    return true;
 }
 
 //------------------------------------------------------------------------------

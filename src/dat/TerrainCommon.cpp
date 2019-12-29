@@ -19,9 +19,20 @@
 
 #include "genie/dat/Terrain.h"
 
+#include "TestHelpers.h"
+
 namespace genie {
 
 //------------------------------------------------------------------------------
+bool FrameData::compareTo(const FrameData &other) const
+{
+    COMPARE_MEMBER(FrameCount);
+    COMPARE_MEMBER(AngleCount);
+    COMPARE_MEMBER(ShapeID);
+
+    return true;
+}
+
 void FrameData::serializeObject(void)
 {
     serialize<int16_t>(FrameCount);

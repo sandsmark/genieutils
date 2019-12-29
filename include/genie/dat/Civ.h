@@ -65,6 +65,8 @@ public:
 
     std::vector<int16_t> UniqueUnitsTechs = { -1, -1, -1, -1 }; // Unknown in >=SWGB (cnt=4)
 
+    bool compareTo(const Civ &other) const;
+
 private:
     void serializeObject(void) override;
 };

@@ -20,6 +20,8 @@
 
 #include "genie/dat/DatFile.h"
 
+#include "TestHelpers.h"
+
 #include <fstream>
 #include <vector>
 #include <unordered_map>
@@ -226,6 +228,45 @@ void DatFile::extractRaw(const char *inFile, const char *outFile)
 void DatFile::setVerboseMode(bool verbose)
 {
     verbose_ = verbose;
+}
+
+bool DatFile::compareTo(const DatFile &other) const
+{
+    COMPARE_MEMBER(FileVersion);
+    COMPARE_MEMBER(FloatPtrTerrainTables);
+    COMPARE_MEMBER(TerrainPassGraphicPointers);
+    COMPARE_MEMBER_VEC(TerrainRestrictions);
+    COMPARE_MEMBER_VEC(PlayerColours);
+    COMPARE_MEMBER_VEC(Sounds);
+    COMPARE_MEMBER(GraphicPointers);
+
+    COMPARE_MEMBER_VEC(Graphics);
+    COMPARE_MEMBER_VEC(Effects);
+    COMPARE_MEMBER_VEC(UnitHeaders);
+    COMPARE_MEMBER_VEC(Civs);
+
+    COMPARE_MEMBER_VEC(Techs);
+    COMPARE_MEMBER_VEC(UnitLines);
+
+    COMPARE_MEMBER(TimeSlice);
+    COMPARE_MEMBER(UnitKillRate);
+    COMPARE_MEMBER(UnitKillTotal);
+    COMPARE_MEMBER(UnitHitPointRate);
+    COMPARE_MEMBER(UnitHitPointTotal);
+    COMPARE_MEMBER(RazingKillRate);
+    COMPARE_MEMBER(RazingKillTotal);
+    COMPARE_MEMBER(TerrainsUsed1);
+    COMPARE_MEMBER(SUnknown2);
+    COMPARE_MEMBER(SUnknown3);
+    COMPARE_MEMBER(SUnknown4);
+    COMPARE_MEMBER(SUnknown5);
+
+    COMPARE_MEMBER(SUnknown7);
+    COMPARE_MEMBER(SUnknown8);
+
+    return RandomMaps.compareTo(other.RandomMaps) &&
+            TerrainBlock.compareTo(other.TerrainBlock) &&
+            TechTree.compareTo(other.TechTree);
 }
 
 //------------------------------------------------------------------------------

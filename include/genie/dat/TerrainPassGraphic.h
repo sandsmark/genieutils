@@ -32,6 +32,8 @@ public:
     int32_t WalkTileSpriteID = -1;
     float WalkSpriteRate = 0;
 
+    bool compareTo(const TerrainPassGraphic &other) const;
+
 private:
     void serializeObject(void) override;
 };

@@ -93,6 +93,8 @@ public:
     /// MinGameVersion: SWGB
     std::string Name2 = "";
 
+    bool compareTo(const Tech &other) const;
+
 private:
     void serializeObject(void) override;
 };

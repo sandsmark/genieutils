@@ -33,6 +33,8 @@ public:
     int8_t Exists = 1;
     std::vector<Task> TaskList;
 
+    bool compareTo(const UnitHeader &other) const;
+
 private:
     void serializeObject(void) override;
 };

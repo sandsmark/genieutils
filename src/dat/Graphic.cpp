@@ -19,8 +19,10 @@
 */
 
 #include "genie/dat/Graphic.h"
-#include <string.h>
 
+#include "TestHelpers.h"
+
+#include <string.h>
 #include <iostream>
 
 namespace genie {
@@ -50,6 +52,39 @@ unsigned short Graphic::getFilenameSize()
     } else {
         return 25;
     }
+}
+
+bool Graphic::compareTo(const Graphic &other) const
+{
+    COMPARE_MEMBER(AnimationDuration);
+    COMPARE_MEMBER(FrameDuration);
+    COMPARE_MEMBER(ReplayDelay);
+    COMPARE_MEMBER(SpeedMultiplier);
+    COMPARE_MEMBER(ID);
+    COMPARE_MEMBER(SoundID);
+    COMPARE_MEMBER(SLP);
+    COMPARE_MEMBER(AngleSoundsUsed);
+    COMPARE_MEMBER(EditorFlag);
+    COMPARE_MEMBER(IsLoaded);
+    COMPARE_MEMBER(Layer);
+    COMPARE_MEMBER(MirroringMode);
+    COMPARE_MEMBER(OldColorFlag);
+    COMPARE_MEMBER(PlayerColor);
+    COMPARE_MEMBER(Rainbow);
+    COMPARE_MEMBER(TransparentSelection);
+    COMPARE_MEMBER(FileName);
+    COMPARE_MEMBER(Name);
+    COMPARE_MEMBER(ParticleEffectName);
+    COMPARE_MEMBER_VEC(AngleSounds);
+    COMPARE_MEMBER_VEC(Deltas);
+    COMPARE_MEMBER(Coordinates);
+    COMPARE_MEMBER(AngleCount);
+    COMPARE_MEMBER(FirstFrame);
+    COMPARE_MEMBER(FrameCount);
+    COMPARE_MEMBER(WwiseSoundID);
+    COMPARE_MEMBER(SequenceType);
+
+    return true;
 }
 
 void Graphic::serializeObject(void)

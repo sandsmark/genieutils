@@ -20,6 +20,8 @@
 
 #include "genie/dat/TerrainRestriction.h"
 
+#include "TestHelpers.h"
+
 #include <iostream>
 
 namespace genie {
@@ -45,6 +47,13 @@ void TerrainRestriction::setGameVersion(GameVersion gv)
 void TerrainRestriction::setTerrainCount(unsigned short cnt)
 {
     terrain_count_ = cnt;
+}
+
+bool TerrainRestriction::compareTo(const TerrainRestriction &other) const
+{
+    COMPARE_MEMBER(PassableBuildableDmgMultiplier);
+    COMPARE_MEMBER_VEC(TerrainPassGraphics);
+    return true;
 }
 
 //------------------------------------------------------------------------------

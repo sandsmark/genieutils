@@ -19,9 +19,27 @@
 */
 
 #include "genie/dat/GraphicAttackSound.h"
+
+#include "TestHelpers.h"
+
 #include <string.h>
 
 namespace genie {
+
+bool GraphicAngleSound::compareTo(const GraphicAngleSound &other) const
+{
+    COMPARE_MEMBER(FrameNum);
+    COMPARE_MEMBER(FrameNum2);
+    COMPARE_MEMBER(FrameNum3);
+    COMPARE_MEMBER(SoundID);
+    COMPARE_MEMBER(SoundID2);
+    COMPARE_MEMBER(SoundID3);
+    COMPARE_MEMBER(WwiseSoundID);
+    COMPARE_MEMBER(WwiseSoundID2);
+    COMPARE_MEMBER(WwiseSoundID3);
+
+    return true;
+}
 
 void GraphicAngleSound::serializeObject(void)
 {

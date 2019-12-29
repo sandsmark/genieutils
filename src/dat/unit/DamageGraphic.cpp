@@ -20,9 +20,22 @@
 
 #include "genie/dat/unit/DamageGraphic.h"
 
+#include "../TestHelpers.h"
+
 namespace genie {
 
 namespace unit {
+
+bool DamageGraphic::compareTo(const DamageGraphic &other) const
+{
+    COMPARE_MEMBER(GraphicID);
+    COMPARE_MEMBER(DamagePercent);
+    COMPARE_MEMBER(OldApplyMode);
+    COMPARE_MEMBER(ApplyMode);
+
+    return true;
+}
+
 void DamageGraphic::serializeObject(void)
 {
     serialize<int16_t>(GraphicID);

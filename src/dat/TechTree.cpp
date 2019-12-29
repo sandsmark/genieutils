@@ -20,6 +20,8 @@
 
 #include "genie/dat/TechTree.h"
 
+#include "TestHelpers.h"
+
 namespace genie {
 
 //------------------------------------------------------------------------------
@@ -41,6 +43,17 @@ unsigned short TechTree::getCount() //GameVersion gv) // used before 10.84 (GV_A
     } else {
         return 40;
     }
+}
+
+bool TechTree::compareTo(const TechTree &other) const
+{
+    COMPARE_MEMBER(TotalUnitTechGroups);
+    COMPARE_MEMBER_VEC(TechTreeAges);
+    COMPARE_MEMBER_VEC(UnitConnections);
+    COMPARE_MEMBER_VEC(BuildingConnections);
+    COMPARE_MEMBER_VEC(ResearchConnections);
+
+    return true;
 }
 
 //------------------------------------------------------------------------------
@@ -92,6 +105,22 @@ unsigned short TechTreeAge::getZoneCount()
     } else {
         return 3;
     }
+}
+
+bool TechTreeAge::compareTo(const TechTreeAge &other) const
+{
+    COMPARE_MEMBER(ID);
+    COMPARE_MEMBER(LineMode);
+    COMPARE_MEMBER(MaxAgeLength);
+    COMPARE_MEMBER(NumBuildingLevels);
+    COMPARE_MEMBER(Status);
+    COMPARE_MEMBER(Buildings);
+    COMPARE_MEMBER(Techs);
+    COMPARE_MEMBER(Units);
+    COMPARE_MEMBER(BuildingsPerZone);
+    COMPARE_MEMBER(GroupLengthPerZone);
+
+    return Common.compareTo(other.Common);
 }
 
 //------------------------------------------------------------------------------
@@ -148,6 +177,22 @@ void BuildingConnection::setGameVersion(GameVersion gv)
     Common.setGameVersion(gv);
 }
 
+bool BuildingConnection::compareTo(const BuildingConnection &other) const
+{
+    COMPARE_MEMBER(EnablingResearch);
+    COMPARE_MEMBER(ID);
+    COMPARE_MEMBER(LineMode);
+    COMPARE_MEMBER(LocationInAge);
+    COMPARE_MEMBER(Status);
+    COMPARE_MEMBER(Buildings);
+    COMPARE_MEMBER(Techs);
+    COMPARE_MEMBER(Units);
+    COMPARE_MEMBER(UnitsTechsFirst);
+    COMPARE_MEMBER(UnitsTechsTotal);
+
+    return Common.compareTo(other.Common);
+}
+
 //------------------------------------------------------------------------------
 void BuildingConnection::serializeObject(void)
 {
@@ -194,6 +239,21 @@ void UnitConnection::setGameVersion(GameVersion gv)
     Common.setGameVersion(gv);
 }
 
+bool UnitConnection::compareTo(const UnitConnection &other) const
+{
+    COMPARE_MEMBER(EnablingResearch);
+    COMPARE_MEMBER(ID);
+    COMPARE_MEMBER(LineMode);
+    COMPARE_MEMBER(LocationInAge);
+    COMPARE_MEMBER(RequiredResearch);
+    COMPARE_MEMBER(UpperBuilding);
+    COMPARE_MEMBER(VerticalLine);
+    COMPARE_MEMBER(Status);
+    COMPARE_MEMBER(Units);
+
+    return Common.compareTo(other.Common);
+}
+
 //------------------------------------------------------------------------------
 void UnitConnection::serializeObject(void)
 {
@@ -228,6 +288,21 @@ void ResearchConnection::setGameVersion(GameVersion gv)
 {
     ISerializable::setGameVersion(gv);
     Common.setGameVersion(gv);
+}
+
+bool ResearchConnection::compareTo(const ResearchConnection &other) const
+{
+    COMPARE_MEMBER(ID);
+    COMPARE_MEMBER(LineMode);
+    COMPARE_MEMBER(LocationInAge);
+    COMPARE_MEMBER(UpperBuilding);
+    COMPARE_MEMBER(VerticalLine);
+    COMPARE_MEMBER(Status);
+    COMPARE_MEMBER(Buildings);
+    COMPARE_MEMBER(Techs);
+    COMPARE_MEMBER(Units);
+
+    return Common.compareTo(other.Common);
 }
 
 //------------------------------------------------------------------------------
@@ -268,4 +343,14 @@ void ResearchConnection::serializeObject(void)
         serialize<int32_t>(LineMode); // 9.51
     }
 }
+
+bool techtree::Common::compareTo(const techtree::Common &other) const
+{
+    COMPARE_MEMBER(SlotsUsed);
+    COMPARE_MEMBER(UnitResearch);
+    COMPARE_MEMBER(Mode);
+
+    return true;
+}
+
 } // namespace genie

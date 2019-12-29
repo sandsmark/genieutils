@@ -19,9 +19,30 @@
 */
 
 #include "genie/dat/PlayerColour.h"
+
+#include "TestHelpers.h"
+
 #include <string.h>
 
 namespace genie {
+
+bool PlayerColour::compareTo(const PlayerColour &other) const
+{
+    COMPARE_MEMBER(ID);
+    COMPARE_MEMBER(PaletteBase);
+    COMPARE_MEMBER(PlayerColorBase);
+    COMPARE_MEMBER(UnitOutlineColor);
+    COMPARE_MEMBER(UnitSelectionColor1);
+    COMPARE_MEMBER(UnitSelectionColor2);
+    COMPARE_MEMBER(MinimapColor2);
+    COMPARE_MEMBER(MinimapColor3);
+    COMPARE_MEMBER(StatisticsText);
+    COMPARE_MEMBER(Name);
+    COMPARE_MEMBER(ResourceID);
+    COMPARE_MEMBER(Type);
+
+    return true;
+}
 
 void PlayerColour::serializeObject(void)
 {

@@ -53,6 +53,8 @@ public:
     /// 0 transform, 1 transform player color, 2 shadow, 3 translucent
     uint8_t Type = 1;
 
+    bool compareTo(const PlayerColour &other) const;
+
 private:
     void serializeObject(void) override;
 };

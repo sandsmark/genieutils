@@ -20,9 +20,20 @@
 
 #include "genie/dat/UnitLine.h"
 
+#include "TestHelpers.h"
+
 namespace genie {
 
 //------------------------------------------------------------------------------
+bool UnitLine::compareTo(const UnitLine &other) const
+{
+    COMPARE_MEMBER(ID);
+    COMPARE_MEMBER(Name);
+    COMPARE_MEMBER(UnitIDs);
+
+    return true;
+}
+
 void UnitLine::serializeObject(void)
 {
     serialize<int16_t>(ID);

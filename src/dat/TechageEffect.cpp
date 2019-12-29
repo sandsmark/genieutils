@@ -20,9 +20,22 @@
 
 #include "genie/dat/TechageEffect.h"
 
+#include "TestHelpers.h"
+
 namespace genie {
 
 //------------------------------------------------------------------------------
+bool EffectCommand::compareTo(const EffectCommand &other) const
+{
+    COMPARE_MEMBER(Type);
+    COMPARE_MEMBER(TargetUnit);
+    COMPARE_MEMBER(UnitClassID);
+    COMPARE_MEMBER(AttributeID);
+    COMPARE_MEMBER(Amount);
+
+    return true;
+}
+
 void EffectCommand::serializeObject(void)
 {
     serialize<int8_t>(Type);

@@ -19,6 +19,8 @@
 
 #include "genie/dat/RandomMap.h"
 
+#include "TestHelpers.h"
+
 namespace genie {
 
 //------------------------------------------------------------------------------
@@ -27,6 +29,15 @@ void RandomMaps::setGameVersion(GameVersion gv)
     ISerializable::setGameVersion(gv);
 
     updateGameVersion(Maps);
+}
+
+bool RandomMaps::compareTo(const RandomMaps &other) const
+{
+    COMPARE_MEMBER(RandomMapsPtr);
+    COMPARE_MEMBER_VEC(Maps);
+
+
+    return true;
 }
 
 //------------------------------------------------------------------------------
@@ -63,6 +74,31 @@ void MapInfo::setGameVersion(GameVersion gv)
     updateGameVersion(MapTerrains);
     updateGameVersion(MapUnits);
     updateGameVersion(MapElevations);
+}
+
+bool MapInfo::compareTo(const MapInfo &other) const
+{
+    COMPARE_MEMBER(MapID);
+    COMPARE_MEMBER(BorderSouthWest);
+    COMPARE_MEMBER(BorderNorthWest);
+    COMPARE_MEMBER(BorderNorthEast);
+    COMPARE_MEMBER(BorderSouthEast);
+    COMPARE_MEMBER(BorderUsage);
+    COMPARE_MEMBER(WaterShape);
+    COMPARE_MEMBER(BaseTerrain);
+    COMPARE_MEMBER(LandCoverage);
+    COMPARE_MEMBER(UnusedID);
+    COMPARE_MEMBER(MapLandsPtr);
+    COMPARE_MEMBER(MapTerrainsPtr);
+    COMPARE_MEMBER(MapUnitsPtr);
+    COMPARE_MEMBER(MapElevationsPtr);
+
+    COMPARE_MEMBER_VEC(MapLands);
+    COMPARE_MEMBER_VEC(MapTerrains);
+    COMPARE_MEMBER_VEC(MapUnits);
+    COMPARE_MEMBER_VEC(MapElevations);
+
+    return true;
 }
 
 //------------------------------------------------------------------------------
@@ -122,6 +158,27 @@ void MapLand::setGameVersion(GameVersion gv)
     ISerializable::setGameVersion(gv);
 }
 
+bool MapLand::compareTo(const MapLand &other) const
+{
+    COMPARE_MEMBER(Padding1);
+    COMPARE_MEMBER(Padding2);
+    COMPARE_MEMBER(BaseSize);
+    COMPARE_MEMBER(BaseX);
+    COMPARE_MEMBER(BaseY);
+    COMPARE_MEMBER(Clumpiness);
+    COMPARE_MEMBER(LandID);
+    COMPARE_MEMBER(LandSpacing);
+    COMPARE_MEMBER(StartAreaRadius);
+    COMPARE_MEMBER(Terrain);
+    COMPARE_MEMBER(TerrainEdgeFade);
+    COMPARE_MEMBER(ByPlayerFlag);
+    COMPARE_MEMBER(LandProportion);
+    COMPARE_MEMBER(PlacementType);
+    COMPARE_MEMBER(Zone);
+
+    return true;
+}
+
 //------------------------------------------------------------------------------
 void MapLand::serializeObject(void)
 {
@@ -148,6 +205,18 @@ void MapTerrain::setGameVersion(GameVersion gv)
     ISerializable::setGameVersion(gv);
 }
 
+bool MapTerrain::compareTo(const MapTerrain &other) const
+{
+    COMPARE_MEMBER(Proportion);
+    COMPARE_MEMBER(Terrain);
+    COMPARE_MEMBER(ClumpCount);
+    COMPARE_MEMBER(EdgeSpacing);
+    COMPARE_MEMBER(PlacementTerrain);
+    COMPARE_MEMBER(Clumpiness);
+
+    return true;
+}
+
 //------------------------------------------------------------------------------
 void MapTerrain::serializeObject(void)
 {
@@ -163,6 +232,25 @@ void MapTerrain::serializeObject(void)
 void MapUnit::setGameVersion(GameVersion gv)
 {
     ISerializable::setGameVersion(gv);
+}
+
+bool MapUnit::compareTo(const MapUnit &other) const
+{
+    COMPARE_MEMBER(Padding1);
+    COMPARE_MEMBER(Fluctuation);
+    COMPARE_MEMBER(GroupArea);
+    COMPARE_MEMBER(GroupsPerPlayer);
+    COMPARE_MEMBER(HostTerrain);
+    COMPARE_MEMBER(MaxDistanceToPlayers);
+    COMPARE_MEMBER(MinDistanceToPlayers);
+    COMPARE_MEMBER(ObjectsPerGroup);
+    COMPARE_MEMBER(PlayerID);
+    COMPARE_MEMBER(SetPlaceForAllPlayers);
+    COMPARE_MEMBER(Unit);
+    COMPARE_MEMBER(GroupPlacing);
+    COMPARE_MEMBER(ScaleFlag);
+
+    return true;
 }
 
 //------------------------------------------------------------------------------
@@ -187,6 +275,18 @@ void MapUnit::serializeObject(void)
 void MapElevation::setGameVersion(GameVersion gv)
 {
     ISerializable::setGameVersion(gv);
+}
+
+bool MapElevation::compareTo(const MapElevation &other) const
+{
+    COMPARE_MEMBER(Proportion);
+    COMPARE_MEMBER(Terrain);
+    COMPARE_MEMBER(ClumpCount);
+    COMPARE_MEMBER(BaseTerrain);
+    COMPARE_MEMBER(BaseElevation);
+    COMPARE_MEMBER(TileSpacing);
+
+    return true;
 }
 
 //------------------------------------------------------------------------------

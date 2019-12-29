@@ -127,6 +127,8 @@ public:
     int16_t AttributeID = -1;
     float Amount = 0;
 
+    bool compareTo(const EffectCommand &other) const;
+
 private:
     void serializeObject(void) override;
 };

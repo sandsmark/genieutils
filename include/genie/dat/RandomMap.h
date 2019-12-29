@@ -36,6 +36,8 @@ public:
     int32_t BaseElevation = 0;
     int32_t TileSpacing = 0;
 
+    bool compareTo(const MapElevation &other) const;
+
 private:
     void serializeObject(void) override;
 };
@@ -59,6 +61,8 @@ public:
     int32_t MinDistanceToPlayers = 2;
     int32_t MaxDistanceToPlayers = 6;
 
+    bool compareTo(const MapUnit &other) const;
+
 private:
     void serializeObject(void) override;
 };
@@ -74,6 +78,8 @@ public:
     int32_t EdgeSpacing = 0;
     int32_t PlacementTerrain = -1;
     int32_t Clumpiness = 0;
+
+    bool compareTo(const MapTerrain &other) const;
 
 private:
     void serializeObject(void) override;
@@ -99,6 +105,8 @@ public:
     int32_t StartAreaRadius = 10;
     int32_t TerrainEdgeFade = 25;
     int32_t Clumpiness = 8;
+
+    bool compareTo(const MapLand &other) const;
 
 private:
     void serializeObject(void) override;
@@ -132,6 +140,8 @@ public:
     std::vector<MapUnit> MapUnits;
     std::vector<MapElevation> MapElevations;
 
+    bool compareTo(const MapInfo &other) const;
+
 private:
     bool io_all_ = false;
 
@@ -147,6 +157,8 @@ public:
     int32_t RandomMapsPtr = 0;
 
     std::vector<MapInfo> Maps;
+
+    bool compareTo(const RandomMaps &other) const;
 
 private:
     std::vector<std::vector<int32_t>> OldMaps;

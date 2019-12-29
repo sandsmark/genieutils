@@ -30,6 +30,9 @@ public:
     int16_t AngleCount = 0;
     int16_t ShapeID = 0;
 
+
+    bool compareTo(const FrameData &other) const;
+
 private:
     void serializeObject(void) override;
 };

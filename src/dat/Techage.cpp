@@ -20,6 +20,8 @@
 
 #include "genie/dat/Techage.h"
 
+#include "TestHelpers.h"
+
 namespace genie {
 
 //------------------------------------------------------------------------------
@@ -33,6 +35,14 @@ void Effect::setGameVersion(GameVersion gv)
 unsigned short Effect::getNameSize(void)
 {
     return 31;
+}
+
+bool Effect::compareTo(const Effect &other) const
+{
+    COMPARE_MEMBER(Name);
+    COMPARE_MEMBER_VEC(EffectCommands);
+
+    return true;
 }
 
 //------------------------------------------------------------------------------

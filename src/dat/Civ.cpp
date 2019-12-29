@@ -20,6 +20,8 @@
 
 #include "genie/dat/Civ.h"
 
+#include "TestHelpers.h"
+
 namespace genie {
 
 void Civ::setGameVersion(GameVersion gv)
@@ -32,6 +34,22 @@ void Civ::setGameVersion(GameVersion gv)
 unsigned short Civ::getNameSize(void)
 {
     return 20;
+}
+
+bool Civ::compareTo(const Civ &other) const
+{
+    COMPARE_MEMBER(TeamBonusID);
+    COMPARE_MEMBER(TechTreeID);
+    COMPARE_MEMBER(IconSet);
+    COMPARE_MEMBER(PlayerType);
+    COMPARE_MEMBER(Name);
+    COMPARE_MEMBER(Name2);
+    COMPARE_MEMBER_VEC(Units);
+    COMPARE_MEMBER(Resources);
+    COMPARE_MEMBER(UniqueUnitsTechs);
+    COMPARE_MEMBER(UnitPointers);
+
+    return true;
 }
 
 void Civ::serializeObject(void)

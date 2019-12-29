@@ -38,6 +38,8 @@ public:
     int16_t TotalProbability = 100;
     std::vector<SoundItem> Items;
 
+    bool compareTo(const Sound &other) const;
+
 private:
     void serializeObject(void) override;
 };

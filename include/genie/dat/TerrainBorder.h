@@ -45,6 +45,8 @@ public:
     /// This has something to do with all 19 tile types. Mickey's DAT had this removed and instead added one border shape to each 19 tile types.
     int16_t BorderStyle = 0;
 
+    bool compareTo(const TerrainBorder &other) const;
+
 private:
     void serializeObject(void) override;
 };

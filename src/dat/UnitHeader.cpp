@@ -20,6 +20,8 @@
 
 #include "genie/dat/UnitHeader.h"
 
+#include "TestHelpers.h"
+
 namespace genie {
 
 //------------------------------------------------------------------------------
@@ -28,6 +30,14 @@ void UnitHeader::setGameVersion(GameVersion gv)
     ISerializable::setGameVersion(gv);
 
     updateGameVersion(TaskList);
+}
+
+bool UnitHeader::compareTo(const UnitHeader &other) const
+{
+    COMPARE_MEMBER(Exists);
+    COMPARE_MEMBER_VEC(TaskList);
+
+    return true;
 }
 
 //------------------------------------------------------------------------------

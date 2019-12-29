@@ -19,6 +19,9 @@
 */
 
 #include "genie/dat/SoundItem.h"
+
+#include "TestHelpers.h"
+
 #include <string.h>
 
 namespace genie {
@@ -30,6 +33,16 @@ unsigned short SoundItem::getFileNameSize()
     }
 
     return 27;
+}
+
+bool SoundItem::compareTo(const SoundItem &other) const
+{
+    COMPARE_MEMBER(FileName);
+    COMPARE_MEMBER(ResourceID);
+    COMPARE_MEMBER(Probability);
+    COMPARE_MEMBER(Civilization);
+    COMPARE_MEMBER(IconSet);
+    return true;
 }
 
 void SoundItem::serializeObject(void)

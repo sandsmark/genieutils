@@ -48,6 +48,9 @@ public:
     /// 2   Replace graphics (damaged walls)
     int8_t ApplyMode = 0;
 
+    bool compareTo(const DamageGraphic &other) const;
+
+
 private:
     void serializeObject(void) override;
 };

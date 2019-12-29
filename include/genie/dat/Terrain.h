@@ -103,6 +103,8 @@ public:
     /// Less than TERRAIN_UNITS_SIZE obviously
     int16_t NumberOfTerrainUnitsUsed = 0;
 
+    bool compareTo(const Terrain &other) const;
+
 private:
     static unsigned short terrain_count_;
 

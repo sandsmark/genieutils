@@ -20,6 +20,8 @@
 
 #include "genie/dat/UnitCommand.h"
 
+#include "TestHelpers.h"
+
 #include <unordered_map>
 
 namespace genie {
@@ -83,6 +85,43 @@ const std::string &Task::actionTypeName(const int16_t type)
     }
 
     return knownNames.at(type);
+}
+
+bool Task::compareTo(const Task &other) const
+{
+    COMPARE_MEMBER(SearchWaitTime);
+    COMPARE_MEMBER(WorkRange);
+    COMPARE_MEMBER(WorkValue1);
+    COMPARE_MEMBER(WorkValue2);
+    COMPARE_MEMBER(ActionType);
+    COMPARE_MEMBER(CarryingGraphicID);
+    COMPARE_MEMBER(ClassID);
+    COMPARE_MEMBER(GatherType);
+    COMPARE_MEMBER(ID);
+    COMPARE_MEMBER(MovingGraphicID);
+    COMPARE_MEMBER(ProceedingGraphicID);
+    COMPARE_MEMBER(ResourceDepositSoundID);
+    COMPARE_MEMBER(ResourceGatheringSoundID);
+    COMPARE_MEMBER(ResourceIn);
+    COMPARE_MEMBER(ResourceMultiplier);
+    COMPARE_MEMBER(ResourceOut);
+    COMPARE_MEMBER(TaskType);
+    COMPARE_MEMBER(TerrainID);
+    COMPARE_MEMBER(UnitID);
+    COMPARE_MEMBER(UnusedResource);
+    COMPARE_MEMBER(WorkFlag2);
+    COMPARE_MEMBER(WorkingGraphicID);
+    COMPARE_MEMBER(AutoSearchTargets);
+    COMPARE_MEMBER(CarryCheck);
+    COMPARE_MEMBER(CombatLevelFlag);
+    COMPARE_MEMBER(EnableTargeting);
+    COMPARE_MEMBER(IsDefault);
+    COMPARE_MEMBER(PickForConstruction);
+    COMPARE_MEMBER(TargetDiplomacy);
+    COMPARE_MEMBER(WwiseResourceDepositSoundID);
+    COMPARE_MEMBER(WwiseResourceGatheringSoundID);
+
+    return true;
 }
 
 //------------------------------------------------------------------------------
