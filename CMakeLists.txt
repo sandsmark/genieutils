@@ -204,6 +204,7 @@ set(SCRIPT_SRC
 
 set(UTIL_SRC
     src/util/Logger.cpp
+    src/util/Utility.cpp
     )
 
 # Tool sources:
