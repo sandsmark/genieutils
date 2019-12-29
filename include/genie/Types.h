@@ -58,10 +58,14 @@ extern GameVersion GV_LatestTap, GV_LatestDE2;
 
 struct XYZF {
     float x = 0.f, y = 0.f, z = 0.f;
+
+    bool operator!=(const XYZF &other) const { return x != other.x || y != other.y || z != other.z; }
 };
 
 struct XYF {
     float x = 0.f, y = 0.f;
+
+    bool operator!=(const XYF &other) const { return x != other.x || y != other.y; }
 };
 } // namespace genie
 
