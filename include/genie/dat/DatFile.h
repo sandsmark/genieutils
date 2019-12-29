@@ -111,24 +111,24 @@ public:
     genie::TechTree TechTree;
 
     /// History totals
-    int32_t TimeSlice;
-    int32_t UnitKillRate;
-    int32_t UnitKillTotal;
-    int32_t UnitHitPointRate;
-    int32_t UnitHitPointTotal;
-    int32_t RazingKillRate;
-    int32_t RazingKillTotal;
+    int32_t TimeSlice = 0;
+    int32_t UnitKillRate = 0;
+    int32_t UnitKillTotal = 0;
+    int32_t UnitHitPointRate = 0;
+    int32_t UnitHitPointTotal = 0;
+    int32_t RazingKillRate = 0;
+    int32_t RazingKillTotal = 0;
 
-    uint16_t TerrainsUsed1;
+    uint16_t TerrainsUsed1 = 0;
 
     //SWGB Unknowns:
-    int32_t SUnknown2;
-    int32_t SUnknown3;
-    int32_t SUnknown4;
-    int32_t SUnknown5;
+    int32_t SUnknown2 = 0;
+    int32_t SUnknown3 = 0;
+    int32_t SUnknown4 = 0;
+    int32_t SUnknown5 = 0;
 
-    int8_t SUnknown7;
-    int8_t SUnknown8;
+    int8_t SUnknown7 = 0;
+    int8_t SUnknown8 = 0;
 
 private:
     // if true print debug messages

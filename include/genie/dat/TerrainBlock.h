@@ -61,15 +61,15 @@ public:
     std::vector<TerrainBorder> TerrainBorders;
 
     int32_t MapRowOffset;
-    float MapMinX;
-    float MapMinY;
-    float MapMaxX;
-    float MapMaxY;
-    float MapMaxXplus1;
-    float MapMaxYplus1;
+    float MapMinX = 0.f;
+    float MapMinY = 0.f;
+    float MapMaxX = 0.f;
+    float MapMaxY = 0.f;
+    float MapMaxXplus1 = 0.f;
+    float MapMaxYplus1 = 0.f;
 
     uint16_t TerrainsUsed2;
-    uint16_t RemovedBlocksUsed;
+    uint16_t RemovedBlocksUsed = 0;
     uint16_t BordersUsed;
     int16_t MaxTerrain;
     int16_t TileWidth;
