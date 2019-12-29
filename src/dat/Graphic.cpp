@@ -19,6 +19,7 @@
 */
 
 #include "genie/dat/Graphic.h"
+#include "genie/util/Utility.h"
 
 #include "TestHelpers.h"
 
@@ -135,10 +136,18 @@ void Graphic::serializeObject(void)
     serialize<uint16_t>(FrameCount);
     serialize<uint16_t>(AngleCount);
     serialize<float>(SpeedMultiplier);
-    if (FrameDuration == 0.f && FrameCount > 0) {
-        FrameDuration = AnimationDuration / FrameCount;
+
+    // There was something wonky when the original files were created, so to
+    // avoid any diff when just loading and re-writing the original files we
+    // have to do this
+    if (getOperation() == OP_WRITE) {
+        const float newCount =  FrameCount ? AnimationDuration / FrameCount : 0;
+        if (!util::floatsEquals(newCount, FrameDuration)) {
+            FrameDuration = newCount;
+        }
     }
     serialize<float>(FrameDuration);
+
     AnimationDuration = FrameDuration * FrameCount;
     serialize<float>(ReplayDelay);
     serialize<uint8_t>(SequenceType);

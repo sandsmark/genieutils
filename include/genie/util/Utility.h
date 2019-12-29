@@ -30,6 +30,16 @@
 namespace genie {
 namespace util {
 
+inline bool floatsEquals(const float a, const float b)
+{
+    return (std::abs(a - b) * 100000.f <= std::min(std::abs(a), std::abs(b)));
+}
+
+inline bool floatsEquals(const double a, const double b)
+{
+    return (std::abs(a - b) * 1000000000000. <= std::min(std::abs(a), std::abs(b)));
+}
+
 inline std::string toLowercase(std::string input)
 {
     std::transform(input.begin(), input.end(), input.begin(), ::tolower);
