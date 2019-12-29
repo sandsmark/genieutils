@@ -44,7 +44,6 @@ void Compressor::beginCompression(void)
         break;
 
     case ISerializable::OP_WRITE:
-        obj_->setIStream(*istream_);
         ostream_ = obj_->getOStream();
 
         startCompression();
