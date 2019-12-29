@@ -105,7 +105,7 @@ int main(int argc, char **argv)
     } catch (boost::exception_detail::clone_impl <
                  boost::exception_detail::error_info_injector <
                  boost::program_options::too_many_positional_options_error >>
-                 e) {
+                 &e) {
         std::cout << "too many arguments!" << std::endl;
     }
 

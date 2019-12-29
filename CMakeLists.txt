@@ -5,13 +5,18 @@
 
 cmake_minimum_required(VERSION 3.9)
 
+project(genieutils)
+
+option(ENABLE_SANITIZERS "Enable runtime sanitizing (for development)")
+option(GUTILS_TOOLS "Build extra tools")
+option(GUTILS_TEST "Build tests")
+option(GUTILS_STATIC "Build static library so it can be built into the final executable")
+
 set(Genieutils_LIBRARY genieutils)
 set(CMAKE_CXX_STANDARD 17)
 
-project(genieutils)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake/)
-
 
 if (ENABLE_IPO)
     include(CheckIPOSupported)
@@ -29,6 +34,18 @@ endif()
 # dependencies:
 
 find_package(ZLIB QUIET)
+if (ZLIB_FOUND)
+    set(ZLIB_LIBRARIES ZLIB::ZLIB)
+else()
+    message(WARNING "zlib not found, falling back to bundled miniz. This might hurt performance, especially on 32bit")
+
+    set(DAT_SRC ${DAT_SRC}
+        extern/miniz/miniz.c
+    )
+    include_directories(extern/miniz)
+    set(ZLIB_LIBRARIES)
+endif()
+
 
 if (NOT WIN32)
     find_package(Iconv REQUIRED)
@@ -47,10 +64,19 @@ if (GUTILS_TOOLS)
 endif(GUTILS_TOOLS)
 
 if (GUTILS_TEST)
-  set(Boost_USE_MULTITHREADED      ON)
+  message(STATUS "Building tests")
+
   find_package(Boost 1.55 COMPONENTS unit_test_framework program_options REQUIRED)
-  find_package(SFML COMPONENTS SYSTEM WINDOW GRAPHICS REQUIRED)
+
+  set(Boost_USE_MULTITHREADED      ON)
+  set(GU_INCLUDE_DIRS ${GU_INCLUDE_DIRS})
 endif (GUTILS_TEST)
+
+if (ENABLE_SANITIZERS)
+    message("Enabling asan and ubsan")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=undefined")
+endif()
 
 # TODO: write proper cmake config for pcrio
 if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/extern/pcrio/pcrio.c)
@@ -79,10 +105,6 @@ endif()
 if (${ICONV_FOUND})
   set(GU_INCLUDE_DIRS ${GU_INCLUDE_DIRS} ${ICONV_INCLUDE_DIR})
 endif (${ICONV_FOUND})
-
-if (${GUTILS_TEST})
-  set(GU_INCLUDE_DIRS ${GU_INCLUDE_DIRS} ${SFML_INCLUDE_DIR})
-endif (${GUTILS_TEST})
 
 include_directories(${GU_INCLUDE_DIRS})
 
@@ -196,34 +218,25 @@ set(EXTRACT_SRC src/tools/extract/datextract.cpp)
 set(BINCOMP_SRC src/tools/bincompare/bincomp.cpp
                 src/tools/bincompare/main.cpp)
                 
-
-
-if (ZLIB_FOUND)
-    set(ZLIB_LIBRARIES ZLIB::ZLIB)
-else()
-    message(WARNING "zlib not found, falling back to bundled miniz. This might hurt performance, especially on 32bit")
-
-    set(DAT_SRC ${DAT_SRC}
-        extern/miniz/miniz.c
-    )
-    include_directories(extern/miniz)
-    set(ZLIB_LIBRARIES)
-endif()
-
 #------------------------------------------------------------------------------#
 # Executeable:
 #------------------------------------------------------------------------------#
+
+set(COMMON_LIBRARIES  ${ICONV_LIBRARIES} ${ZLIB_LIBRARIES})
 
 set(ALL_SRC
     ${FILE_SRC} ${LANG_SRC} ${DAT_SRC}
     ${RESOURCE_SRC} ${UTIL_SRC} ${SCRIPT_SRC}
 )
 
-if (GENIEUTILS_STATIC_BUILD)
+add_library(genieutils_common OBJECT ${ALL_SRC})
+target_link_libraries(genieutils_common ${COMMON_LIBRARIES})
+
+if (GUTILS_STATIC)
     message(STATUS "Building genieutils as static library")
-    add_library(${Genieutils_LIBRARY} STATIC ${ALL_SRC})
+    add_library(${Genieutils_LIBRARY} STATIC $<TARGET_OBJECTS:genieutils_common>)
 else()
-    add_library(${Genieutils_LIBRARY} SHARED ${ALL_SRC})
+    add_library(${Genieutils_LIBRARY} SHARED $<TARGET_OBJECTS:genieutils_common>)
 
     INSTALL(TARGETS ${Genieutils_LIBRARY}
         LIBRARY DESTINATION lib
@@ -238,7 +251,7 @@ else()
 endif()
 
 
-target_link_libraries(${Genieutils_LIBRARY} ${ZLIB_LIBRARIES} ${ICONV_LIBRARIES} ${PCRIO_LIBRARIES})
+target_link_libraries(${Genieutils_LIBRARY} ${PCRIO_LIBRARIES} ${ZLIB_LIBRARIES})
 
 
 #add_executable(main main.cpp)
@@ -248,19 +261,22 @@ target_link_libraries(${Genieutils_LIBRARY} ${ZLIB_LIBRARIES} ${ICONV_LIBRARIES}
 # Dev tools:
 #------------------------------------------------------------------------------#
 
-find_package(Qt5 OPTIONAL_COMPONENTS Widgets QUIET)
-if (Qt5Widgets_FOUND)
-    message("Qt5 Widgets found, enabling viewer for SLP/SMP files")
-    add_subdirectory(src/tools/picviewer)
-endif()
-
  # test doesn't build :(
  # add_executable(test ${TEST_SRC})
  # target_link_libraries(test ${Genieutils_LIBRARY} ${Boost_LIBRARIES} ) #${ZLIB_LIBRARIES} ${Boost_LIBRARIES} ${Genieutils_LIBRARY})
 
 if (GUTILS_TOOLS)
-  add_executable(datextract ${EXTRACT_SRC})
-  target_link_libraries(datextract ${ZLIB_LIBRARIES} ${Boost_LIBRARIES} ${Genieutils_LIBRARY})
+  message(STATUS "Building tools")
+
+  find_package(Qt5 OPTIONAL_COMPONENTS Widgets QUIET)
+  if (Qt5Widgets_FOUND)
+      message(STATUS "Qt5 Widgets found, enabling viewer for SLP/SMP files")
+      add_subdirectory(src/tools/picviewer)
+  endif()
+
+  add_executable(datextract ${EXTRACT_SRC} $<TARGET_OBJECTS:genieutils_common>)
+  target_link_libraries(datextract ${Boost_LIBRARIES} ${COMMON_LIBRARIES})
+#  target_link_libraries(datextract ${ZLIB_LIBRARIES} ${Boost_LIBRARIES} ${Genieutils_LIBRARY})
 
   add_executable(bincomp ${BINCOMP_SRC})
 endif (GUTILS_TOOLS)
@@ -270,13 +286,9 @@ endif (GUTILS_TOOLS)
 #------------------------------------------------------------------------------#
 if (GUTILS_TEST)
   set(GU_INCLUDE_DIRS ${GU_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
-  add_executable(main main.cpp)
-  target_link_libraries(main ${Genieutils_LIBRARY}
-                      ${SFML_WINDOW_LIBRARY}
-                      ${SFML_SYSTEM_LIBRARY}
-                      ${SFML_GRAPHICS_LIBRARY}
-                      ${Boost_LIBRARIES}
-  )
+
+  add_executable(main main.cpp $<TARGET_OBJECTS:genieutils_common>)
+  target_link_libraries(main ${Boost_LIBRARIES} ${COMMON_LIBRARIES})
 endif(GUTILS_TEST)
 
 if (ENABLE_CLANG_TIDY)
