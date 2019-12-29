@@ -42,6 +42,11 @@ int binaryCompare(const char *file1, const char *file2)
     }
 
     std::cout << cnt << " diffs!" << std::endl;
+    if (cnt > 0) {
+        std::cout << "File A: " << file1 << std::endl;
+        std::cout << "File B: " << file2 << std::endl;
+
+    }
 
     if (f1.eof() != f2.eof()) {
         std::cout << "EOF diff!!" << std::endl;
