@@ -57,9 +57,10 @@ public:
     //
     ~DatFile() override = default;
 
-    const std::string &gameName();
+    std::string gameName();
     GenieGame game() const;
 
+    static std::string versionName(const genie::GameVersion version);
     static GameVersion gameVersionFromString(const std::string &name);
 
     //----------------------------------------------------------------------------

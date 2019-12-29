@@ -40,36 +40,10 @@ DatFile::DatFile() :
 {
 }
 
-const std::string &DatFile::gameName()
+std::string DatFile::gameName()
 {
-    static const std::unordered_map<genie::GameVersion, std::string> versionNames({
-        { genie::GV_TEST, "Test" },
-        { genie::GV_MIK, "Mike" },
-        { genie::GV_DAVE, "Dave" },
-        { genie::GV_MATT, "Matt" },
-        { genie::GV_AoEB, "Age of Empires Beta" },
-        { genie::GV_AoE, "Age of Empires" },
-        { genie::GV_RoR, "Age of Empires: Rise of Rome" },
-        { genie::GV_Tapsa, "Age of Empires 2: Tapsa Test" },
-        { genie::GV_T2, "Age of Empires 2: Tapsa Test 2" },
-        { genie::GV_T3, "Age of Empires 2: Tapsa Test 3" },
-        { genie::GV_T4, "Age of Empires 2: Tapsa Test 4" },
-        { genie::GV_T5, "Age of Empires 2: Tapsa Test 5" },
-        { genie::GV_T6, "Age of Empires 2: Tapsa Test 6" },
-        { genie::GV_T7, "Age of Empires 2: Tapsa Test 7" },
-        { genie::GV_T8, "Age of Empires 2: Tapsa Test 8" },
-        { genie::GV_AoKE3, "Age of Empires 2: Age of Kings E3 Preview" },
-        { genie::GV_AoKA, "Age of Empires 2: Age of Kings Alpha" },
-        { genie::GV_AoKB, "Age of Empires 2: Age of Kings Beta" },
-        { genie::GV_AoK, "Age of Empires 2: Age of Kings" },
-        { genie::GV_TC, "Age of Empires 2: The Conquerors" },
-        { genie::GV_Cysion, "Age of Empires 2: Cysion" },
-        { genie::GV_C2, "Age of Empires 2: Definitive Edition" },
-        { genie::GV_SWGB, "Star Wars: Galactic Battlegrounds" },
-        { genie::GV_CC, "Star Wars: Galactic Battlegrounds: Clone Campaigns" },
-    });
-    if (versionNames.find(getGameVersion()) != versionNames.end()) {
-        return versionNames.at(getGameVersion());
+    if (int(getGameVersion()) >= GV_None && int(getGameVersion()) <= GV_CC) {
+        return versionName(getGameVersion());
     }
 
     return FileVersion;
@@ -93,6 +67,59 @@ GenieGame DatFile::game() const
     }
 
     return GenieGame::Unknown;
+}
+
+std::string DatFile::versionName(const GameVersion version)
+{
+    if (int(version) < GV_None) {
+        return "Invalid game version " + std::to_string(int(version));
+    }
+    if (int(version) > GV_CC) {
+        return "Unknown game version " + std::to_string(int(version));
+    }
+    switch(version) {
+        case genie::GV_None: return "None";
+        case genie::GV_TEST: return "Test";
+        case genie::GV_MIK: return "Mike";
+        case genie::GV_DAVE: return "Dave";
+        case genie::GV_MATT: return "Matt";
+        case genie::GV_AoEB: return "Age of Empires Beta";
+        case genie::GV_AoE: return "Age of Empires";
+        case genie::GV_RoR: return "Age of Empires: Rise of Rome";
+        case genie::GV_Tapsa: return "Age of Empires 2: Tapsa Test";
+        case genie::GV_T2: return "Age of Empires 2: Tapsa Test 2";
+        case genie::GV_T3: return "Age of Empires 2: Tapsa Test 3";
+        case genie::GV_T4: return "Age of Empires 2: Tapsa Test 4";
+        case genie::GV_T5: return "Age of Empires 2: Tapsa Test 5";
+        case genie::GV_T6: return "Age of Empires 2: Tapsa Test 6";
+        case genie::GV_T7: return "Age of Empires 2: Tapsa Test 7";
+        case genie::GV_T8: return "Age of Empires 2: Tapsa Test 8";
+        case genie::GV_AoKE3: return "Age of Empires 2: Age of Kings E3 Preview";
+        case genie::GV_AoKA: return "Age of Empires 2: Age of Kings Alpha";
+        case genie::GV_AoKB: return "Age of Empires 2: Age of Kings Beta";
+        case genie::GV_AoK: return "Age of Empires 2: Age of Kings";
+        case genie::GV_TC: return "Age of Empires 2: The Conquerors";
+        case genie::GV_Cysion: return "Age of Empires 2: Cysion";
+        case genie::GV_C2: return "Age of Empires 2: Definitive Edition";
+        case genie::GV_C3: return "Age of Empires 2: Definitive Edition C3";
+        case genie::GV_C4: return "Age of Empires 2: Definitive Edition C4";
+        case genie::GV_CK: return "Age of Empires 2: Definitive Edition Ck";
+        case genie::GV_C5: return "Age of Empires 2: Definitive Edition C5";
+        case genie::GV_C6: return "Age of Empires 2: Definitive Edition C6";
+        case genie::GV_C7: return "Age of Empires 3: Definitive Edition C7";
+        case genie::GV_C8: return "Age of Empires 3: Definitive Edition C8";
+        case genie::GV_C9: return "Age of Empires 3: Definitive Edition C9";
+        case genie::GV_C10: return "Age of Empires 3: Definitive Edition C10";
+        case genie::GV_C11: return "Age of Empires 3: Definitive Edition C11";
+        case genie::GV_C12: return "Age of Empires 3: Definitive Edition C12";
+        case genie::GV_C13: return "Age of Empires 3: Definitive Edition C13";
+        case genie::GV_C14: return "Age of Empires 3: Definitive Edition C14";
+        case genie::GV_SWGB: return "Star Wars: Galactic Battlegrounds";
+        case genie::GV_CC: return "Star Wars: Galactic Battlegrounds: Clone Campaigns";
+        // No default, so we get compiler warnings if new are added
+    }
+    throw std::runtime_error("Unhandled state in DatFile::versionName");
+    return "Invalid state";
 }
 
 GameVersion DatFile::gameVersionFromString(const std::string &name)
