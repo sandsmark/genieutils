@@ -92,7 +92,7 @@ public:
     int8_t TransparentSelection = 0;
 
     /// Bounding Box Coordinates (X1, Y1, X2, Y2)
-    std::vector<int16_t> Coordinates = { 0, 0, 0, 0 };
+    std::array<int16_t, 4> Coordinates = { 0, 0, 0, 0 };
 
     int16_t SoundID = -1;
     uint32_t WwiseSoundID = 0; // TODO doc: new in DE

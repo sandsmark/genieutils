@@ -63,7 +63,7 @@ public:
     /// Units defined for this civ.
     std::vector<Unit> Units;
 
-    std::vector<int16_t> UniqueUnitsTechs = { -1, -1, -1, -1 }; // Unknown in >=SWGB (cnt=4)
+    std::array<int16_t, 4> UniqueUnitsTechs = { -1, -1, -1, -1 }; // Unknown in >=SWGB (cnt=4)
 
     bool compareTo(const Civ &other) const;
 

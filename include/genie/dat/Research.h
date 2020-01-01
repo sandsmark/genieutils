@@ -42,7 +42,7 @@ public:
     typedef Resource<int16_t, int8_t> ResearchResourceCost;
 
     /// Resource cost in a list of max 3
-    std::vector<ResearchResourceCost> ResourceCosts;
+    std::array<ResearchResourceCost, 3> ResourceCosts;
 
     /// Holds the number of how much of the required technologies you need.
     int16_t RequiredTechCount = 0;

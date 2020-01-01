@@ -52,8 +52,8 @@ void RandomMaps::serializeObject()
             OldMaps.resize(random_map_count);
         }
 
-        for (std::vector<int32_t> &sub : OldMaps) {
-            serialize<int32_t>(sub, 852);
+        for (std::array<int32_t, 852> &sub : OldMaps) {
+            serialize<int32_t, 852>(sub);
         }
     } else {
         serializeSize<uint32_t>(random_map_count, Maps.size());

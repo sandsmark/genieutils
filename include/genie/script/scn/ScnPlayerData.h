@@ -135,8 +135,8 @@ private:
 class ScnDiplomacy : public ISerializable
 {
 public:
-    std::vector<std::vector<uint32_t>> stances;
-    std::vector<std::vector<uint32_t>> individualVictory;
+    std::array<std::array<uint32_t, 16>, 16> stances;
+    std::array<std::array<uint32_t, 180>, 16> individualVictory;
 
 private:
     void serializeObject(void) override;
@@ -145,12 +145,12 @@ private:
 class ScnDisables : public ISerializable
 {
 public:
-    std::vector<uint32_t> numDisabledTechs;
-    std::vector<std::vector<uint32_t>> disabledTechs;
-    std::vector<uint32_t> numDisabledUnits;
-    std::vector<std::vector<uint32_t>> disabledUnits;
-    std::vector<uint32_t> numDisabledBuildings;
-    std::vector<std::vector<uint32_t>> disabledBuildings;
+    std::array<uint32_t, 16> numDisabledTechs;
+    std::array<std::vector<uint32_t>, 16> disabledTechs;
+    std::array<uint32_t, 16> numDisabledUnits;
+    std::array<std::vector<uint32_t>, 16> disabledUnits;
+    std::array<uint32_t, 16> numDisabledBuildings;
+    std::array<std::vector<uint32_t>, 16> disabledBuildings;
 
 private:
     void serializeObject(void) override;
@@ -164,7 +164,7 @@ public:
     float playerDataVersion = 0.f;
     static float version;
     std::array<std::string, 16> playerNames;
-    std::vector<uint32_t> playerNamesStringTable;
+    std::array<uint32_t, 16> playerNamesStringTable;
     uint8_t conquestVictory = 0;
     Timeline timeline;
     std::string originalFileName = "";
@@ -231,13 +231,13 @@ public:
     char *bmpHeader = nullptr;
     char *bitmap = nullptr;
 
-    std::vector<std::string> aiNames;
-    std::vector<std::string> cityNames;
-    std::vector<std::string> personalityNames;
-    std::vector<AiFile> aiFiles;
-    std::vector<uint8_t> aiTypes;
+    std::array<std::string, 16> aiNames;
+    std::array<std::string, 16> cityNames;
+    std::array<std::string, 16> personalityNames;
+    std::array<AiFile, 16> aiFiles;
+    std::array<uint8_t, 16> aiTypes;
 
-    std::vector<CombinedResources> resourcesPlusPlayerInfo;
+    std::array<CombinedResources, 16> resourcesPlusPlayerInfo;
 
     ScnVictory victoryConditions;
     ScnDiplomacy diplomacy;
@@ -246,7 +246,7 @@ public:
     uint32_t unused1 = 0;
     uint32_t unused2 = 0;
     uint32_t allTechs = 0;
-    std::vector<int32_t> startingAge;
+    std::array<int32_t, 16> startingAge;
     int32_t player1CameraX = 0;
     int32_t player1CameraY = 0;
     int32_t aiType = 0;

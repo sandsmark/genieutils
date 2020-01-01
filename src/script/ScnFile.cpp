@@ -169,7 +169,7 @@ void ScnFile::serializeObject(void)
     serializeSize<uint32_t>(playerUnitsCount, playerUnits.size());
 
     if (scn_internal_ver > 1.06f) {
-        serialize<ScnPlayerResources>(playerResources, 8);
+        serialize<ScnPlayerResources, 8>(playerResources);
     } else {
         // A lot of data is read here.
     }
@@ -178,7 +178,7 @@ void ScnFile::serializeObject(void)
 
     // You would think this would be the size of the player data, but no
     serialize<uint32_t>(playerCount2_);
-    serialize<ScnMorePlayerData>(players, 8);
+    serialize<ScnMorePlayerData, 8>(players);
 
     triggerVersion = scn_trigger_ver;
     serialize<double>(triggerVersion);
@@ -200,7 +200,7 @@ void ScnFile::serializeObject(void)
         serialize<uint32_t>(perErrorIncluded);
 
         if (perErrorIncluded) {
-            serialize<uint32_t>(perError, 99);
+            serialize<uint32_t, 99>(perError);
         }
 
         if (includeFiles) {

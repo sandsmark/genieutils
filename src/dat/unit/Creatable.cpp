@@ -26,9 +26,8 @@ namespace genie {
 
 namespace unit {
 
-Creatable::Creatable() :
+Creatable::Creatable()
     //Type50(),
-    ResourceCosts(3)
 {
 }
 
@@ -65,7 +64,7 @@ void Creatable::serializeObject(void)
 {
     GameVersion gv = getGameVersion();
 
-    serialize(ResourceCosts, 3);
+    serialize<ResourceCost, 3>(ResourceCosts);
     serialize<int16_t>(TrainTime);
     serialize<int16_t>(TrainLocationID);
     serialize<int8_t>(ButtonID);
@@ -88,7 +87,7 @@ void Creatable::serializeObject(void)
 
             serialize<float>(TotalProjectiles);
             serialize<int8_t>(MaxTotalProjectiles);
-            serialize<float>(ProjectileSpawningArea, 3);
+            serialize<float, 3>(ProjectileSpawningArea);
             serialize<int32_t>(SecondaryProjectileUnit); // 9.08
             // 9.2
             {

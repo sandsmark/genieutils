@@ -69,7 +69,7 @@ public:
     /// Left/Right distance
     /// Spawning distance from the unit
     /// Height
-    std::vector<float> GraphicDisplacement = { 0, 0, 0 };
+    std::array<float, 3> GraphicDisplacement = { 0, 0, 0 };
 
     /// Blasts damage units that have higher or same blast armor level
     /// 0. Damages resources also

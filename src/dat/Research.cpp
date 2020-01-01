@@ -25,8 +25,7 @@
 namespace genie {
 
 //------------------------------------------------------------------------------
-Tech::Tech() :
-    ResourceCosts(3)
+Tech::Tech()
 {
 }
 
@@ -78,7 +77,7 @@ void Tech::serializeObject(void)
 
     serialize<int16_t>(RequiredTechs, getRequiredTechsSize());
 
-    serialize(ResourceCosts, 3);
+    serialize<ResearchResourceCost, 3>(ResourceCosts);
     serialize<int16_t>(RequiredTechCount);
 
     if (gv >= GV_AoKB) {

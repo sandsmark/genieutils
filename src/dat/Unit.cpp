@@ -343,7 +343,7 @@ void Unit::serializeObject(void)
         }
     }
 
-    serialize(ResourceStorages, 3);
+    serialize<ResourceStorage, 3>(ResourceStorages);
 
     uint8_t damage_graphic_count{};
     serializeSize<uint8_t>(damage_graphic_count, DamageGraphics.size());

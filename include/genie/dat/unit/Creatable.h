@@ -36,8 +36,8 @@ public:
 
     typedef Resource<int16_t, int16_t> ResourceCost;
 
-    std::vector<ResourceCost> ResourceCosts;
-    int16_t TrainTime = 0;
+    std::array<ResourceCost, 3> ResourceCosts;
+    int16_t TrainTime = -1;
 
     /// ID of unit where this is made
     int16_t TrainLocationID = -1;
@@ -48,7 +48,7 @@ public:
     // Third page same as first (Star Wars)
     // First page in AoE/RoR 1-10
     // Second page in AoE/RoR 11-20
-    int8_t ButtonID = 0;
+    int8_t ButtonID = -1;
 
     float RearAttackModifier = 0;
     float FlankAttackModifier = 0;
@@ -80,7 +80,7 @@ public:
     /// Z: 0   From a single spot
     ///    1   Totally randomly inside the spawning area
     ///    1+  Less randomly
-    std::vector<float> ProjectileSpawningArea = { 0, 0, 0 };
+    std::array<float, 3> ProjectileSpawningArea = { 0, 0, 0 };
 
     /// Uses its own attack values
     int32_t SecondaryProjectileUnit = -1;

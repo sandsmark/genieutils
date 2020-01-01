@@ -122,7 +122,7 @@ void Graphic::serializeObject(void)
     serialize<int8_t>(Rainbow); // 2nd half of player color
     serialize<int8_t>(TransparentSelection);
 
-    serialize<int16_t>(Coordinates, 4);
+    serialize<int16_t, 4>(Coordinates);
 
     uint16_t delta_count{};
     serializeSize<uint16_t>(delta_count, Deltas.size());

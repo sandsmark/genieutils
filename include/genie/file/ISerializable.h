@@ -389,7 +389,18 @@ protected:
         serialize(str, size);
     }
 
-    /// Serializes a string with forced size
+    /// Serializes an array of strings with forced size
+    template <typename T, size_t N>
+    void serializeSizedStrings(std::array<std::string, N> &vec, bool cString = true)
+    {
+        assert(operation_ != OP_INVALID);
+
+        for (size_t i = 0; i < N; ++i) {
+            serializeSizedString<T>(vec[i], cString);
+        }
+    }
+
+    /// Serializes a vector of strings with forced size
     template <typename T>
     void serializeSizedStrings(std::vector<std::string> &vec, size_t size,
                                bool cString = true)
@@ -578,6 +589,24 @@ protected:
             if (isOperation(OP_CALC_SIZE)) {
                 size_ += item.objectSize();
             }
+        }
+    }
+
+    /// two dimensional std::array
+    template <typename T, std::size_t N, std::size_t N2>
+    void serialize(std::array<std::array<T, N2>, N> &vec)
+    {
+        for (std::array<T, N2> &item : vec) {
+            serialize<T, N2>(item);
+        }
+    }
+
+    /// two dimensional std::array with vectors
+    template <typename T, std::size_t N>
+    void serialize(std::array<std::vector<T>, N> &vec, size_t size)
+    {
+        for (std::vector<T> &item : vec) {
+            serialize<T>(item, size);
         }
     }
 

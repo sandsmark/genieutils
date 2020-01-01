@@ -42,11 +42,11 @@ void ScnMainPlayerData::serializeObject(void)
         }
 
         if (scn_plr_data_ver > 1.15f) {
-            serialize<uint32_t>(playerNamesStringTable, 16);
+            serialize<uint32_t, 16>(playerNamesStringTable);
         }
 
         CombinedResources::playerInfo = true;
-        serialize(resourcesPlusPlayerInfo, 16);
+        serialize<CombinedResources, 16>(resourcesPlusPlayerInfo);
     }
 
     if (scn_plr_data_ver > 1.06f) {
@@ -99,17 +99,17 @@ void ScnMainPlayerData::serializeObject(void)
         serializeBitmap();
     }
 
-    serializeSizedStrings<uint16_t>(aiNames, 16, false);
-    serializeSizedStrings<uint16_t>(cityNames, 16, false);
+    serializeSizedStrings<uint16_t, 16>(aiNames, false);
+    serializeSizedStrings<uint16_t, 16>(cityNames, false);
 
     if (scn_plr_data_ver > 1.07f) {
-        serializeSizedStrings<uint16_t>(personalityNames, 16, false);
+        serializeSizedStrings<uint16_t, 16>(personalityNames, false);
     }
 
-    serialize(aiFiles, 16);
+    serialize<AiFile, 16>(aiFiles);
 
     if (scn_plr_data_ver > 1.1f) {
-        serialize<uint8_t>(aiTypes, 16);
+        serialize<uint8_t, 16>(aiTypes);
     }
 
     if (scn_plr_data_ver > 1.01f) {
@@ -123,10 +123,10 @@ void ScnMainPlayerData::serializeObject(void)
             serialize(playerName, 256);
         }
 
-        serialize(resourcesPlusPlayerInfo, 16);
+        serialize<CombinedResources, 16>(resourcesPlusPlayerInfo);
     } else {
         CombinedResources::playerInfo = false;
-        serialize(resourcesPlusPlayerInfo, 16);
+        serialize<CombinedResources, 16>(resourcesPlusPlayerInfo);
     }
 
     if (scn_plr_data_ver > 1.01f) {
@@ -160,7 +160,7 @@ void ScnMainPlayerData::serializeObject(void)
     }
 
     if (scn_plr_data_ver > 1.05f) {
-        serialize<int32_t>(startingAge, 16);
+        serialize<int32_t, 16>(startingAge);
     }
 
     if (scn_plr_data_ver > 1.01f) {
@@ -177,7 +177,7 @@ void ScnMainPlayerData::serializeObject(void)
     }
 
     if (scn_plr_data_ver > 1.23f) {
-        serialize<uint8_t>(aiTypes, 16);
+        serialize<uint8_t, 16>(aiTypes);
     }
 }
 
@@ -322,8 +322,8 @@ void ScnVictory::serializeObject(void)
 
 void ScnDiplomacy::serializeObject(void)
 {
-    serialize<uint32_t>(stances, 16, 16); // Diplomacy (16*16*4)
-    serialize<uint32_t>(individualVictory, 16, 180); // Individual Victory (12*60)
+    serialize<uint32_t, 16, 16>(stances); // Diplomacy (16*16*4)
+    serialize<uint32_t, 16, 180>(individualVictory); // Individual Victory (12*60)
     /* Individual victory conditions were eventually reformed into triggers.
     00 +12 Quantity
     01 +16 Resource
@@ -347,16 +347,16 @@ void ScnDiplomacy::serializeObject(void)
 void ScnDisables::serializeObject(void)
 {
     if (scn_plr_data_ver > 1.17f) {
-        serialize<uint32_t>(numDisabledTechs, 16);
+        serialize<uint32_t, 16>(numDisabledTechs);
     }
 
-    serialize<uint32_t>(disabledTechs, 16, scn_plr_data_ver < 1.04f ? 20 : scn_plr_data_ver < 1.3f ? 30 : 60);
+    serialize<uint32_t, 16>(disabledTechs, scn_plr_data_ver < 1.04f ? 20 : scn_plr_data_ver < 1.3f ? 30 : 60);
 
     if (scn_plr_data_ver > 1.17f) {
-        serialize<uint32_t>(numDisabledUnits, 16);
-        serialize<uint32_t>(disabledUnits, 16, scn_plr_data_ver < 1.3f ? 30 : 60);
-        serialize<uint32_t>(numDisabledBuildings, 16);
-        serialize<uint32_t>(disabledBuildings, 16, scn_plr_data_ver < 1.3f ? 20 : 60);
+        serialize<uint32_t, 16>(numDisabledUnits);
+        serialize<uint32_t, 16>(disabledUnits, scn_plr_data_ver < 1.3f ? 30 : 60);
+        serialize<uint32_t, 16>(numDisabledBuildings);
+        serialize<uint32_t, 16>(disabledBuildings, scn_plr_data_ver < 1.3f ? 20 : 60);
     }
 }
 
@@ -393,7 +393,7 @@ void ScnMorePlayerData::serializeObject(void)
     serialize<uint8_t>(victory);
 //    printf("victory: %d\n", victory);
 
-    serialize(victoryConditions, victoryConditionsCount);
+    serialize<ScnPlayerVictoryCondition>(victoryConditions, victoryConditionsCount);
 
     if (victoryConditionVersion < 1.0) {
         totalVictoryPoints = 0;

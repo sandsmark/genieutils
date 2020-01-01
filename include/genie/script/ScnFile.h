@@ -116,10 +116,10 @@ public:
 
     ScnMap map;
 
-    std::vector<ScnPlayerResources> playerResources;
+    std::array<ScnPlayerResources, 8> playerResources;
     std::vector<ScnPlayerUnits> playerUnits;
 
-    std::vector<ScnMorePlayerData> players;
+    std::array<ScnMorePlayerData, 8> players;
 
     double triggerVersion;
     int8_t objectivesStartingState;
@@ -128,7 +128,7 @@ public:
 
     uint32_t includeFiles;
     uint32_t perErrorIncluded;
-    std::vector<uint32_t> perError;
+    std::array<uint32_t, 99> perError;
     std::vector<ScnPersonalityScript> includedFiles;
 
 private:

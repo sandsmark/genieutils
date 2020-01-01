@@ -161,7 +161,7 @@ public:
     bool compareTo(const RandomMaps &other) const;
 
 private:
-    std::vector<std::vector<int32_t>> OldMaps;
+    std::vector<std::array<int32_t, 852>> OldMaps;
 
     void serializeObject(void) override;
 };

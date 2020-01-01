@@ -64,8 +64,8 @@ void Civ::serializeObject(void)
         serializeDebugString(Name);
     }
 
-    uint16_t count{};
-    serializeSize<uint16_t>(count, Resources.size());
+    uint16_t resourcesCount{};
+    serializeSize<uint16_t>(resourcesCount, Resources.size());
 
     if (gv >= GV_MIK) {
         serialize<int16_t>(TechTreeID);
@@ -75,17 +75,18 @@ void Civ::serializeObject(void)
 
             if (gv >= GV_SWGB) {
                 serialize(Name2, getNameSize());
-                serialize<int16_t>(UniqueUnitsTechs, 4);
+                serialize<int16_t, 4>(UniqueUnitsTechs);
             }
         }
     }
 
-    serialize<float>(Resources, count);
+    serialize<float>(Resources, resourcesCount);
 
     serialize<int8_t>(IconSet);
 
-    serializeSize<uint16_t>(count, Units.size());
-    serialize<int32_t>(UnitPointers, count);
-    serializeSubWithPointers<Unit>(Units, count, UnitPointers);
+    uint16_t unitsCount{};
+    serializeSize<uint16_t>(unitsCount, Units.size());
+    serialize<int32_t>(UnitPointers, unitsCount);
+    serializeSubWithPointers<Unit>(Units, unitsCount, UnitPointers);
 }
 } // namespace genie

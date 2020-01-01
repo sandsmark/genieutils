@@ -556,7 +556,7 @@ public:
     typedef Resource<float, int8_t> ResourceStorage;
 
     /// Resources unit contains
-    std::vector<ResourceStorage> ResourceStorages;
+    std::array<ResourceStorage, 3> ResourceStorages;
 
     ///
     std::vector<unit::DamageGraphic> DamageGraphics;
