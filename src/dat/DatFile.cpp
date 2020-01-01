@@ -125,7 +125,7 @@ std::string DatFile::versionName(const GameVersion version)
 GameVersion DatFile::gameVersionFromString(const std::string &name)
 {
     if (name.size() != FILE_VERSION_SIZE - 1) { // null terminated in file, std::string does not count that
-        std::cerr << "Invalid length of name, " << name.size() << " vs expected " << (FILE_VERSION_SIZE - 1) << std::endl;
+        std::cerr << "Invalid length of version, " << name.size() << " vs expected " << (FILE_VERSION_SIZE - 1) << std::endl;
         return GV_None;
     }
     int major = name[4] - '0';
@@ -334,18 +334,7 @@ void DatFile::serializeObject(void)
 
     serialize(FileVersion, FILE_VERSION_SIZE);
 
-//    std::cout << "file version: " << FileVersion << std::endl;
-//    std::vector<uint8_t> dumm(FILE_VERSION_SIZE);
-//    serialize(dumm, FILE_VERSION_SIZE);
-//    for (const uint8_t &f : dumm) {
-//        std::cout << int(f) << " " << f << std::endl;
-//    }
-//    FileVersion = std::string((char*)dumm.data(), FILE_VERSION_SIZE);
-////    serialize(FileVersion, FILE_VERSION_SIZE);
     std::cout << "file version: " << FileVersion << std::endl;
-
-    gameVersionFromString(FileVersion);
-//    std::cout << getGameVersion() << std::endl;
 
     // Handle all different versions while in development.
     if (getGameVersion() == GV_C2) { // 5.8
@@ -388,6 +377,10 @@ void DatFile::serializeObject(void)
     serialize<uint16_t>(TerrainsUsed1);
 
     if (verbose_) {
+        std::cout << "TerrainRestriction size: " << TerrainRestrictions.size() << " " << count16 << std::endl;
+    }
+
+    if (verbose_) {
         std::cout << FileVersion;
         std::cout << std::endl
                   << "TerRestrictionCount: " << count16 << std::endl;
@@ -395,13 +388,21 @@ void DatFile::serializeObject(void)
     }
 
     serialize<int32_t>(FloatPtrTerrainTables, count16);
+    if (verbose_) {
+        std::cout << "FloatPtrTerrainTables: " << FloatPtrTerrainTables.size() << std::endl;
+    }
 
     if (gv >= GV_AoKA) {
         serialize<int32_t>(TerrainPassGraphicPointers, count16);
     }
 
     TerrainRestriction::setTerrainCount(TerrainsUsed1);
+
     serialize(TerrainRestrictions, count16);
+
+    if (verbose_) {
+        std::cout << "TerrainRestrictions: " << count16 << std::endl;
+    }
 
     serializeSize<uint16_t>(count16, PlayerColours.size());
 
