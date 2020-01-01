@@ -299,6 +299,7 @@ if (GUTILS_TEST)
       $<TARGET_OBJECTS:genieutils_tests_common>
       $<TARGET_OBJECTS:genieutils_common>
       )
+  add_test(NAME DatTest COMMAND DatTest)
   target_link_libraries(DatTest ${Boost_LIBRARIES} ${COMMON_LIBRARIES})
 
   add_executable(LangTest
@@ -307,6 +308,9 @@ if (GUTILS_TEST)
       $<TARGET_OBJECTS:genieutils_common>
       )
   target_link_libraries(LangTest ${Boost_LIBRARIES} ${COMMON_LIBRARIES})
+  add_test(NAME LangTest COMMAND LangTest)
+
+  enable_testing()
 endif(GUTILS_TEST)
 
 if (ENABLE_CLANG_TIDY)
