@@ -7,6 +7,9 @@ cmake_minimum_required(VERSION 3.9)
 
 project(genieutils)
 
+# Let freeaoe set this with `set(GUTILS_STATIC True)`
+cmake_policy(SET CMP0077 NEW)
+
 option(ENABLE_SANITIZERS "Enable runtime sanitizing (for development)")
 option(GUTILS_TOOLS "Build extra tools")
 option(GUTILS_TEST "Build tests")
