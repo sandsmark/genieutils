@@ -541,7 +541,7 @@ void DatFile::unload()
     GraphicPointers.clear();
     Graphics.clear();
     TerrainBlock.Terrains.clear();
-    TerrainBlock.TerrainBorders.clear();
+    TerrainBlock.TerrainBorders.fill(TerrainBorder());
     TerrainBlock.AoEAlphaUnknown.clear();
     TerrainBlock.SomeBytes.clear();
     TerrainBlock.SomeInt32.clear();

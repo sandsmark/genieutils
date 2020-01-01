@@ -54,11 +54,11 @@ public:
     int32_t WorldHeight;
     int16_t PaddingTS;
 
-    std::vector<TileSize> TileSizes;
+    std::array<TileSize, SharedTerrain::TILE_TYPE_COUNT> TileSizes;
     std::vector<Terrain> Terrains;
 
     std::vector<int16_t> AoEAlphaUnknown; // These are very similar to borders
-    std::vector<TerrainBorder> TerrainBorders;
+    std::array<TerrainBorder, 16> TerrainBorders;
 
     int32_t MapRowOffset;
     float MapMinX = 0.f;

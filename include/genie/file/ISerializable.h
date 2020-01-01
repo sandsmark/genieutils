@@ -86,8 +86,8 @@ public:
     }
 
     /// Updates the game version of all objects in @param vec
-    template <typename T>
-    static void updateGameVersion(GameVersion gv, std::vector<T> &vec)
+    template <typename T, typename V>
+    static void updateGameVersion(GameVersion gv, V &vec)
     {
         for (T &it : vec) {
             ISerializable *item = dynamic_cast<ISerializable *>(&it);
@@ -128,6 +128,11 @@ protected:
     //
     template <typename T>
     void updateGameVersion(std::vector<T> &vec)
+    {
+        updateGameVersion<T>(getGameVersion(), vec);
+    }
+    template <typename T, size_t N>
+    void updateGameVersion(std::array<T, N> &vec)
     {
         updateGameVersion<T>(getGameVersion(), vec);
     }

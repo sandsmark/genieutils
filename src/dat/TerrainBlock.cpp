@@ -32,7 +32,6 @@ void TerrainBlock::setGameVersion(GameVersion gv)
     updateGameVersion(Terrains);
     updateGameVersion(TerrainBorders);
 
-    TileSizes.resize(SharedTerrain::TILE_TYPE_COUNT);
     SomeBytes.resize(getBytesSize());
     SomeInt32.resize(getSomethingSize());
 }
@@ -150,7 +149,7 @@ void TerrainBlock::serializeObject(void)
     serialize<int32_t>(WorldWidth);
     serialize<int32_t>(WorldHeight);
 
-    serialize(TileSizes, SharedTerrain::TILE_TYPE_COUNT);
+    serialize<TileSize, SharedTerrain::TILE_TYPE_COUNT>(TileSizes);
 
     if (gv >= GV_AoE) {
         serialize<int16_t>(PaddingTS); // Padding for TileSizes (32-bit aligned)
@@ -170,7 +169,7 @@ void TerrainBlock::serializeObject(void)
 
     if (gv < GV_C9 || gv > GV_LatestDE2) {
         // TerrainBorders seem to be unused (are empty) in GV > AoK Alpha
-        serialize(TerrainBorders, 16); //TODO: fixed size?
+        serialize<TerrainBorder, 16>(TerrainBorders);
 
         // Probably filled after loading map in game.
         serialize<int32_t>(MapRowOffset);
