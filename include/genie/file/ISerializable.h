@@ -162,6 +162,21 @@ protected:
     inline bool isOperation(Operation op) const
     {
         assert(operation_ != OP_INVALID);
+
+        if (operation_ == OP_READ) {
+            if (istr_->eof()) {
+                throw std::ios_base::failure("Premature end of input");
+            }
+
+            if (!istr_->good()) {
+                throw std::ios_base::failure("Invalid input stream");
+            }
+        } else if (operation_ == OP_WRITE && !ostr_->good()) {
+            if (!ostr_->good()) {
+                throw std::runtime_error("Invalid output stream");
+            }
+        }
+
         return (op == operation_);
     }
 
@@ -236,11 +251,17 @@ protected:
               >
     T read()
     {
-        T ret = {};
-
-        if (!istr_->eof()) {
-            istr_->read(reinterpret_cast<char *>(&ret), sizeof(ret));
+        if (istr_->eof()) {
+            throw std::ios_base::failure("Premature end of input");
         }
+
+        if (!istr_->good()) {
+            throw std::ios_base::failure("Invalid input stream");
+        }
+
+
+        T ret = {};
+        istr_->read(reinterpret_cast<char *>(&ret), sizeof(ret));
 
         return ret;
     }
@@ -256,6 +277,10 @@ protected:
               >
     void write(const T &data)
     {
+        if (!ostr_->good()) {
+            throw std::runtime_error("Invalid output stream");
+        }
+
         ostr_->write(reinterpret_cast<const char *>(&data), sizeof(T));
     }
 
@@ -268,13 +293,23 @@ protected:
               >
     void read(T **array, size_t len)
     {
-        if (!istr_->eof()) {
-            if (*array == 0) {
-                *array = new T[len];
-            }
-
-            istr_->read(reinterpret_cast<char *>(*array), sizeof(T) * len);
+        if (istr_->eof()) {
+            throw std::ios_base::failure("Premature end of input");
         }
+
+        if (!istr_->good()) {
+            throw std::ios_base::failure("Invalid input stream");
+        }
+
+        if (*array == 0) {
+            *array = new T[len];
+        }
+
+        if (!istr_->good()) {
+            throw std::runtime_error("Invalid input stream");
+        }
+
+        istr_->read(reinterpret_cast<char *>(*array), sizeof(T) * len);
     }
 
     //----------------------------------------------------------------------------
@@ -286,9 +321,15 @@ protected:
               >
     void read(T *array, size_t len)
     {
-        if (!istr_->eof()) {
-            istr_->read(reinterpret_cast<char *>(array), sizeof(T) * len);
+        if (istr_->eof()) {
+            throw std::ios_base::failure("Premature end of input");
         }
+
+        if (!istr_->good()) {
+            throw std::ios_base::failure("Invalid input stream");
+        }
+
+        istr_->read(reinterpret_cast<char *>(array), sizeof(T) * len);
     }
 
     //----------------------------------------------------------------------------
@@ -300,6 +341,10 @@ protected:
               >
     void write(const T *const *data, size_t len)
     {
+        if (!ostr_->good()) {
+            throw std::runtime_error("Invalid output stream");
+        }
+
         ostr_->write(reinterpret_cast<const char *const>(*data), sizeof(T) * len);
     }
 
@@ -487,11 +532,23 @@ protected:
     {
         switch (getOperation()) {
         case OP_WRITE:
+            if (!ostr_->good()) {
+                throw std::runtime_error("Invalid output stream");
+            }
+
             ostr_->write(reinterpret_cast<const char *const>(vec.data()), sizeof(T) *  N);
 
             break;
 
         case OP_READ:
+            if (istr_->eof()) {
+                throw std::ios_base::failure("Premature end of input");
+            }
+
+            if (!istr_->good()) {
+                throw std::ios_base::failure("Invalid input stream");
+            }
+
             istr_->read(reinterpret_cast<char *>(vec.data()), sizeof(T) * N);
 
             break;
@@ -536,10 +593,23 @@ protected:
             if (vec.size() != size) {
                 std::cerr << "Warning!: vector size differs len!" << vec.size() << " " << size << std::endl;
             }
+
+            if (!ostr_->good()) {
+                throw std::runtime_error("Invalid output stream");
+            }
+
             ostr_->write(reinterpret_cast<const char *const>(vec.data()), sizeof(T) * std::min(size, vec.size()));
             break;
 
         case OP_READ:
+            if (istr_->eof()) {
+                throw std::ios_base::failure("Premature end of input");
+            }
+
+            if (!istr_->good()) {
+                throw std::ios_base::failure("Invalid input stream");
+            }
+
             vec.resize(size);
             istr_->read(reinterpret_cast<char *>(vec.data()), sizeof(T) * size);
 
@@ -605,6 +675,13 @@ protected:
         assert(operation_ != OP_INVALID);
         if (isOperation(OP_READ)) {
             vec.resize(size);
+        } else if (isOperation(OP_WRITE)) {
+            assert(vec.size() == size);
+
+            if (vec.size() != size) {
+                std::cerr << "Warning!: vector size differs size!" << vec.size() << " " << size << std::endl;
+                vec.resize(size);
+            }
         }
 
         for (T &item : vec) {
@@ -625,8 +702,11 @@ protected:
         assert(operation_ != OP_INVALID);
 
         if (isOperation(OP_WRITE) || isOperation(OP_CALC_SIZE)) {
+            assert(vec.size() == size);
+
             if (vec.size() != size) {
                 std::cerr << "Warning!: vector size differs size!" << vec.size() << " " << size << std::endl;
+                vec.resize(size);
             }
 
             for (typename std::vector<std::shared_ptr<T>>::iterator it = vec.begin(); it != vec.end(); ++it) {
@@ -645,7 +725,14 @@ protected:
             vec.resize(size);
 
             for (size_t i = 0; i < size; ++i) {
-                assert(getIStream()->good());
+                if (istr_->eof()) {
+                    throw std::ios_base::failure("Premature end of input");
+                }
+
+                if (!istr_->good()) {
+                    throw std::ios_base::failure("Invalid input stream");
+                }
+
                 if (!vec[i]) {
                     vec[i] = std::make_shared<T>();
                 }
