@@ -16,7 +16,7 @@ void SmpFile::unload()
 
 void SmpFile::serializeObject()
 {
-    serialize(m_header);
+    serialize<uint8_t, 4>(m_header);
     if (getOperation() == OP_READ && m_header != smpHeader) {
         // todo throw exception
         log.error("Invalid header % % % %", m_header[0], m_header[1], m_header[2], m_header[3]);

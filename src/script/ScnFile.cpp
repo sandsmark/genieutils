@@ -415,9 +415,9 @@ void BlnFile::serializeObject()
 
     serialize(version);
 
-    for (int frame = 0; frame < 20; frame++) {
-        for (int palette = 0; palette < 256; palette++) {
-            serialize(frames[frame].palettes[palette].colors, 256);
+    for (Frame &frame : frames) {
+        for (Palette &palette : frame.palettes) {
+            serialize<uint8_t, 256>(palette.colors);
         }
     }
 

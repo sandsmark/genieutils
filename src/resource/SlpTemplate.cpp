@@ -51,20 +51,21 @@ void SlpTemplateFile::loadFile() noexcept
 {
     for (SlpTemplate &slpTemplate : templates) {
         uint32_t stemplSize{};
-        serialize(stemplSize);
+        serialize<uint32_t>(stemplSize);
+
         std::streampos templateBegin = tellg();
         std::streampos nextPos = tellg() + std::streampos(stemplSize);
 
-        serialize(slpTemplate.width_);
-        serialize(slpTemplate.height_);
-        serialize(slpTemplate.hotspot_x);
-        serialize(slpTemplate.hotspot_y);
-        serialize(slpTemplate.data_size);
+        serialize<uint32_t>(slpTemplate.width_);
+        serialize<uint32_t>(slpTemplate.height_);
+        serialize<int32_t>(slpTemplate.hotspot_x);
+        serialize<int32_t>(slpTemplate.hotspot_y);
+        serialize<int32_t>(slpTemplate.data_size);
 
-        serialize(slpTemplate.outline_table_offset_);
+        serialize<uint32_t>(slpTemplate.outline_table_offset_);
         slpTemplate.outline_table_offset_ += templateBegin;
 
-        serialize(slpTemplate.cmd_table_offset_);
+        serialize<uint32_t>(slpTemplate.cmd_table_offset_);
         slpTemplate.cmd_table_offset_ += templateBegin;
 
         getIStream()->seekg(nextPos);
@@ -77,12 +78,12 @@ void SlpTemplateFile::loadFile() noexcept
         slpTemplate.right_edges_.resize(slpTemplate.height_);
 
         for (uint32_t row = 0; row < slpTemplate.height_; ++row) {
-            serialize(slpTemplate.left_edges_[row]);
-            serialize(slpTemplate.right_edges_[row]);
+            serialize<uint16_t>(slpTemplate.left_edges_[row]);
+            serialize<uint16_t>(slpTemplate.right_edges_[row]);
         }
 
         getIStream()->seekg(std::streampos(slpTemplate.cmd_table_offset_));
-        serialize(slpTemplate.cmd_offsets_, slpTemplate.height_);
+        serialize<uint32_t>(slpTemplate.cmd_offsets_, slpTemplate.height_);
     }
 
     loaded_ = true;
@@ -121,17 +122,17 @@ void FiltermapFile::serializeObject() noexcept
 {
     for (int i = 0; i < SlopeCount; i++) {
         uint32_t dataSize = 0;
-        serialize(dataSize);
+        serialize<uint32_t>(dataSize);
 
-        serialize(maps[i].height);
+        serialize<uint32_t>(maps[i].height);
 
         for (uint32_t y = 0; y < maps[i].height; y++) {
             FilterLine line;
-            serialize(line.width);
+            serialize<uint8_t>(line.width);
 
             for (int x = 0; x < line.width; x++) {
                 FilterCmd command;
-                serialize(command.sourcePixelCount);
+                serialize<uint16_t>(command.sourcePixelCount);
                 command.lightIndex = command.sourcePixelCount >> 4;
                 command.sourcePixelCount = command.sourcePixelCount & 0xF;
 
@@ -166,8 +167,8 @@ void PatternMasksFile::serializeObject() noexcept
 {
     for (int i = 0; i < 40; i++) {
         int32_t size = 4096;
-        serialize(size);
-        getIStream()->read((char *)&m_masks[i].pixels, 4096);
+        serialize<int32_t>(size);
+        read(m_masks[i].pixels, size);
     }
 
     if (getOperation() == OP_READ) {

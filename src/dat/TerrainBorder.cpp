@@ -62,7 +62,7 @@ void TerrainBorder::serializeObject(void)
 
     serialize<int32_t>(ShapePtr);
     serialize<int32_t>(SoundID);
-    serialize(Colors);
+    serialize<uint8_t, 3>(Colors);
 
     serialize<int8_t>(IsAnimated);
     serialize<int16_t>(AnimationFrames);
@@ -76,7 +76,7 @@ void TerrainBorder::serializeObject(void)
     serialize<int8_t>(Drawn);
 
     for (std::vector<FrameData> &sub : Borders) {
-        serialize(sub, gv == GV_MIK ? 13 : 12);
+        serialize<FrameData>(sub, gv == GV_MIK ? 13 : 12);
     }
 
     serialize<int16_t>(DrawTerrain);

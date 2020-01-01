@@ -167,7 +167,7 @@ void Terrain::serializeObject(void)
         }
     }
 
-    serialize(Colors);
+    serialize<uint8_t, 3>(Colors);
     serializePair<uint8_t>(CliffColors);
     serialize<int8_t>(PassableTerrain);
     serialize<int8_t>(ImpassableTerrain);
@@ -183,12 +183,12 @@ void Terrain::serializeObject(void)
     serialize<int8_t>(FrameChanged);
     serialize<int8_t>(Drawn);
 
-    serialize(ElevationGraphics);
+    serialize<FrameData, TILE_TYPE_COUNT>(ElevationGraphics);
     serialize<int16_t>(TerrainToDraw);
     serializePair<int16_t>(TerrainDimensions);
 
     if (gv >= GV_C8 && gv <= GV_LatestDE2) {
-        serialize<int16_t>(TerrainUnitMaskedDensity);
+        serialize<int16_t, TERRAIN_UNITS_SIZE>(TerrainUnitMaskedDensity);
     } else {
         if (isOperation(OP_READ)) {
             serialize<int16_t>(Borders, getTerrainCount(gv));
@@ -197,9 +197,9 @@ void Terrain::serializeObject(void)
         }
     }
 
-    serialize(TerrainUnitID);
-    serialize(TerrainUnitDensity);
-    serialize(TerrainUnitCentering);
+    serialize<int16_t, TERRAIN_UNITS_SIZE>(TerrainUnitID);
+    serialize<int16_t, TERRAIN_UNITS_SIZE>(TerrainUnitDensity);
+    serialize<int8_t, TERRAIN_UNITS_SIZE>(TerrainUnitCentering);
     serialize<int16_t>(NumberOfTerrainUnitsUsed);
 
     if (gv < GV_SWGB) {
