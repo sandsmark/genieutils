@@ -75,8 +75,15 @@ void TerrainBorder::serializeObject(void)
     serialize<int8_t>(FrameChanged);
     serialize<int8_t>(Drawn);
 
+    const size_t bordersSize = gv == GV_MIK ? 13 : 12;
     for (std::vector<FrameData> &sub : Borders) {
-        serialize<FrameData>(sub, gv == GV_MIK ? 13 : 12);
+        if (isOperation(OP_WRITE) && sub.size() != bordersSize) {
+            if (sub.size() > bordersSize) {
+                std::cerr << "Too many borders (" << sub.size() << "), max: " << bordersSize;
+            }
+            sub.resize(bordersSize);
+        }
+        serialize<FrameData>(sub, bordersSize);
     }
 
     serialize<int16_t>(DrawTerrain);

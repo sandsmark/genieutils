@@ -140,7 +140,7 @@ void Graphic::serializeObject(void)
     // There was something wonky when the original files were created, so to
     // avoid any diff when just loading and re-writing the original files we
     // have to do this
-    if (getOperation() == OP_WRITE) {
+    if (isOperation(OP_WRITE)) {
         const float newCount =  FrameCount ? AnimationDuration / FrameCount : 0;
         if (!util::floatsEquals(newCount, FrameDuration)) {
             FrameDuration = newCount;
