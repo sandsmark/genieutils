@@ -190,7 +190,7 @@ void Terrain::serializeObject(void)
     if (gv >= GV_C8 && gv <= GV_LatestDE2) {
         serialize<int16_t, TERRAIN_UNITS_SIZE>(TerrainUnitMaskedDensity);
     } else {
-        if (isOperation(OP_READ) && Borders.size() != getTerrainCount(gv)) {
+        if (isOperation(OP_WRITE) && Borders.size() != getTerrainCount(gv)) {
             std::cerr << "Invalid number of borders, expected " << getTerrainCount(gv) << " but have " << Borders.size() << std::endl;
         }
         serialize<int16_t>(Borders, getTerrainCount(gv));
