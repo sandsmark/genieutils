@@ -155,11 +155,11 @@ void TerrainBlock::serializeObject(void)
         serialize<int16_t>(PaddingTS); // Padding for TileSizes (32-bit aligned)
     }
 
-    if (isOperation(OP_READ)) {
-        serialize(Terrains, Terrain::getTerrainCount(gv));
-    } else {
-        serialize(Terrains, Terrains.size());
+    if (Terrains.size() != Terrain::getTerrainCount(gv)) {
+        std::cerr << "Unexpected terrain count, " << Terrains.size() << " for this game type " << Terrain::getTerrainCount(gv) << " is expected" << std::endl;
     }
+
+    serialize(Terrains, Terrain::getTerrainCount(gv));
 
     std::cout << "Terrains: " << Terrains.size() << std::endl;
 
