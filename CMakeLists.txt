@@ -238,6 +238,7 @@ if (GUTILS_STATIC)
     add_library(${Genieutils_LIBRARY} STATIC $<TARGET_OBJECTS:genieutils_common>)
 else()
     add_library(${Genieutils_LIBRARY} SHARED $<TARGET_OBJECTS:genieutils_common>)
+    set_property(TARGET genieutils_common PROPERTY POSITION_INDEPENDENT_CODE True)
 
     INSTALL(TARGETS ${Genieutils_LIBRARY}
         LIBRARY DESTINATION lib
