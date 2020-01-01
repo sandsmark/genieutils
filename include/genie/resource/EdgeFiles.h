@@ -76,7 +76,7 @@ private:
 
         while (!getIStream()->eof()) {
             TileSpan span;
-            serialize(span);
+            serialize<TileSpan>(span);
 
             if (span.xStart == -1 && span.xEnd == -1) {
                 break;

@@ -169,16 +169,16 @@ void ScnFile::serializeObject(void)
     serializeSize<uint32_t>(playerUnitsCount, playerUnits.size());
 
     if (scn_internal_ver > 1.06f) {
-        serialize(playerResources, 8);
+        serialize<ScnPlayerResources>(playerResources, 8);
     } else {
         // A lot of data is read here.
     }
 
-    serialize(playerUnits, playerUnitsCount);
+    serialize<ScnPlayerUnits>(playerUnits, playerUnitsCount);
 
     // You would think this would be the size of the player data, but no
     serialize<uint32_t>(playerCount2_);
-    serialize(players, 8);
+    serialize<ScnMorePlayerData>(players, 8);
 
     triggerVersion = scn_trigger_ver;
     serialize<double>(triggerVersion);
@@ -189,7 +189,7 @@ void ScnFile::serializeObject(void)
     }
 
     serializeSize<uint32_t>(numTriggers_, triggers.size());
-    serialize(triggers, numTriggers_);
+    serialize<Trigger>(triggers, numTriggers_);
 
     if (scn_trigger_ver > 1.3f) {
         serialize<int32_t>(triggerDisplayOrder, numTriggers_);
@@ -205,7 +205,7 @@ void ScnFile::serializeObject(void)
 
         if (includeFiles) {
             serializeSize<uint32_t>(fileCount_, includedFiles.size());
-            serialize(includedFiles, fileCount_);
+            serialize<ScnPersonalityScript>(includedFiles, fileCount_);
         }
     }
 
@@ -347,8 +347,8 @@ void CpxFile::serializeObject()
 {
     serialize(version, 4);
     serialize(name, 256);
-    serialize(filecount);
-    serialize(m_files, filecount);
+    serializeSize<uint32_t>(filecount, m_files.size());
+    serialize<CpxIncludedFile>(m_files, filecount);
 }
 
 std::vector<std::string> CpxFile::getFilenames() const
@@ -398,8 +398,8 @@ ScnFilePtr CpxIncludedFile::getScnFile()
 
 void CpxIncludedFile::serializeObject()
 {
-    serialize(size);
-    serialize(offset);
+    serialize<uint32_t>(size);
+    serialize<uint32_t>(offset);
     serialize(identifier, 255);
     serialize(filename, 257);
 }
@@ -413,7 +413,7 @@ void BlnFile::serializeObject()
 {
     compressor_.beginCompression();
 
-    serialize(version);
+    serialize<float>(version);
 
     for (Frame &frame : frames) {
         for (Palette &palette : frame.palettes) {

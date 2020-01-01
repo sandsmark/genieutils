@@ -40,8 +40,8 @@ BlendomaticFile::BlendomaticFile() :
 //------------------------------------------------------------------------------
 void BlendomaticFile::serializeObject()
 {
-    serialize(modeCount_);
-    serialize(tileCount_);
+    serializeSize<uint32_t>(modeCount_, modes_.size());
+    serialize<uint32_t>(tileCount_);
 
     modes_.resize(modeCount_);
 
@@ -49,7 +49,7 @@ void BlendomaticFile::serializeObject()
         log.debug("reading mode %", i);
 
         // number of pixels
-        serialize(modes_[i].pixelCount);
+        serialize<uint32_t>(modes_[i].pixelCount);
 
         if (modes_[i].pixelCount > 3000) {
             std::cerr << "invalid pixel count " << modes_[i].pixelCount << std::endl;
@@ -58,12 +58,12 @@ void BlendomaticFile::serializeObject()
 
         // TODO:
         // we should check these and skip the alphaValues reading in case any tiles don't have alpha
-        serialize(modes_[i].tileHasAlpha, tileCount_);
+        serialize<uint8_t>(modes_[i].tileHasAlpha, tileCount_);
 
-        serialize(modes_[i].alphaBitmap, modes_[i].pixelCount);
+        serialize<uint32_t>(modes_[i].alphaBitmap, modes_[i].pixelCount);
 
         // alpha values from 0-128
-        serialize(modes_[i].alphaValues, tileCount_, modes_[i].pixelCount);
+        serialize<uint8_t>(modes_[i].alphaValues, tileCount_, modes_[i].pixelCount);
     }
 }
 

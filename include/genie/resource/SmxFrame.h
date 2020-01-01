@@ -78,8 +78,8 @@ private:
             uint16_t padRight = 0;
 
             void serializeObject() override {
-                serialize(padLeft);
-                serialize(padRight);
+                serialize<uint16_t>(padLeft);
+                serialize<uint16_t>(padRight);
             }
         };
         /// Directly after the layer header, an array of smp_layer_row_edge (of length height) structs begins. These work exactly like the row edges in the SMP files.

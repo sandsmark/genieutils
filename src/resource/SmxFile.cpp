@@ -13,16 +13,16 @@ void SmxFile::serializeObject()
         return;
     }
 
-    serialize(m_version);
-    serialize(m_numFrames);
-    serialize(m_size);
-    serialize(m_sourceSize);
+    serialize<uint16_t>(m_version);
+    serializeSize<uint16_t>(m_numFrames, m_frames.size());
+    serialize<uint32_t>(m_size);
+    serialize<uint32_t>(m_sourceSize);
 
     serialize(m_comment, 16);
 
     log.warn("ver % frames % size % source % comment %", m_version, m_numFrames, m_size, m_sourceSize, m_comment);
 
-    serialize(m_frames, m_numFrames);
+    serialize<SmxFrame>(m_frames, m_numFrames);
 }
 
 } // namespace genie

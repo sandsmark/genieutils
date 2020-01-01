@@ -12,13 +12,13 @@ void SmxFrame::serializeObject()
 {
 //    log.debug(" ======= starting frame at %", getIStream()->tellg());
 
-    serialize(m_frameHeader.frameType);
+    serialize<uint8_t>(m_frameHeader.frameType);
     if (m_frameHeader.frameType == 0) {
         std::cerr << "invalid bundle" << std::endl;
         return;
     }
-    serialize(m_frameHeader.palette);
-    serialize(m_frameHeader.size);
+    serialize<uint8_t>(m_frameHeader.palette);
+    serialize<uint32_t>(m_frameHeader.size);
 
     if (m_frameHeader.frameType & FrameHeader::HasDamageModifier) {
         log.debug("Has damage masks");
@@ -35,7 +35,7 @@ void SmxFrame::serializeObject()
 
     if (m_frameHeader.frameType & FrameHeader::NormalLayer) {
         serializeLayerHeader(m_normalHeader);
-        serialize(m_normalHeader.pixelDataSize);
+        serialize<uint32_t>(m_normalHeader.pixelDataSize);
         m_normalHeader.filePosition = tellg();
 
         getIStream()->seekg(m_normalHeader.filePosition + std::streampos(m_normalHeader.commandsSize + m_normalHeader.pixelDataSize));
@@ -83,28 +83,28 @@ bool SmxFrame::load()
 
 void SmxFrame::serializeLayerHeader(SmxFrame::LayerHeader &header)
 {
-    serialize(header.width);
-    serialize(header.height);
+    serialize<uint16_t>(header.width);
+    serialize<uint16_t>(header.height);
 
-    serialize(header.centerX);
-    serialize(header.centerY);
+    serialize<uint16_t>(header.centerX);
+    serialize<uint16_t>(header.centerY);
 
-    serialize(header.size);
-    serialize(header.unknown);
+    serialize<uint32_t>(header.size);
+    serialize<uint32_t>(header.unknown);
 
-    serialize(header.rowEdges, header.height);
+    serialize<LayerHeader::RowEdge>(header.rowEdges, header.height);
 
-    serialize(header.commandsSize);
+    serialize<uint32_t>(header.commandsSize);
     //log.debug("Size: %x%; Hotspot %,%; Size %; Unknown %", header.width, header.height, header.centerX, header.centerY, header.size, header.unknown);
 }
 
 void SmxFrame::readNormalLayer()
 {
     std::vector<uint8_t> commands;
-    serialize(commands, m_normalHeader.commandsSize);
+    serialize<uint8_t>(commands, m_normalHeader.commandsSize);
 
     std::vector<uint8_t> pixelData;
-    serialize(pixelData, m_normalHeader.pixelDataSize);
+    serialize<uint8_t>(pixelData, m_normalHeader.pixelDataSize);
 
     const std::vector<SmpPixel> pixelsVector = m_frameHeader.frameType & FrameHeader::HasDamageModifier ?
                 decode8To5(std::move(pixelData)) :
@@ -170,13 +170,13 @@ void SmxFrame::readNormalLayer()
 void SmxFrame::readShadowLayer()
 {
     std::vector<uint8_t> commands;
-    serialize(commands, m_shadowHeader.commandsSize);
+    serialize<uint8_t>(commands, m_shadowHeader.commandsSize);
 }
 
 void SmxFrame::readOutlineLayer()
 {
     std::vector<uint8_t> commands;
-    serialize(commands, m_outlineHeader.commandsSize);
+    serialize<uint8_t>(commands, m_outlineHeader.commandsSize);
 }
 
 std::vector<SmpPixel> SmxFrame::decode4Plus1(const std::vector<uint8_t> &data)

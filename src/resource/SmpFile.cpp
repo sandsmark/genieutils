@@ -23,18 +23,18 @@ void SmpFile::serializeObject()
         return;
     }
 
-    serialize(m_version);
-    serializeSize(m_numFrames, m_frames.size());
-    serialize(m_facetNum);
-    serialize(m_framesPerFacet);
-    serialize(m_checksum);
-    serialize(m_size);
-    serialize(m_source_format);
+    serialize<int32_t>(m_version);
+    serializeSize<int32_t>(m_numFrames, m_frames.size());
+    serialize<int32_t>(m_facetNum);
+    serialize<int32_t>(m_framesPerFacet);
+    serialize<int32_t>(m_checksum);
+    serialize<int32_t>(m_size);
+    serialize<int32_t>(m_source_format);
     serialize(m_comment, 32);
 
     log.debug("ver % frames % size % comment %", m_version, m_numFrames, m_size, m_comment);
 
-    serialize(m_frameOffsets, m_numFrames);
+    serialize<uint32_t>(m_frameOffsets, m_numFrames);
     m_frames.resize(m_numFrames);
 
     for (int i=0; i<m_numFrames; i++) {
@@ -45,10 +45,10 @@ void SmpFile::serializeObject()
         //m_frames[i]->serializeHeader();
         m_frames[i]->readObject(*getIStream());
 
-//        serialize(m_frames[i]);
+//        serialize<SmpFrame>(m_frames[i]);
     }
 
-//    serialize(m_frames, m_numFrames);
+//    serialize<SmpFrame>(m_frames, m_numFrames);
 
     m_loaded = true;
 }

@@ -72,9 +72,9 @@ private:
 
     //  bool loaded_ = false;
 
-    // 4 in AoK, 9 in AoC, apparently ignored by the game
+    /// 4 in AoK, 9 in AoC, apparently ignored by the game
     uint32_t modeCount_ = 0;
-    // 31, apparently ignored by the game
+    /// 31, apparently ignored by the game
     uint32_t tileCount_ = 0;
     std::vector<BlendMode> modes_;
 
