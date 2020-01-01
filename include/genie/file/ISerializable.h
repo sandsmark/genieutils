@@ -526,7 +526,8 @@ protected:
 
     /// Reads or writes an array of data to/from a vector dependent on operation.
     template <typename T,
-              std::enable_if_t<std::is_pod<T>::value, int> = 0
+              std::enable_if_t<std::is_pod<T>::value, int> = 0,
+              std::enable_if_t<std::negation<std::is_base_of<ISerializable, T>>::value, int> = 0
               >
     void serialize(std::vector<T> &vec, size_t size)
     {
