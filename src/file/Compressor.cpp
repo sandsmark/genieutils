@@ -105,6 +105,7 @@ void Compressor::startDecompression(void)
 {
     try {
         // Important thing here is window_bits = 15
+        assert(istream_);
         uncompressedIstream_ = std::make_shared<zstr::istream>(*istream_, (std::size_t)1 << 20, false, -15);
     } catch (const zstr::Exception &exception) {
         uncompressedIstream_.reset();
@@ -127,6 +128,7 @@ void Compressor::startCompression(void)
 {
     try {
         // Important thing here is window_bits = 15
+        assert(ostream_);
         bufferedStream_ = std::make_shared<zstr::ostream>(*ostream_, (std::size_t)1 << 20, Z_DEFAULT_COMPRESSION, -15);
     } catch (const zstr::Exception &exception) {
         bufferedStream_.reset();
@@ -138,7 +140,7 @@ void Compressor::startCompression(void)
 //------------------------------------------------------------------------------
 void Compressor::stopCompression(void)
 {
-    ostream_ = 0;
+    ostream_ = nullptr;
     bufferedStream_.reset();
 }
 } // namespace genie
