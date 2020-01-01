@@ -37,8 +37,8 @@ void ScnMainPlayerData::serializeObject(void)
     serializePlayerDataVersion();
 
     if (scn_plr_data_ver > 1.13f) {
-        for (unsigned int i = 0; i < 16; ++i) {
-            serialize(playerNames[i], 256); // 1.14 <-- this is read much later in AoE 1
+        for (std::string &playerName : playerNames) {
+            serialize(playerName, 256); // 1.14 <-- this is read much later in AoE 1
         }
 
         if (scn_plr_data_ver > 1.15f) {
@@ -119,8 +119,8 @@ void ScnMainPlayerData::serializeObject(void)
     // <- here actually switches the reading function in exe
 
     if (scn_plr_data_ver < 1.14f) {
-        for (unsigned int i = 0; i < 16; ++i) {
-            serialize(playerNames[i], 256);
+        for (std::string &playerName : playerNames) {
+            serialize(playerName, 256);
         }
 
         serialize(resourcesPlusPlayerInfo, 16);
