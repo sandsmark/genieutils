@@ -46,7 +46,7 @@ static std::string wintendoExePath()
 
         // Windows APIs are a special kind of retarded, 0 means it failed
         if (ret == 0) {
-            std::cerr << << "Failed to query wintendo exe path" << std::endl;
+            std::cerr << "Failed to query wintendo exe path" << std::endl;
             return {};
         }
     } while(ret >= pathBuf.size());
