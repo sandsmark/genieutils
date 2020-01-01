@@ -51,7 +51,7 @@ class BlnFile : public IFile
 {
 public:
     struct Palette {
-        std::vector<uint8_t> colors;
+        std::array<uint8_t, 256> colors;
     };
     struct Frame {
         std::array<Palette, 256> palettes;
