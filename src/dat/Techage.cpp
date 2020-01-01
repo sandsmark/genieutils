@@ -40,7 +40,7 @@ unsigned short Effect::getNameSize(void)
 bool Effect::compareTo(const Effect &other) const
 {
     COMPARE_MEMBER(Name);
-    COMPARE_MEMBER_VEC(EffectCommands);
+    COMPARE_MEMBER_OBJ_VEC(EffectCommands);
 
     return true;
 }

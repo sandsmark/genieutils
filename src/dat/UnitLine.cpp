@@ -29,7 +29,7 @@ bool UnitLine::compareTo(const UnitLine &other) const
 {
     COMPARE_MEMBER(ID);
     COMPARE_MEMBER(Name);
-    COMPARE_MEMBER(UnitIDs);
+    COMPARE_MEMBER_VEC(UnitIDs);
 
     return true;
 }

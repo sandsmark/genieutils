@@ -120,12 +120,12 @@ bool TerrainBlock::compareTo(const TerrainBlock &other) const
     COMPARE_MEMBER(BordersUsed);
     COMPARE_MEMBER(RemovedBlocksUsed);
     COMPARE_MEMBER(TerrainsUsed2);
-    COMPARE_MEMBER_VEC(Terrains);
-    COMPARE_MEMBER_VEC(TerrainBorders);
-    COMPARE_MEMBER_VEC(TileSizes);
-    COMPARE_MEMBER(AoEAlphaUnknown); // These are very similar to borders
-    COMPARE_MEMBER(SomeInt32);
-    COMPARE_MEMBER(SomeBytes);
+    COMPARE_MEMBER_OBJ_VEC(Terrains);
+    COMPARE_MEMBER_OBJ_VEC(TerrainBorders);
+    COMPARE_MEMBER_OBJ_VEC(TileSizes);
+    COMPARE_MEMBER_VEC(AoEAlphaUnknown); // These are very similar to borders
+    COMPARE_MEMBER_VEC(SomeInt32);
+    COMPARE_MEMBER_VEC(SomeBytes);
 
     return true;
 }

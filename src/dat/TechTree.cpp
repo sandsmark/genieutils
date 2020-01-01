@@ -48,10 +48,10 @@ unsigned short TechTree::getCount() //GameVersion gv) // used before 10.84 (GV_A
 bool TechTree::compareTo(const TechTree &other) const
 {
     COMPARE_MEMBER(TotalUnitTechGroups);
-    COMPARE_MEMBER_VEC(TechTreeAges);
-    COMPARE_MEMBER_VEC(UnitConnections);
-    COMPARE_MEMBER_VEC(BuildingConnections);
-    COMPARE_MEMBER_VEC(ResearchConnections);
+    COMPARE_MEMBER_OBJ_VEC(TechTreeAges);
+    COMPARE_MEMBER_OBJ_VEC(UnitConnections);
+    COMPARE_MEMBER_OBJ_VEC(BuildingConnections);
+    COMPARE_MEMBER_OBJ_VEC(ResearchConnections);
 
     return true;
 }
@@ -114,11 +114,11 @@ bool TechTreeAge::compareTo(const TechTreeAge &other) const
     COMPARE_MEMBER(MaxAgeLength);
     COMPARE_MEMBER(NumBuildingLevels);
     COMPARE_MEMBER(Status);
-    COMPARE_MEMBER(Buildings);
-    COMPARE_MEMBER(Techs);
-    COMPARE_MEMBER(Units);
-    COMPARE_MEMBER(BuildingsPerZone);
-    COMPARE_MEMBER(GroupLengthPerZone);
+    COMPARE_MEMBER_VEC(Buildings);
+    COMPARE_MEMBER_VEC(Techs);
+    COMPARE_MEMBER_VEC(Units);
+    COMPARE_MEMBER_VEC(BuildingsPerZone);
+    COMPARE_MEMBER_VEC(GroupLengthPerZone);
 
     return Common.compareTo(other.Common);
 }
@@ -184,11 +184,11 @@ bool BuildingConnection::compareTo(const BuildingConnection &other) const
     COMPARE_MEMBER(LineMode);
     COMPARE_MEMBER(LocationInAge);
     COMPARE_MEMBER(Status);
-    COMPARE_MEMBER(Buildings);
-    COMPARE_MEMBER(Techs);
-    COMPARE_MEMBER(Units);
-    COMPARE_MEMBER(UnitsTechsFirst);
-    COMPARE_MEMBER(UnitsTechsTotal);
+    COMPARE_MEMBER_VEC(Buildings);
+    COMPARE_MEMBER_VEC(Techs);
+    COMPARE_MEMBER_VEC(Units);
+    COMPARE_MEMBER_VEC(UnitsTechsFirst);
+    COMPARE_MEMBER_VEC(UnitsTechsTotal);
 
     return Common.compareTo(other.Common);
 }
@@ -249,7 +249,7 @@ bool UnitConnection::compareTo(const UnitConnection &other) const
     COMPARE_MEMBER(UpperBuilding);
     COMPARE_MEMBER(VerticalLine);
     COMPARE_MEMBER(Status);
-    COMPARE_MEMBER(Units);
+    COMPARE_MEMBER_VEC(Units);
 
     return Common.compareTo(other.Common);
 }
@@ -298,9 +298,9 @@ bool ResearchConnection::compareTo(const ResearchConnection &other) const
     COMPARE_MEMBER(UpperBuilding);
     COMPARE_MEMBER(VerticalLine);
     COMPARE_MEMBER(Status);
-    COMPARE_MEMBER(Buildings);
-    COMPARE_MEMBER(Techs);
-    COMPARE_MEMBER(Units);
+    COMPARE_MEMBER_VEC(Buildings);
+    COMPARE_MEMBER_VEC(Techs);
+    COMPARE_MEMBER_VEC(Units);
 
     return Common.compareTo(other.Common);
 }
@@ -347,8 +347,8 @@ void ResearchConnection::serializeObject(void)
 bool techtree::Common::compareTo(const techtree::Common &other) const
 {
     COMPARE_MEMBER(SlotsUsed);
-    COMPARE_MEMBER(UnitResearch);
-    COMPARE_MEMBER(Mode);
+    COMPARE_MEMBER_VEC(UnitResearch);
+    COMPARE_MEMBER_VEC(Mode);
 
     return true;
 }

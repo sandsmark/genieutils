@@ -76,9 +76,9 @@ bool Graphic::compareTo(const Graphic &other) const
     COMPARE_MEMBER(FileName);
     COMPARE_MEMBER(Name);
     COMPARE_MEMBER(ParticleEffectName);
-    COMPARE_MEMBER_VEC(AngleSounds);
-    COMPARE_MEMBER_VEC(Deltas);
-    COMPARE_MEMBER(Coordinates);
+    COMPARE_MEMBER_OBJ_VEC(AngleSounds);
+    COMPARE_MEMBER_OBJ_VEC(Deltas);
+    COMPARE_MEMBER_VEC(Coordinates);
     COMPARE_MEMBER(AngleCount);
     COMPARE_MEMBER(FirstFrame);
     COMPARE_MEMBER(FrameCount);

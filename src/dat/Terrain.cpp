@@ -95,15 +95,15 @@ bool Terrain::compareTo(const Terrain &other) const
     COMPARE_MEMBER(ImpassableTerrain);
     COMPARE_MEMBER(IsWater);
     COMPARE_MEMBER(PassableTerrain);
-    COMPARE_MEMBER_VEC(ElevationGraphics);
-    COMPARE_MEMBER(TerrainUnitDensity);
-    COMPARE_MEMBER(TerrainUnitID);
-    COMPARE_MEMBER(TerrainUnitMaskedDensity);
-    COMPARE_MEMBER(TerrainUnitCentering);
-    COMPARE_MEMBER(TerrainDimensions);
-    COMPARE_MEMBER(CliffColors);
+    COMPARE_MEMBER_OBJ_VEC(ElevationGraphics);
+    COMPARE_MEMBER_VEC(TerrainUnitDensity);
+    COMPARE_MEMBER_VEC(TerrainUnitID);
+    COMPARE_MEMBER_VEC(TerrainUnitMaskedDensity);
+    COMPARE_MEMBER_VEC(TerrainUnitCentering);
+    COMPARE_MEMBER_PAIR(TerrainDimensions);
+    COMPARE_MEMBER_PAIR(CliffColors);
     COMPARE_MEMBER(OverlayMaskName);
-    COMPARE_MEMBER(Borders);
+    COMPARE_MEMBER_VEC(Borders);
     COMPARE_MEMBER(WwiseSoundID);
     COMPARE_MEMBER(WwiseSoundStopID);
 

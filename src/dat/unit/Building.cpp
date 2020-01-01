@@ -49,8 +49,8 @@ bool Building::compareTo(const Building &other) const
     COMPARE_MEMBER(CanBurn);
     COMPARE_MEMBER(DisappearsWhenBuilt);
     COMPARE_MEMBER(GarrisonType);
-    COMPARE_MEMBER(LootingTable);;
-    COMPARE_MEMBER_VEC(Annexes);
+    COMPARE_MEMBER_VEC(LootingTable);;
+    COMPARE_MEMBER_OBJ_VEC(Annexes);
     COMPARE_MEMBER(WwiseConstructionSoundID);
     COMPARE_MEMBER(WwiseTransformSoundID);
 
@@ -122,7 +122,7 @@ void Building::serializeObject(void)
 bool BuildingAnnex::compareTo(const BuildingAnnex &other) const
 {
     COMPARE_MEMBER(UnitID);
-    COMPARE_MEMBER(Misplacement);
+    COMPARE_MEMBER_PAIR(Misplacement);
 
     return true;
 }

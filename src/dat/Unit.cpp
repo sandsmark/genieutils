@@ -131,9 +131,9 @@ const std::string &Unit::className(const int16_t classId, const GameVersion game
 
 bool Unit::compareTo(const Unit &other) const
 {
-    COMPARE_MEMBER(ClearanceSize);
-    COMPARE_MEMBER(OutlineSize);
-    COMPARE_MEMBER(Size);
+    COMPARE_MEMBER_XYF(ClearanceSize);
+    COMPARE_MEMBER_XYF(OutlineSize);
+    COMPARE_MEMBER_XYZF(Size);
     COMPARE_MEMBER(HPBarHeight);
     COMPARE_MEMBER(LineOfSight);
     COMPARE_MEMBER(MultipleAttributeMode);
@@ -189,13 +189,13 @@ bool Unit::compareTo(const Unit &other) const
     COMPARE_MEMBER(SortNumber);
     COMPARE_MEMBER(Type);
     COMPARE_MEMBER(UndeadMode);
-    COMPARE_MEMBER(PlacementSideTerrain);
-    COMPARE_MEMBER(PlacementTerrain);
-    COMPARE_MEMBER(StandingGraphic);
+    COMPARE_MEMBER_PAIR(PlacementSideTerrain);
+    COMPARE_MEMBER_PAIR(PlacementTerrain);
+    COMPARE_MEMBER_PAIR(StandingGraphic);
     COMPARE_MEMBER(Name);
     COMPARE_MEMBER(Name2);
-    COMPARE_MEMBER_VEC(ResourceStorages);
-    COMPARE_MEMBER_VEC(DamageGraphics);
+    COMPARE_MEMBER_OBJ_VEC(ResourceStorages);
+    COMPARE_MEMBER_OBJ_VEC(DamageGraphics);
     COMPARE_MEMBER(LanguageDLLCreation);
     COMPARE_MEMBER(LanguageDLLName);
     COMPARE_MEMBER(WwiseDamageSoundID);

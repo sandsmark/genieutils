@@ -63,8 +63,8 @@ bool Tech::compareTo(const Tech &other) const
     COMPARE_MEMBER(ButtonID);
     COMPARE_MEMBER(Name);
     COMPARE_MEMBER(Name2);
-    COMPARE_MEMBER_VEC(ResourceCosts);
-    COMPARE_MEMBER(RequiredTechs);
+    COMPARE_MEMBER_OBJ_VEC(ResourceCosts);
+    COMPARE_MEMBER_VEC(RequiredTechs);
     COMPARE_MEMBER(LanguageDLLDescription);
     COMPARE_MEMBER(LanguageDLLName);
 

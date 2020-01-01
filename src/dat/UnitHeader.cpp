@@ -35,7 +35,7 @@ void UnitHeader::setGameVersion(GameVersion gv)
 bool UnitHeader::compareTo(const UnitHeader &other) const
 {
     COMPARE_MEMBER(Exists);
-    COMPARE_MEMBER_VEC(TaskList);
+    COMPARE_MEMBER_OBJ_VEC(TaskList);
 
     return true;
 }

@@ -55,8 +55,8 @@ bool Creatable::compareTo(const Creatable &other) const
     COMPARE_MEMBER(HeroMode);
     COMPARE_MEMBER(MaxTotalProjectiles);
     COMPARE_MEMBER(SpecialAbility);
-    COMPARE_MEMBER_VEC(ResourceCosts);
-    COMPARE_MEMBER(ProjectileSpawningArea);
+    COMPARE_MEMBER_OBJ_VEC(ResourceCosts);
+    COMPARE_MEMBER_VEC(ProjectileSpawningArea);
 
     return true;
 }

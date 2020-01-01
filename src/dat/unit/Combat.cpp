@@ -53,9 +53,9 @@ bool Combat::compareTo(const Combat &other) const
     COMPARE_MEMBER(ProjectileUnitID);
     COMPARE_MEMBER(BlastAttackLevel);
     COMPARE_MEMBER(BreakOffCombat);
-    COMPARE_MEMBER(GraphicDisplacement);
-    COMPARE_MEMBER_VEC(Armours);
-    COMPARE_MEMBER_VEC(Attacks);
+    COMPARE_MEMBER_VEC(GraphicDisplacement);
+    COMPARE_MEMBER_OBJ_VEC(Armours);
+    COMPARE_MEMBER_OBJ_VEC(Attacks);
 
     return true;
 }

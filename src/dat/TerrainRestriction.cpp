@@ -51,8 +51,8 @@ void TerrainRestriction::setTerrainCount(unsigned short cnt)
 
 bool TerrainRestriction::compareTo(const TerrainRestriction &other) const
 {
-    COMPARE_MEMBER(PassableBuildableDmgMultiplier);
-    COMPARE_MEMBER_VEC(TerrainPassGraphics);
+    COMPARE_MEMBER_VEC(PassableBuildableDmgMultiplier);
+    COMPARE_MEMBER_OBJ_VEC(TerrainPassGraphics);
     return true;
 }
 

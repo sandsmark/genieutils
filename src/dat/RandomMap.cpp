@@ -34,7 +34,7 @@ void RandomMaps::setGameVersion(GameVersion gv)
 bool RandomMaps::compareTo(const RandomMaps &other) const
 {
     COMPARE_MEMBER(RandomMapsPtr);
-    COMPARE_MEMBER_VEC(Maps);
+    COMPARE_MEMBER_OBJ_VEC(Maps);
 
 
     return true;
@@ -93,10 +93,10 @@ bool MapInfo::compareTo(const MapInfo &other) const
     COMPARE_MEMBER(MapUnitsPtr);
     COMPARE_MEMBER(MapElevationsPtr);
 
-    COMPARE_MEMBER_VEC(MapLands);
-    COMPARE_MEMBER_VEC(MapTerrains);
-    COMPARE_MEMBER_VEC(MapUnits);
-    COMPARE_MEMBER_VEC(MapElevations);
+    COMPARE_MEMBER_OBJ_VEC(MapLands);
+    COMPARE_MEMBER_OBJ_VEC(MapTerrains);
+    COMPARE_MEMBER_OBJ_VEC(MapUnits);
+    COMPARE_MEMBER_OBJ_VEC(MapElevations);
 
     return true;
 }

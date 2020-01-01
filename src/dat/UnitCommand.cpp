@@ -93,7 +93,7 @@ bool Task::compareTo(const Task &other) const
     COMPARE_MEMBER(WorkRange);
     COMPARE_MEMBER(WorkValue1);
     COMPARE_MEMBER(WorkValue2);
-    COMPARE_MEMBER(ActionType);
+    COMPARE_MEMBER_ENUM_CLASS(ActionType);
     COMPARE_MEMBER(CarryingGraphicID);
     COMPARE_MEMBER(ClassID);
     COMPARE_MEMBER(GatherType);

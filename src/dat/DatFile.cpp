@@ -289,20 +289,20 @@ void DatFile::setVerboseMode(bool verbose)
 bool DatFile::compareTo(const DatFile &other) const
 {
     COMPARE_MEMBER(FileVersion);
-    COMPARE_MEMBER(FloatPtrTerrainTables);
-    COMPARE_MEMBER(TerrainPassGraphicPointers);
-    COMPARE_MEMBER_VEC(TerrainRestrictions);
-    COMPARE_MEMBER_VEC(PlayerColours);
-    COMPARE_MEMBER_VEC(Sounds);
-    COMPARE_MEMBER(GraphicPointers);
+    COMPARE_MEMBER_VEC(FloatPtrTerrainTables);
+    COMPARE_MEMBER_VEC(TerrainPassGraphicPointers);
+    COMPARE_MEMBER_OBJ_VEC(TerrainRestrictions);
+    COMPARE_MEMBER_OBJ_VEC(PlayerColours);
+    COMPARE_MEMBER_OBJ_VEC(Sounds);
+    COMPARE_MEMBER_VEC(GraphicPointers);
 
-    COMPARE_MEMBER_VEC(Graphics);
-    COMPARE_MEMBER_VEC(Effects);
-    COMPARE_MEMBER_VEC(UnitHeaders);
-    COMPARE_MEMBER_VEC(Civs);
+    COMPARE_MEMBER_OBJ_VEC(Graphics);
+    COMPARE_MEMBER_OBJ_VEC(Effects);
+    COMPARE_MEMBER_OBJ_VEC(UnitHeaders);
+    COMPARE_MEMBER_OBJ_VEC(Civs);
 
-    COMPARE_MEMBER_VEC(Techs);
-    COMPARE_MEMBER_VEC(UnitLines);
+    COMPARE_MEMBER_OBJ_VEC(Techs);
+    COMPARE_MEMBER_OBJ_VEC(UnitLines);
 
     COMPARE_MEMBER(TimeSlice);
     COMPARE_MEMBER(UnitKillRate);

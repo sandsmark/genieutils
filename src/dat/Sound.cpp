@@ -38,7 +38,7 @@ bool Sound::compareTo(const Sound &other) const
     COMPARE_MEMBER(PlayDelay);
     COMPARE_MEMBER(CacheTime); // 5 minutes
     COMPARE_MEMBER(TotalProbability);
-    COMPARE_MEMBER_VEC(Items);
+    COMPARE_MEMBER_OBJ_VEC(Items);
 
     return true;
 }

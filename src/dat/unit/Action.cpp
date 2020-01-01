@@ -42,8 +42,8 @@ bool Action::compareTo(const Action &other) const
     COMPARE_MEMBER(MoveSound);
     COMPARE_MEMBER(RunPattern);
     COMPARE_MEMBER(TaskSwapGroup);
-    COMPARE_MEMBER(DropSite);
-    COMPARE_MEMBER_VEC(TaskList);
+    COMPARE_MEMBER_PAIR(DropSite);
+    COMPARE_MEMBER_OBJ_VEC(TaskList);
     COMPARE_MEMBER(WwiseAttackSoundID);
     COMPARE_MEMBER(WwiseMoveSoundID);
 
