@@ -78,12 +78,15 @@ void writeReadCheck(const genie::GameVersion gv)
 
     writeFile.Civs.resize(1);
     writeFile.Civs[0].Units.resize(6);
-    writeFile.Civs[0].UnitPointers.resize(6);
+    writeFile.Civs[0].UnitPointers.resize(6, 1);
 
+    writeFile.Civs[0].Units[4].ID = 1337;
     writeFile.Civs[0].Units[4].Moving.TrackingUnit = 5;
     writeFile.Civs[0].Units[4].Creatable.TrainTime = 999;
     writeFile.Civs[0].Units[4].Creatable.ButtonID = 100;
 
+    writeFile.Civs[0].Units[5].ID = 1338;
+    writeFile.Civs[0].Units[5].Type = genie::Unit::CreatableType;
     writeFile.Civs[0].Units[5].Moving.TrackingUnit = 5;
     writeFile.Civs[0].Units[5].Creatable.TrainTime = 999;
     writeFile.Civs[0].Units[5].Creatable.ButtonID = 100;
@@ -104,10 +107,13 @@ void writeReadCheck(const genie::GameVersion gv)
     BOOST_REQUIRE_GT(readFile.Civs.size(), 0);
     BOOST_REQUIRE_GT(readFile.Civs[0].Units.size(), 5);
 
-    BOOST_CHECK_EQUAL(readFile.Civs[0].Units[4].Moving.TrackingUnit, 5);
-    BOOST_CHECK_EQUAL(readFile.Civs[0].Units[4].Creatable.TrainTime, 999);
-    BOOST_CHECK_EQUAL(readFile.Civs[0].Units[4].Creatable.ButtonID, 100);
+    BOOST_CHECK_EQUAL(readFile.Civs[0].Units[4].ID, 1337);
+    // It should not get these, it is not the right type
+    BOOST_CHECK_EQUAL(readFile.Civs[0].Units[4].Moving.TrackingUnit, -1);
+    BOOST_CHECK_EQUAL(readFile.Civs[0].Units[4].Creatable.TrainTime, -1);
+    BOOST_CHECK_EQUAL(readFile.Civs[0].Units[4].Creatable.ButtonID, -1);
 
+    BOOST_CHECK_EQUAL(readFile.Civs[0].Units[5].ID, 1338);
     BOOST_CHECK_EQUAL(readFile.Civs[0].Units[5].Moving.TrackingUnit, 5);
     BOOST_CHECK_EQUAL(readFile.Civs[0].Units[5].Creatable.TrainTime, 999);
     BOOST_CHECK_EQUAL(readFile.Civs[0].Units[5].Creatable.ButtonID, 100);
@@ -120,6 +126,13 @@ void writeReadCheck(const genie::GameVersion gv)
     BOOST_CHECK_EQUAL(b.Creatable.TrainTime, 999);
     BOOST_CHECK_EQUAL(b.Creatable.ButtonID, 100);
 
+    // because of the 'invalid' type
+    BOOST_CHECK(!readFile.compareTo(writeFile));
+
+    // Now fix the type, and check that things are OK
+    writeFile.Civs[0].Units[4].Type = genie::Unit::BuildingType;
+    writeFile.saveAs("temp.dat");
+    readFile.load("temp.dat");
     BOOST_CHECK(readFile.compareTo(writeFile));
 }
 
@@ -131,8 +144,8 @@ BOOST_AUTO_TEST_CASE(write_read_test)
     writeReadCheck(genie::GV_RoR);
     writeReadCheck(genie::GV_AoK);
     writeReadCheck(genie::GV_TC);
-//    writeReadCheck(genie::GV_SWGB);
-//    writeReadCheck(genie::GV_CC);
+    writeReadCheck(genie::GV_SWGB);
+    writeReadCheck(genie::GV_CC);
 }
 
 BOOST_AUTO_TEST_CASE(simple_change_values_test)
