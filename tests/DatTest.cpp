@@ -61,6 +61,7 @@ std::unique_ptr<genie::DatFile> openFile(genie::GameVersion gv)
     }
     std::unique_ptr<genie::DatFile> file = std::make_unique<genie::DatFile>();
     file->setFileName(filepath);
+    file->setVerboseMode(true);
     file->setGameVersion(gv);
     file->load();
     return file;
@@ -69,41 +70,15 @@ std::unique_ptr<genie::DatFile> openFile(genie::GameVersion gv)
 void writeReadCheck(const genie::GameVersion gv)
 {
     genie::Logger::setLogLevel(genie::Logger::L_INFO);
-    std::cout << "Testing game version " << genie::DatFile::versionName(gv) << std::endl;
-
-    return; // TODO: fixme
+    std::cout << "Read write testing game version " << genie::DatFile::versionName(gv) << std::endl;
 
     genie::DatFile writeFile;
     writeFile.setVerboseMode(true);
     writeFile.setGameVersion(gv);
 
-    // So far we need to set this (and it still fails), shouldn't need to
-//    writeFile.FileVersion = "VER 0.0";
-//    writeFile.TerrainsUsed1 = 1;
-//    writeFile.TerrainRestrictions.resize(1);
-//    writeFile.TerrainRestrictions[0].PassableBuildableDmgMultiplier.resize(1);
-//    writeFile.TerrainRestrictions[0].TerrainPassGraphics.resize(1);
-//    writeFile.TerrainPassGraphicPointers.resize(1);
-//    writeFile.FloatPtrTerrainTables.resize(1);
-//    writeFile.Graphics.resize(42);
-//    writeFile.GraphicPointers.resize(42);
-//    writeFile.PlayerColours.resize(42);
-//    writeFile.Sounds.resize(1337);
-//    writeFile.TerrainBlock.Terrains.resize(genie::Terrain::getTerrainCount(gv));
-//    writeFile.Graphics.resize(42);
-
-//    writeFile.RandomMaps.Maps.resize(10);
-//    writeFile.RandomMaps.Maps[0].MapLands.resize(1);
-//    writeFile.RandomMaps.Maps[0].MapUnits.resize(1);
-//    writeFile.RandomMaps.Maps[0].MapTerrains.resize(1);
-//    writeFile.RandomMaps.Maps[0].MapElevations.resize(1);
-
-//    writeFile.Effects.resize(42);
-//    writeFile.UnitLines.resize(42);
-//    writeFile.UnitHeaders.resize(42);
-//    writeFile.Civs.resize(1);
-//    writeFile.Civs[0].Units.resize(6);
-//    writeFile.Civs[0].UnitPointers.resize(6);
+    writeFile.Civs.resize(1);
+    writeFile.Civs[0].Units.resize(6);
+    writeFile.Civs[0].UnitPointers.resize(6);
 
     writeFile.Civs[0].Units[4].Moving.TrackingUnit = 5;
     writeFile.Civs[0].Units[4].Creatable.TrainTime = 999;
@@ -115,6 +90,7 @@ void writeReadCheck(const genie::GameVersion gv)
 
     genie::Unit a = writeFile.Civs[0].Units[5];
     genie::Unit b(a);
+    std::cout << " === Saving... ===" << std::endl;
     writeFile.saveAs("temp.dat");
     std::cout << "Size after saving " << writeFile.Civs.size() << std::endl;
 
@@ -122,29 +98,29 @@ void writeReadCheck(const genie::GameVersion gv)
     genie::DatFile readFile;
     readFile.setVerboseMode(true);
     readFile.setGameVersion(gv);
+    std::cout << " === Loading... ===" << std::endl;
     readFile.load("temp.dat");
+
+    BOOST_REQUIRE_GT(readFile.Civs.size(), 0);
+    BOOST_REQUIRE_GT(readFile.Civs[0].Units.size(), 5);
+
+    BOOST_CHECK_EQUAL(readFile.Civs[0].Units[4].Moving.TrackingUnit, 5);
+    BOOST_CHECK_EQUAL(readFile.Civs[0].Units[4].Creatable.TrainTime, 999);
+    BOOST_CHECK_EQUAL(readFile.Civs[0].Units[4].Creatable.ButtonID, 100);
+
+    BOOST_CHECK_EQUAL(readFile.Civs[0].Units[5].Moving.TrackingUnit, 5);
+    BOOST_CHECK_EQUAL(readFile.Civs[0].Units[5].Creatable.TrainTime, 999);
+    BOOST_CHECK_EQUAL(readFile.Civs[0].Units[5].Creatable.ButtonID, 100);
+
+    BOOST_CHECK_EQUAL(a.Moving.TrackingUnit, 5);
+    BOOST_CHECK_EQUAL(a.Creatable.TrainTime, 999);
+    BOOST_CHECK_EQUAL(a.Creatable.ButtonID, 100);
+
+    BOOST_CHECK_EQUAL(b.Moving.TrackingUnit, 5);
+    BOOST_CHECK_EQUAL(b.Creatable.TrainTime, 999);
+    BOOST_CHECK_EQUAL(b.Creatable.ButtonID, 100);
+
     BOOST_CHECK(readFile.compareTo(writeFile));
-
-    BOOST_CHECK_GT(readFile.Civs.size(), 0);
-    if (readFile.Civs.empty()) {
-        return;
-    }
-
-    BOOST_CHECK( readFile.Civs[0].Units[4].Moving.TrackingUnit == 5 );
-    BOOST_CHECK( readFile.Civs[0].Units[4].Creatable.TrainTime == 999 );
-    BOOST_CHECK( readFile.Civs[0].Units[4].Creatable.ButtonID == 100 );
-
-    BOOST_CHECK( readFile.Civs[0].Units[5].Moving.TrackingUnit == 5 );
-    BOOST_CHECK( readFile.Civs[0].Units[5].Creatable.TrainTime == 999 );
-    BOOST_CHECK( readFile.Civs[0].Units[5].Creatable.ButtonID == 100 );
-
-    BOOST_CHECK( a.Moving.TrackingUnit == 5 );
-    BOOST_CHECK( a.Creatable.TrainTime == 999 );
-    BOOST_CHECK( a.Creatable.ButtonID == 100 );
-
-    BOOST_CHECK( b.Moving.TrackingUnit == 5 );
-    BOOST_CHECK( b.Creatable.TrainTime == 999 );
-    BOOST_CHECK( b.Creatable.ButtonID == 100 );
 }
 
 BOOST_AUTO_TEST_CASE(write_read_test)
@@ -155,17 +131,20 @@ BOOST_AUTO_TEST_CASE(write_read_test)
     writeReadCheck(genie::GV_RoR);
     writeReadCheck(genie::GV_AoK);
     writeReadCheck(genie::GV_TC);
-    writeReadCheck(genie::GV_SWGB);
-    writeReadCheck(genie::GV_CC);
+//    writeReadCheck(genie::GV_SWGB);
+//    writeReadCheck(genie::GV_CC);
 }
 
 BOOST_AUTO_TEST_CASE(simple_change_values_test)
 {
+    std::cout << "Simple change values test" << std::endl;
+
     std::unique_ptr<genie::DatFile> file = openFile(genie::GV_TC);
     BOOST_REQUIRE(file);
 
     std::cout << file->Civs.size() << std::endl;
     BOOST_REQUIRE_GT(file->Civs.size(), 0);
+    BOOST_REQUIRE_GT(file->Civs[0].Units.size(), 5);
 
     file->Civs[0].Units[4].Moving.TrackingUnit = 5;
     file->Civs[0].Units[4].Creatable.TrainTime = 999;
@@ -176,12 +155,19 @@ BOOST_AUTO_TEST_CASE(simple_change_values_test)
     file->Civs[0].Units[5].Creatable.ButtonID = 100;
 
     genie::Unit a = file->Civs[0].Units[5];
+    std::cout << " === Saving... ===" << std::endl;
     file->saveAs("temp.dat");
 
 
+    std::cout << " === Loading... ===" << std::endl;
+
     genie::DatFile readFile;
+    readFile.setVerboseMode(true);
     readFile.setGameVersion(genie::GV_TC);
     readFile.load("temp.dat");
+
+    BOOST_REQUIRE_GT(readFile.Civs.size(), 0);
+    BOOST_REQUIRE_GT(readFile.Civs[0].Units.size(), 5);
 
     BOOST_CHECK( readFile.Civs[0].Units[4].Moving.TrackingUnit == 5 );
     BOOST_CHECK( readFile.Civs[0].Units[4].Creatable.TrainTime == 999 );
@@ -204,7 +190,7 @@ BOOST_AUTO_TEST_CASE(simple_change_values_test)
 
 int readWriteDiff(genie::GameVersion gv)
 {
-    std::cout << "Testing version " << genie::DatFile::versionName(gv) << std::endl;
+    std::cout << "Read write diff testing version " << genie::DatFile::versionName(gv) << std::endl;
     genie::DatFile file;
     file.setGameVersion(gv);
 
@@ -217,6 +203,7 @@ int readWriteDiff(genie::GameVersion gv)
     genie::DatFile::extractRaw(filepath, filepath + ".raw_orig");
     std::cout << "Loading " << filepath << std::endl;
     file.load(filepath);
+
     file.saveAs(filepath + ".saved");
 
     {
