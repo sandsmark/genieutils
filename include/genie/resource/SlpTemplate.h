@@ -311,10 +311,10 @@ public:
         int32_t data_size;
 
         /// "Indentation" of line"
-        std::vector<unsigned short> left_edges_;
+        std::vector<uint16_t> left_edges_;
 
         /// New amount of blank space on the right
-        std::vector<unsigned short> right_edges_;
+        std::vector<uint16_t> right_edges_;
 
         /// Offsets into the original SLP per line
         std::vector<uint32_t> cmd_offsets_;
