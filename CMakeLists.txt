@@ -313,6 +313,9 @@ if (GUTILS_TOOLS)
 
   add_executable(genie-bindiff ${BINCOMP_SRC})
   install(TARGETS genie-bindiff)
+
+  add_executable(replayparser src/tools/replayparser/main.cpp)
+  target_link_libraries(replayparser genieutils)
 endif (GUTILS_TOOLS)
 
 #------------------------------------------------------------------------------#
