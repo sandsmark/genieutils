@@ -420,7 +420,9 @@ protected:
     /// Serialize method for basic data types.
     /// Reads or writes data dependent on set operation.
     //
-    template <typename T>
+    template <typename T,
+              std::enable_if_t<std::negation<std::is_base_of<ISerializable, T>>::value, int> = 0
+              >
     void serialize(T &data)
     {
         assert(operation_ != OP_INVALID);

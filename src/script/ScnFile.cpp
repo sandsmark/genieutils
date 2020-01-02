@@ -150,9 +150,9 @@ void ScnFile::serializeObject(void)
 
     serialize<uint32_t>(nextUnitID);
 
-    serialize<ISerializable>(playerData);
+    serialize<ScnMainPlayerData>(playerData);
 
-    serialize<ISerializable>(map);
+    serialize<ScnMap>(map);
 
     if (scn_ver == "1.20" || scn_ver == "1.21") {
         scn_internal_ver = 1.14f;

@@ -133,8 +133,8 @@ void ScnMainPlayerData::serializeObject(void)
         serialize<uint32_t>(separator_);
     }
 
-    serialize<ISerializable>(victoryConditions);
-    serialize<ISerializable>(diplomacy);
+    serialize<ScnVictory>(victoryConditions);
+    serialize<ScnDiplomacy>(diplomacy);
 
     if (scn_plr_data_ver > 1.01f) {
         serialize<uint32_t>(separator_);
@@ -384,15 +384,8 @@ void ScnMorePlayerData::serializeObject(void)
         victoryConditionVersion = 0;
     }
 
-//    printf("victory condition version: %f\n", victoryConditionVersion);
-
-    // I think this is some victory condition stuff
     serializeSize<uint32_t>(victoryConditionsCount, victoryConditions.size());
-//    printf("conditions count: %d\n", victoryConditionsCount);
-
     serialize<uint8_t>(victory);
-//    printf("victory: %d\n", victory);
-
     serialize<ScnPlayerVictoryCondition>(victoryConditions, victoryConditionsCount);
 
     if (victoryConditionVersion < 1.0) {
@@ -400,8 +393,6 @@ void ScnMorePlayerData::serializeObject(void)
     } else {
         serialize<uint32_t>(pointConditionsCount);
         serialize<uint32_t>(totalVictoryPoints);
-//        printf("total victory points: %u\n", totalVictoryPoints);
-//        printf("victory points count: %u\n", victoryPointsCount);
     }
 
     // Might have fucked up the size above
@@ -409,8 +400,6 @@ void ScnMorePlayerData::serializeObject(void)
     if (victoryConditionVersion > 1.0f) {
         serialize<int32_t>(unknown1);
         serialize<int32_t>(unknown2);
-//        printf("unknown 1: %d\n", unknown1);
-//        printf("unknown 2: %d\n", unknown2);
     }
 
     if (scn_internal_ver > 1.14f) {

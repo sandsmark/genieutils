@@ -205,6 +205,10 @@ set(SCRIPT_SRC
     src/script/scn/Trigger.cpp
     )
 
+set(SAVEGAME_SRC
+    src/savegame/MgxFile.cpp
+    )
+
 set(UTIL_SRC
     src/util/Logger.cpp
     src/util/Utility.cpp
@@ -231,6 +235,7 @@ set(COMMON_LIBRARIES ${PCRIO_LIBRARIES} ${ICONV_LIBRARIES} ${ZLIB_LIBRARIES})
 set(ALL_SRC
     ${FILE_SRC} ${LANG_SRC} ${DAT_SRC}
     ${RESOURCE_SRC} ${UTIL_SRC} ${SCRIPT_SRC}
+    ${SAVEGAME_SRC}
 )
 
 add_library(genieutils_common OBJECT ${ALL_SRC})
@@ -283,6 +288,9 @@ if (GUTILS_TOOLS)
   target_link_libraries(datextract ${Boost_LIBRARIES} ${COMMON_LIBRARIES})
 
   add_executable(bincomp ${BINCOMP_SRC})
+
+  add_executable(replayparser src/tools/replayparser/main.cpp $<TARGET_OBJECTS:genieutils_common>)
+  target_link_libraries(replayparser ${COMMON_LIBRARIES})
 endif (GUTILS_TOOLS)
 
 #------------------------------------------------------------------------------#
