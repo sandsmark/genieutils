@@ -3,7 +3,7 @@
 # GUTILS_TOOLS:BOOL     if true to enable compilation of gutils tools
 # GUTILS_TEST:BOOL      if true some debug/test classes will be compiled
 
-cmake_minimum_required(VERSION 3.9)
+cmake_minimum_required(VERSION 3.13)
 
 project(genieutils)
 
