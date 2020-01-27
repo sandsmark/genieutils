@@ -66,7 +66,7 @@ size_t Terrain::getTerrainCount(GameVersion gv)
         return 100;
     }
 
-    if (gv == GV_TC) {
+    if (gv == GV_TC || gv == GV_UP15) {
         return 42;
     }
 
