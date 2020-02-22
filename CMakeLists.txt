@@ -16,7 +16,13 @@ option(GUTILS_TEST "Build tests")
 option(GUTILS_STATIC "Build static library so it can be built into the final executable")
 
 set(Genieutils_LIBRARY genieutils)
-set(CMAKE_CXX_STANDARD 17)
+
+if(NOT APPLE)
+    set (CMAKE_CXX_STANDARD 20)
+    message(STATUS "Not apple yay")
+else()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++2a")
+endif()
 
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake/)
