@@ -21,7 +21,7 @@ if(NOT APPLE)
     set (CMAKE_CXX_STANDARD 20)
     message(STATUS "Not apple yay")
 else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++2a")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20")
 endif()
 
 
