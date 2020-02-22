@@ -17,13 +17,7 @@ option(GUTILS_STATIC "Build static library so it can be built into the final exe
 
 set(Genieutils_LIBRARY genieutils)
 
-if(NOT APPLE)
-    set (CMAKE_CXX_STANDARD 20)
-    message(STATUS "Not apple yay")
-else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20")
-endif()
-
+set (CMAKE_CXX_STANDARD 20)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake/)
 
