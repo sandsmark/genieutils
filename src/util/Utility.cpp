@@ -112,7 +112,11 @@ std::string genie::util::resolvePathCaseInsensitive(const std::string &inputPath
     }
 
     if (pathParts.size() > 1) {
-        return resolvePathCaseInsensitive(inputPath.substr(correct.size() + 1), basePath + '/' + correct);
+        std::string newInput; // can't be arsed to clean up duplicate /'s and whatnot beforehand
+        for (size_t i=1; i<pathParts.size(); i++) {
+            newInput += "/" + pathParts[i];
+        }
+        return resolvePathCaseInsensitive(newInput, basePath + '/' + correct);
     }
 
     return basePath + '/' + correct;
