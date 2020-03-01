@@ -148,6 +148,7 @@ GameVersion DatFile::gameVersionFromString(const std::string &name)
         default:
             break;
         }
+        break;
     case 6:
         switch(minor) {
         case 0:
@@ -173,6 +174,7 @@ GameVersion DatFile::gameVersionFromString(const std::string &name)
         default:
             break;
         }
+        break;
     case 5:
         switch(minor) {
         case 7:
@@ -184,6 +186,7 @@ GameVersion DatFile::gameVersionFromString(const std::string &name)
         default:
             break;
         }
+        break;
     case 4:
         switch(minor) {
         case 0:
@@ -201,6 +204,7 @@ GameVersion DatFile::gameVersionFromString(const std::string &name)
         default:
             break;
         }
+        break;
     case 3:
         switch(minor) {
         case 9:
@@ -208,6 +212,7 @@ GameVersion DatFile::gameVersionFromString(const std::string &name)
         default:
             break;
         }
+        break;
     default:
         break;
     }
