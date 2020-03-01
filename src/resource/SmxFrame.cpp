@@ -3,6 +3,9 @@
 #include <limits.h>
 #include <cmath>
 
+#define IS_LIKELY(x)      __builtin_expect(!!(x), 1)
+#define IS_UNLIKELY(x)    __builtin_expect(!!(x), 0)
+
 namespace genie {
 
 Logger &SmxFrame::log = Logger::getLogger("genie.SmxFrame");
@@ -110,20 +113,34 @@ void SmxFrame::readNormalLayer()
                 decode8To5(std::move(pixelData)) :
                 decode4Plus1(std::move(pixelData));
 
-    m_mask.resize(m_normalHeader.width * m_normalHeader.height);
-    m_pixels.resize(m_normalHeader.width * m_normalHeader.height);
+    if (m_normalHeader.width >= 46340) {
+        throw std::out_of_range("Width (" + std::to_string(m_normalHeader.width) + ") out of range");
+    }
+    if (m_normalHeader.height >= 46340) {
+        throw std::out_of_range("Height (" + std::to_string(m_normalHeader.height) + ") out of range");
+    }
+
+    const size_t byteCount = m_normalHeader.width * m_normalHeader.height;
+
+    m_mask.resize(byteCount);
+    m_pixels.resize(byteCount);
 
     SmpPixel *target = m_pixels.data();
     uint8_t *maskData = m_mask.data();
     const SmpPixel *pixels = pixelsVector.data();
     size_t pixelPos = 0;
 
-    uint32_t x=0, y=0;
+    uint32_t x = 0, y = 0;
     x = m_normalHeader.rowEdges[0].padLeft;
 
     for (const uint8_t byte : commands) {
         const uint8_t amount = (byte >> 2) + 1;
         const uint8_t command = byte & 0b11;
+
+        // Dumb check, but keeps static analyzers happy I hope
+        if (IS_UNLIKELY(y >= 46340)) {
+            throw std::out_of_range("Y (" + std::to_string(y) + ") out of range");
+        }
 
         const size_t offset = y * m_normalHeader.width;
 
@@ -157,7 +174,7 @@ void SmxFrame::readNormalLayer()
             do {
                 y++;
                 x = m_normalHeader.rowEdges[y].padLeft;
-            } while (y < m_normalHeader.rowEdges.size()  && x == 0xFFFF);
+            } while (y < m_normalHeader.rowEdges.size() && x == 0xFFFF);
 
             if (y >= m_normalHeader.rowEdges.size()) {
                 x = 0;

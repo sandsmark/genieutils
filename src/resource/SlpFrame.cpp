@@ -441,6 +441,13 @@ void SlpFrame::readImage()
 {
     std::istream &istr = *getIStream();
 
+    if (width_ >= 46340) {
+        throw std::out_of_range("Width (" + std::to_string(width_) + ") out of range");
+    }
+    if (height_ >= 46340) {
+        throw std::out_of_range("Height (" + std::to_string(height_) + ") out of range");
+    }
+
     const size_t byteCount = width_ * height_;
 
     if (is32bit()) {

@@ -29,6 +29,13 @@ void ScnMap::serializeObject(void)
     serialize<uint32_t>(width);
     serialize<uint32_t>(height);
 
+    if (width >= 46340) {
+        throw std::out_of_range("Width (" + std::to_string(width) + ") out of range");
+    }
+    if (height >= 46340) {
+        throw std::out_of_range("Height (" + std::to_string(height) + ") out of range");
+    }
+
     serialize(tiles, width * height);
 }
 

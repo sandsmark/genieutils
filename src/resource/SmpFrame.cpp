@@ -1,4 +1,8 @@
 #include "genie/resource/SmpFrame.h"
+
+#define IS_LIKELY(x)      __builtin_expect(!!(x), 1)
+#define IS_UNLIKELY(x)    __builtin_expect(!!(x), 0)
+
 namespace genie {
 
 Logger &SmpFrame::log = Logger::getLogger("genie.SmpFrame");
@@ -110,12 +114,12 @@ void SmpFrame::loadLayerContent(SmpBaseLayer &layer)
         // don't really need to use them, everything is sequential
         istr->seekg(getInitialReadPosition() + std::streampos(layer.rowOffsets[row]));
 
-        uint16_t pixelPos = layer.leftEdges[row];
+        uint32_t pixelPos = layer.leftEdges[row];
         if (pixelPos >= layer.header.width) {
             throw std::out_of_range("Left edge (" + std::to_string(pixelPos) + ") bigger than width (" + std::to_string(layer.leftEdges[row]) + ")");
         }
 
-        const int toRead = int(layer.header.width) - layer.rightEdges[row];
+        const uint32_t toRead = int(layer.header.width) - layer.rightEdges[row];
 
         while (pixelPos < toRead && istr->good()) {
             const uint8_t data = read<uint8_t>();
@@ -153,6 +157,13 @@ void SmpFrame::loadLayerContent(SmpSimpleLayer &layer)
 {
     std::istream *istr = getIStream();
 
+    if (layer.header.width >= 46340) {
+        throw std::out_of_range("Layer width (" + std::to_string(layer.header.width) + ") out of range");
+    }
+    if (layer.header.height >= 46340) {
+        throw std::out_of_range("Layer height (" + std::to_string(layer.header.height) + ") out of range");
+    }
+
     const size_t pixelCount = layer.header.width * layer.header.height;
     layer.colors.resize(pixelCount);
 
@@ -167,12 +178,15 @@ void SmpFrame::loadLayerContent(SmpSimpleLayer &layer)
         // don't really need to use them, everything is sequential
         istr->seekg(getInitialReadPosition() + std::streampos(layer.rowOffsets[row]));
 
-        uint16_t pixelPos = layer.leftEdges[row];
-        if (pixelPos >= layer.header.width) {
+        uint32_t pixelPos = layer.leftEdges[row];
+        if (IS_UNLIKELY(pixelPos >= layer.header.width)) {
             throw std::out_of_range("Left edge (" + std::to_string(pixelPos) + ") bigger than width (" + std::to_string(layer.leftEdges[row]) + ")");
         }
 
-        const int toRead = int(layer.header.width) - layer.rightEdges[row];
+        const uint32_t toRead = layer.header.width - layer.rightEdges[row];
+        if (IS_UNLIKELY(toRead + pixelPos > layer.header.width)) {
+            throw std::out_of_range("Trying to read too much (" + std::to_string(toRead + pixelPos) + ") compared to width (" + std::to_string(layer.header.width) + ")");
+        }
 
         while (pixelPos < toRead && istr->good()) {
             const uint8_t data = read<uint8_t>();
