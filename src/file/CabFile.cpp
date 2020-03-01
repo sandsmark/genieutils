@@ -19,7 +19,7 @@
 
 #include "genie/file/CabFile.h"
 
-#include "lzx.h"
+//#include "lzx.h"
 
 #include <fstream>
 #include <vector>
@@ -95,7 +95,7 @@ void CabFile::readFile(std::string filename)
 
     std::istream *istr = getIStream();
 
-    const int windowSize = (folder.compression >> 8) & 0x1f;
+    //const int windowSize = (folder.compression >> 8) & 0x1f;
 
     for (size_t i = 0; i < m_folders[file.folder].blocks.size(); i++) {
         const Block &block = folder.blocks[i];
@@ -122,16 +122,17 @@ void CabFile::readFile(std::string filename)
         std::cout << "compressed size " << block.compressedSize << " uncompressed " << block.uncompressedSize << std::endl;
         std::cout << "compressed size " << compressedBuffer.size() << " uncompressed " << uncompressedBuffer.size() << std::endl;
 
-        LZXStatePtr decompressor(LZXinit(windowSize), ::LZXteardown);
-        int ret = LZXdecompress(decompressor.get(),
-                                compressedBuffer.data(), uncompressedBuffer.data(),
-                                int(compressedBuffer.size()), int(uncompressedBuffer.size())
-                               );
+        throw std::runtime_error("Not implemented");
+        //LZXStatePtr decompressor(LZXinit(windowSize), ::LZXteardown);
+        //int ret = LZXdecompress(decompressor.get(),
+        //                        compressedBuffer.data(), uncompressedBuffer.data(),
+        //                        int(compressedBuffer.size()), int(uncompressedBuffer.size())
+        //                       );
 
-        if (ret != DECR_OK) {
-            std::cout << "Failed to decode block " << ret << std::endl;
-            return;
-        }
+        //if (ret != DECR_OK) {
+        //    std::cout << "Failed to decode block " << ret << std::endl;
+        //    return;
+        //}
 
 //        std::cout << uncompressedBuffer << std::endl;
     }
