@@ -448,7 +448,7 @@ void SlpFrame::readImage()
         throw std::out_of_range("Height (" + std::to_string(height_) + ") out of range");
     }
 
-    const size_t byteCount = width_ * height_;
+    const size_t byteCount = size_t(width_) * size_t(height_);
 
     if (is32bit()) {
         img_data.bgra_channels.resize(byteCount, 0);

@@ -98,7 +98,15 @@ void SmpFrame::loadLayerContent(SmpBaseLayer &layer)
 {
     std::istream *istr = getIStream();
 
-    const size_t pixelCount = layer.header.width * layer.header.height;
+    if (layer.header.width >= 46340) {
+        throw std::out_of_range("Layer width (" + std::to_string(layer.header.width) + ") out of range");
+    }
+
+    if (layer.header.height >= 46340) {
+        throw std::out_of_range("Layer height (" + std::to_string(layer.header.height) + ") out of range");
+    }
+
+    const size_t pixelCount = size_t(layer.header.width) * (layer.header.height);
     layer.pixels.resize(pixelCount);
     layer.alphaMask.resize(pixelCount);
 
@@ -164,7 +172,7 @@ void SmpFrame::loadLayerContent(SmpSimpleLayer &layer)
         throw std::out_of_range("Layer height (" + std::to_string(layer.header.height) + ") out of range");
     }
 
-    const size_t pixelCount = layer.header.width * layer.header.height;
+    const size_t pixelCount = size_t(layer.header.width) * size_t(layer.header.height);
     layer.colors.resize(pixelCount);
 
     uint8_t *pixelData = layer.colors.data();
