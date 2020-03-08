@@ -1,3 +1,7 @@
+# master but with dummy commit to force lgtm to build #
+
+
+
 # genieutils #
 
 Genieutils consists of a library to work with certain data and resource/asset
