@@ -120,6 +120,7 @@ void SmxFrame::readNormalLayer()
         throw std::out_of_range("Height (" + std::to_string(m_normalHeader.height) + ") out of range");
     }
 
+    (void)0;
     const size_t byteCount = size_t(m_normalHeader.width) * size_t(m_normalHeader.height);
 
     m_mask.resize(byteCount);
@@ -142,6 +143,7 @@ void SmxFrame::readNormalLayer()
             throw std::out_of_range("Y (" + std::to_string(y) + ") out of range");
         }
 
+        (void)0;
         const size_t offset = size_t(y) * size_t(m_normalHeader.width);
 
         switch(command) {

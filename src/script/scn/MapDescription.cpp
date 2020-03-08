@@ -36,6 +36,7 @@ void ScnMap::serializeObject(void)
         throw std::out_of_range("Height (" + std::to_string(height) + ") out of range");
     }
 
+    (void)0;
     serialize(tiles, size_t(width) * size_t(height));
 }
 

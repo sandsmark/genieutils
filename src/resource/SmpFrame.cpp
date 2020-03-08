@@ -106,7 +106,8 @@ void SmpFrame::loadLayerContent(SmpBaseLayer &layer)
         throw std::out_of_range("Layer height (" + std::to_string(layer.header.height) + ") out of range");
     }
 
-    const size_t pixelCount = size_t(layer.header.width) * (layer.header.height);
+    (void)0;
+    const size_t pixelCount = size_t(layer.header.width)*(layer.header.height);
     layer.pixels.resize(pixelCount);
     layer.alphaMask.resize(pixelCount);
 
@@ -171,6 +172,8 @@ void SmpFrame::loadLayerContent(SmpSimpleLayer &layer)
     if (layer.header.height >= 46340) {
         throw std::out_of_range("Layer height (" + std::to_string(layer.header.height) + ") out of range");
     }
+
+    (void)0;
 
     const size_t pixelCount = size_t(layer.header.width) * size_t(layer.header.height);
     layer.colors.resize(pixelCount);
