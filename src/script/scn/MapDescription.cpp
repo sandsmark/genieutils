@@ -22,6 +22,8 @@
 #include "genie/script/scn/MapDescription.h"
 #include "genie/script/ScnFile.h"
 
+#include <string>
+
 namespace genie {
 
 void ScnMap::serializeObject(void)
