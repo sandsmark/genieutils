@@ -46,6 +46,8 @@
 namespace genie {
 namespace util {
 
+static_assert(std::numeric_limits<int>::max() >= 2147483647 && "We assume a sane int size in bounds checking");
+
 inline bool floatsEquals(const float a, const float b)
 {
     return (std::abs(a - b) * 100000.f <= std::min(std::abs(a), std::abs(b)));
