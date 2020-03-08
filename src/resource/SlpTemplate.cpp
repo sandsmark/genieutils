@@ -28,9 +28,7 @@
 #include "genie/resource/PalFile.h"
 #include "genie/resource/Color.h"
 #include "genie/resource/SlpFile.h"
-
-#define IS_LIKELY(x)      __builtin_expect(!!(x), 1)
-#define IS_UNLIKELY(x)    __builtin_expect(!!(x), 0)
+#include "genie/util/Utility.h"
 
 namespace genie {
 
