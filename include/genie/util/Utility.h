@@ -118,7 +118,7 @@ inline std::vector<std::string> stringSplit(const std::string &string, const cha
 #ifndef _MSC_VER
 std::string resolvePathCaseInsensitive(const std::string &inputPath, const std::string &basePath = "/");
 #else
-std::string resolvePathCaseInsensitive(const std::string &inputPath, const std::string &basePath = "c:/");
+std::string resolvePathCaseInsensitive(const std::string &inputPath, const std::string &basePath = "");
 #endif
 
 std::string executablePath();
