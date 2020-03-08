@@ -46,7 +46,7 @@
 namespace genie {
 namespace util {
 
-static_assert(std::numeric_limits<int>::max() >= 2147483647 && "We assume a sane int size in bounds checking");
+static_assert(std::numeric_limits<int>::max() >= 2147483647ull && "We assume a sane int size in bounds checking");
 
 inline bool floatsEquals(const float a, const float b)
 {
@@ -115,7 +115,11 @@ inline std::vector<std::string> stringSplit(const std::string &string, const cha
 }
 
 // Probably not the most efficient
+#ifndef _MSC_VER
 std::string resolvePathCaseInsensitive(const std::string &inputPath, const std::string &basePath = "/");
+#else
+std::string resolvePathCaseInsensitive(const std::string &inputPath, const std::string &basePath = "c:/");
+#endif
 
 std::string executablePath();
 std::string executableDirectory();
