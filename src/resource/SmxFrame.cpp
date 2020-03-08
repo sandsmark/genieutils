@@ -1,10 +1,9 @@
 #include "genie/resource/SmxFrame.h"
 
+#include "genie/util/Utility.h"
+
 #include <limits.h>
 #include <cmath>
-
-#define IS_LIKELY(x)      __builtin_expect(!!(x), 1)
-#define IS_UNLIKELY(x)    __builtin_expect(!!(x), 0)
 
 namespace genie {
 

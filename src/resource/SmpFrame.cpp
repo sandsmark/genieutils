@@ -1,7 +1,6 @@
 #include "genie/resource/SmpFrame.h"
 
-#define IS_LIKELY(x)      __builtin_expect(!!(x), 1)
-#define IS_UNLIKELY(x)    __builtin_expect(!!(x), 0)
+#include "genie/util/Utility.h"
 
 namespace genie {
 
