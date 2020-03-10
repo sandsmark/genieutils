@@ -9,10 +9,7 @@
 
 namespace genie {
 
-/// New crap style for AoE2:DE
-#ifdef _MSC_VER
 #pragma pack(push,1)
-#endif
 struct SmpPixel
 {
     uint8_t index; /// Normal palette index
@@ -49,13 +46,8 @@ struct SmpPixel
         // I'm lazy, sue me
         return *reinterpret_cast<const uint32_t*>(this);
     }
-}
-#ifndef _MSC_VER
-__attribute__((packed));
-#else
-;
+};
 #pragma pack(pop)
-#endif
 
 struct SmpPlayerColorXY
 {
