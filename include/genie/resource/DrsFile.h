@@ -32,13 +32,6 @@
 
 namespace genie {
 
-#ifdef SHITTY_PLATFORM
-#warning Get a better computer
-using WavPtr = std::shared_ptr<uint8_t>;
-#else
-using WavPtr = std::shared_ptr<uint8_t[]>;
-#endif
-
 class Logger;
 
 //------------------------------------------------------------------------------
@@ -75,7 +68,7 @@ public:
 
     std::string idType(uint32_t id);
 
-    WavPtr getWavPtr(uint32_t id);
+    std::shared_ptr<uint8_t[]> getWavPtr(uint32_t id);
 
     std::vector<uint32_t> binaryFileIds() const;
 
