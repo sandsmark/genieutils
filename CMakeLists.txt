@@ -7,7 +7,12 @@ cmake_minimum_required(VERSION 3.13)
 
 ###### macos is absolute shit ########
 if (APPLE)
-    add_definitions(-stdlib=libc++)
+    message(WARNING "\n"
+        "#############################################################################################\n"
+        "   MacOS does not have proper C++ support, so bug reports not accepted, you're on your own\n"
+        "#############################################################################################\n"
+        )
+
     set (CMAKE_CXX_STANDARD 17) # they don't even support most of this...
     add_definitions(-DSHITTY_PLATFORM)
 else()
