@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include <iostream>
 
 #define COMPARE_MEMBER(MEMBER) \
