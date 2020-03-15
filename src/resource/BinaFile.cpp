@@ -51,11 +51,6 @@ UIFilePtr BinaFile::readUIFile(std::istream *istr)
 
 BmpFilePtr BinaFile::readBmpFile(std::istream *istr)
 {
-#ifdef SHITTY_PLATFORM
-#warning BMP support disabled on macos because of poor c++ support
-    return nullptr;
-#else//macos
-
     istr->seekg(getInitialReadPosition());
     const char b = istr->get();
     const char m = istr->get();
@@ -71,7 +66,6 @@ BmpFilePtr BinaFile::readBmpFile(std::istream *istr)
     read(&data, m_size);
 
     return file;
-#endif //macos
 }
 
 std::string BinaFile::readScriptFile(std::istream *istr)

@@ -12,14 +12,12 @@ if (APPLE)
         "   MacOS does not have proper C++ support, so bug reports not accepted, you're on your own\n"
         "#############################################################################################\n"
         )
-
-    set (CMAKE_CXX_STANDARD 17) # they don't even support most of this...
-    add_definitions(-DSHITTY_PLATFORM)
-else()
-    set (CMAKE_CXX_STANDARD 20)
 endif()
 
 project(genieutils)
+set(CMAKE_CXX_STANDARD 20)
+set(CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Let freeaoe set this with `set(GUTILS_STATIC True)`
 cmake_policy(SET CMP0077 NEW)
