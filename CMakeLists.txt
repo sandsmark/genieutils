@@ -5,6 +5,20 @@
 
 cmake_minimum_required(VERSION 3.13)
 
+###### macos is absolute shit ########
+if (APPLE)
+    message(WARNING "\n"
+        "#############################################################################################\n"
+        "   MacOS does not have proper C++ support, so bug reports not accepted, you're on your own\n"
+        "#############################################################################################\n"
+        )
+
+    set (CMAKE_CXX_STANDARD 17) # they don't even support most of this...
+    add_definitions(-DSHITTY_PLATFORM)
+else()
+    set (CMAKE_CXX_STANDARD 20)
+endif()
+
 project(genieutils)
 
 # Let freeaoe set this with `set(GUTILS_STATIC True)`
@@ -16,7 +30,6 @@ option(GUTILS_TEST "Build tests")
 option(GUTILS_STATIC "Build static library so it can be built into the final executable")
 
 set(Genieutils_LIBRARY genieutils)
-set(CMAKE_CXX_STANDARD 17)
 
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake/)
