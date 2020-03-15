@@ -189,12 +189,7 @@ std::string DrsFile::idType(uint32_t id)
 }
 
 //------------------------------------------------------------------------------
-#ifdef SHITTY_PLATFORM
-#warning Get a better computer
-std::shared_ptr<uint8_t> DrsFile::getWavPtr(uint32_t id)
-#else
-std::shared_ptr<uint8_t[]> DrsFile::getWavPtr(uint32_t id)
-#endif
+WavPtr DrsFile::getWavPtr(uint32_t id)
 {
     std::unordered_map<uint32_t, uint32_t>::iterator i = wav_offsets_.find(id);
 
