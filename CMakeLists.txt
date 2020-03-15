@@ -15,6 +15,7 @@ option(GUTILS_TOOLS "Build extra tools")
 option(GUTILS_TEST "Build tests")
 option(GUTILS_STATIC "Build static library so it can be built into the final executable")
 
+set(Genieutils_LIBRARY genieutils)
 set(CMAKE_CXX_STANDARD 17)
 
 
@@ -117,7 +118,7 @@ else()
 endif()
 
 #------------------------------------------------------------------------------#
-# Source files:
+# Source files: 
 #------------------------------------------------------------------------------#
 set(FILE_SRC
     src/file/ISerializable.cpp
@@ -220,98 +221,9 @@ set(EXTRACT_SRC src/tools/extract/datextract.cpp)
 
 set(BINCOMP_SRC src/tools/bincompare/bincomp.cpp
                 src/tools/bincompare/main.cpp)
-
+                
 #------------------------------------------------------------------------------#
-# Header files:
-#------------------------------------------------------------------------------#
-
-set(DAT_HEADERS
-    include/genie/dat/ActionType.h
-    include/genie/dat/Civ.h
-    include/genie/dat/DatFile.h
-    include/genie/dat/GraphicAttackSound.h
-    include/genie/dat/GraphicDelta.h
-    include/genie/dat/Graphic.h
-    include/genie/dat/PlayerColour.h
-    include/genie/dat/RandomMap.h
-    include/genie/dat/Research.h
-    include/genie/dat/ResourceType.h
-    include/genie/dat/ResourceUsage.h
-    include/genie/dat/Sound.h
-    include/genie/dat/SoundItem.h
-    include/genie/dat/TechageEffect.h
-    include/genie/dat/Techage.h
-    include/genie/dat/TechTree.h
-    include/genie/dat/TerrainBlock.h
-    include/genie/dat/TerrainBorder.h
-    include/genie/dat/TerrainCommon.h
-    include/genie/dat/Terrain.h
-    include/genie/dat/TerrainPassGraphic.h
-    include/genie/dat/TerrainRestriction.h
-    include/genie/dat/UnitCommand.h
-    include/genie/dat/Unit.h
-    include/genie/dat/UnitHeader.h
-    include/genie/dat/UnitLine.h
-
-    include/genie/dat/unit/Action.h
-    include/genie/dat/unit/AttackOrArmor.h
-    include/genie/dat/unit/Building.h
-    include/genie/dat/unit/Combat.h
-    include/genie/dat/unit/Creatable.h
-    include/genie/dat/unit/DamageGraphic.h
-    include/genie/dat/unit/Missile.h
-    include/genie/dat/unit/Moving.h
-    )
-
-set(FILE_HEADERS
-    include/genie/file/CabFile.h
-    include/genie/file/Compressor.h
-    include/genie/file/IFile.h
-    include/genie/file/ISerializable.h
-    )
-
-set(LANG_HEADERS
-    include/genie/lang/LangFile.h
-    )
-
-set(RESOURCE_HEADERS
-    include/genie/resource/BinaFile.h
-    include/genie/resource/BlendomaticFile.h
-    include/genie/resource/Color.h
-    include/genie/resource/DrsFile.h
-    include/genie/resource/EdgeFiles.h
-    include/genie/resource/MaskPattern.h
-    include/genie/resource/PalFile.h
-    include/genie/resource/Slope.h
-    include/genie/resource/SlpFile.h
-    include/genie/resource/SlpFrame.h
-    include/genie/resource/SlpTemplate.h
-    include/genie/resource/SmpFile.h
-    include/genie/resource/SmpFrame.h
-    include/genie/resource/SmxFile.h
-    include/genie/resource/SmxFrame.h
-    include/genie/resource/TileSpan.h
-    include/genie/resource/UIFile.h
-    include/genie/resource/WavFile.h
-    )
-
-set(SCENARIO_HEADERS
-    include/genie/script/ScnFile.h
-
-    include/genie/script/scn/MapDescription.h
-    include/genie/script/scn/ScnPlayerData.h
-    include/genie/script/scn/ScnResource.h
-    include/genie/script/scn/Trigger.h
-    )
-
-set(OTHER_HEADERS
-    include/genie/Types.h
-    include/genie/util/Logger.h
-    include/genie/util/Utility.h
-    )
-
-#------------------------------------------------------------------------------#
-# Executable:
+# Executeable:
 #------------------------------------------------------------------------------#
 
 set(COMMON_LIBRARIES ${PCRIO_LIBRARIES} ${ICONV_LIBRARIES} ${ZLIB_LIBRARIES})
@@ -320,12 +232,6 @@ set(ALL_SRC
     ${FILE_SRC} ${LANG_SRC} ${DAT_SRC}
     ${RESOURCE_SRC} ${UTIL_SRC} ${SCRIPT_SRC}
 )
-
-set(ALL_HEADERS
-    ${DAT_HEADERS} ${DAT_HEADERS} ${LANG_HEADERS}
-    ${RESOURCE_HEADERS} ${SCENARIO_HEADERS}
-    ${OTHER_HEADERS}
-    )
 
 add_library(genieutils_common OBJECT ${ALL_SRC})
 target_link_libraries(genieutils_common ${COMMON_LIBRARIES})
@@ -339,8 +245,12 @@ else()
     add_library(genieutils SHARED $<TARGET_OBJECTS:genieutils_common>)
     set_property(TARGET genieutils PROPERTY PUBLIC_HEADER ${ALL_HEADERS})
 
-    install(TARGETS genieutils
-        PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/genie
+    install(TARGETS genieutils)
+
+    install (
+        DIRECTORY ${CMAKE_SOURCE_DIR}/include/
+        DESTINATION include
+        FILES_MATCHING PATTERN "*.h*"
         )
 endif()
 
