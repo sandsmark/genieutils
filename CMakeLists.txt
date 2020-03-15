@@ -8,6 +8,9 @@ cmake_minimum_required(VERSION 3.13)
 ###### macos is absolute shit ########
 if (APPLE)
     add_definitions(-stdlib=libc++)
+    set (CMAKE_CXX_STANDARD 17) # they don't even support most of this...
+else()
+    set (CMAKE_CXX_STANDARD 20)
 endif()
 
 project(genieutils)
@@ -22,7 +25,6 @@ option(GUTILS_STATIC "Build static library so it can be built into the final exe
 
 set(Genieutils_LIBRARY genieutils)
 
-set (CMAKE_CXX_STANDARD 20)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake/)
 
