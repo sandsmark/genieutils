@@ -5,6 +5,11 @@
 
 cmake_minimum_required(VERSION 3.13)
 
+###### macos is absolute shit ########
+if (APPLE)
+    add_definitions(-stdlib=libc++)
+endif()
+
 project(genieutils)
 
 # Let freeaoe set this with `set(GUTILS_STATIC True)`
