@@ -191,7 +191,6 @@ std::string DrsFile::idType(uint32_t id)
 //------------------------------------------------------------------------------
 std::shared_ptr<uint8_t[]> DrsFile::getWavPtr(uint32_t id)
 {
-#ifndef SHITTY_PLATFORM
     std::unordered_map<uint32_t, uint32_t>::iterator i = wav_offsets_.find(id);
 
     if (i != wav_offsets_.end()) {
@@ -221,11 +220,6 @@ std::shared_ptr<uint8_t[]> DrsFile::getWavPtr(uint32_t id)
         log.warn("No sound file with id [%u] found!", id);
         return nullptr;
     }
-
-#else//macos
-#warning Sound support disabled on macos because of poor C++ support
-    return nullptr;
-#endif//macos
 }
 
 std::vector<uint32_t> DrsFile::binaryFileIds() const
