@@ -210,7 +210,12 @@ std::shared_ptr<uint8_t[]> DrsFile::getWavPtr(uint32_t id)
         log.debug("WAV [%u], type [%X], size [%u]", id, type, size);
 #endif
         getIStream()->seekg(std::streampos(i->second));
-        std::shared_ptr<uint8_t[]> ptr = std::make_shared<uint8_t[]>(size + 32);
+
+
+        // TODO: when macos upgrades to a modern compiler, replace with:
+        //std::shared_ptr<uint8_t[]> ptr = std::make_shared<uint8_t[]>(size + 32);
+
+        std::shared_ptr<uint8_t[]> ptr (new uint8_t[size + 32]);
         uint8_t *data = ptr.get();
         read(&data, size);
         return ptr;
