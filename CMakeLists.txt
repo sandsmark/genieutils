@@ -344,7 +344,9 @@ else()
     add_library(genieutils SHARED $<TARGET_OBJECTS:genieutils_common>)
     set_property(TARGET genieutils PROPERTY PUBLIC_HEADER ${ALL_HEADERS})
 
-    install(TARGETS genieutils)
+    install(TARGETS genieutils
+        PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/genie
+        )
 endif()
 
 
