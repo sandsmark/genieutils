@@ -28,7 +28,13 @@ namespace genie {
 
 class Logger;
 
-typedef std::shared_ptr<char[]> BmpFilePtr;
+#ifdef SHITTY_PLATFORM
+#warning Get a better computer
+typedef std::shared_ptr<char> BmpFilePtr;
+#else
+typedef std::shared_ptr<uint8_t[]> BmpFilePtr;
+#endif
+
 
 //------------------------------------------------------------------------------
 /// Class for loading "bina" files of a drs file.

@@ -61,7 +61,12 @@ BmpFilePtr BinaFile::readBmpFile(std::istream *istr)
         return nullptr;
     }
 
+#ifdef SHITTY_PLATFORM
+#warning Get a better computer
+    BmpFilePtr file(reinterpret_cast<uint8_t*>(malloc(m_size)));
+#else
     BmpFilePtr file(new char[m_size]);
+#endif
     istr->read(file.get(), m_size);
 
     return file;
