@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 #define COMPARE_MEMBER(MEMBER) \
     if (this->MEMBER != other.MEMBER) { \
         std::cout << #MEMBER " differs in " << __FILE__  << ":" << __LINE__ << " (" << this->MEMBER << " vs. other " << other.MEMBER << ")" << std::endl; \
