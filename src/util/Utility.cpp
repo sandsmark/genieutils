@@ -42,7 +42,7 @@ static std::string wintendoExePath()
     DWORD ret;
     do {
         pathBuf.resize(pathBuf.size() + MAX_PATH);
-        ret = GetModuleFileName(NULL, pathBuf.data(), DWORD(pathBuf.size()));
+        ret = GetModuleFileNameA(NULL, pathBuf.data(), DWORD(pathBuf.size()));
 
         // Windows APIs are a special kind of retarded, 0 means it failed
         if (ret == 0) {
