@@ -68,7 +68,12 @@ public:
 
     std::string idType(uint32_t id);
 
+#ifdef SHITTY_PLATFORM
+#warning Get a better computer
+    std::shared_ptr<uint8_t> getWavPtr(uint32_t id);
+#else
     std::shared_ptr<uint8_t[]> getWavPtr(uint32_t id);
+#endif
 
     std::vector<uint32_t> binaryFileIds() const;
 

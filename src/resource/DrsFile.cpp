@@ -189,7 +189,12 @@ std::string DrsFile::idType(uint32_t id)
 }
 
 //------------------------------------------------------------------------------
+#ifdef SHITTY_PLATFORM
+#warning Get a better computer
+std::shared_ptr<uint8_t> DrsFile::getWavPtr(uint32_t id)
+#else
 std::shared_ptr<uint8_t[]> DrsFile::getWavPtr(uint32_t id)
+#endif
 {
     std::unordered_map<uint32_t, uint32_t>::iterator i = wav_offsets_.find(id);
 
@@ -206,7 +211,7 @@ std::shared_ptr<uint8_t[]> DrsFile::getWavPtr(uint32_t id)
             return nullptr;
         }
 
-#ifndef NDEBUG
+#ifdef NDEBUG
         log.debug("WAV [%u], type [%X], size [%u]", id, type, size);
 #endif
         getIStream()->seekg(std::streampos(i->second));
@@ -215,7 +220,13 @@ std::shared_ptr<uint8_t[]> DrsFile::getWavPtr(uint32_t id)
         // TODO: when macos upgrades to a modern compiler, replace with:
         //std::shared_ptr<uint8_t[]> ptr = std::make_shared<uint8_t[]>(size + 32);
 
-        std::shared_ptr<uint8_t[]> ptr (new uint8_t[size + 32]);
+#ifdef SHITTY_PLATFORM
+#warning Get a better computer
+        std::shared_ptr<uint8_t> ptr (reinterpret_cast<uint8_t*>(malloc(size + 32)));
+#else
+        std::shared_ptr<uint8_t[]> ptr = std::make_shared<uint8_t[]>(size + 32);
+#endif
+
         uint8_t *data = ptr.get();
         read(&data, size);
         return ptr;

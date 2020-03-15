@@ -9,6 +9,7 @@ cmake_minimum_required(VERSION 3.13)
 if (APPLE)
     add_definitions(-stdlib=libc++)
     set (CMAKE_CXX_STANDARD 17) # they don't even support most of this...
+    add_definitions(-DSHITTY_PLATFORM)
 else()
     set (CMAKE_CXX_STANDARD 20)
 endif()
