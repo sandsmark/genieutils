@@ -200,7 +200,7 @@ std::shared_ptr<uint8_t[]> DrsFile::getWavPtr(uint32_t id)
 
     if (i != wav_offsets_.end()) {
         getIStream()->seekg(std::streampos(i->second));
-#ifndef NDEBUG
+#ifdef NDEBUG
         uint32_t type = read<uint32_t>();
 #else // Avoid -Wunused-value
         read<uint32_t>();
