@@ -248,7 +248,6 @@ else()
     set_property(TARGET genieutils_common PROPERTY POSITION_INDEPENDENT_CODE True)
 
     add_library(genieutils SHARED $<TARGET_OBJECTS:genieutils_common>)
-    set_property(TARGET genieutils PROPERTY PUBLIC_HEADER ${ALL_HEADERS})
 
     install(TARGETS genieutils)
 
