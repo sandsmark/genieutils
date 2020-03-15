@@ -337,28 +337,21 @@ target_link_libraries(genieutils_common ${COMMON_LIBRARIES})
 
 if (GUTILS_STATIC)
     message(STATUS "Building genieutils as static library")
-    add_library(${Genieutils_LIBRARY} STATIC $<TARGET_OBJECTS:genieutils_common>)
+    add_library(genieutils STATIC $<TARGET_OBJECTS:genieutils_common>)
 else()
-    add_library(${Genieutils_LIBRARY} SHARED $<TARGET_OBJECTS:genieutils_common>)
-    set_property(TARGET ${Genieutils_LIBRARY} PROPERTY PUBLIC_HEADER ${ALL_HEADERS})
+    add_library(genieutils SHARED $<TARGET_OBJECTS:genieutils_common>)
+    set_property(TARGET genieutils PROPERTY PUBLIC_HEADER ${ALL_HEADERS})
 
-    install(TARGETS ${Genieutils_LIBRARY})
+    install(TARGETS genieutils)
 endif()
 
 
-target_link_libraries(${Genieutils_LIBRARY} ${COMMON_LIBRARIES})
+target_link_libraries(genieutils ${COMMON_LIBRARIES})
 
-
-#add_executable(main main.cpp)
-#target_link_libraries(main ${Genieutils_LIBRARY})
 
 #------------------------------------------------------------------------------#
 # Dev tools:
 #------------------------------------------------------------------------------#
-
- # test doesn't build :(
- # add_executable(test ${TEST_SRC})
- # target_link_libraries(test ${Genieutils_LIBRARY} ${Boost_LIBRARIES} ) #${ZLIB_LIBRARIES} ${Boost_LIBRARIES} ${Genieutils_LIBRARY})
 
 if (GUTILS_TOOLS)
   message(STATUS "Building tools")
