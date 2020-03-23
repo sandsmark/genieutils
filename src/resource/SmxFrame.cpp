@@ -88,8 +88,8 @@ void SmxFrame::serializeLayerHeader(SmxFrame::LayerHeader &header)
     serialize<uint16_t>(header.width);
     serialize<uint16_t>(header.height);
 
-    serialize<uint16_t>(header.centerX);
-    serialize<uint16_t>(header.centerY);
+    serialize<int16_t>(header.centerX);
+    serialize<int16_t>(header.centerY);
 
     serialize<uint32_t>(header.size);
     serialize<uint32_t>(header.unknown);

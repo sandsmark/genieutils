@@ -67,8 +67,8 @@ private:
         uint16_t width = 0; /// Width of image
         uint16_t height = 0; /// Height of image
 
-        uint16_t centerX = 0; /// Centre of sprite (X coord)
-        uint16_t centerY = 0; /// Centre of sprite (Y coord)
+        int16_t centerX = 0; /// Centre of sprite (X coord)
+        int16_t centerY = 0; /// Centre of sprite (Y coord)
 
         uint32_t size = 0; /// Length of frame in bytes
         uint32_t unknown = 0;
