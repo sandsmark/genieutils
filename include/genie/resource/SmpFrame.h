@@ -65,8 +65,8 @@ struct SmpLayerHeader {
 
     uint32_t width;
     uint32_t height;
-    uint32_t hotspotX;
-    uint32_t hotspotY;
+    int32_t hotspotX;
+    int32_t hotspotY;
     uint32_t type;
     uint32_t paddingTableOffset;
     uint32_t pixelDataOffset;
