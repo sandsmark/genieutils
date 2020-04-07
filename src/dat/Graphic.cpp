@@ -137,13 +137,15 @@ void Graphic::serializeObject(void)
     serialize<uint16_t>(AngleCount);
     serialize<float>(SpeedMultiplier);
 
-    // There was something wonky when the original files were created, so to
-    // avoid any diff when just loading and re-writing the original files we
-    // have to do this
     if (isOperation(OP_WRITE)) {
-        const float newCount =  FrameCount ? AnimationDuration / FrameCount : 0;
-        if (!util::floatsEquals(newCount, FrameDuration)) {
-            FrameDuration = newCount;
+        const float newDuration =  FrameCount ? AnimationDuration / FrameCount : 0;
+
+        // There was something wonky (the LSB in the significand of the floats
+        // was always set to 0) when the original files were created, so to
+        // avoid any diff when just loading and re-writing the original files
+        // we have to do this.
+        if (!util::floatsEquals(newDuration, FrameDuration)) {
+            FrameDuration = newDuration;
         }
     }
     serialize<float>(FrameDuration);
