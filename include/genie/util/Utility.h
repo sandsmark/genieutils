@@ -48,11 +48,15 @@ namespace util {
 
 static_assert((unsigned long long)std::numeric_limits<int>::max() >= 2147483647ull && "We assume a sane int size in bounds checking");
 
+/// "Semantic" comparison, checks if it is
+/// less than 1. / hundred thousand different
 inline bool floatsEquals(const float a, const float b)
 {
     return (std::abs(a - b) * 100000.f <= std::min(std::abs(a), std::abs(b)));
 }
 
+/// "Semantic" comparison, checks if it is
+/// less than 1. / one trillion different
 inline bool floatsEquals(const double a, const double b)
 {
     return (std::abs(a - b) * 1000000000000. <= std::min(std::abs(a), std::abs(b)));
