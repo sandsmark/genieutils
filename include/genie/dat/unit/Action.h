@@ -42,7 +42,8 @@ public:
 
     /// Giving to a villager drop site to cart-like unit
     /// can allow you to have mobile resource-gatherers,\nsimilar to those in Age of Mythology.
-    std::pair<int16_t, int16_t> DropSite = { -1, -1 };
+    unsigned short getDropSiteCount();
+    std::vector<int16_t> DropSites;
 
     /// If activated unit switches villager types
     /// When tasking the unit, it will transform into another unit,

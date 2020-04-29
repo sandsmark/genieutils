@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2020  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -94,6 +94,8 @@ public:
     std::string Name2 = "";
 
     bool compareTo(const Tech &other) const;
+
+  int8_t Repeatable = false;
 
 private:
     void serializeObject(void) override;

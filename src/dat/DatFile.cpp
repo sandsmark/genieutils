@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2019  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2020  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -32,7 +32,7 @@ namespace genie {
 
 float ISerializable::dat_internal_ver = 0.f;
 GameVersion GV_LatestTap = GV_T8;
-GameVersion GV_LatestDE2 = GV_C14;
+GameVersion GV_LatestDE2 = GV_C15;
 
 //------------------------------------------------------------------------------
 DatFile::DatFile() :
@@ -114,6 +114,7 @@ std::string DatFile::versionName(const GameVersion version)
         case genie::GV_C12: return "Age of Empires 3: Definitive Edition C12";
         case genie::GV_C13: return "Age of Empires 3: Definitive Edition C13";
         case genie::GV_C14: return "Age of Empires 3: Definitive Edition C14";
+        case genie::GV_C15: return "Age of Empires 3: Definitive Edition C15";
         case genie::GV_SWGB: return "Star Wars: Galactic Battlegrounds";
         case genie::GV_CC: return "Star Wars: Galactic Battlegrounds: Clone Campaigns";
         // No default, so we get compiler warnings if new are added
@@ -144,7 +145,9 @@ GameVersion DatFile::gameVersionFromString(const std::string &name)
         case 0:
             return GV_C13;
         case 1:
-            return GV_C13;
+            return GV_C14;
+        case 2:
+            return GV_C15;
         default:
             break;
         }
