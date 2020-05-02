@@ -16,7 +16,7 @@ void printUsage(const char *appName)
 void printByteSize(float size)
 {
     // ugly but easy to think about or something
-    std::string suffix;
+    std::string suffix = "B";
     if (size > 1024) {
         size /= 1024;
         suffix = "KB";
@@ -145,7 +145,6 @@ int main(int argc, char *argv[]) try
 
                 if (!std::filesystem::path(filename).has_extension()) {
                     std::cout << '.' << type;
-                } else {
                 }
                 std::cout << '\t';
             } else {
@@ -157,7 +156,7 @@ int main(int argc, char *argv[]) try
             if (type == "wav") {
                 std::cout << '\t';
                 genie::WavFilePtr wav = drs.getWavFile(id);
-                if (!wav) {
+                if (!wav || !wav->isValid()) {
                     std::cout << "INVALID" << std::endl;
                     continue;
                 }
@@ -173,94 +172,113 @@ int main(int argc, char *argv[]) try
         return 0;
     }
 
+    std::vector<std::string> ids;
 
-    std::string outFilename = toExtract;
-
-    // meh, not efficient but meh
-    int id = atoi(toExtract.c_str());
-    if (!id) {
-        if (!hasDat) {
-            std::cerr << "invalid id and no dat file" << std::endl;
-            printUsage(argv[0]);
-            return 1;
-        }
-        const std::string toExtractNoExt = std::filesystem::path(toExtract).stem();
-        std::cout << toExtractNoExt << std::endl;
-        for (const std::pair<uint32_t, std::string> p : dat.resourceFilenames()) {
-            if (p.second == toExtract || p.second == toExtractNoExt) {
-                id = p.first;
-                break;
+    if (genie::util::stringStartsWith(toExtract, "*.")) {
+        std::string type = toExtract.substr(2);
+        for (const uint32_t id : drs.allIds()) {
+            if (drs.idType(id) == type) {
+                // hacky and inefficient so sue me
+                ids.push_back(std::to_string(id));
             }
         }
-        if (!id) {
-            std::cerr << "Failed to find " << toExtract << std::endl;
-            printUsage(argv[0]);
-            return 1;
-        }
-        std::cout << "Extracting ID " << id << std::endl;
     } else {
-        outFilename = dat.resourceFilename(id);
-    }
-    std::cout << "Extracting " << toExtract << " to " << outFilename << std::endl;
-
-    if (outFilename.empty()) {
-        std::cerr << "Failed to find filename for " << id << std::endl;
-        outFilename = toExtract + ".extracted";
+        ids.push_back(toExtract);
     }
 
-    if (std::filesystem::exists(outFilename)) {
-        std::cout << outFilename << " exists, overwrite? [y/n] " << std::endl;
-        char response = std::cin.get();
+    for (const std::string &toExtract : ids) {
+        std::string outFilename = toExtract;
 
-        if (response != 'y') {
-            std::cout << "Aborting" << std::endl;
+        // meh, not efficient but meh
+        int id = atoi(toExtract.c_str());
+        if (!id) {
+            if (!hasDat) {
+                std::cerr << "invalid id and no dat file" << std::endl;
+                printUsage(argv[0]);
+                return 1;
+            }
+            const std::string toExtractNoExt = std::filesystem::path(toExtract).stem();
+            for (const std::pair<uint32_t, std::string> p : dat.resourceFilenames()) {
+                if (p.second == toExtract || p.second == toExtractNoExt) {
+                    id = p.first;
+                    break;
+                }
+            }
+            if (!id) {
+                std::cerr << "Failed to find " << toExtract << std::endl;
+                printUsage(argv[0]);
+                return 1;
+            }
+            std::cout << "Extracting ID " << id << std::endl;
+        } else {
+            outFilename = dat.resourceFilename(id);
+        }
+
+        if (!std::filesystem::path(outFilename).has_extension()) {
+            outFilename += '.' + drs.idType(id);
+        }
+
+        std::cout << "Extracting " << toExtract << " to " << outFilename << std::endl;
+
+        if (outFilename.empty()) {
+            std::cerr << "Failed to find filename for " << id << std::endl;
+            outFilename = toExtract + ".extracted";
+        }
+
+        if (std::filesystem::exists(outFilename)) {
+            std::cout << outFilename << " exists, overwrite? [y/n] " << std::endl;
+            char response = std::cin.get();
+
+            if (response != 'y') {
+                std::cout << "Aborting" << std::endl;
+                return 1;
+            }
+        }
+
+        const ssize_t size = drs.fileSize(id);
+        const std::ios::pos_type offset = drs.fileOffset(id);
+        if (size <= 0 || offset <= 0) {
+            std::cerr << "Invalid file size " << size << " or offset " << offset << std::endl;
             return 1;
         }
-    }
 
-    const ssize_t size = drs.fileSize(id);
-    const std::ios::pos_type offset = drs.fileOffset(id);
-    if (size <= 0 || offset <= 0) {
-        std::cerr << "Invalid file size " << size << " or offset " << offset << std::endl;
-        return 1;
-    }
+        std::ifstream source(drsFile, std::ios_base::binary | std::ios_base::in);
+        if (!source.is_open()) {
+            std::cerr << "Failed to open " << drsFile << " for reading" << std::endl;
+            return 1;
+        }
 
-    std::ifstream source(drsFile, std::ios_base::binary | std::ios_base::in);
-    if (!source.is_open()) {
-        std::cerr << "Failed to open " << drsFile << " for reading" << std::endl;
-        return 1;
-    }
+        source.seekg(offset);
+        if (!source.good()) {
+            std::cout << "Seek to " << offset << " failed" << std::endl;
+            return 1;
+        }
 
-    source.seekg(offset);
-    if (!source.good()) {
-        std::cout << "Seek to " << offset << " failed" << std::endl;
-        return 1;
-    }
+        std::ofstream target(outFilename, std::ios_base::binary | std::ios_base::out);
+        if (!target.is_open()) {
+            std::cerr << "Failed to open " << outFilename << " for writing" << std::endl;
+            return 1;
+        }
 
-    std::ofstream target(outFilename, std::ios_base::binary | std::ios_base::out);
-    if (!target.is_open()) {
-        std::cerr << "Failed to open " << outFilename << " for writing" << std::endl;
-        return 1;
-    }
+        std::copy_n(std::istreambuf_iterator<char>(source), size, std::ostreambuf_iterator<char>(target));
 
-    std::copy_n(std::istreambuf_iterator<char>(source), size, std::ostreambuf_iterator<char>(target));
+        if (!source.good()) {
+            std::cout << "Reading failed" << std::endl;
+            return 1;
+        }
+        if (!target.good()) {
+            std::cout << "Writing to " << outFilename << "  failed" << std::endl;
+            return 1;
+        }
 
-    if (!source.good()) {
-        std::cout << "Reading failed" << std::endl;
-        return 1;
+        source.close();
+        target.close();
     }
-    if (!target.good()) {
-        std::cout << "Writing to " << outFilename << "  failed" << std::endl;
-        return 1;
-    }
-
-    source.close();
-    target.close();
 
 
     return 0;
 } catch (const std::exception &e) { // just in case I forget to catch something, I hate exceptions
-    std::cerr << e.what() << std::endl;
+    std::cerr << "Exception: " << e.what() << std::endl;
     return 1;
 }
 

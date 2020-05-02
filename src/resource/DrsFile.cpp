@@ -181,9 +181,9 @@ WavFilePtr DrsFile::getWavFile(uint32_t id)
 
 std::string DrsFile::idType(const uint32_t id)
 {
-    if (id >= 50000 && id < 50100) {
-        return "screendata";
-    }
+//    if (id >= 50000 && id < 50100) {
+//        return "sin";
+//    }
 
     // Just a guess, but I think good one, since there's 256 entries, and most seem to have the
     // same value as the entry number, except at least one that has various values between 0 and 255
@@ -206,7 +206,7 @@ std::string DrsFile::idType(const uint32_t id)
         return "unknown";
     }
 
-    return i->second->guessFiletype(getIStream());
+    return i->second->guessFileExtension(getIStream());
 }
 
 ssize_t DrsFile::fileSize(const uint32_t id)

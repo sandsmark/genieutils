@@ -145,6 +145,53 @@ std::string BinaFile::guessFiletype(std::istream *istr) const
     return "unknown";
 }
 
+std::string BinaFile::guessFileExtension(std::istream *istr) const
+{
+    if (m_size < 4) {
+        return "empty";
+    }
+
+    istr->seekg(getInitialReadPosition());
+
+    char content[17];
+    istr->read(content, 17);
+    size_t readCount = istr->gcount();
+
+    if (readCount < 4) {
+        return "corrupt";
+    }
+
+    if (content[0] == 'J' && content[1] == 'A' && content[2] == 'S' && content[3] == 'C') {
+        return "pal";
+    }
+
+    if (content[0] == 'B' && content[1] == 'M') {
+        return "bmp";
+    }
+
+    if (content[0] >= '0' && content[0] <= '9' && content[1] == '.' && content[2] >= '0' && content[2] <= '9' && content[3] >= '0' && content[3] <= '9') {
+        return "scn";
+    }
+
+    if (content[0] == ';' || content[0] == '/' || content[0] == '(' || content[0] == ' ' || content[0] == '\t' || content[0] == '#') {
+        return ".per";
+    }
+
+    if (std::string(content, std::min(size_t(17), readCount)) == std::string("background1_files")) {
+        return "sin"; // I don't remember, I think this is right
+    }
+
+    if (std::string(content, std::min(size_t(17), readCount)) == std::string("0\r\n1\r\n2\r\n3\r\n4\r\n5\r")) {
+        return "palettemodifier"; // don't know the name
+    }
+
+    if (content[0] == '1' && content[1] == ' ' && content[2] == ' ' && content[3] == ' ') {
+        return "campaignbuttons";
+    }
+
+    return "bin";
+}
+
 void BinaFile::serializeObject()
 {
 }

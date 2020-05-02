@@ -344,7 +344,7 @@ std::string DatFile::resourceFilename(const uint32_t id)
     }
 
     if (!m_resourceFilenames.contains(id)) {
-        return "Unknown" + std::to_string(id);
+        return std::to_string(id);
     }
 
     return m_resourceFilenames[id];
