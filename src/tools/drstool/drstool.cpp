@@ -45,12 +45,33 @@ int main(int argc, char *argv[]) try
         return 1;
     }
 
-    std::string datFile = argc > 3 ? argv[1] : "";
-    const std::string command = argc > 3 ? argv[2] : argv[1];
-    std::string drsFile = argc > 3 ? argv[3] : argv[2];
+    const std::string command = (argc == 3 || argc == 4) ? argv[1] : argv[2];
+    std::string drsFile;
+    std::string datFile;
+    std::cout << argc << std::endl;
+    for (int i=0; i< argc; i++) std::cout << i << argv[i] << std::endl;
 
-    if (!std::filesystem::exists(drsFile)) {
-        std::cout << "drs file " << drsFile << " does not exist" << std::endl;
+    std::string toExtract;
+
+    if (command == "extract") {
+        if (argc != 4 && argc != 5) {
+            std::cout << "not enough arguments for extract" << std::endl;
+            printUsage(argv[0]);
+            return 1;
+        }
+        toExtract = argc > 4 ? argv[4] : argv[3];
+        drsFile = argc > 4 ? argv[3] : argv[2];
+        datFile = argc > 4 ? argv[2] : "";
+
+        if (!std::filesystem::exists(drsFile)) {
+            printUsage(argv[0]);
+            return 1;
+        }
+    } else if (command == "list") {
+        datFile = argc > 3 ? argv[1] : "";
+        drsFile = argc > 3 ? argv[3] : argv[2];
+    } else {
+        std::cout << "Unknown command: " << command << std::endl;
         printUsage(argv[0]);
         return 1;
     }
@@ -61,22 +82,8 @@ int main(int argc, char *argv[]) try
         return 1;
     }
 
-    std::string toExtract;
-
-    if (command == "extract") {
-        if ((datFile.empty() && argc < 4) || argc < 5) {
-            std::cout << "not enough arguments for extract" << std::endl;
-            printUsage(argv[0]);
-            return 1;
-        }
-        toExtract = argc > 4 ? argv[4] : argv[3];
-
-        if (!std::filesystem::exists(drsFile)) {
-            printUsage(argv[0]);
-            return 1;
-        }
-    } else if (command != "list") {
-        std::cout << "Unknown command: " << command << std::endl;
+    if (!std::filesystem::exists(drsFile)) {
+        std::cout << "drs file " << drsFile << " does not exist" << std::endl;
         printUsage(argv[0]);
         return 1;
     }
@@ -166,7 +173,6 @@ int main(int argc, char *argv[]) try
         return 0;
     }
 
-    std::cout << "Extracting " << toExtract << std::endl;
 
     std::string outFilename = toExtract;
 
@@ -195,6 +201,7 @@ int main(int argc, char *argv[]) try
     } else {
         outFilename = dat.resourceFilename(id);
     }
+    std::cout << "Extracting " << toExtract << " to " << outFilename << std::endl;
 
     if (outFilename.empty()) {
         std::cerr << "Failed to find filename for " << id << std::endl;

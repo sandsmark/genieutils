@@ -142,7 +142,7 @@ std::string BinaFile::guessFiletype(std::istream *istr) const
         return "campaignbuttons";
     }
 
-    return "unknown_" + std::string(content, readCount);
+    return "unknown";
 }
 
 void BinaFile::serializeObject()
