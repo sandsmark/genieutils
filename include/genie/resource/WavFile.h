@@ -56,8 +56,6 @@ protected:
 private:
     static Logger &log;
 
-    uint32_t m_size = 0;
-    uint32_t m_type = 0;
     WavHeader m_header{};
     std::vector<uint8_t> m_data;
 };
