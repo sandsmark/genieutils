@@ -29,6 +29,7 @@
 #include "SlpFile.h"
 #include "BinaFile.h"
 #include "UIFile.h"
+#include "WavFile.h"
 
 namespace genie {
 
@@ -65,14 +66,19 @@ public:
     BmpFilePtr getBmpFile(uint32_t id);
     std::string getScriptFile(uint32_t id);
     ScnFilePtr getScnFile(uint32_t id);
+    WavFilePtr getWavFile(uint32_t id);
 
-    std::string idType(uint32_t id);
 
     std::shared_ptr<uint8_t[]> getWavPtr(uint32_t id);
 
     std::vector<uint32_t> binaryFileIds() const;
 
     std::vector<uint32_t> slpFileIds() const;
+
+    std::string idType(const uint32_t id);
+    const std::vector<uint32_t> &allIds() { return m_allIds; }
+    ssize_t fileSize(const uint32_t id);
+    ssize_t fileOffset(const uint32_t id);
 
 private:
     static Logger &log;
@@ -89,7 +95,12 @@ private:
 
     std::unordered_map<uint32_t, SlpFilePtr> slp_map_;
     std::unordered_map<uint32_t, BinaFilePtr> bina_map_;
+    std::unordered_map<uint32_t, WavFilePtr> wav_map_;
     std::unordered_map<uint32_t, uint32_t> wav_offsets_;
+
+    std::vector<uint32_t> m_allIds;
+    std::unordered_map<uint32_t, uint32_t> m_allSizes;
+    std::unordered_map<uint32_t, uint32_t> m_allOffsets;
 
     size_t copyrightHeaderSize() const;
 

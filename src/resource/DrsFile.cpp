@@ -165,10 +165,24 @@ ScnFilePtr DrsFile::getScnFile(uint32_t id)
     }
 }
 
-std::string DrsFile::idType(uint32_t id)
+WavFilePtr DrsFile::getWavFile(uint32_t id)
+{
+    std::unordered_map<uint32_t, WavFilePtr>::iterator i = wav_map_.find(id);
+
+    if (i != wav_map_.end()) {
+        i->second->readObject(*getIStream());
+        return i->second;
+    } else {
+        log.debug("No wav file with id [%u] found!", id);
+        return {};
+    }
+
+}
+
+std::string DrsFile::idType(const uint32_t id)
 {
     if (id >= 50000 && id < 50100) {
-        return "screen data";
+        return "screendata";
     }
 
     if (wav_offsets_.find(id) != wav_offsets_.end()) {
@@ -179,13 +193,33 @@ std::string DrsFile::idType(uint32_t id)
         return "slp";
     }
 
-    std::unordered_map<uint32_t, BinaFilePtr>::iterator i = bina_map_.find(id);
+    std::unordered_map<uint32_t, BinaFilePtr>::const_iterator i = bina_map_.find(id);
 
     if (i == bina_map_.end()) {
         return "unknown";
     }
 
-    return i->second->filetype(getIStream());
+    return i->second->guessFiletype(getIStream());
+}
+
+ssize_t DrsFile::fileSize(const uint32_t id)
+{
+    std::unordered_map<uint32_t, uint32_t>::const_iterator i = m_allSizes.find(id);
+    if (i == m_allSizes.end()) {
+        return -1;
+    }
+
+    return i->second;
+}
+
+ssize_t DrsFile::fileOffset(const uint32_t id)
+{
+    std::unordered_map<uint32_t, uint32_t>::const_iterator i = m_allOffsets.find(id);
+    if (i == m_allOffsets.end()) {
+        return -1;
+    }
+
+    return i->second;
 }
 
 //------------------------------------------------------------------------------
@@ -297,6 +331,10 @@ void DrsFile::loadHeader()
                 uint32_t pos = read<uint32_t>();
                 uint32_t len = read<uint32_t>();
 
+                m_allIds.push_back(id);
+                m_allSizes[id] = len;
+                m_allOffsets[id] = pos;
+
                 if (table_types_[i].compare(slpTableHeader) == 0) {
                     SlpFilePtr slp(new SlpFile(len));
                     slp->setInitialReadPosition(pos);
@@ -309,6 +347,11 @@ void DrsFile::loadHeader()
                     bina_map_[id] = bina;
                 } else if (table_types_[i].compare(soundTableHeader) == 0) {
                     wav_offsets_[id] = pos;
+
+                    WavFilePtr wav = std::make_shared<WavFile>();
+                    wav->setInitialReadPosition(pos);
+
+                    wav_map_[id] = wav;
                 } else {
                     std::cerr << "unknown header " << std::hex << table_types_[i] << std::dec << std::endl;
                     return;

@@ -333,8 +333,58 @@ bool DatFile::compareTo(const DatFile &other) const
             TechTree.compareTo(other.TechTree);
 }
 
+std::string DatFile::resourceFilename(const uint32_t id)
+{
+    if (m_resourceFilenames.empty()) {
+        loadResourceFilenames();
+    }
+
+    if (m_resourceFilenames.contains(id)) {
+        return m_resourceFilenames[id];
+    }
+
+    if (!m_resourceFilenames.contains(id)) {
+        return "Unknown" + std::to_string(id);
+    }
+
+    return m_resourceFilenames[id];
+}
+
+const std::unordered_map<uint32_t, std::string> &DatFile::resourceFilenames()
+{
+    if (m_resourceFilenames.empty()) {
+        loadResourceFilenames();
+    }
+
+    return m_resourceFilenames;
+}
+
+void DatFile::loadResourceFilenames()
+{
+    // TODO could check for conflicts, but that's slower
+    for (const Sound &sound: Sounds) {
+        for (const SoundItem &item : sound.Items) {
+            m_resourceFilenames[item.ResourceID]  = item.FileName;
+        }
+    }
+
+    for (const Graphic &graphic : Graphics) {
+        if (graphic.SLP == -1) { // Graphics with just deltas
+            continue;
+        }
+        if (graphic.SLP == 0) { // Free graphic slots
+            continue;
+        }
+        if (graphic.FileName.empty()) {
+            std::cout << "Missing name " << graphic.SLP << ' ' << graphic.ID << ' ' << graphic.Name << std::endl;
+            continue;
+        }
+        m_resourceFilenames[graphic.SLP] = graphic.FileName;
+    }
+}
+
 //------------------------------------------------------------------------------
-void DatFile::serializeObject(void)
+void DatFile::serializeObject()
 {
     if (!m_rawMode) {
         compressor_.beginCompression();
@@ -350,8 +400,9 @@ void DatFile::serializeObject(void)
         if (guessedVersion != GV_None) {
             setGameVersion(guessedVersion);
         }
-    } else if(getGameVersion() == GV_Tapsa) {
+    } else if (getGameVersion() == GV_Tapsa) {
         GameVersion guessedVersion = gameVersionFromString(FileVersion);
+        std::cout << "Guessed game version " << versionName(guessedVersion) << " from " << FileVersion << std::endl;
         if (guessedVersion != GV_None) {
             setGameVersion(guessedVersion);
         }

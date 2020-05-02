@@ -98,10 +98,10 @@ ScnFilePtr BinaFile::readScnFile(std::istream *istr)
     return scnFile;
 }
 
-std::string BinaFile::filetype(std::istream *istr)
+std::string BinaFile::guessFiletype(std::istream *istr) const
 {
     if (m_size < 4) {
-        return "size less than 4 bytes";
+        return "almostempty";
     }
 
     istr->seekg(getInitialReadPosition());
@@ -123,11 +123,11 @@ std::string BinaFile::filetype(std::istream *istr)
     }
 
     if (content[0] >= '0' && content[0] <= '9' && content[1] == '.' && content[2] >= '0' && content[2] <= '9' && content[3] >= '0' && content[3] <= '9') {
-        return "scenario file version " + std::string(content, 4);
+        return "scenario_v" + std::string(content, 4);
     }
 
     if (content[0] == ';' || content[0] == '/' || content[0] == '(' || content[0] == ' ' || content[0] == '\t' || content[0] == '#') {
-        return "script file? (" + std::string(content, 4) + ")";
+        return "scriptfile (" + std::string(content, 4) + ")";
     }
 
     if (std::string(content, std::min(size_t(17), readCount)) == std::string("background1_files")) {
@@ -135,14 +135,14 @@ std::string BinaFile::filetype(std::istream *istr)
     }
 
     if (std::string(content, std::min(size_t(17), readCount)) == std::string("0\r\n1\r\n2\r\n3\r\n4\r\n5\r")) {
-        return "counting file?";
+        return "numbers";
     }
 
     if (content[0] == '1' && content[1] == ' ' && content[2] == ' ' && content[3] == ' ') {
-        return "campaign button location data";
+        return "campaignbuttons";
     }
 
-    return "unknown (" + std::string(content, readCount) + ")";
+    return "unknown_" + std::string(content, readCount);
 }
 
 void BinaFile::serializeObject()
