@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) try
         return 1;
     }
 
-    const std::string datFile = argc > 3 ? argv[1] : "";
+    std::string datFile = argc > 3 ? argv[1] : "";
     const std::string command = argc > 3 ? argv[2] : argv[1];
     std::string drsFile = argc > 3 ? argv[3] : argv[2];
 
@@ -81,6 +81,28 @@ int main(int argc, char *argv[]) try
         return 1;
     }
 
+    genie::GameVersion gameVersion = genie::GV_Tapsa; // will try to guess frmo file contents
+    if (datFile.empty()) {
+        std::string dataPath = std::filesystem::path(drsFile).parent_path().string() + '/';
+        std::cout << "Looking for dat file in " << dataPath << std::endl;
+
+        std::vector<std::pair<std::string, genie::GameVersion>> datFilenames({
+            {"empires2_x1_p1.dat", genie::GV_TC  }, // the conquerors, patch 1
+            {"empires2_x1.dat",    genie::GV_TC  }, // the conquerors
+            {"empires2.dat",       genie::GV_AoK }, // age of kings
+            {"empires_x1.dat",     genie::GV_RoR },
+            {"Empires.dat",        genie::GV_AoE },
+        });
+        for (const std::pair<std::string, genie::GameVersion> &datfile : datFilenames) {
+            std::string potential = dataPath + datfile.first;
+            if (std::filesystem::exists(potential)) {
+                datFile = potential;
+                gameVersion = datfile.second;
+                break;
+            }
+        }
+    }
+
     std::cout << "Using datfile " << datFile << " to " << command << " from " << drsFile << std::endl;
 
     genie::Logger::setLogLevel(genie::Logger::L_DEBUG);
@@ -88,7 +110,7 @@ int main(int argc, char *argv[]) try
     genie::DatFile dat;
     bool hasDat = false;
     if (!datFile.empty()) try {
-        dat.setGameVersion(genie::GV_Tapsa);
+        dat.setGameVersion(gameVersion);
         dat.load(datFile);
         hasDat = true;
     } catch (const std::exception &e) {
