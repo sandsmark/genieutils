@@ -234,9 +234,11 @@ set(TEST_SRC
 
 set(EXTRACT_SRC src/tools/extract/datextract.cpp)
 
+set(DRSTOOL_SRC src/tools/drstool/drstool.cpp)
+
 set(BINCOMP_SRC src/tools/bincompare/bincomp.cpp
                 src/tools/bincompare/main.cpp)
-                
+
 #------------------------------------------------------------------------------#
 # Executeable:
 #------------------------------------------------------------------------------#
@@ -288,6 +290,9 @@ if (GUTILS_TOOLS)
 
   add_executable(datextract ${EXTRACT_SRC} $<TARGET_OBJECTS:genieutils_common>)
   target_link_libraries(datextract ${Boost_LIBRARIES} ${COMMON_LIBRARIES})
+
+  add_executable(drstool ${DRSTOOL_SRC} $<TARGET_OBJECTS:genieutils_common>)
+  target_link_libraries(drstool ${COMMON_LIBRARIES})
 
   add_executable(bincomp ${BINCOMP_SRC})
 

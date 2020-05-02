@@ -50,7 +50,7 @@ public:
     }
 
     /// Where in the input stream this object is starting at
-    inline std::streampos getInitialReadPosition(void) const
+    inline std::streampos getInitialReadPosition() const
     {
         return init_read_pos_;
     }
@@ -66,7 +66,7 @@ public:
     void writeObject(std::ostream &ostr);
 
     /// Returns size in bytes.
-    virtual size_t objectSize(void);
+    virtual size_t objectSize();
 
     /// Serialize this object as a subobject of another one.
     ///
@@ -80,7 +80,7 @@ public:
     }
 
     /// Game version that will be assumed when loading and saving
-    inline GameVersion getGameVersion(void) const
+    inline GameVersion getGameVersion() const
     {
         return gameVersion_;
     }
@@ -150,7 +150,7 @@ protected:
     /// Get current operation
     ///
     /// @return operation
-    inline Operation getOperation(void) const
+    inline Operation getOperation() const
     {
         return operation_;
     }
@@ -187,7 +187,7 @@ protected:
     }
 
     /// Returns the current stream data is read from
-    inline std::istream *getIStream(void)
+    inline std::istream *getIStream()
     {
         return istr_;
     }
@@ -199,7 +199,7 @@ protected:
     }
 
     /// Returns the stream data is saved to
-    inline std::ostream *getOStream(void)
+    inline std::ostream *getOStream()
     {
         return ostr_;
     }
@@ -207,7 +207,7 @@ protected:
     //----------------------------------------------------------------------------
     /// @return position of the istreams get pointer.
     //
-    std::streampos tellg(void) const;
+    std::streampos tellg() const;
 
     //----------------------------------------------------------------------------
     /// Custom strnlen for mingw32.
@@ -222,7 +222,7 @@ protected:
     /// Derived classes need to implement this method. It will automatically be
     /// called on reading or writing an Object.
     //
-    virtual void serializeObject(void) = 0;
+    virtual void serializeObject() = 0;
 
     //----------------------------------------------------------------------------
     /// Reads a string from istr. Returns empty string if len parameter is 0.

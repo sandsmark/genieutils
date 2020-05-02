@@ -23,6 +23,7 @@
 
 #include <string>
 #include <iostream>
+#include <unordered_map>
 
 #include "genie/Types.h"
 #include "genie/file/IFile.h"
@@ -83,6 +84,10 @@ public:
 
     bool compareTo(const DatFile &other) const;
 
+    /// Try to find the filename for a resource ID
+    std::string resourceFilename(const uint32_t id);
+    const std::unordered_map<uint32_t, std::string> &resourceFilenames();
+
     // File data
     static const unsigned short FILE_VERSION_SIZE = 8;
     std::string FileVersion;
@@ -135,6 +140,8 @@ public:
     int8_t SUnknown8 = 0;
 
 private:
+    void loadResourceFilenames();
+
     // if true print debug messages
     bool verbose_ = false;
 
@@ -142,6 +149,8 @@ private:
 
     std::string file_name_;
     std::fstream *file_ = nullptr;
+
+    std::unordered_map<uint32_t, std::string> m_resourceFilenames;
 
     Compressor compressor_;
 
@@ -155,6 +164,7 @@ private:
 
     void serializeObject(void) override;
 };
+
 } // namespace genie
 
 #endif // GENIE_DATFILE_H

@@ -44,7 +44,7 @@ public:
     std::string readScriptFile(std::istream *istr);
     ScnFilePtr readScnFile(std::istream *istr);
 
-    std::string filetype(std::istream *istr);
+    std::string guessFiletype(std::istream *istr) const;
 
     uint32_t size() const { return m_size; }
 

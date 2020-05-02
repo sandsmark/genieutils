@@ -30,9 +30,12 @@ public:
             IEEEFloat = 0x3,
             ALaw = 0x6,
             MULaw = 0x7,
-            DVIADPCM = 0x11
+            DVIADPCM = 0x11,
+            AAC = 0xff,
+            WWISE = 0xffffu,
         };
         uint16_t AudioFormat;
+        std::string formatName() const;
 
         uint16_t NumChannels;
         uint32_t SampleRate;
@@ -59,5 +62,6 @@ private:
     WavHeader m_header{};
     std::vector<uint8_t> m_data;
 };
+using WavFilePtr = std::shared_ptr<WavFile>;
 
 } //namespace genie
