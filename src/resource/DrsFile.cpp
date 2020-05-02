@@ -185,6 +185,13 @@ std::string DrsFile::idType(const uint32_t id)
         return "screendata";
     }
 
+    // Just a guess, but I think good one, since there's 256 entries, and most seem to have the
+    // same value as the entry number, except at least one that has various values between 0 and 255
+    // Need to test and visually confirm, and see what kind of effect I get, though
+    if (id >= 50900 && id <= 50911) {
+        return "palette-index-translation";
+    }
+
     if (wav_offsets_.find(id) != wav_offsets_.end()) {
         return "wav";
     }
