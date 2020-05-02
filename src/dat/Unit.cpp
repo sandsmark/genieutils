@@ -43,7 +43,7 @@ void Unit::setGameVersion(GameVersion gv)
 const std::string &Unit::className(const int16_t classId, const GameVersion gameVersion)
 {
     if (gameVersion < GV_AoKA) {
-        const std::unordered_map<int16_t, std::string> oldNames = {
+        static const std::unordered_map<int16_t, std::string> oldNames = {
             { 18, "Priest" },
             { 23, "Chariot Archer" },
             { 35, "Chariot" },
@@ -56,7 +56,7 @@ const std::string &Unit::className(const int16_t classId, const GameVersion game
         }
     }
 
-    const std::unordered_map<int16_t, std::string> knownNames = {
+    static const std::unordered_map<int16_t, std::string> knownNames = {
         { 0, "Archer" },
         { 1, "Artifact" },
         { 2, "Trade Boat" },
