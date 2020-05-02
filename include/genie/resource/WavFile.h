@@ -51,6 +51,8 @@ public:
     const WavHeader &header() { return m_header; }
     const uint8_t *audioData() { return m_data.data(); }
 
+    bool isValid() const;
+
 
     // ISerializable interface
 protected:

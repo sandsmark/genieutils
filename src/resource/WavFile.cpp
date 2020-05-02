@@ -12,9 +12,30 @@ WavFile::WavFile()
 
 }
 
+bool WavFile::isValid() const
+{
+    if (m_data.empty()) {
+        return false;
+    }
+
+    if (m_header.Subchunk2Size <= sizeof(WavHeader)) {
+        log.debug("Invalid file, subchunk2 too small (%), need %", m_header.Subchunk2Size, sizeof(WavHeader));
+        return false;
+    }
+    if (m_header.Subchunk2Size >= std::numeric_limits<uint32_t>::max()) {
+        log.debug("I seriously doubt there's a wav file this big, remove this check if that's the case");
+        return false;
+    }
+    return true;
+}
+
 void WavFile::serializeObject()
 {
     serialize<WavHeader>(m_header);
+    if (m_header.Subchunk2Size <= sizeof(WavHeader)) {
+//        log.warn("Invalid file, subchunk2 too small (%), need %", m_header.Subchunk2Size, sizeof(WavHeader));
+        return;
+    }
     if (m_header.Subchunk2Size >= std::numeric_limits<uint32_t>::max()) {
         log.warn("I seriously doubt there's a wav file this big, remove this check if that's the case");
         return;

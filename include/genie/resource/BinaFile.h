@@ -45,6 +45,7 @@ public:
     ScnFilePtr readScnFile(std::istream *istr);
 
     std::string guessFiletype(std::istream *istr) const;
+    std::string guessFileExtension(std::istream *istr) const;
 
     uint32_t size() const { return m_size; }
 
