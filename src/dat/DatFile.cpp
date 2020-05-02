@@ -368,6 +368,14 @@ void DatFile::loadResourceFilenames()
         }
     }
 
+    for (const Terrain &terrain: TerrainBlock.Terrains) {
+        if (!terrain.Name2.empty()) { // name2 is supposed to be slp name
+            m_resourceFilenames[terrain.SLP] = terrain.Name2;
+        } else {
+            m_resourceFilenames[terrain.SLP] = terrain.Name; // long name, just to have a fallback
+        }
+    }
+
     for (const Graphic &graphic : Graphics) {
         if (graphic.SLP == -1) { // Graphics with just deltas
             continue;
