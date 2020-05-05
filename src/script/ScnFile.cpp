@@ -156,8 +156,10 @@ void ScnFile::serializeObject(void)
 
     if (scn_ver == "1.20" || scn_ver == "1.21") {
         scn_internal_ver = 1.14f;
-    } else if (scn_ver == "1.17" || scn_ver == "1.18" || scn_ver == "1.19") {
+    } else if (scn_ver == "1.17" || scn_ver == "1.18") {
         scn_internal_ver = 1.13f;
+    } else if(scn_ver == "1.19") {
+        scn_internal_ver = 1.135f; // demo version, I think, it has some of the stuff from 1.14 (internal) at least
     } else if (scn_ver == "1.14" || scn_ver == "1.15" || scn_ver == "1.16") {
         scn_internal_ver = 1.12f;
     } else if (scn_ver == "1.22") {
