@@ -53,6 +53,9 @@ void ScnPlayerResources::serializeObject(void)
 void ScnPlayerUnits::serializeObject(void)
 {
     serializeSize<uint32_t>(unitCount_, units.size());
+    if (unitCount_ > 10000) {
+        throw std::runtime_error("too many units in campaign file (" + std::to_string(unitCount_) + "), corrupt or unsupported file");
+    }
     serialize(units, unitCount_);
 }
 

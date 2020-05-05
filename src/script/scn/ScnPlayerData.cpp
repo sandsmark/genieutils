@@ -369,6 +369,9 @@ void ScnMorePlayerData::serializeObject(void)
     serialize<int16_t>(initCameraY2);
     serialize<uint8_t>(alliedVictory);
     serializeSize<uint16_t>(playerCount_, diplomacy1.size());
+    if (playerCount_ > 100) {
+        throw std::runtime_error("Too many players, corrupt file? " + std::to_string(playerCount_));
+    }
     serialize<uint8_t>(diplomacy1, playerCount_);
 
     if (scn_internal_ver >= 1.08) {
@@ -380,6 +383,9 @@ void ScnMorePlayerData::serializeObject(void)
     // victory condition version
     if (scn_internal_ver >= 1.09) {
         serialize<float>(victoryConditionVersion);
+        if (victoryConditionVersion <= 0) {
+            throw std::runtime_error("victory conditions version invalid: " + std::to_string(victoryConditionsCount));
+        }
     } else {
         victoryConditionVersion = 0;
     }
@@ -393,6 +399,9 @@ void ScnMorePlayerData::serializeObject(void)
     serialize<uint8_t>(victory);
 //    printf("victory: %d\n", victory);
 
+    if (victoryConditionsCount > 100) {
+        throw std::runtime_error("Invalid amount of victory conditions " + std::to_string(victoryConditionsCount));
+    }
     serialize<ScnPlayerVictoryCondition>(victoryConditions, victoryConditionsCount);
 
     if (victoryConditionVersion < 1.0) {

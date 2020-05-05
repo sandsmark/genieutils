@@ -163,7 +163,7 @@ void ScnFile::serializeObject(void)
     } else if (scn_ver == "1.22") {
         scn_internal_ver = 1.15f;
     } else {
-        std::cerr << "unhandled version " << scn_ver << std::endl;
+        throw std::runtime_error("Unknown scenario file version " + scn_ver);
     }
 
     serializeSize<uint32_t>(playerUnitsCount, playerUnits.size());
