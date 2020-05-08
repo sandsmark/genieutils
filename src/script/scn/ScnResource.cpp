@@ -22,6 +22,7 @@
 #include "genie/script/scn/ScnResource.h"
 
 #include <fstream>
+#include <string>
 
 namespace genie {
 
