@@ -77,8 +77,8 @@ public:
 
     std::string idType(const uint32_t id);
     const std::vector<uint32_t> &allIds() { return m_allIds; }
-    ssize_t fileSize(const uint32_t id);
-    ssize_t fileOffset(const uint32_t id);
+    std::iostream::pos_type fileSize(const uint32_t id);
+    std::iostream::pos_type fileOffset(const uint32_t id);
 
 private:
     static Logger &log;

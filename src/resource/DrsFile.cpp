@@ -209,7 +209,7 @@ std::string DrsFile::idType(const uint32_t id)
     return i->second->guessFileExtension(getIStream());
 }
 
-ssize_t DrsFile::fileSize(const uint32_t id)
+std::iostream::pos_type DrsFile::fileSize(const uint32_t id)
 {
     std::unordered_map<uint32_t, uint32_t>::const_iterator i = m_allSizes.find(id);
     if (i == m_allSizes.end()) {
@@ -219,7 +219,7 @@ ssize_t DrsFile::fileSize(const uint32_t id)
     return i->second;
 }
 
-ssize_t DrsFile::fileOffset(const uint32_t id)
+std::iostream::pos_type DrsFile::fileOffset(const uint32_t id)
 {
     std::unordered_map<uint32_t, uint32_t>::const_iterator i = m_allOffsets.find(id);
     if (i == m_allOffsets.end()) {
