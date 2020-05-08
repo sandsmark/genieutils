@@ -22,6 +22,8 @@
 #include "genie/script/scn/ScnPlayerData.h"
 #include "genie/script/ScnFile.h"
 
+#include <string>
+
 namespace genie {
 
 bool CombinedResources::playerInfo = false;
