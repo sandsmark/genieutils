@@ -285,9 +285,9 @@ if (GUTILS_TOOLS)
       add_subdirectory(src/tools/picviewer)
   endif()
 
-  # Generic useful tools
-  add_executable(datextract ${EXTRACT_SRC})
-  target_link_libraries(datextract genieutils ${Boost_LIBRARIES})
+  add_executable(genie-datextract ${EXTRACT_SRC})
+  install(TARGETS genie-datextract)
+  target_link_libraries(genie-datextract genieutils ${Boost_LIBRARIES})
 
   add_executable(drstool ${DRSTOOL_SRC})
   install(TARGETS drstool)
