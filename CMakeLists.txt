@@ -239,35 +239,32 @@ set(BINCOMP_SRC src/tools/bincompare/bincomp.cpp
 # Executeable:
 #------------------------------------------------------------------------------#
 
-set(COMMON_LIBRARIES ${PCRIO_LIBRARIES} ${ICONV_LIBRARIES} ${ZLIB_LIBRARIES})
-
 set(ALL_SRC
     ${FILE_SRC} ${LANG_SRC} ${DAT_SRC}
     ${RESOURCE_SRC} ${UTIL_SRC} ${SCRIPT_SRC}
 )
 
-add_library(genieutils_common OBJECT ${ALL_SRC})
-target_link_libraries(genieutils_common ${COMMON_LIBRARIES})
-
 if (GUTILS_STATIC)
     message(STATUS "Building genieutils as static library")
-    add_library(genieutils STATIC $<TARGET_OBJECTS:genieutils_common>)
+    add_library(genieutils STATIC ${ALL_SRC})
 else()
-    set_property(TARGET genieutils_common PROPERTY POSITION_INDEPENDENT_CODE True)
-
-    add_library(genieutils SHARED $<TARGET_OBJECTS:genieutils_common>)
-
-    install(TARGETS genieutils)
-
-    install (
-        DIRECTORY ${CMAKE_SOURCE_DIR}/include/
-        DESTINATION include
-        FILES_MATCHING PATTERN "*.h*"
-        )
+    add_library(genieutils SHARED ${ALL_SRC})
+    set_property(TARGET genieutils PROPERTY POSITION_INDEPENDENT_CODE True)
 endif()
 
+install (
+    DIRECTORY ${CMAKE_SOURCE_DIR}/include/
+    DESTINATION include
+    FILES_MATCHING PATTERN "*.h*"
+    )
 
-target_link_libraries(genieutils ${COMMON_LIBRARIES})
+install(TARGETS genieutils)
+
+target_link_libraries(genieutils
+    ${PCRIO_LIBRARIES}
+    ${ICONV_LIBRARIES}
+    ${ZLIB_LIBRARIES}
+    )
 
 
 #------------------------------------------------------------------------------#
@@ -283,45 +280,46 @@ if (GUTILS_TOOLS)
       add_subdirectory(src/tools/picviewer)
   endif()
 
-  add_executable(datextract ${EXTRACT_SRC} $<TARGET_OBJECTS:genieutils_common>)
-  target_link_libraries(datextract ${Boost_LIBRARIES} ${COMMON_LIBRARIES})
+  # Generic useful tools
+  add_executable(datextract ${EXTRACT_SRC})
+  target_link_libraries(datextract genieutils ${Boost_LIBRARIES})
 
-  add_executable(drstool ${DRSTOOL_SRC} $<TARGET_OBJECTS:genieutils_common>)
-  target_link_libraries(drstool ${COMMON_LIBRARIES})
+  add_executable(drstool ${DRSTOOL_SRC})
+  install(TARGETS drstool)
+  target_link_libraries(drstool genieutils)
 
-  add_executable(bincomp ${BINCOMP_SRC})
+  add_executable(genie-bindiff ${BINCOMP_SRC})
+  install(TARGETS genie-bindiff)
 endif (GUTILS_TOOLS)
 
 #------------------------------------------------------------------------------#
 # Debug/Test:
 #------------------------------------------------------------------------------#
 if (GUTILS_TEST)
-  add_library(genieutils_tests_common OBJECT
-      src/tools/bincompare/bincomp.cpp
-      )
+    add_library(genieutils_tests_common OBJECT
+        src/tools/bincompare/bincomp.cpp
+        )
 
-  set(GU_INCLUDE_DIRS ${GU_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
+    set(GU_INCLUDE_DIRS ${GU_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
 
-  add_executable(wtftest main.cpp $<TARGET_OBJECTS:genieutils_common>)
-  target_link_libraries(wtftest ${Boost_LIBRARIES} ${COMMON_LIBRARIES})
+    add_executable(wtftest main.cpp)
+    target_link_libraries(wtftest genieutils ${Boost_LIBRARIES})
 
-  add_executable(DatTest
-      tests/DatTest.cpp
-      $<TARGET_OBJECTS:genieutils_tests_common>
-      $<TARGET_OBJECTS:genieutils_common>
-      )
-  add_test(NAME DatTest COMMAND DatTest)
-  target_link_libraries(DatTest ${Boost_LIBRARIES} ${COMMON_LIBRARIES})
+    add_executable(DatTest
+        tests/DatTest.cpp
+        $<TARGET_OBJECTS:genieutils_tests_common>
+        )
+    add_test(NAME DatTest COMMAND DatTest)
+    target_link_libraries(DatTest genieutils ${Boost_LIBRARIES})
 
-  add_executable(LangTest
-      tests/LangTest.cpp
-      $<TARGET_OBJECTS:genieutils_tests_common>
-      $<TARGET_OBJECTS:genieutils_common>
-      )
-  target_link_libraries(LangTest ${Boost_LIBRARIES} ${COMMON_LIBRARIES})
-  add_test(NAME LangTest COMMAND LangTest)
+    add_executable(LangTest
+        tests/LangTest.cpp
+        $<TARGET_OBJECTS:genieutils_tests_common>
+        )
+    target_link_libraries(LangTest genieutils ${Boost_LIBRARIES})
+    add_test(NAME LangTest COMMAND LangTest)
 
-  enable_testing()
+    enable_testing()
 endif(GUTILS_TEST)
 
 if (ENABLE_CLANG_TIDY)
