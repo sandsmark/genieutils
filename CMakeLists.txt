@@ -152,7 +152,7 @@ if (WIN32)
     set(ICONV_LIBRARIES)
 endif()
 
-set(DAT_SRC
+set(DAT_SRC ${DAT_SRC}
     src/dat/Research.cpp 
    
     src/dat/Civ.cpp
