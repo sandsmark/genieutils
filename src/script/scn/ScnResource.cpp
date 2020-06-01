@@ -62,24 +62,50 @@ void ScnPlayerUnits::serializeObject(void)
 
 void ScnUnit::serializeObject(void)
 {
+    // The resource units need some displacement to get to the right position
+    if (isOperation(OP_WRITE)) {
+        if (objectID == 59 // forage bush
+                || objectID == 66 // gold mine
+                || objectID == 102 // stone mine
+                ) {
+            positionX -= 0.5;
+            positionY -= 0.5;
+        }
+    }
+
     serialize<float>(positionX);
     serialize<float>(positionY);
     serialize<float>(positionZ);
     serialize<uint32_t>(spawnID);
-    serialize<uint16_t>(objectID); // units with hardcoded behaviour 102, 66, 59, 768, 420, 770, 691
+    serialize<uint16_t>(objectID);
 
-    if (objectID == 59 || objectID == 66 || objectID == 102) {
-        positionX += 0.5;
-        positionY += 0.5;
+    if (isOperation(OP_READ)) {
+        if (objectID == 59 // forage bush
+                || objectID == 66 // gold mine
+                || objectID == 102 // stone mine
+                ) {
+            positionX += 0.5;
+            positionY += 0.5;
+        }
     }
 
-    if (objectID == 768) {
-        objectID = 420;
-    }
-
-    if (objectID == 770) {
-        objectID = 691;
-    }
+    // Some replacements, from danielpereira on aok.heavengames.com:
+    //   IDs 768/770 should be kept disabled. They are used as a layer to
+    //   enable the special Spanish Cannon Galleon bonuses
+    //   If you check in the Technologies data in the .dat, you'll see
+    //   that unit 768 is enabled for Spanish instead of the usual
+    //   Cannon Galleon, and that the Elite Cannon Galleon technology
+    //   upgrades this unit to ID 770.
+    //   And, when I said that this unit is used as a layer,
+    //   I mean that, when the game loads this unit,
+    //   it replaces it with a Cannon Galleon and applies the Spanish bonuses
+    // http://aok.heavengames.com/cgi-bin/forums/display.cgi?action=st&fn=4&tn=42049&st=96
+//    if (objectID == 768) {
+//        objectID = 420; // cannon galleon
+//    }
+//    if (objectID == 770) {
+//        objectID = 691; // elite cannon galleon
+//    }
 
     serialize<uint8_t>(state);
     serialize<float>(rotation);
