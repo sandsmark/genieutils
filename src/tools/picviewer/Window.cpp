@@ -42,30 +42,28 @@ bool Window::setDrsPath(const QString &path)
     return true;
 }
 
-bool Window::setPalette(const QString &name, const QString &drsFile)
-{
+bool Window::setPalette(const QString &name, const QString &drsFile) try {
     std::vector<genie::Color> colors;
     if (drsFile.isEmpty()) {
-        try {
-            m_palette.load(name.toStdString());
-        } catch (const std::exception &e) {
-            QMessageBox::warning(this, "Failed to load palette file " + name, e.what());
-            return false;
-        }
-        colors = m_palette.colors_;
+        m_palette.load(name.toStdString());
+        colors = m_palette.getColors();
     } else {
-        colors = loadPalette(name, drsFile).colors_;
+        colors = loadPalette(name, drsFile).getColors();
         if (colors.empty()) {
             qWarning() << "Failed to load palette";
             return false;
         }
     }
 
+    m_colorTable.clear();
     for (unsigned i=0; i<colors.size(); i++) {
         m_colorTable.append(qRgb(colors[i].r, colors[i].g, colors[i].b));
     }
 
     return true;
+} catch (const std::exception &e) {
+    QMessageBox::warning(this, "Failed to load palette file " + name, e.what());
+    return false;
 }
 
 bool Window::load(QString path)
@@ -273,24 +271,24 @@ QPixmap Window::createPixmap(genie::SmpFramePtr frame)
         return QPixmap();
     }
     const genie::SmpBaseLayer &layer = frame->baseLayer();
-    QImage image(layer.header.width, layer.header.height, QImage::Format_ARGB32_Premultiplied);
-    image.fill(Qt::transparent);
+    m_image = QImage(layer.header.width, layer.header.height, QImage::Format_ARGB32_Premultiplied);
+    m_image.fill(Qt::transparent);
     QSet<int> usedPalettes;
-    for (int x=0; x<image.width(); x++) {
-        for (int y=0; y<image.height(); y++) {
+    for (int x=0; x<m_image.width(); x++) {
+        for (int y=0; y<m_image.height(); y++) {
             if (!layer.isVisible(x, y)) {
                 continue;
             }
             const size_t palIndex = layer.colorNumber(x, y);
             usedPalettes.insert(layer.paletteNumber(x, y));
-            assert(palIndex < m_palette.colors_.size());
-            const genie::Color &color = m_palette.colors_[palIndex];
-            image.setPixel(x, y, qRgba(color.r, color.g, color.b, color.a));
+            assert(palIndex < m_palette.getColors().size());
+            const genie::Color &color = m_palette[palIndex];
+            m_image.setPixel(x, y, qRgba(color.r, color.g, color.b, color.a));
         }
     }
     qDebug() << usedPalettes;
 
-    return QPixmap::fromImage(image);
+    return QPixmap::fromImage(m_image);
 }
 
 QPixmap Window::createPixmap(genie::SlpFramePtr frame)
@@ -300,49 +298,60 @@ QPixmap Window::createPixmap(genie::SlpFramePtr frame)
         return QPixmap();
     }
 
-    QImage image(frame->img_data.pixel_indexes.data(), frame->getWidth(), frame->getHeight(), frame->getWidth(), QImage::Format_Indexed8);
-    image.setColorTable(m_colorTable);
-    qDebug() << "Size:" << image.size();
+    m_image = QImage(frame->img_data.pixel_indexes.data(), frame->getWidth(), frame->getHeight(), frame->getWidth(), QImage::Format_Indexed8);
+    m_image.setColorTable(m_colorTable);
+    m_image = m_image.convertToFormat(QImage::Format_ARGB32_Premultiplied);
+    qDebug() << "Size:" << m_image.size();
+    m_frame = frame;
 
-    return QPixmap::fromImage(image);
+    return QPixmap::fromImage(m_image);
 }
 
 QPixmap Window::createPixmap(const genie::SmxFrame &frame)
 {
     m_smxFrame = frame;
-    QImage image(frame.width(), frame.height(), QImage::Format_ARGB32_Premultiplied);
+    m_image = QImage(frame.width(), frame.height(), QImage::Format_ARGB32_Premultiplied);
     for (int x=0; x<frame.width(); x++) {
         for (int y=0; y<frame.height(); y++) {
             if (!frame.isVisible(x, y)) {
                 continue;
             }
             const size_t palIndex = frame.paletteIndex(x, y);
-            assert(palIndex < m_palette.colors_.size());
-            const genie::Color &color = m_palette.colors_[palIndex];
-            image.setPixel(x, y, qRgba(color.r, color.g, color.b, color.a));
+            assert(palIndex < m_palette.getColors().size());
+            const genie::Color &color = m_palette[palIndex];
+            m_image.setPixel(x, y, qRgba(color.r, color.g, color.b, color.a));
         }
     }
 
-    return QPixmap::fromImage(image);
+    return QPixmap::fromImage(m_image);
 }
 
 void Window::mousePressEvent(QMouseEvent *event)
 {
     float scale = qMin(width()/float(m_pixmap.width()), height()/float(m_pixmap.height()));
-    int x = event->x() / scale;
-    int y = event->y() / scale;
-    if (x > m_smxFrame.width() || y > m_smxFrame.height()) {
-        return;
+    int x = qRound(event->x() / scale);
+    int y = qRound(event->y() / scale);
+    m_debugString = "X: " + QString::number(x) + " Y: " + QString::number(y);
+//    if (m_image.format() == QImage::Format_Indexed8 && m_image.rect().contains(x, y)) {
+    if (m_frame) {
+        const size_t index = y * m_frame->getWidth() + x;
+        if (index < m_frame->img_data.pixel_indexes.size()) {
+            m_clickedColor = m_frame->img_data.pixel_indexes[index];
+            m_debugString += "\nColor: " + QString::number(m_clickedColor);
+        }
+
     }
-    const size_t palIndex = m_smxFrame.paletteIndex(x, y);
-    const genie::Color &color = m_palette.colors_[palIndex];
-    m_debugString = "X: " + QString::number(x) + " Y: " + QString::number(y) +
+    if (x < m_smxFrame.width() || y < m_smxFrame.height()) {
+        const size_t palIndex = m_smxFrame.paletteIndex(x, y);
+        const genie::Color &color = m_palette[palIndex];
+        m_debugString +=
             "\nRGBA: " + QString::number(color.r) + " " + QString::number(color.g) + " " + QString::number(color.b) + " " + QString::number(color.a) +
             "\nIndex: " + QString::number(m_smxFrame.pixel(x, y).index) +
             "\nSection: " + QString::number(m_smxFrame.pixel(x, y).palette) +
             "\nPalette index: " + QString::number(m_smxFrame.paletteIndex(x, y)) +
             "\nX % 4: " + QString::number(x % 4)
             ;
+    }
     update();
 }
 
@@ -351,7 +360,7 @@ void Window::paintEvent(QPaintEvent *event)
     QPainter p(this);
     p.fillRect(rect(), Qt::transparent);
 
-    const float scale = qMin(width()/float(m_pixmap.width()), height()/float(m_pixmap.height()));
+    const float scale = qMin(width()/float(m_image.width()), height()/float(m_image.height()));
     const int checkerboardSize = qMax(5.f, 5 * scale);
     for (int x = 0; x<width()/checkerboardSize+1; x++) {
         for (int y = 0; y<height()/checkerboardSize+1; y++) {
@@ -364,17 +373,23 @@ void Window::paintEvent(QPaintEvent *event)
         }
     }
 //    p.setCompositionMode(QPainter::CompositionMode_Plus);
-    p.drawPixmap(0, 0, m_pixmap.scaled(m_pixmap.width() * scale, m_pixmap.height() * scale));
+//    p.drawPixmap(0, 0, m_pixmap.scaled(m_pixmap.width() * scale, m_pixmap.height() * scale));
+    p.drawImage(0, 0, m_image.scaled(m_image.width() * scale, m_image.height() * scale));
 
     QFont font = p.font();
     font.setBold(true);
     p.setFont(font);
     p.setPen(Qt::white);
     p.drawText(rect(), Qt::AlignRight | Qt::AlignBottom, m_debugString);
+
+    if (m_clickedColor >= 0 && m_clickedColor < m_colorTable.size()) {
+        p.fillRect(0, height() - 20, 20, 20, m_colorTable[m_clickedColor]);
+    }
 }
 
 const genie::PalFile &Window::loadPalette(const QString &palettePath, const QString &drsPath)
 {
+//    return genie::PalFile::null;
     bool ok;
     int id = palettePath.toInt(&ok);
 

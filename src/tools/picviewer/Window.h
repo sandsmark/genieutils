@@ -54,5 +54,8 @@ private:
     QRect m_maxRect;
     genie::SmxFrame m_smxFrame;
     QString m_debugString;
+    QImage m_image;
+    int m_clickedColor = 0;
+    genie::SlpFramePtr m_frame;
 };
 #endif // WINDOW_H

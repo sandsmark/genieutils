@@ -31,8 +31,11 @@ class Color
 public:
     //----------------------------------------------------------------------------
     //
-    Color() = default; /// Black
-    Color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha = 255);
+    constexpr Color() = default; /// Black
+    constexpr Color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha = 0) :
+        r(red), g(green), b(blue), a(alpha)
+    {
+    }
 
     uint8_t r = 0; /// Red
     uint8_t g = 0; /// Green
