@@ -21,10 +21,6 @@
 namespace genie {
 
 //------------------------------------------------------------------------------
-Color::Color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha) :
-    r(red), g(green), b(blue), a(alpha)
-{
-}
 
 //------------------------------------------------------------------------------
 const Color Color::Transparent(0, 0, 0);
