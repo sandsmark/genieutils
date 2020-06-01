@@ -246,7 +246,8 @@ protected:
     /// @return read data
     //
     template <typename T,
-              std::enable_if_t<std::is_pod<T>::value, int> = 0,
+              std::enable_if_t<std::is_standard_layout<T>::value, int> = 0,
+              std::enable_if_t<std::is_trivial<T>::value, int> = 0,
               std::enable_if_t<std::negation<std::is_base_of<ISerializable, T>>::value, int> = 0
               >
     T read()
@@ -272,7 +273,8 @@ protected:
     /// @param data to write.
     //
     template <typename T,
-              std::enable_if_t<std::is_pod<T>::value, int> = 0,
+              std::enable_if_t<std::is_standard_layout<T>::value, int> = 0,
+              std::enable_if_t<std::is_trivial<T>::value, int> = 0,
               std::enable_if_t<std::negation<std::is_base_of<ISerializable, T>>::value, int> = 0
               >
     void write(const T &data)
@@ -288,7 +290,8 @@ protected:
     /// Generic read method for arrays. It allocates new space if pointer is 0.
     //
     template <typename T,
-              std::enable_if_t<std::is_pod<T>::value, int> = 0,
+              std::enable_if_t<std::is_standard_layout<T>::value, int> = 0,
+              std::enable_if_t<std::is_trivial<T>::value, int> = 0,
               std::enable_if_t<std::negation<std::is_base_of<ISerializable, T>>::value, int> = 0
               >
     void read(T **array, size_t len)
@@ -316,7 +319,8 @@ protected:
     /// Generic read method for arrays.
     //
     template <typename T,
-              std::enable_if_t<std::is_pod<T>::value, int> = 0,
+              std::enable_if_t<std::is_standard_layout<T>::value, int> = 0,
+              std::enable_if_t<std::is_trivial<T>::value, int> = 0,
               std::enable_if_t<std::negation<std::is_base_of<ISerializable, T>>::value, int> = 0
               >
     void read(T *array, size_t len)
@@ -336,7 +340,8 @@ protected:
     /// Writes an array to file.
     //
     template <typename T,
-              std::enable_if_t<std::is_pod<T>::value, int> = 0,
+              std::enable_if_t<std::is_standard_layout<T>::value, int> = 0,
+              std::enable_if_t<std::is_trivial<T>::value, int> = 0,
               std::enable_if_t<std::negation<std::is_base_of<ISerializable, T>>::value, int> = 0
               >
     void write(const T *const *data, size_t len)
@@ -536,7 +541,8 @@ protected:
 
     /// std::array with a plain old data type (could probably use is_trivial, but not needed)
     template <typename T, std::size_t N,
-              std::enable_if_t<std::is_pod<T>::value, int> = 0,
+              std::enable_if_t<std::is_standard_layout<T>::value, int> = 0,
+              std::enable_if_t<std::is_trivial<T>::value, int> = 0,
               std::enable_if_t<std::negation<std::is_base_of<ISerializable, T>>::value, int> = 0
               >
     void serialize(std::array<T, N> &vec)
@@ -612,7 +618,8 @@ protected:
 
     /// Reads or writes an array of data to/from a vector dependent on operation.
     template <typename T,
-              std::enable_if_t<std::is_pod<T>::value, int> = 0,
+              std::enable_if_t<std::is_standard_layout<T>::value, int> = 0,
+              std::enable_if_t<std::is_trivial<T>::value, int> = 0,
               std::enable_if_t<std::negation<std::is_base_of<ISerializable, T>>::value, int> = 0
               >
     void serialize(std::vector<T> &vec, size_t size)
