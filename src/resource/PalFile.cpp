@@ -93,7 +93,8 @@ struct DefaultPalette {
     // THese colors are eyeballed/guessed and a bit off, they are not the same as in the original palette
     // In general I try to keep the saturation low, because that hides some of the most glaring mismatches
     // You have been warned
-    constexpr DefaultPalette() {
+    // TODO: make constexpr when microsoft fixes their compilator
+    /*constexpr*/ DefaultPalette() {
         // Fallback in case I forgot some
         for (int i=0; i<256; i++) {
             colors[i] = Color(i, i, i);
