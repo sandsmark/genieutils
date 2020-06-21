@@ -69,6 +69,9 @@ public:
 
     bool compareTo(const AttackOrArmor &other) const;
 };
+
+static_assert(sizeof(AttackOrArmor) == 4);
+
 } // namespace unit
 } // namespace genie
 

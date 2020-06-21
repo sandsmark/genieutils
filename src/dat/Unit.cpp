@@ -35,7 +35,6 @@ void Unit::setGameVersion(GameVersion gv)
     Moving.setGameVersion(gv);
     Action.setGameVersion(gv);
     Combat.setGameVersion(gv);
-    Missile.setGameVersion(gv);
     Creatable.setGameVersion(gv);
     Building.setGameVersion(gv);
 }
@@ -418,7 +417,7 @@ void Unit::serializeObject(void)
     }
 
     if (Type == MissileType) {
-        serialize<ISerializable>(Missile);
+        serialize(Missile);
     }
 
     if (Type >= CreatableType) {
