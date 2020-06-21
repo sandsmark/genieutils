@@ -206,6 +206,7 @@ set(RESOURCE_SRC
     src/resource/SmpFile.cpp
     src/resource/SmxFile.cpp
     src/resource/SmxFrame.cpp
+    src/resource/DdsFile.cpp
     )
 
 set(SCRIPT_SRC

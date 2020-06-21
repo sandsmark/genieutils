@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "genie/resource/SmxFile.h"
+#include "genie/resource/DdsFile.h"
 
 
 int main(int argc, char *argv[])
@@ -14,6 +15,10 @@ int main(int argc, char *argv[])
     }
     genie::Logger::setLogLevel(genie::Logger::L_DEBUG);
 
+    //genie::DdsFile dds;
+    //dds.load(argv[1]);
+
+    //return 0;
     QApplication a(argc, argv);
     a.setApplicationName("picviewer");
     a.setOrganizationName("genieutils");
@@ -42,9 +47,11 @@ int main(int argc, char *argv[])
         }
     }
 
-    if (parser.isSet(palFile)) {
+    //if (parser.isSet(palFile)) {
         w.setPalette(parser.value(palFile), parser.value(palDrs));
-    }
+    //} else {
+    //    w.setPalette(QString(), parser.value(palDrs));
+    //}
 
     if (parser.positionalArguments().isEmpty()) {
         // qdebug doesn't really work before qapplication is running
