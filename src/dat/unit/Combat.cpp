@@ -74,8 +74,9 @@ void Combat::serializeObject(void)
     serializeSize<uint16_t>(attack_count, Attacks.size());
     serialize(Attacks, attack_count);
 
-    serializeSize<uint16_t>(attack_count, Armours.size());
-    serialize(Armours, attack_count);
+    uint16_t armours_count{};
+    serializeSize<uint16_t>(armours_count, Armours.size());
+    serialize(Armours, armours_count);
 
     serialize<int16_t>(DefenseTerrainBonus);
     serialize<float>(MaxRange);
