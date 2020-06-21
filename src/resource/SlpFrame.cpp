@@ -628,7 +628,6 @@ void SlpFrame::readImage()
         width_ = 0;
         height_ = 0;
     }
-
 }
 
 //------------------------------------------------------------------------------
@@ -664,24 +663,26 @@ void SlpFrame::readPixelsToImage(uint32_t row, uint32_t &col,
 }
 
 //------------------------------------------------------------------------------
-void SlpFrame::readPixelsToImage32(uint32_t row, uint32_t &col,
-                                   uint32_t count, uint8_t special)
+void SlpFrame::readPixelsToImage32(const uint32_t row, uint32_t &col,
+                                   const uint32_t count, const uint8_t special)
 {
-    uint32_t to_pos = col + count;
 
-    while (col < to_pos) {
-        uint32_t bgra = read<uint32_t>();
-        assert(row * width_ + col < img_data.bgra_channels.size());
-        img_data.bgra_channels[row * width_ + col] = bgra;
+    assert(row * width_ + col + count <= img_data.bgra_channels.size());
+    getIStream()->read((char *)&img_data.bgra_channels.data()[row * width_ + col], count * sizeof(uint32_t));
 
-        if (special == 1) {
-            img_data.player_color_mask.push_back({ col, row, 0 });
-        } else if (special == 2) {
-            img_data.transparency_mask.push_back({ col, row });
+    const uint32_t to_pos = col + count;
+    if (special == 1) {
+        for (uint32_t x=col; x<to_pos; x++) {
+            img_data.player_color_mask.push_back({x, row, 0});
         }
-
-        ++col;
+        img_data.player_color_mask.push_back({col, row, 0});
+    } else if (special == 2) {
+        for (uint32_t x=col; x<to_pos; x++) {
+            img_data.transparency_mask.emplace_back(x, row);
+        }
     }
+
+    col += count;
 }
 
 //------------------------------------------------------------------------------
