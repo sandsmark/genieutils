@@ -208,8 +208,8 @@ private:
     //
     void readPixelsToImage(uint32_t row, uint32_t &col, uint32_t count,
                            bool player_col = false);
-    void readPixelsToImage32(uint32_t row, uint32_t &col, uint32_t count,
-                             uint8_t special = 0);
+    void readPixelsToImage32(const uint32_t row, uint32_t &col, const uint32_t count,
+                             const uint8_t special = 0);
 
     //----------------------------------------------------------------------------
     /// Sets the next count of pixels to given color without reading from stream.
