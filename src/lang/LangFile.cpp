@@ -35,13 +35,13 @@ const char *LangFile::CONV_DEFAULT_CHARSET = "UTF-8";
 Logger &LangFile::log = Logger::getLogger("freeaoe.LangFile");
 
 //------------------------------------------------------------------------------
-PcrioError::PcrioError(int error) :
-    std::ios::failure(pcr_error_message((pcr_error_code)error)), error_(error)
+PcrioError::PcrioError(int error, const std::string &filename) :
+    std::ios::failure(filename + ": " + pcr_error_message((pcr_error_code)error)), error_(error)
 {
 }
 
 //------------------------------------------------------------------------------
-void PcrioError::check(int error)
+void PcrioError::check(int error, const std::string &filename)
 {
     switch (error) {
     case PCR_ERROR_NONE:
@@ -51,7 +51,7 @@ void PcrioError::check(int error)
         throw std::bad_alloc();
 
     default:
-        throw PcrioError(error);
+        throw PcrioError(error, filename);
     }
 }
 
@@ -74,6 +74,7 @@ LangFile::~LangFile()
 
     if (pfile_) {
         pcr_free(pfile_);
+        pfile_ = nullptr;
     }
 }
 
@@ -85,15 +86,20 @@ void LangFile::load(const std::string &filename)
     setFileName(filename);
 
     log.info("-------");
-    log.info("Loading \"%s\"", filename);
+    log.info("Loading \"%\"", filename);
 
     if (pfile_) {
         pcr_free(pfile_);
+        pfile_ = nullptr;
     }
 
     pfile_ = pcr_read_file(filename.c_str(), &errorCode_);
 
-    PcrioError::check(errorCode_); // on error throw
+    PcrioError::check(errorCode_, filename); // on error throw
+
+    if (!pfile_) {
+        throw std::iostream::failure("pcrio failed to load, but returned no error");
+    }
 
     std::stringstream cName;
 
@@ -156,12 +162,16 @@ void LangFile::saveAs(const std::string &filename)
 
     pcr_write_file(filename.c_str(), pfile_, &errorCode);
 
-    PcrioError::check(errorCode);
+    PcrioError::check(errorCode, filename);
 }
 
 //----------------------------------------------------------------------------
 std::string LangFile::getString(unsigned int id)
 {
+    if (!pfile_) {
+        throw std::ios_base::failure("Language file not loaded");
+    }
+
     std::string encodedStr, decodedStr;
     char *strBuf;
     int strBufSize = pcr_get_strlenL(pfile_, id, defaultCultureId_) + 1;
@@ -203,11 +213,11 @@ void LangFile::setString(unsigned int id, const std::string &str)
 {
     std::string encodedStr;
 
-    log.info("%s: setString(%d, %s);", getFileName(), id, str.c_str());
+    log.info("%: setString(%, %);", getFileName(), id, str.c_str());
 
     encodedStr = convertTo(str, defaultCodepage_);
 
-    log.info("| Convert from \"%s\" to \"%s\".", str.c_str(), encodedStr.c_str());
+    log.info("| Convert from \"%\" to \"%\".", str.c_str(), encodedStr.c_str());
 
     struct pcr_language lang;
     lang.id = defaultCultureId_;
@@ -216,7 +226,7 @@ void LangFile::setString(unsigned int id, const std::string &str)
     int err = pcr_set_stringC(pfile_, id, lang, encodedStr.c_str());
 
     if (err > 0) {
-        PcrioError::check(err);
+        PcrioError::check(err, getFileName());
     } else if (err == -1) { // wrong codepage
         log.info("Trying to rewrite string converted to wrong codepage");
 
@@ -224,7 +234,7 @@ void LangFile::setString(unsigned int id, const std::string &str)
 
         encodedStr = convertTo(str, lang.codepage);
 
-        PcrioError::check(pcr_set_stringC(pfile_, id, lang, encodedStr.c_str()));
+        PcrioError::check(pcr_set_stringC(pfile_, id, lang, encodedStr.c_str()), getFileName());
     }
 }
 

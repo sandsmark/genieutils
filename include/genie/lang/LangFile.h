@@ -31,10 +31,10 @@ namespace genie {
 class PcrioError : public std::ios::failure
 {
 public:
-    explicit PcrioError(int error);
+    explicit PcrioError(int error, const std::string &filename);
     int getError() const { return error_; }
 
-    static void check(int error);
+    static void check(int error, const std::string &filename);
 
 private:
     int error_;
