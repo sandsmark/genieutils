@@ -603,7 +603,7 @@ public:
 
     unit::Combat Combat;
 
-    unit::Missile Missile;
+    unit::Missile Missile{};
 
     unit::Creatable Creatable;
 
