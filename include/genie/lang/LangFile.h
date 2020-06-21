@@ -58,6 +58,10 @@ public:
     /// Change the default charset. See libiconv doc for available ones.
     /// If not set, default = UTF8.
     void setDefaultCharset(const char *charset);
+    uint32_t getDefaultCodepage() { return defaultCodepage_; }
+
+    /// Convert a utf8 string to codepage
+    std::string convertTo(const std::string &in, uint32_t codepage);
 
 protected:
     void unload() override;
@@ -79,9 +83,6 @@ private:
 
     iconv_t toDefaultCharsetCd_{};
     iconv_t fromDefaultCharsetCd_{};
-
-    /// Convert a utf8 string to codepage
-    std::string convertTo(const std::string &in, uint32_t codepage);
 
     /// Convert a string from codepage to utf8
     std::string convertFrom(const std::string &in, uint32_t codepage);
