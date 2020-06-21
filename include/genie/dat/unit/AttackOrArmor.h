@@ -27,7 +27,7 @@ namespace genie {
 namespace unit {
 
 /// Stores information about the class and amount of an armor or attack
-class AttackOrArmor : public ISerializable
+struct AttackOrArmor
 {
 public:
     enum Class {
@@ -64,13 +64,10 @@ public:
         HDCamels = 30,
     };
 
-    int16_t Class = -1;
-    int16_t Amount = 0;
+    int16_t Class;
+    int16_t Amount;
 
     bool compareTo(const AttackOrArmor &other) const;
-
-private:
-    void serializeObject(void) override;
 };
 } // namespace unit
 } // namespace genie

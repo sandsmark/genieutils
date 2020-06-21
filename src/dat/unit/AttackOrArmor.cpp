@@ -34,10 +34,5 @@ bool AttackOrArmor::compareTo(const AttackOrArmor &other) const
     return true;
 }
 
-void AttackOrArmor::serializeObject(void)
-{
-    serialize<int16_t>(Class);
-    serialize<int16_t>(Amount);
-}
 } // namespace unit
 } // namespace genie

@@ -29,9 +29,6 @@ namespace unit {
 void Combat::setGameVersion(GameVersion gv)
 {
     ISerializable::setGameVersion(gv);
-
-    updateGameVersion(Attacks);
-    updateGameVersion(Armours);
 }
 
 bool Combat::compareTo(const Combat &other) const

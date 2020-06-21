@@ -23,7 +23,6 @@
 #include "genie/file/ISerializable.h"
 #include "unit/DamageGraphic.h"
 #include "UnitCommand.h"
-#include "unit/AttackOrArmor.h"
 #include "unit/Moving.h"
 #include "unit/Action.h"
 #include "unit/Combat.h"
