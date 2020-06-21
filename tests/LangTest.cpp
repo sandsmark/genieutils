@@ -28,7 +28,7 @@ const char *const LANG_PATH = "lang/";
 
 BOOST_AUTO_TEST_CASE(simple_read_write_test)
 {
-    genie::Logger::setLogLevel(genie::Logger::L_INFO);
+//    genie::Logger::setLogLevel(genie::Logger::L_INFO);
 
     genie::LangFile lf;
 
@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_CASE(simple_read_write_test)
 
 BOOST_AUTO_TEST_CASE(random_write)
 {
-    genie::Logger::setLogLevel(genie::Logger::L_INFO);
+//    genie::Logger::setLogLevel(genie::Logger::L_INFO);
     genie::LangFile saveFile;
 
     std::string langFilename = LANG_PATH;
