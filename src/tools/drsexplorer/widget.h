@@ -19,6 +19,9 @@ public:
     bool loadPalette(const int palette, const QString &drs);
     bool loadDrs(const QString &path);
 
+private slots:
+    void onItemActivated(const QListWidgetItem *item);
+
 private:
     QPixmap getPixmap(genie::SlpFramePtr frame);
 
