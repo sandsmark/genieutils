@@ -281,8 +281,9 @@ if (GUTILS_TOOLS)
 
   find_package(Qt5 OPTIONAL_COMPONENTS Widgets QUIET)
   if (Qt5Widgets_FOUND)
-      message(STATUS "Qt5 Widgets found, enabling viewer for SLP/SMP files")
+      message(STATUS "Qt5 Widgets found, enabling viewer for SLP/SMP files and DRS explorer")
       add_subdirectory(src/tools/picviewer)
+      add_subdirectory(src/tools/drsexplorer)
   endif()
 
   add_executable(genie-datextract ${EXTRACT_SRC})
