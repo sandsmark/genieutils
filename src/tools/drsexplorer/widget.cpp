@@ -3,15 +3,22 @@
 #include <QPainter>
 #include <QDebug>
 #include <QLabel>
+#include <QScrollBar>
+
+#define PREVIEW_SIZE 300
 
 Widget::Widget(QWidget *parent)
     : QListWidget(parent)
 {
+    setWindowFlag(Qt::Dialog);
     setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
 
-    setIconSize(QSize(1024, 1024));
-    //loadSlps(QDir("/home/sandsmark/src/freeaoe/unaced/Campaign/Media").entryInfoList(QStringList() << "*.pal" << "*.PAL"));
-    //loadSlps(&m_interfaceFile);
+    setIconSize(QSize(PREVIEW_SIZE, PREVIEW_SIZE));
+    setFlow(QListView::LeftToRight);
+    setWrapping(true);
+    setMinimumSize(PREVIEW_SIZE * 3 + spacing() * 4 + verticalScrollBar()->width(), PREVIEW_SIZE * 4);
+    setResizeMode(QListView::Adjust);
+    connect(this, &QListWidget::itemActivated, this, &Widget::onItemActivated);
 }
 
 Widget::~Widget()
@@ -42,12 +49,17 @@ bool Widget::loadDrs(const QString &path)
 
 QPixmap Widget::getPixmap(genie::SlpFramePtr frame)
 {
-//    if (!m_palette) {
-//        qWarning() << "No palette set";
-//        return QPixmap();
-//    }
-
     QImage image(frame->img_data.pixel_indexes.data(), frame->getWidth(), frame->getHeight(), frame->getWidth(), QImage::Format_Indexed8);
+    if (image.isNull()) {
+        static QPixmap invalidPixmap;
+        if (invalidPixmap.isNull()) {
+            invalidPixmap = QPixmap(10, 10);
+            invalidPixmap.fill(Qt::red);
+        }
+        qWarning() << "Failed to load frame";
+        return invalidPixmap;
+    }
+
     image.setColorTable(m_colorTable);
 
     if (image.width() < 128) {
@@ -63,7 +75,7 @@ void Widget::loadSlps(genie::DrsFile *drsFile)
 {
     std::vector<uint32_t> ids = drsFile->slpFileIds();
     std::sort(ids.begin(), ids.end());
-    for (const int id : ids) {
+    for (const uint32_t id : ids) {
         genie::SlpFilePtr slp = drsFile->getSlpFile(id);
         if (!slp) {
             qWarning() << "Unable to load SLP file";
@@ -71,14 +83,23 @@ void Widget::loadSlps(genie::DrsFile *drsFile)
         }
         for (unsigned frameNum = 0; frameNum < slp->getFrameCount(); frameNum++) {
             genie::SlpFramePtr frame = slp->getFrame(frameNum);
-            if (!frame) {
-                qWarning() << "Unable to load SLP frame";
+            if (!frame || frame->getWidth() == 0 || frame->getHeight() == 0) {
+                qWarning() << "Unable to load SLP frame" << frameNum;
                 continue;
             }
 
             QListWidgetItem *item = new QListWidgetItem;
             item->setText(QString::number(id) + " " + QString::number(frameNum));
-            item->setIcon(getPixmap(frame));
+
+            QPixmap pixmap = getPixmap(frame);
+            if (pixmap.width() > PREVIEW_SIZE) {
+                pixmap = pixmap.scaledToWidth(PREVIEW_SIZE);
+            }
+            if (pixmap.height() > PREVIEW_SIZE) {
+                pixmap = pixmap.scaledToHeight(PREVIEW_SIZE);
+            }
+            item->setIcon(pixmap);
+
             addItem(item);
         }
     }
@@ -106,17 +127,41 @@ void Widget::loadSlps(const QFileInfoList &files)
 
         genie::SlpFile slpFile(fi.size());
         slpFile.load(slpName.toStdString());
-        for (int i=0; i<slpFile.getFrameCount(); i++) {
+        for (uint32_t i=0; i<slpFile.getFrameCount(); i++) {
             genie::SlpFramePtr frame = slpFile.getFrame(i);
             QImage image(frame->img_data.pixel_indexes.data(), frame->getWidth(), frame->getHeight(), frame->getWidth(), QImage::Format_Indexed8);
             image.setColorTable(colorTable);
 
             QListWidgetItem *item = new QListWidgetItem;
             item->setText(fi.baseName());
-            //        item->setText(QString::number(id) + " " + QString::number(0));
+            //item->setText(QString::number(id) + " " + QString::number(0));
             item->setIcon(QPixmap::fromImage(image));
             addItem(item);
         }
     }
 
+}
+
+void Widget::onItemActivated(const QListWidgetItem *item)
+{
+    const QStringList idParts = item->text().split(' ');
+
+    bool slpOk, frameOk;
+    const int slpId = idParts.first().toInt(&slpOk);
+    const int frameNum = idParts.last().toInt(&frameOk);
+
+    Q_ASSERT(slpOk);
+    Q_ASSERT(frameOk);
+
+    genie::SlpFilePtr slp = m_drsFile.getSlpFile(slpId);
+    Q_ASSERT(slp);
+
+    genie::SlpFramePtr frame = slp->getFrame(frameNum);
+    Q_ASSERT(frame);
+
+    QLabel *preview = new QLabel;
+    preview->setWindowFlag(Qt::Dialog);
+    preview->setPixmap(getPixmap(frame));
+    preview->setAttribute(Qt::WA_DeleteOnClose);
+    preview->show();
 }
