@@ -400,7 +400,9 @@ void DatFile::serializeObject()
 
     serialize(FileVersion, FILE_VERSION_SIZE);
 
-    std::cout << "file version: " << FileVersion << std::endl;
+    if (verbose_) {
+        std::cout << "file version: " << FileVersion << std::endl;
+    }
 
     // Handle all different versions while in development.
     if (getGameVersion() == GV_C2) { // 5.8
