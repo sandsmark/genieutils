@@ -185,8 +185,6 @@ void IcmFile::serializeObject() noexcept
     if (getOperation() == OP_READ) {
         m_loaded = true;
     }
-
-    std::cout << "Loaded " << maps.size() << " inverse color maps" << std::endl;
 }
 
 void LightmapFile::serializeObject() noexcept

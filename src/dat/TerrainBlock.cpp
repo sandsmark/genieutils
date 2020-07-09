@@ -161,8 +161,6 @@ void TerrainBlock::serializeObject(void)
 
     serialize(Terrains, Terrain::getTerrainCount(gv));
 
-    std::cout << "Terrains: " << Terrains.size() << std::endl;
-
     if (gv < GV_AoEB) {
         serialize<int16_t>(AoEAlphaUnknown, (16 * 1888) / 2);
     }
