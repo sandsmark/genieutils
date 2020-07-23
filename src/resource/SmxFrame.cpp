@@ -108,7 +108,7 @@ void SmxFrame::readNormalLayer()
     std::vector<uint8_t> pixelData;
     serialize<uint8_t>(pixelData, m_normalHeader.pixelDataSize);
 
-    const std::vector<SmpPixel> pixelsVector = m_frameHeader.frameType & FrameHeader::HasDamageModifier ?
+    const std::vector<SmpPixel> pixelsVector = (m_frameHeader.frameType & FrameHeader::HasDamageModifier) ?
                 decode8To5(std::move(pixelData)) :
                 decode4Plus1(std::move(pixelData));
 
