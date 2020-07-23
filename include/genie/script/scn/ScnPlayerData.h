@@ -32,17 +32,17 @@ namespace genie {
 class CombinedResources : public ISerializable
 {
 public:
-    uint32_t enabled;
-    uint32_t isHuman;
+    uint32_t enabled = 0;
+    uint32_t isHuman = 0;
     uint32_t civilizationID = 0;
-    uint32_t unknown1;
+    uint32_t unknown1 = 0;
 
-    uint32_t gold;
-    uint32_t wood;
-    uint32_t food;
-    uint32_t stone;
-    uint32_t ore;
-    uint32_t goods;
+    uint32_t gold = 0;
+    uint32_t wood = 0;
+    uint32_t food = 0;
+    uint32_t stone = 0;
+    uint32_t ore = 0;
+    uint32_t goods = 0;
 
     static bool playerInfo;
 
@@ -62,18 +62,18 @@ public:
         DestroyObject = 4
     };
 
-    uint8_t command; // 4
-    uint16_t objectType; // 6
-    uint8_t playerId; // 7
-    float x; // 8
-    float y; // 12
-    float z; // 16
+    uint8_t command = 0; // 4
+    uint16_t objectType = 0; // 6
+    uint8_t playerId = 0; // 7
+    float x = 0.f; // 8
+    float y = 0.f; // 12
+    float z = 0.f; // 16
 
-    uint16_t task; // 20
+    uint16_t task = 0; // 20
 
-    uint16_t objectId; // 22
-    uint16_t targetId; // 24
-    uint16_t targetPlayerId; // 28
+    uint16_t objectId = 0; // 22
+    uint16_t targetId = 0; // 24
+    uint16_t targetPlayerId = 0; // 28
 
 private:
     void serializeObject(void) override;
@@ -82,9 +82,9 @@ private:
 class Timeline : public ISerializable
 {
 public:
-    uint16_t entryCount;
-    uint16_t availableId;
-    float time;
+    uint16_t entryCount = 0;
+    uint16_t availableId = 0;
+    float time = 0.f;
 
     std::vector<TimelineEvent> events;
 
@@ -95,9 +95,9 @@ private:
 class AiFile : public ISerializable
 {
 public:
-    uint32_t aiFilenameSize;
-    uint32_t cityFileSize;
-    uint32_t perFileSize;
+    uint32_t aiFilenameSize = 0;
+    uint32_t cityFileSize = 0;
+    uint32_t perFileSize = 0;
     std::string aiFilename;
     std::string cityFilename;
     std::string perFilename;
@@ -117,13 +117,13 @@ public:
         Custom
     };
 
-    uint32_t conquestRequired;
-    uint32_t unused1;
-    uint32_t numRelicsRequired;
-    uint32_t unused2;
-    uint32_t exploredPerCentRequired;
-    uint32_t unused3;
-    uint32_t allConditionsRequired;
+    uint32_t conquestRequired = 0;
+    uint32_t unused1 = 0;
+    uint32_t numRelicsRequired = 0;
+    uint32_t unused2 = 0;
+    uint32_t exploredPerCentRequired = 0;
+    uint32_t unused3 = 0;
+    uint32_t allConditionsRequired = 0;
     uint32_t victoryMode = 0;
     uint32_t scoreRequired = 0;
     uint32_t timeForTimedGame = 0;
@@ -291,22 +291,22 @@ public:
         VictoryPoints = 12
     };
 
-    uint8_t type;
-    int32_t objectType; // for create, create in area, destroy, destroy multiple,  destroy all
-    int32_t targetPlayer;
+    uint8_t type = 0;
+    int32_t objectType = 0; // for create, create in area, destroy, destroy multiple,  destroy all
+    int32_t targetPlayer = 0;
 
-    float x0;
-    float y0;
-    float x1;
-    float y1;
+    float x0 = 0.f;
+    float y0 = 0.f;
+    float x1 = 0.f;
+    float y1 = 0.f;
 
-    int32_t number; // for an Attribute condition, this is the attribute type, and count is the amount
-    int32_t count;
-    int32_t object;
-    int32_t target;
-    uint8_t victoryGroup;
-    uint8_t allyFlag;
-    uint8_t state;
+    int32_t number = 0; // for an Attribute condition, this is the attribute type, and count is the amount
+    int32_t count = 0;
+    int32_t object = 0;
+    int32_t target = 0;
+    uint8_t victoryGroup = 0;
+    uint8_t allyFlag = 0;
+    uint8_t state = 0;
 
 private:
     void serializeObject(void) override;
@@ -328,12 +328,12 @@ public:
     float victoryConditionVersion = 0.f;
     std::vector<ScnPlayerVictoryCondition> victoryConditions; // found in Grand Theft Empires, and the aztec campaign
     int32_t playerID = -1;
-    uint8_t victory;
+    uint8_t victory = 0;
 
-    int32_t unknown1;
-    int32_t unknown2;
+    int32_t unknown1 = 0;
+    int32_t unknown2 = 0;
 
-    uint32_t totalVictoryPoints;
+    uint32_t totalVictoryPoints = 0;
 
 private:
     uint16_t playerCount_;

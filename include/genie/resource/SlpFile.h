@@ -99,7 +99,7 @@ private:
     FrameVector frames_;
 
     // Used to calculate offsets when saving the SLP.
-    uint32_t slp_offset_;
+    uint32_t slp_offset_ = 0;
 
     //----------------------------------------------------------------------------
     void serializeObject() override;
