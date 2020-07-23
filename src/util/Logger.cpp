@@ -36,7 +36,7 @@ Logger &Logger::getRootLogger(void)
 }
 
 //------------------------------------------------------------------------------
-Logger &Logger::getLogger(std::string name)
+Logger &Logger::getLogger(const std::string &name)
 {
     return getRootLogger();
 }
