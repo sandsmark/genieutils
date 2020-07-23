@@ -96,21 +96,21 @@ public:
 
     // Uncompressed Header:
 
-    int32_t saveType;
+    int32_t saveType = 0;
 
     /// Timestamp of last save
-    uint32_t lastSaveTime;
+    uint32_t lastSaveTime = 0;
 
     std::string scenarioInstructions;
 
     int32_t victoryType = 0;
 
-    uint32_t enabledPlayerCount;
+    uint32_t enabledPlayerCount = 0;
 
     // Compressed header:
 
     /// aokts description: "Next unit ID to place" ??
-    uint32_t nextUnitID;
+    uint32_t nextUnitID = 0;
 
     ScnMainPlayerData playerData;
 
@@ -121,13 +121,13 @@ public:
 
     std::array<ScnMorePlayerData, 8> players;
 
-    double triggerVersion;
-    int8_t objectivesStartingState;
+    double triggerVersion = 0.;
+    int8_t objectivesStartingState = 0;
     std::vector<Trigger> triggers;
     std::vector<int32_t> triggerDisplayOrder;
 
-    uint32_t includeFiles;
-    uint32_t perErrorIncluded;
+    uint32_t includeFiles = 0;
+    uint32_t perErrorIncluded = 0;
     std::array<uint32_t, 99> perError;
     std::vector<ScnPersonalityScript> includedFiles;
 
@@ -135,11 +135,11 @@ private:
     static Logger &log;
     bool verifyVersion();
 
-    uint32_t headerLength_; //starting after this
-    uint32_t playerUnitsCount;
-    uint32_t playerCount2_;
-    uint32_t numTriggers_;
-    uint32_t fileCount_;
+    uint32_t headerLength_ = 0; //starting after this
+    uint32_t playerUnitsCount = 0;
+    uint32_t playerCount2_ = 0;
+    uint32_t numTriggers_ = 0;
+    uint32_t fileCount_ = 0;
 
     Compressor compressor_;
 

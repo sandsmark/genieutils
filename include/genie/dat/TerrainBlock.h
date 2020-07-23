@@ -31,9 +31,9 @@ class TileSize : public ISerializable
 public:
     void setGameVersion(GameVersion gv) override;
 
-    int16_t Width;
-    int16_t Height;
-    int16_t DeltaY;
+    int16_t Width = 0;
+    int16_t Height = 0;
+    int16_t DeltaY = 0;
 
     bool compareTo(const TileSize &other) const;
 
@@ -46,13 +46,13 @@ class TerrainBlock : public ISerializable
 public:
     void setGameVersion(GameVersion gv) override;
 
-    int32_t VirtualFunctionPtr;
-    int32_t MapPointer;
-    int32_t MapWidth;
-    int32_t MapHeight;
-    int32_t WorldWidth;
-    int32_t WorldHeight;
-    int16_t PaddingTS;
+    int32_t VirtualFunctionPtr = 0;
+    int32_t MapPointer = 0;
+    int32_t MapWidth = 0;
+    int32_t MapHeight = 0;
+    int32_t WorldWidth = 0;
+    int32_t WorldHeight = 0;
+    int16_t PaddingTS = 0;
 
     std::array<TileSize, SharedTerrain::TILE_TYPE_COUNT> TileSizes;
     std::vector<Terrain> Terrains;
@@ -60,7 +60,7 @@ public:
     std::vector<int16_t> AoEAlphaUnknown; // These are very similar to borders
     std::array<TerrainBorder, 16> TerrainBorders;
 
-    int32_t MapRowOffset;
+    int32_t MapRowOffset = 0;
     float MapMinX = 0.f;
     float MapMinY = 0.f;
     float MapMaxX = 0.f;
@@ -68,28 +68,28 @@ public:
     float MapMaxXplus1 = 0.f;
     float MapMaxYplus1 = 0.f;
 
-    uint16_t TerrainsUsed2;
+    uint16_t TerrainsUsed2 = 0;
     uint16_t RemovedBlocksUsed = 0;
-    uint16_t BordersUsed;
-    int16_t MaxTerrain;
-    int16_t TileWidth;
-    int16_t TileHeight;
-    int16_t TileHalfHeight;
-    int16_t TileHalfWidth;
-    int16_t ElevHeight;
-    int16_t CurRow;
-    int16_t CurCol;
-    int16_t BlockBegRow;
-    int16_t BlockEndRow;
-    int16_t BlockBegCol;
-    int16_t BlockEndCol;
+    uint16_t BordersUsed = 0;
+    int16_t MaxTerrain = 0;
+    int16_t TileWidth = 0;
+    int16_t TileHeight = 0;
+    int16_t TileHalfHeight = 0;
+    int16_t TileHalfWidth = 0;
+    int16_t ElevHeight = 0;
+    int16_t CurRow = 0;
+    int16_t CurCol = 0;
+    int16_t BlockBegRow = 0;
+    int16_t BlockEndRow = 0;
+    int16_t BlockBegCol = 0;
+    int16_t BlockEndCol = 0;
 
-    int32_t SearchMapPtr;
-    int32_t SearchMapRowsPtr;
-    int8_t AnyFrameChange;
+    int32_t SearchMapPtr = 0;
+    int32_t SearchMapRowsPtr = 0;
+    int8_t AnyFrameChange = 0;
 
-    int8_t MapVisibleFlag;
-    int8_t FogFlag;
+    int8_t MapVisibleFlag = 0;
+    int8_t FogFlag = 0;
 
     unsigned short getBytesSize(void);
     std::vector<int8_t> SomeBytes;
