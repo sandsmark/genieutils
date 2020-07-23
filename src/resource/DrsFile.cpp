@@ -35,24 +35,24 @@ Logger &DrsFile::log = Logger::getLogger("freeaoe.DrsFile");
 //------------------------------------------------------------------------------
 SlpFilePtr DrsFile::getSlpFile(uint32_t id)
 {
-    std::unordered_map<uint32_t, SlpFilePtr>::iterator i = slp_map_.find(id);
+    std::unordered_map<uint32_t, SlpFilePtr>::iterator slpIterator = slp_map_.find(id);
 
-    if (i != slp_map_.end()) {
+    if (slpIterator != slp_map_.end()) {
 #ifndef NDEBUG
         log.debug("Loading SLP file [%u]", id);
 #endif
-        i->second->readObject(*getIStream());
-        return i->second;
+        slpIterator->second->readObject(*getIStream());
+        return slpIterator->second;
     } else {
-        std::unordered_map<uint32_t, BinaFilePtr>::iterator i = bina_map_.find(id);
+        std::unordered_map<uint32_t, BinaFilePtr>::iterator binIterator = bina_map_.find(id);
 
-        if (i != bina_map_.end()) {
+        if (binIterator != bina_map_.end()) {
 #ifndef NDEBUG
             log.debug("Loading SLP file [%u] from bina", id);
 #endif
-            SlpFilePtr slp(new SlpFile(i->second->size()));
+            SlpFilePtr slp(new SlpFile(binIterator->second->size()));
 
-            slp->setInitialReadPosition(i->second->getInitialReadPosition());
+            slp->setInitialReadPosition(binIterator->second->getInitialReadPosition());
 
             slp->readObject(*getIStream());
 

@@ -220,7 +220,7 @@ public:
     }
 
 private:
-    void serializeObject() noexcept override;
+    void serializeObject() override;
 
     bool m_loaded = false;
     PatternMask m_masks[PatternMasksCount];

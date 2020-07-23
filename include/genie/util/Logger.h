@@ -59,7 +59,7 @@ public:
     ///
     /// @return specific logger
     //
-    static Logger &getLogger(std::string name);
+    static Logger &getLogger(const std::string &name);
 
     //----------------------------------------------------------------------------
     /// Set the overall loglevel to print. All lower log levels will be shown.
