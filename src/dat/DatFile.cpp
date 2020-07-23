@@ -447,9 +447,7 @@ void DatFile::serializeObject()
 
     if (verbose_) {
         std::cout << "TerrainRestriction size: " << TerrainRestrictions.size() << " " << count16 << std::endl;
-    }
 
-    if (verbose_) {
         std::cout << FileVersion;
         std::cout << std::endl
                   << "TerRestrictionCount: " << count16 << std::endl;

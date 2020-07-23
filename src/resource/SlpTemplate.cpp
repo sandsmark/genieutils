@@ -161,7 +161,7 @@ void FiltermapFile::serializeObject() noexcept
     }
 }
 
-void PatternMasksFile::serializeObject() noexcept
+void PatternMasksFile::serializeObject()
 {
     for (int i = 0; i < 40; i++) {
         int32_t size = 4096;
