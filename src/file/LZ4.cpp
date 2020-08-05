@@ -180,7 +180,7 @@ int LZ4::compress_block(const int n, const int max_chain)
     return op;
 }
 
-void LZ4::compress(const int max_chain)
+void LZ4::compress(FILE* g_in, FILE* g_out, const int max_chain)
 {
     int n;
 
@@ -195,7 +195,7 @@ void LZ4::compress(const int max_chain)
     }
 }
 
-void LZ4::compress_optimal()
+void LZ4::compress_optimal(FILE* g_in, FILE* g_out)
 {
     static int head[HASH_SIZE];
     static int nodes[WINDOW_SIZE][2];
@@ -472,7 +472,7 @@ bool LZ4::decompress_block(int &p, int ip, const int ip_end)
     return true;
 }
 
-bool LZ4::decompress()
+bool LZ4::decompress(FILE* g_in, FILE* g_out)
 {
     int comp_len;
 
