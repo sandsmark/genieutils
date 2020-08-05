@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <cstdio>
+#include <iostream>
 
 #define LZ4_EXCESS (16+(LZ4_BLOCK_SIZE/255))
 #define LZ4_BLOCK_SIZE (8<<20) // 8 MB
@@ -20,3 +21,11 @@ private:
     uint8_t g_buf[LZ4_BLOCK_SIZE+LZ4_BLOCK_SIZE+LZ4_EXCESS];
 };
 
+namespace lz4
+{
+class istreambuf : public std::streambuf
+{
+    //blah
+};
+
+}//namespace lz4
