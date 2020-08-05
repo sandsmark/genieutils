@@ -136,6 +136,7 @@ set(FILE_SRC
     src/file/IFile.cpp
     src/file/Compressor.cpp
     src/file/CabFile.cpp
+    src/file/LZ4.cpp
     #    src/file/lzx.c
 )
 
