@@ -9,5 +9,6 @@
 
 # build subdirectory
 build/
+build-*/
 debug/
 release/
