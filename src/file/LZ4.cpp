@@ -4,6 +4,8 @@ LZ4X - An optimized LZ4 compressor
 
 Written and placed in the public domain by Ilya Muravyov
 
+Originally from https://github.com/encode84/lz4x
+
 */
 
 #define _CRT_SECURE_NO_WARNINGS
