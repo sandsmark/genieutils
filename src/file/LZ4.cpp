@@ -13,6 +13,7 @@ Originally from https://github.com/encode84/lz4x
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
+#include <algorithm>
 
 #ifndef _MSC_VER
 #  define _ftelli64 ftello64
@@ -49,135 +50,142 @@ inline void LZ4::wild_copy(int dest, const int source, const int count)
     }
 }
 
-void LZ4::compress(const int max_chain)
+int LZ4::compress_block(const int n, const int max_chain)
 {
     static int head[HASH_SIZE];
     static int tail[WINDOW_SIZE];
 
-    int n;
+    for (int i = 0; i < HASH_SIZE; ++i) {
+        head[i] = NIL;
+    }
 
-    while ((n = fread(g_buf, 1, LZ4_BLOCK_SIZE, g_in)) > 0) {
-        for (int i = 0; i < HASH_SIZE; ++i) {
-            head[i] = NIL;
+    int op = LZ4_BLOCK_SIZE;
+    int pp = 0;
+
+    int p = 0;
+
+    while (p < n) {
+        int best_len = 0;
+        int dist = 0;
+
+        const int max_match = (n - PADDING_LITERALS) - p;
+
+        if (max_match >= std::max(12 - PADDING_LITERALS, MIN_MATCH)) {
+            const int limit = std::max(p - WINDOW_SIZE, NIL);
+            int chain_len = max_chain;
+
+            int s = head[HASH_32(p)];
+
+            while (s > limit) {
+                if (g_buf[s + best_len] == g_buf[p + best_len] && LOAD_32(s) == LOAD_32(p)) {
+                    int len = MIN_MATCH;
+
+                    while (len < max_match && g_buf[s + len] == g_buf[p + len]) {
+                        ++len;
+                    }
+
+                    if (len > best_len) {
+                        best_len = len;
+                        dist = p - s;
+
+                        if (len == max_match) {
+                            break;
+                        }
+                    }
+                }
+
+                if (--chain_len == 0) {
+                    break;
+                }
+
+                s = tail[s & WINDOW_MASK];
+            }
         }
 
-        int op = LZ4_BLOCK_SIZE;
-        int pp = 0;
+        if (best_len >= MIN_MATCH) {
+            int len = best_len - MIN_MATCH;
+            const int nib = std::min(len, 15);
 
-        int p = 0;
+            if (pp != p) {
+                const int run = p - pp;
 
-        while (p < n) {
-            int best_len = 0;
-            int dist = 0;
+                if (run >= 15) {
+                    g_buf[op++] = 0xF0 + nib;
 
-            const int max_match = (n - PADDING_LITERALS) - p;
+                    int j = run - 15;
 
-            if (max_match >= std::max(12 - PADDING_LITERALS, MIN_MATCH)) {
-                const int limit = std::max(p - WINDOW_SIZE, NIL);
-                int chain_len = max_chain;
-
-                int s = head[HASH_32(p)];
-
-                while (s > limit) {
-                    if (g_buf[s + best_len] == g_buf[p + best_len] && LOAD_32(s) == LOAD_32(p)) {
-                        int len = MIN_MATCH;
-
-                        while (len < max_match && g_buf[s + len] == g_buf[p + len]) {
-                            ++len;
-                        }
-
-                        if (len > best_len) {
-                            best_len = len;
-                            dist = p - s;
-
-                            if (len == max_match) {
-                                break;
-                            }
-                        }
-                    }
-
-                    if (--chain_len == 0) {
-                        break;
-                    }
-
-                    s = tail[s & WINDOW_MASK];
-                }
-            }
-
-            if (best_len >= MIN_MATCH) {
-                int len = best_len - MIN_MATCH;
-                const int nib = std::min(len, 15);
-
-                if (pp != p) {
-                    const int run = p - pp;
-
-                    if (run >= 15) {
-                        g_buf[op++] = 0xF0 + nib;
-
-                        int j = run - 15;
-
-                        for (; j >= 255; j -= 255) {
-                            g_buf[op++] = 0xFF;
-                        }
-
-                        g_buf[op++] = j;
-                    } else {
-                        g_buf[op++] = (run << 4) + nib;
-                    }
-
-                    wild_copy(op, pp, run);
-                    op += run;
-                } else {
-                    g_buf[op++] = nib;
-                }
-
-                STORE_16(op, dist);
-                op += 2;
-
-                if (len >= 0xF) {
-                    len -= 0xF;
-
-                    for (; len >= 255; len -= 255) {
+                    for (; j >= 255; j -= 255) {
                         g_buf[op++] = 0xFF;
                     }
 
-                    g_buf[op++] = len;
+                    g_buf[op++] = j;
+                } else {
+                    g_buf[op++] = (run << 4) + nib;
                 }
 
-                pp = p + best_len;
-
-                while (p < pp) {
-                    const uint32_t h = HASH_32(p);
-                    tail[p & WINDOW_MASK] = head[h];
-                    head[h] = p++;
-                }
+                wild_copy(op, pp, run);
+                op += run;
             } else {
+                g_buf[op++] = nib;
+            }
+
+            STORE_16(op, dist);
+            op += 2;
+
+            if (len >= 0xF) {
+                len -= 0xF;
+
+                for (; len >= 255; len -= 255) {
+                    g_buf[op++] = 0xFF;
+                }
+
+                g_buf[op++] = len;
+            }
+
+            pp = p + best_len;
+
+            while (p < pp) {
                 const uint32_t h = HASH_32(p);
                 tail[p & WINDOW_MASK] = head[h];
                 head[h] = p++;
             }
+        } else {
+            const uint32_t h = HASH_32(p);
+            tail[p & WINDOW_MASK] = head[h];
+            head[h] = p++;
         }
+    }
 
-        if (pp != p) {
-            const int run = p - pp;
+    if (pp != p) {
+        const int run = p - pp;
 
-            if (run >= 0xF) {
-                g_buf[op++] = 0xF0;
+        if (run >= 0xF) {
+            g_buf[op++] = 0xF0;
 
-                int j = run - 0xF;
+            int j = run - 0xF;
 
-                for (; j >= 255; j -= 255) {
-                    g_buf[op++] = 0xFF;
-                }
-
-                g_buf[op++] = j;
-            } else {
-                g_buf[op++] = run << 4;
+            for (; j >= 255; j -= 255) {
+                g_buf[op++] = 0xFF;
             }
 
-            wild_copy(op, pp, run);
-            op += run;
+            g_buf[op++] = j;
+        } else {
+            g_buf[op++] = run << 4;
         }
+
+        wild_copy(op, pp, run);
+        op += run;
+    }
+
+    return op;
+}
+
+void LZ4::compress(const int max_chain)
+{
+    int n;
+
+    while ((n = fread(g_buf, 1, LZ4_BLOCK_SIZE, g_in)) > 0) {
+        const int op = compress_block(n, max_chain);
 
         const int comp_len = op - LZ4_BLOCK_SIZE;
         fwrite(&comp_len, 1, sizeof(comp_len), g_out);
@@ -396,6 +404,74 @@ void LZ4::compress_optimal()
     }
 }
 
+bool LZ4::decompress_block(int &p, int ip, const int ip_end)
+{
+    for (;;) {
+        const int token = g_buf[ip++];
+
+        if (token >= 0x10) {
+            int run = token >> 4;
+
+            if (run == 0xF) {
+                for (;;) {
+                    const int c = g_buf[ip++];
+                    run += c;
+
+                    if (c != 0xFF) {
+                        break;
+                    }
+                }
+            }
+
+            if ((p + run) > LZ4_BLOCK_SIZE) {
+                return false;
+            }
+
+            wild_copy(p, ip, run);
+            p += run;
+            ip += run;
+
+            if (ip >= ip_end) {
+                break;
+            }
+        }
+
+        int s = p - LOAD_16(ip);
+        ip += 2;
+
+        if (s < 0) {
+            return false;
+        }
+
+        int len = (token & 0xF) + MIN_MATCH;
+
+        if (len == (0xF + MIN_MATCH)) {
+            for (;;) {
+                const int c = g_buf[ip++];
+                len += c;
+
+                if (c != 255) {
+                    break;
+                }
+            }
+        }
+
+        if ((p + len) > LZ4_BLOCK_SIZE) {
+            return false;
+        }
+
+        if ((p - s) >= 4) {
+            wild_copy(p, s, len);
+            p += len;
+        } else {
+            while (len-- != 0) {
+                g_buf[p++] = g_buf[s++];
+            }
+        }
+    }
+    return true;
+}
+
 bool LZ4::decompress()
 {
     int comp_len;
@@ -415,68 +491,8 @@ bool LZ4::decompress()
         int ip = LZ4_BLOCK_SIZE;
         const int ip_end = ip + comp_len;
 
-        for (;;) {
-            const int token = g_buf[ip++];
-
-            if (token >= 0x10) {
-                int run = token >> 4;
-
-                if (run == 0xF) {
-                    for (;;) {
-                        const int c = g_buf[ip++];
-                        run += c;
-
-                        if (c != 0xFF) {
-                            break;
-                        }
-                    }
-                }
-
-                if ((p + run) > LZ4_BLOCK_SIZE) {
-                    return false;
-                }
-
-                wild_copy(p, ip, run);
-                p += run;
-                ip += run;
-
-                if (ip >= ip_end) {
-                    break;
-                }
-            }
-
-            int s = p - LOAD_16(ip);
-            ip += 2;
-
-            if (s < 0) {
-                return false;
-            }
-
-            int len = (token & 0xF) + MIN_MATCH;
-
-            if (len == (0xF + MIN_MATCH)) {
-                for (;;) {
-                    const int c = g_buf[ip++];
-                    len += c;
-
-                    if (c != 255) {
-                        break;
-                    }
-                }
-            }
-
-            if ((p + len) > LZ4_BLOCK_SIZE) {
-                return false;
-            }
-
-            if ((p - s) >= 4) {
-                wild_copy(p, s, len);
-                p += len;
-            } else {
-                while (len-- != 0) {
-                    g_buf[p++] = g_buf[s++];
-                }
-            }
+        if (!decompress_block(p, ip, ip_end)) {
+            return false;
         }
 
         if (fwrite(g_buf, 1, p, g_out) != size_t(p)) {
