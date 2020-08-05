@@ -8,9 +8,6 @@ Originally from https://github.com/encode84/lz4x
 
 */
 
-#define _CRT_SECURE_NO_WARNINGS
-#define _CRT_DISABLE_PERFCRIT_LOCKS
-
 #include "genie/file/LZ4.h"
 
 #include <cstdlib>
@@ -30,9 +27,6 @@ Originally from https://github.com/encode84/lz4x
 
 #define MIN_MATCH 4
 
-#define MIN(a, b) (((a)<(b))?(a):(b))
-#define MAX(a, b) (((a)>(b))?(a):(b))
-
 #define LOAD_16(p) (*reinterpret_cast<const uint16_t*>(&g_buf[p]))
 #define LOAD_32(p) (*reinterpret_cast<const uint32_t*>(&g_buf[p]))
 #define STORE_16(p, x) (*reinterpret_cast<uint16_t*>(&g_buf[p])=(x))
@@ -44,14 +38,14 @@ Originally from https://github.com/encode84/lz4x
 
 #define HASH_32(p) ((LOAD_32(p)*0x9E3779B9)>>(32-HASH_BITS))
 
-inline void LZ4::wild_copy(int d, int s, int n)
+inline void LZ4::wild_copy(int dest, const int source, const int count)
 {
-    COPY_32(d, s);
-    COPY_32(d + 4, s + 4);
+    COPY_32(dest, source);
+    COPY_32(dest + 4, source + 4);
 
-    for (int i = 8; i < n; i += 8) {
-        COPY_32(d + i, s + i);
-        COPY_32(d + 4 + i, s + 4 + i);
+    for (int i = 8; i < count; i += 8) {
+        COPY_32(dest + i, source + i);
+        COPY_32(dest + 4 + i, source + 4 + i);
     }
 }
 
@@ -78,8 +72,8 @@ void LZ4::compress(const int max_chain)
 
             const int max_match = (n - PADDING_LITERALS) - p;
 
-            if (max_match >= MAX(12 - PADDING_LITERALS, MIN_MATCH)) {
-                const int limit = MAX(p - WINDOW_SIZE, NIL);
+            if (max_match >= std::max(12 - PADDING_LITERALS, MIN_MATCH)) {
+                const int limit = std::max(p - WINDOW_SIZE, NIL);
                 int chain_len = max_chain;
 
                 int s = head[HASH_32(p)];
@@ -112,18 +106,18 @@ void LZ4::compress(const int max_chain)
 
             if (best_len >= MIN_MATCH) {
                 int len = best_len - MIN_MATCH;
-                const int nib = MIN(len, 15);
+                const int nib = std::min(len, 15);
 
                 if (pp != p) {
                     const int run = p - pp;
 
                     if (run >= 15) {
-                        g_buf[op++] = (15 << 4) + nib;
+                        g_buf[op++] = 0xF0 + nib;
 
                         int j = run - 15;
 
                         for (; j >= 255; j -= 255) {
-                            g_buf[op++] = 255;
+                            g_buf[op++] = 0xFF;
                         }
 
                         g_buf[op++] = j;
@@ -140,11 +134,11 @@ void LZ4::compress(const int max_chain)
                 STORE_16(op, dist);
                 op += 2;
 
-                if (len >= 15) {
-                    len -= 15;
+                if (len >= 0xF) {
+                    len -= 0xF;
 
                     for (; len >= 255; len -= 255) {
-                        g_buf[op++] = 255;
+                        g_buf[op++] = 0xFF;
                     }
 
                     g_buf[op++] = len;
@@ -167,13 +161,13 @@ void LZ4::compress(const int max_chain)
         if (pp != p) {
             const int run = p - pp;
 
-            if (run >= 15) {
-                g_buf[op++] = 15 << 4;
+            if (run >= 0xF) {
+                g_buf[op++] = 0xF0;
 
-                int j = run - 15;
+                int j = run - 0xF;
 
                 for (; j >= 255; j -= 255) {
-                    g_buf[op++] = 255;
+                    g_buf[op++] = 0xFF;
                 }
 
                 g_buf[op++] = j;
@@ -219,8 +213,8 @@ void LZ4::compress_optimal()
 
             const int max_match = (n - PADDING_LITERALS) - p;
 
-            if (max_match >= MAX(12 - PADDING_LITERALS, MIN_MATCH)) {
-                const int limit = MAX(p - WINDOW_SIZE, NIL);
+            if (max_match >= std::max(12 - PADDING_LITERALS, MIN_MATCH)) {
+                const int limit = std::max(p - WINDOW_SIZE, NIL);
 
                 int *left = &nodes[p & WINDOW_MASK][1];
                 int *right = &nodes[p & WINDOW_MASK][0];
@@ -233,7 +227,7 @@ void LZ4::compress_optimal()
                 head[h] = p;
 
                 while (s > limit) {
-                    int len = MIN(left_len, right_len);
+                    int len = std::min(left_len, right_len);
 
                     if (g_buf[s + len] == g_buf[p + len]) {
                         while (++len < max_match && g_buf[s + len] == g_buf[p + len]);
@@ -288,13 +282,13 @@ void LZ4::compress_optimal()
             if (len >= MIN_MATCH) {
                 int c1 = 1 << 30;
 
-                const int j = MAX(len - 255, MIN_MATCH);
+                const int j = std::max(len - 255, MIN_MATCH);
 
                 for (int i = len; i >= j; --i) {
                     int tmp = path[p + i].cum + 3;
 
                     if (i >= (15 + MIN_MATCH)) {
-                        tmp += 1 + ((i - (15 + MIN_MATCH)) / 255);
+                        tmp += 1 + ((i - (0xF + MIN_MATCH)) / 0xFF);
                     }
 
                     if (tmp < c1) {
@@ -327,18 +321,18 @@ void LZ4::compress_optimal()
         while (p < n) {
             if (path[p].len >= MIN_MATCH) {
                 int len = path[p].len - MIN_MATCH;
-                const int nib = MIN(len, 15);
+                const int nib = std::min(len, 15);
 
                 if (pp != p) {
                     const int run = p - pp;
 
                     if (run >= 15) {
-                        g_buf[op++] = (15 << 4) + nib;
+                        g_buf[op++] = 0xF0 + nib;
 
                         int j = run - 15;
 
                         for (; j >= 255; j -= 255) {
-                            g_buf[op++] = 255;
+                            g_buf[op++] = 0xFF;
                         }
 
                         g_buf[op++] = j;
@@ -359,7 +353,7 @@ void LZ4::compress_optimal()
                     len -= 15;
 
                     for (; len >= 255; len -= 255) {
-                        g_buf[op++] = 255;
+                        g_buf[op++] = 0xFF;
                     }
 
                     g_buf[op++] = len;
@@ -377,12 +371,12 @@ void LZ4::compress_optimal()
             const int run = p - pp;
 
             if (run >= 15) {
-                g_buf[op++] = 15 << 4;
+                g_buf[op++] = 0xF0;
 
                 int j = run - 15;
 
                 for (; j >= 255; j -= 255) {
-                    g_buf[op++] = 255;
+                    g_buf[op++] = 0xFF;
                 }
 
                 g_buf[op++] = j;
@@ -424,15 +418,15 @@ bool LZ4::decompress()
         for (;;) {
             const int token = g_buf[ip++];
 
-            if (token >= 16) {
+            if (token >= 0x10) {
                 int run = token >> 4;
 
-                if (run == 15) {
+                if (run == 0xF) {
                     for (;;) {
                         const int c = g_buf[ip++];
                         run += c;
 
-                        if (c != 255) {
+                        if (c != 0xFF) {
                             break;
                         }
                     }
@@ -458,9 +452,9 @@ bool LZ4::decompress()
                 return false;
             }
 
-            int len = (token & 15) + MIN_MATCH;
+            int len = (token & 0xF) + MIN_MATCH;
 
-            if (len == (15 + MIN_MATCH)) {
+            if (len == (0xF + MIN_MATCH)) {
                 for (;;) {
                     const int c = g_buf[ip++];
                     len += c;
