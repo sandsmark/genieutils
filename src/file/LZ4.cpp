@@ -9,12 +9,11 @@ Written and placed in the public domain by Ilya Muravyov
 #define _CRT_SECURE_NO_WARNINGS
 #define _CRT_DISABLE_PERFCRIT_LOCKS
 
-#include "file/LZ4.h"
+#include "genie/file/LZ4.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
+#include <cstdlib>
+#include <cstring>
+#include <ctime>
 
 #ifndef _MSC_VER
 #  define _ftelli64 ftello64
@@ -43,7 +42,7 @@ Written and placed in the public domain by Ilya Muravyov
 
 #define HASH_32(p) ((LOAD_32(p)*0x9E3779B9)>>(32-HASH_BITS))
 
-inline void wild_copy(int d, int s, int n)
+inline void LZ4::wild_copy(int d, int s, int n)
 {
     COPY_32(d, s);
     COPY_32(d + 4, s + 4);
@@ -188,11 +187,11 @@ void LZ4::compress(const int max_chain)
         fwrite(&comp_len, 1, sizeof(comp_len), g_out);
         fwrite(&g_buf[LZ4_BLOCK_SIZE], 1, comp_len, g_out);
 
-        fprintf(stderr, "%lld -> %lld\r", _ftelli64(g_in), _ftelli64(g_out));
+        fprintf(stderr, "%ld -> %ld\r", _ftelli64(g_in), _ftelli64(g_out));
     }
 }
 
-void compress_optimal()
+void LZ4::compress_optimal()
 {
     static int head[HASH_SIZE];
     static int nodes[WINDOW_SIZE][2];
@@ -397,7 +396,7 @@ void compress_optimal()
         fwrite(&comp_len, 1, sizeof(comp_len), g_out);
         fwrite(&g_buf[LZ4_BLOCK_SIZE], 1, comp_len, g_out);
 
-        fprintf(stderr, "%lld -> %lld\r", _ftelli64(g_in), _ftelli64(g_out));
+        fprintf(stderr, "%ld -> %ld\r", _ftelli64(g_in), _ftelli64(g_out));
     }
 }
 
@@ -411,7 +410,7 @@ bool LZ4::decompress()
         }
 
         if (comp_len < 2 || comp_len > (LZ4_BLOCK_SIZE + LZ4_EXCESS)
-                || fread(&g_buf[LZ4_BLOCK_SIZE], 1, comp_len, g_in) != comp_len) {
+                || fread(&g_buf[LZ4_BLOCK_SIZE], 1, comp_len, g_in) != size_t(comp_len)) {
             return false;
         }
 
@@ -484,7 +483,7 @@ bool LZ4::decompress()
             }
         }
 
-        if (fwrite(g_buf, 1, p, g_out) != p) {
+        if (fwrite(g_buf, 1, p, g_out) != size_t(p)) {
             perror("Fwrite() failed");
             return false;
         }
