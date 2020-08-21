@@ -41,6 +41,7 @@ bool Combat::compareTo(const Combat &other) const
     COMPARE_MEMBER(AccuracyPercent);
     COMPARE_MEMBER(AttackGraphic);
     COMPARE_MEMBER(BaseArmor);
+    COMPARE_MEMBER(BonusDamageResistance);
     COMPARE_MEMBER(DefenseTerrainBonus);
     COMPARE_MEMBER(DisplayedAttack);
     COMPARE_MEMBER(DisplayedMeleeArmour);
@@ -77,6 +78,11 @@ void Combat::serializeObject()
     serialize(Armours, armours_count);
 
     serialize<int16_t>(DefenseTerrainBonus);
+
+    if (gv <= GV_LatestDE2 && gv >= GV_C16) {
+        serialize<float>(BonusDamageResistance);
+    }
+
     serialize<float>(MaxRange);
     serialize<float>(BlastWidth);
     serialize<float>(ReloadTime);
