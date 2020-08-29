@@ -152,8 +152,7 @@ private:
 
 typedef std::shared_ptr<ScnFile> ScnFilePtr;
 
-// CPN files are basically identical it seems, but with a different compression in the scn files (which breaks)
-// Might also have more data in the header
+/// Wrapper for file data in CPX/CPN files
 class CpxIncludedFile : public ISerializable
 {
 public:
@@ -171,6 +170,7 @@ private:
 };
 
 
+/// Misleading name, it supports both CPN and CPX
 class CpxFile : public IFile
 {
 public:
