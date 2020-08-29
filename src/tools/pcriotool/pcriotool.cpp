@@ -52,9 +52,12 @@ int main(int argc, char *argv[]) try
                 continue;
             } else {
                 std::cout << "Listing all " << langfile.allIds().size() << std::endl;
-                for (const uint32_t id : langfile.allIds()) {
-                    const std::string str = langfile.getString(id + 0);
-                    std::cout << id << '\t' << dll << "\t'" << str << "'" << std::endl;
+//                for (const uint32_t id : langfile.allIds()) {
+                for (uint32_t id=0; id<4400 * 16; id++) {
+                    const std::string str = langfile.getString(id);
+                    if (!str.empty()) {
+                        std::cout << id << '\t' << dll << "\t'" << str << "'" << std::endl;
+                    }
                 }
             }
         } catch (const std::exception &error) {
