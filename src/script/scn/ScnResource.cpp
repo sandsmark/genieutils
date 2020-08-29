@@ -26,34 +26,50 @@
 
 namespace genie {
 
+bool ScnPlayerResources::verbose;
+bool ScnPlayerUnits::verbose;
+static bool s_verbose;
+
 void ScnPlayerResources::serializeObject(void)
 {
+    s_verbose = verbose;
+
+    if (s_verbose) std::cout << " ---- " << std::endl;
     serialize<float>(food);
+    if (s_verbose) std::cout << " - Food " << food << std::endl;
     serialize<float>(wood);
+    if (s_verbose) std::cout << " - wood " << wood << std::endl;
     serialize<float>(gold);
+    if (s_verbose) std::cout << " - gold " << gold << std::endl;
     serialize<float>(stone);
+    if (s_verbose) std::cout << " - stone " << stone << std::endl;
 
     if (scn_internal_ver > 1.12f) {
         serialize<float>(ore);
+        if (s_verbose) std::cout << " - ore " << ore << std::endl;
 
         // this seems wrong, 1.3 is way too high, is always true?
         if (scn_internal_ver < 1.3f) {
             serialize<float>(goods);
+            if (s_verbose) std::cout << " - goods " << goods << std::endl;
         }
     }
 
     if (scn_internal_ver >= 1.14f) {
         serialize<float>(popLimit); // game forces range from 25 to 200, defaults to 75
+        if (s_verbose) std::cout << " - poplimit " << popLimit << std::endl;
     }
 
     if (scn_internal_ver > 1.13f && (scn_internal_ver < 1.14f || (scn_internal_ver > 1.14f))) {
         serialize<uint32_t>(playerId);
+        if (s_verbose) std::cout << " - player id " << playerId << std::endl;
     }
 }
 
 void ScnPlayerUnits::serializeObject(void)
 {
     serializeSize<uint32_t>(unitCount_, units.size());
+    if (s_verbose) std::cout << " - unit count " << unitCount_ << std::endl;
     if (unitCount_ > 10000) {
         throw std::runtime_error("too many units in campaign file (" + std::to_string(unitCount_) + "), corrupt or unsupported file");
     }
@@ -74,10 +90,15 @@ void ScnUnit::serializeObject(void)
     }
 
     serialize<float>(positionX);
+    if (s_verbose) std::cout << "positionX " << positionX << std::endl;
     serialize<float>(positionY);
+    if (s_verbose) std::cout << "positionY " << positionY << std::endl;
     serialize<float>(positionZ);
+    if (s_verbose) std::cout << "positionZ " << positionZ << std::endl;
     serialize<uint32_t>(spawnID);
+    if (s_verbose) std::cout << "spawnID " << spawnID << std::endl;
     serialize<uint16_t>(objectID);
+    if (s_verbose) std::cout << "objectID " << objectID << std::endl;
 
     if (isOperation(OP_READ)) {
         if (objectID == 59 // forage bush
@@ -108,13 +129,17 @@ void ScnUnit::serializeObject(void)
 //    }
 
     serialize<uint8_t>(state);
+    if (s_verbose) std::cout << "state " << state << std::endl;
     serialize<float>(rotation);
+    if (s_verbose) std::cout << "rotation " << rotation << std::endl;
 
     if (scn_ver != "1.14") {
         serialize<uint16_t>(initAnimationFrame);
+        if (s_verbose) std::cout << "init anim frame " << initAnimationFrame << std::endl;
     }
 
     serialize<int32_t>(garrisonedInID);
+    if (s_verbose) std::cout << "garrisoned in id " << garrisonedInID << std::endl;
 
     if (!garrisonedInID && (
                 scn_ver == "1.13" ||
@@ -126,6 +151,7 @@ void ScnUnit::serializeObject(void)
                 scn_ver == "1.19" ||
                 scn_ver == "1.20")) {
         garrisonedInID = -1;
+        if (s_verbose) std::cout << "garrisoned in id " << garrisonedInID << std::endl;
     }
 }
 } // namespace genie

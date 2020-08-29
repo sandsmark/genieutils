@@ -28,6 +28,8 @@ namespace genie {
 
 bool CombinedResources::playerInfo = false;
 
+static bool s_verbose = false;
+
 ScnMainPlayerData::~ScnMainPlayerData()
 {
     delete []bitmap;
@@ -36,15 +38,21 @@ ScnMainPlayerData::~ScnMainPlayerData()
 
 void ScnMainPlayerData::serializeObject(void)
 {
+    s_verbose = verbose;
+
     serializePlayerDataVersion();
 
     if (scn_plr_data_ver > 1.13f) {
+        int num = 0;
         for (std::string &playerName : playerNames) {
             serialize(playerName, 256); // 1.14 <-- this is read much later in AoE 1
+            if (s_verbose) std::cout << "Player " << (num++) << " name " << playerName << std::endl;
         }
 
         if (scn_plr_data_ver > 1.15f) {
             serialize<uint32_t, 16>(playerNamesStringTable);
+
+            if (s_verbose) std::cout << "Read name string table" << std::endl;
         }
 
         CombinedResources::playerInfo = true;
@@ -53,10 +61,12 @@ void ScnMainPlayerData::serializeObject(void)
 
     if (scn_plr_data_ver > 1.06f) {
         serialize<uint8_t>(conquestVictory);
+        if (s_verbose) std::cout << "Conquest victory " << conquestVictory << std::endl;
     }
 
     serialize<ISerializable>(timeline);
     serializeSizedString<uint16_t>(originalFileName, false);
+    if (s_verbose) std::cout << "Original filename " << originalFileName << std::endl;
 
     if (scn_plr_data_ver > 1.15f) {
         serialize<uint32_t>(instructionsStringTable);
@@ -71,6 +81,7 @@ void ScnMainPlayerData::serializeObject(void)
     }
 
     serializeSizedString<uint16_t>(instructions, false);
+    if (s_verbose) std::cout << "Instructions " << instructions << std::endl;
 
     if (scn_plr_data_ver > 1.1f) {
         serializeSizedString<uint16_t>(hints, false);
@@ -95,6 +106,7 @@ void ScnMainPlayerData::serializeObject(void)
 
     if (scn_plr_data_ver > 1.08f) {
         serializeSizedString<uint16_t>(backgroundFilename, false);
+        if (s_verbose) std::cout << "Background filename " << backgroundFilename << std::endl;
     }
 
     if (scn_plr_data_ver > 1.0f) {
@@ -116,6 +128,7 @@ void ScnMainPlayerData::serializeObject(void)
 
     if (scn_plr_data_ver > 1.01f) {
         serialize<uint32_t>(separator_);
+        if (s_verbose) std::cout << "Separator " << separator_ << std::endl;
     }
 
     // <- here actually switches the reading function in exe
@@ -123,12 +136,14 @@ void ScnMainPlayerData::serializeObject(void)
     if (scn_plr_data_ver < 1.14f) {
         for (std::string &playerName : playerNames) {
             serialize(playerName, 256);
+            if (s_verbose) std::cout << "Player name old " << playerName << std::endl;
         }
 
         serialize<CombinedResources, 16>(resourcesPlusPlayerInfo);
     } else {
         CombinedResources::playerInfo = false;
         serialize<CombinedResources, 16>(resourcesPlusPlayerInfo);
+        if (s_verbose) std::cout << "Read resources and player info " << std::endl;
     }
 
     if (scn_plr_data_ver > 1.01f) {
@@ -187,27 +202,38 @@ void CombinedResources::serializeObject(void)
 {
     if (playerInfo || scn_plr_data_ver < 1.14f) {
         serialize<uint32_t>(enabled);
+        if (s_verbose) std::cout << "Combined Resources enabled " << enabled << std::endl;
     }
 
     if (!playerInfo || scn_plr_data_ver < 1.14f) {
         serialize<uint32_t>(gold);
+        if (s_verbose) std::cout << "Gold " << gold << std::endl;
         serialize<uint32_t>(wood);
+        if (s_verbose) std::cout << "Wood " << wood << std::endl;
         serialize<uint32_t>(food);
+        if (s_verbose) std::cout << "Food " << food << std::endl;
         serialize<uint32_t>(stone);
+        if (s_verbose) std::cout << "Stone " << stone << std::endl;
     }
 
     if (playerInfo || scn_plr_data_ver < 1.14f) {
         serialize<uint32_t>(isHuman);
+        if (s_verbose) std::cout << "Is human " << isHuman << std::endl;
         serialize<uint32_t>(civilizationID);
+        if (s_verbose) std::cout << "Civ ID " << civilizationID << std::endl;
         serialize<uint32_t>(unknown1);
+        if (s_verbose) std::cout << "Unknown " << unknown1 << std::endl;
     }
 
     if (!playerInfo && scn_plr_data_ver > 1.16f) {
         serialize<uint32_t>(ore);
+        if (s_verbose) std::cout << "Ore " << ore << std::endl;
         serialize<uint32_t>(goods);
+        if (s_verbose) std::cout << "Goods " << goods << std::endl;
 
         if (scn_plr_data_ver > 1.23f) {
             serialize<uint32_t>(goods);
+            if (s_verbose) std::cout << "Goods again " << goods << std::endl;
         }
     }
 }
@@ -419,13 +445,16 @@ void ScnMorePlayerData::serializeObject(void)
     // Haven't found more scenario files to test with that have victory conditions here, that aren't also 2.0
     if (victoryConditionVersion > 1.0f) {
         serialize<int32_t>(unknown1);
+        if (s_verbose) std::cout << "Unknown1 " << unknown1 << std::endl;
         serialize<int32_t>(unknown2);
+        if (s_verbose) std::cout << "Unknown2 " << unknown2 << std::endl;
 //        printf("unknown 1: %d\n", unknown1);
 //        printf("unknown 2: %d\n", unknown2);
     }
 
     if (scn_internal_ver > 1.13f && (scn_internal_ver < 1.14f || (scn_internal_ver > 1.14f))) {
         serialize<int32_t>(playerID);
+        if (s_verbose) std::cout << "Player ID " << playerID << std::endl;
     }
 }
 

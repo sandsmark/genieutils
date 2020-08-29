@@ -11,7 +11,7 @@
 
 void printUsage(const char *appName)
 {
-    std::cerr << "\tUsage: " << appName << " list|extract|show <file.cpx|cpn> [scnfile.scn] [filetoextract outpath]" << std::endl;
+    std::cerr << "\tUsage: " << appName << " list[-verbose]|extract|show <file.cpx|cpn> [scnfile.scn] [filetoextract outpath]" << std::endl;
     std::cerr << "\tDat file is used to get the filenames" << std::endl;
 }
 
@@ -65,7 +65,7 @@ int main(int argc, char *argv[]) try
             return 1;
         }
         toExtract = argv[3];
-    } else if (command == "list") {
+    } else if (command == "list" || command == "list-verbose") {
         // todo check arg count
     } else if (command == "show") {
         // todo check arg count
@@ -87,6 +87,9 @@ int main(int argc, char *argv[]) try
 
 
     genie::CpxFile campaign;
+    if (command == "list-verbose") {
+        campaign.verbose = true;
+    }
     try {
         campaign.load(cpxFile);
     } catch (const std::exception &e) {
@@ -142,7 +145,7 @@ int main(int argc, char *argv[]) try
     }
 
 //    std::cout << "Opened scenario" << std::endl;
-    if (command == "list" && argc == 4) {
+    if ((command == "list" || command == "list-verbose") && argc == 4) {
         genie::ScnFilePtr scenario = campaign.getScnFile(toExtract);
         if (!scenario) {
             std::cerr << "Failed to open" << toExtract;

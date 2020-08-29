@@ -64,6 +64,8 @@ public:
     float popLimit = 75;
     uint32_t playerId = 0;
 
+    static bool verbose;
+
 private:
     void serializeObject(void) override;
 };
@@ -73,6 +75,7 @@ class ScnPlayerUnits : public ISerializable
 public:
     std::vector<ScnUnit> units;
 
+    static bool verbose;
 private:
     uint32_t unitCount_;
     void serializeObject(void) override;

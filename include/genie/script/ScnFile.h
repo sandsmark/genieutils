@@ -186,6 +186,8 @@ public:
     std::string version;
     std::string name;
 
+    bool verbose = false;
+
 private:
     uint32_t filecount = 0;
     std::vector<CpxIncludedFile> m_files;
