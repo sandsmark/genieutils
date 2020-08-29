@@ -30,101 +30,166 @@ namespace genie {
 class EffectCommand : public ISerializable
 {
 public:
-    enum EffectType {
+    enum EffectType : int8_t {
+        /// Invalid/unset type
+        InvalidEffectType = -1,
+
+        /// Sets a unit attribute
         AbsoluteAttributeModifier = 0,
+
+        /// Modifies a resource (gold, wood, population headroom, etc.)
         ResourceModifier = 1,
+
+        /// Enables a disabled unit
         EnableUnit = 2,
+
+        /// Upgrades a unit type to The Next Level™
         UpgradeUnit = 3,
+
+        /// Modifies a unit attribute (plus or minus)
         RelativeAttributeModifier = 4,
+
+        /// Multiplies an attribute (can be <1, i. e. divide)
         AttributeMultiplier = 5,
+
+        /// Multiplies a resource
         ResourceMultiplier = 6,
+
+        /// Modifies the cost of researching a tech
         TechCostModifier = 101,
+
+        /// Disables a technology
         DisableTech = 102,
+
+        /// Modifies how long it takes to research a tech
         TechTimeModifier = 103
     };
 
-    int8_t Type = -1;
+    /// What kind of effect, influences how all other values are parsed
+    EffectType Type = InvalidEffectType;
 
-
+    /// If Type is for modifying a Unit:
+    /// If this is specific to a specific unit type, this is set, otherwise see UnitClassID
     int16_t TargetUnit = -1;
 
-    // For ResourceModifier, 0 means absolute and 1 means relative
+    /// When applied as EffectType::ResourceModifier,
+    /// 0 means absolute and 1 means relative.
+    /// Otherwise it is the unit class it affects (instead of a specific unit).
     int16_t UnitClassID = -1;
 
-    /// -1 No Attribute/Invalid Attribute
-    /// 0 - Hit Points
-    /// 1 - Line of Sight
-    /// 2 - Garrison Capacity
-    /// 3 - Unit Size X
-    /// 4 - Unit Size Y
-    /// 5 - Movement Speed (types 20-80)
-    /// 6 - Rotation Speed (types 30-80)
-    /// 7 - Unused
-    /// 8 - Armor (types 50-80)
-    /// 9 - Attack (types 50-80)
-    /// 10 - Attack Reload Time (types 50-80)
-    /// 11 - Accuracy Percent (types 50-80)
-    /// 12 - Max Range (types 50-80)
-    /// 13 - Work Rate (types 30-80)
-    /// 14 - Carry Capacity
-    /// 15 - Base Armor (types 50-80)
-    /// 16 - Projectile Unit (types 50-80)
-    /// 17 - Icon/Graphics Angle (type 80)
-    /// 18 - Terrain Defense Bonus (always sets, types 50-80)
-    /// 19 - Enable Smart Projectiles (type 60)
-    /// 20 - Min Range (types 50-80)
-    /// 21 - Amount of 1st resource storage
-    /// 22 - Blast Width (types 50-80)
-    /// 23 - Search Radius (types 40-80)
-    /// 100 - Resource Costs (types 70-80)
-    /// 101 - Train Time (types 70-80)
-    /// 102 - Total Missiles (types 70-80)
-    /// 103 - Food Costs (types 70-80)
-    /// 104 - Wood Costs (types 70-80)
-    /// 105 - Gold Costs (types 70-80)
-    /// 106 - Stone Costs (types 70-80)
-    /// 107 - Max Total Missiles (types 70-80)
-    /// 108 - Garrison Heal Rate (type 80)
-    /// 109 - Regeneration Rate (types 40-80)
 
     enum Attributes : int16_t {
+        /// No Attribute/Invalid Attribute
         InvalidAttribute = -1,
+
+        /// Hit Points
         HitPoints = 0,
+
+        /// Line of Sight
         LineOfSight = 1,
+
+        /// Garrison Capacity
         GarrisonCapacity = 2,
+
+        /// Unit Size X
         UnitSizeX = 3,
+
+        /// Unit Size Y
         UnitSizeY = 4,
+
+        /// Movement Speed (types 20-80)
         MovementSpeed = 5,
+
+        /// Rotation Speed (types 30-80)
         RotationSpeed = 6,
+
+        /// Not used by the game
+        Unused = 7,
+
+        /// Armor (types 50-80)
         Armor = 8,
+
+        /// Attack (types 50-80)
         Attack = 9,
+
+        /// Attack Reload Time (types 50-80)
         AttackReloadTime = 10,
+
+        /// Accuracy Percent (types 50-80)
         AccuracyPercent = 11,
+
+        /// Max Range, mostly attacks (types 50-80)
         MaxRange = 12,
+
+        /// Work Rate, how much is gathered per second etc. (types 30-80)
         WorkRate = 13,
+
+        /// Carry Capacity
         CarryCapacity = 14,
+
+        /// Base Armor, i. e. not attack type specific (types 50-80)
         BaseArmor = 15,
+
+        /// Projectile Unit, i. e. what kind of projectiles it fires (types 50-80)
         ProjectileUnit = 16,
+
+        /// Icon/Graphics Angle, don't ask me (type 80)
         IconGraphicsAngle = 17,
+
+        /// Terrain Defense Bonus (always sets, types 50-80)
         TerrainDefenseBonus = 18,
+
+        /// Enable Smart Projectiles (type 60)
         EnableSmartProjectiles = 19,
+
+        /// Min Range (types 50-80)
         MinRange = 20,
+
+        /// Amount of 1st resource storage
         MainResourceStorage = 21,
+
+        /// Blast Width (types 50-80)
         BlastWidth = 22,
+
+        /// Search Radius, for "automatic" actions (types 40-80)
         SearchRadius = 23,
+
+        /// Resource Costs (types 70-80)
         ResourceCosts = 100,
+
+        /// How long it takes to train the unit (types 70-80)
         TrainTime = 101,
+
+        /// Total Missiles (types 70-80)
         TotalMissiles = 102,
+
+        /// Food Costs (types 70-80)
         FoodCosts = 103,
+
+        /// Wood Costs (types 70-80)
         WoodCosts = 104,
+
+        /// Gold Costs (types 70-80)
         GoldCosts = 105,
+
+        /// Stone Costs (types 70-80)
         StoneCosts = 106,
+
+        /// Max Total Missiles (types 70-80)
         MaxTotalMissiles = 107,
+
+        /// Garrison Heal Rate (type 80)
         GarrisonHealRate = 108,
+
+        /// Regeneration Rate (types 40-80)
         RegenerationRate = 109
     };
 
-    int16_t AttributeID = -1;
+    /// Defines what attributes this effect affects (~pun intended.)
+    Attributes AttributeID = InvalidAttribute;
+
+    /// Absolute or relative if it is a EffectType::ResourceModifier, depending on UnitClassID
+    /// Otherwise it depends on the EffectType (multiplier, relativemodifier, etc.)
     float Amount = 0;
 
     bool compareTo(const EffectCommand &other) const;
