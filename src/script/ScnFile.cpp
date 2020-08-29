@@ -24,6 +24,7 @@
 #include "genie/util/Logger.h"
 
 #include <math.h>
+#include <sstream>
 
 namespace genie {
 
@@ -42,14 +43,8 @@ ScnFile::ScnFile() :
     scn_internal_ver = 0.f;
 }
 
-void ScnFile::extractRaw(const char *from, const char *to)
+void ScnFile::extractRaw(std::istream &ifs, std::ostream &ofs)
 {
-    std::ifstream ifs;
-    std::ofstream ofs;
-
-    ifs.open(from, std::ios::binary);
-    ofs.open(to, std::ios::binary);
-
     char version[4];
     ifs.read(version, 4);
     ofs.write(version, 4);
@@ -59,15 +54,13 @@ void ScnFile::extractRaw(const char *from, const char *to)
     ifs.read(reinterpret_cast<char *>(&headerLen), 4);
     ofs.write(reinterpret_cast<char *>(&headerLen), 4);
 
+
     std::vector<char> header(headerLen);
 
     ifs.read(header.data(), headerLen);
     ofs.write(header.data(), headerLen);
 
     Compressor::decompress(ifs, ofs);
-
-    ifs.close();
-    ofs.close();
 }
 
 //------------------------------------------------------------------------------
@@ -390,12 +383,45 @@ ScnFilePtr CpxFile::getScnFile(size_t index)
     return m_files[index].getScnFile();
 }
 
+CpxIncludedFile CpxFile::getRawFile(const std::string filename)
+{
+    for (CpxIncludedFile &f : m_files) {
+        if (f.filename == filename) {
+            return f;
+        }
+    }
+
+    return {};
+}
+
 ScnFilePtr CpxIncludedFile::getScnFile()
 {
     ScnFilePtr ret = std::make_shared<ScnFile>();
     ret->setInitialReadPosition(offset);
     ret->readObject(*getIStream());
     return ret;
+}
+
+bool CpxIncludedFile::extractTo(const std::string &outPath)
+{
+    ScnFilePtr ret = std::make_shared<ScnFile>();
+    ret->setInitialReadPosition(offset);
+    std::string content;
+    content.resize(size);
+
+    getIStream()->seekg(offset);
+    getIStream()->read(content.data(), content.size());
+
+    std::istringstream istr(content);
+//    std::ifstream ifs;
+    std::ofstream ofs;
+    ofs.open(outPath, std::ios::binary);
+    if (!ofs.is_open()) {
+        std::cerr << "Failed to open " << outPath << std::endl;
+        return false;
+    }
+    ret->extractRaw(istr, ofs);
+    return true;
 }
 
 void CpxIncludedFile::serializeObject()
