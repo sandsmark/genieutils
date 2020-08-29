@@ -321,8 +321,8 @@ bool DatFile::compareTo(const DatFile &other) const
     COMPARE_MEMBER(TerrainsUsed1);
     COMPARE_MEMBER(SUnknown2);
     COMPARE_MEMBER(SUnknown3);
-    COMPARE_MEMBER(SUnknown4);
-    COMPARE_MEMBER(SUnknown5);
+    COMPARE_MEMBER(swgbBlendModes);
+    COMPARE_MEMBER(swgbMaxBlendmodes);
 
     COMPARE_MEMBER(SUnknown7);
     COMPARE_MEMBER(SUnknown8);
@@ -429,15 +429,14 @@ void DatFile::serializeObject()
         serializeSize<uint16_t>(count16, Civs.size());
         serialize<int32_t>(SUnknown2);
         serialize<int32_t>(SUnknown3);
-        serialize<int32_t>(SUnknown4);
-        serialize<int32_t>(SUnknown5);
+        serialize<int32_t>(swgbBlendModes);
+        serialize<int32_t>(swgbMaxBlendmodes);
 
         if (verbose_) {
-            std::cout << "Unkown1: " << count16 << std::endl;
             std::cout << "Unkown2: " << SUnknown2 << std::endl;
             std::cout << "Unkown3: " << SUnknown3 << std::endl;
-            std::cout << "Unkown4: " << SUnknown4 << std::endl;
-            std::cout << "Unkown5: " << SUnknown5 << std::endl;
+            std::cout << "swgb blend modes: " << swgbBlendModes << std::endl;
+            std::cout << "swgb max blend modes: " << swgbMaxBlendmodes << std::endl;
         }
     }
 
