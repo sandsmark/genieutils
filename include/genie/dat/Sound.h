@@ -27,15 +27,25 @@
 
 namespace genie {
 
+/// A sound "type", set of similar sounds that can be chosen randomly for the same event
 class Sound : public ISerializable
 {
 public:
     void setGameVersion(GameVersion gv) override;
 
+    /// Unique sound ID
     int16_t ID = -1;
+
+    /// Delay before playing sound
     int16_t PlayDelay = 0;
+
+    /// How long to cache sound in memory
     int32_t CacheTime = 300000; // 5 minutes
+
+    /// Sum of all SoundItem probabilities
     int16_t TotalProbability = 100;
+
+    /// List of actual sounds that can be chosen at random
     std::vector<SoundItem> Items;
 
     bool compareTo(const Sound &other) const;

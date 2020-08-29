@@ -58,12 +58,14 @@ public:
     /// Star Wars: also determines unit and tech icons
     int8_t IconSet = 0;
 
+    /// Unused, in-memory pointers to units
     std::vector<int32_t> UnitPointers;
 
     /// Units defined for this civ.
     std::vector<Unit> Units;
 
-    std::array<int16_t, 4> UniqueUnitsTechs = { -1, -1, -1, -1 }; // Unknown in >=SWGB (cnt=4)
+    /// Unique tech units, SWGB
+    std::array<int16_t, 4> UniqueUnitsTechs = { -1, -1, -1, -1 };
 
     bool compareTo(const Civ &other) const;
 

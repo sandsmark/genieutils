@@ -29,21 +29,30 @@ namespace genie {
 class Task : public ISerializable
 {
 public:
-    // Always 1?
+    /// Always 1?
     int16_t TaskType = 1;
 
+    /// Unique ID for this Task
     int16_t ID = -1;
 
     /// Basically useless
     /// Used to setup task when discovered,
     /// but you can directly set it in unit data
     int8_t IsDefault = false;
+
+    /// Type of action
     genie::ActionType ActionType = ActionType::None;
+
     static const std::string &actionTypeName(const int16_t type);
     const std::string &actionTypeName() const { return actionTypeName(int(ActionType)); }
 
+    /// Unit class this applies to
     int16_t ClassID = -1;
+
+    /// Unit ID this applies to
     int16_t UnitID = -1;
+
+    /// Terrain ID this applies to
     int16_t TerrainID = -1;
 
     /// Resource gained by gathering
@@ -104,7 +113,7 @@ public:
         TargetOthers = 6, ///< All but your objects
         TargetAnyDiplo2 = 7, ///< All objects
     };
-    int8_t TargetDiplomacy = 0;
+    TargetDiplomacies TargetDiplomacy = TargetAnyDiplo;
 
     /// Holding Attribute
     /// 0   Right-click target is defined by the target diplomacy.
@@ -133,7 +142,10 @@ public:
     /// Example: Plays when lumberjack drops his wood into TC
     int16_t ResourceDepositSoundID = -1;
 
+    /// Wwise sound to play when gathering, DE only
     uint32_t WwiseResourceGatheringSoundID = 0; // TODO doc, new in de
+
+    /// Wwise sound to play when depositing, DE only
     uint32_t WwiseResourceDepositSoundID = 0; // TODO doc, new in de
 
     bool compareTo(const Task &other) const;

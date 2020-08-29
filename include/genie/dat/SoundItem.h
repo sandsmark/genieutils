@@ -24,6 +24,7 @@
 
 namespace genie {
 
+/// An actual playable sound
 class SoundItem : public ISerializable
 {
 public:
@@ -37,9 +38,13 @@ public:
     /// in the Sound directory.
     int32_t ResourceID = -1;
 
-    /// Probability out of 100 that this item will be played
+    /// Probability this will be played (out of Sound::TotalProbability)
     int16_t Probability = 100;
+
+    /// Not in AoE1/RoR, civilization this belongs to
     int16_t Civilization = -1; //not in aoe/ror
+
+    /// Not in AoE1/RoR, iconset this belongs to
     int16_t IconSet = -1; //not in aoe/ror
 
     bool compareTo(const SoundItem &other) const;

@@ -29,11 +29,22 @@ class MapElevation : public ISerializable
 public:
     void setGameVersion(GameVersion gv) override;
 
+    /// Relative proportion
     int32_t Proportion = 0;
+
+    /// Terrain ID
     int32_t Terrain = -1;
+
+    /// Number of clumps
     int32_t ClumpCount = 0;
+
+    /// Terrain this is based on
     int32_t BaseTerrain = -1;
+
+    /// Base elevation
     int32_t BaseElevation = 0;
+
+    /// Spacing between tiles
     int32_t TileSpacing = 0;
 
     bool compareTo(const MapElevation &other) const;
@@ -47,18 +58,43 @@ class MapUnit : public ISerializable
 public:
     void setGameVersion(GameVersion gv) override;
 
+    /// Unit type
     int32_t Unit = -1;
+
+    /// Terrain unit is on
     int32_t HostTerrain = -1;
+
+    /// Group it is in
     int8_t GroupPlacing = 0;
+
+    /// Not sure
     int8_t ScaleFlag = 0;
+
+    /// Memory padding
     int16_t Padding1 = 0;
+
+    /// Objects in group
     int32_t ObjectsPerGroup = 1;
+
+    /// Not sure, variation?
     int32_t Fluctuation = 0;
+
+    /// How many per player
     int32_t GroupsPerPlayer = 1;
+
+    /// Which area? Or groups areas?
     int32_t GroupArea = 1;
+
+    /// Owner
     int32_t PlayerID = 0;
+
+    /// Do all players need this
     int32_t SetPlaceForAllPlayers = 1;
+
+    /// Minimum distance to a player
     int32_t MinDistanceToPlayers = 2;
+
+    /// Maximum distance to a player
     int32_t MaxDistanceToPlayers = 6;
 
     bool compareTo(const MapUnit &other) const;
@@ -129,15 +165,28 @@ public:
     int32_t LandCoverage = 80;
     int32_t UnusedID = 0;
 
-    // These pointers are overwritten
+    /// Unused in-memory pointer, overwritten when loaded
     int32_t MapLandsPtr = 0;
+
+    /// Unused in-memory pointer, overwritten when loaded
     int32_t MapTerrainsPtr = 0;
+
+    /// Unused in-memory pointer, overwritten when loaded
     int32_t MapUnitsPtr = 0;
+
+    /// Unused in-memory pointer, overwritten when loaded
     int32_t MapElevationsPtr = 0;
 
+    /// Lands for this random map
     std::vector<MapLand> MapLands;
+
+    /// Terrains defined for this random map
     std::vector<MapTerrain> MapTerrains;
+
+    /// Units defined for this random map
     std::vector<MapUnit> MapUnits;
+
+    /// Elevation zones for this random map
     std::vector<MapElevation> MapElevations;
 
     bool compareTo(const MapInfo &other) const;
@@ -153,9 +202,10 @@ class RandomMaps : public ISerializable
 public:
     void setGameVersion(GameVersion gv) override;
 
-    // Overwritten
+    /// Unused in-memory pointer, overwritten when loaded
     int32_t RandomMapsPtr = 0;
 
+    /// List of random maps bundled
     std::vector<MapInfo> Maps;
 
     bool compareTo(const RandomMaps &other) const;

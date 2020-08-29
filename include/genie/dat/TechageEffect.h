@@ -192,6 +192,7 @@ public:
     /// Otherwise it depends on the EffectType (multiplier, relativemodifier, etc.)
     float Amount = 0;
 
+    /// Internal, used for autotests
     bool compareTo(const EffectCommand &other) const;
 
 private:
