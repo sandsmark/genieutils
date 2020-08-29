@@ -85,7 +85,6 @@ void LangFile::load(const std::string &filename)
 
     setFileName(filename);
 
-    log.info("-------");
     log.info("Loading \"%\"", filename);
 
     if (pfile_) {
