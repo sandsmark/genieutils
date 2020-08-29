@@ -88,9 +88,11 @@ public:
     //----------------------------------------------------------------------------
     /// Extracts a scenario (for debugging purpose).
     //
-    void extractRaw(const char *from, const char *to);
+    void extractRaw(std::istream &ifs, std::ostream &ofs);
 
     static uint32_t getSeparator(void);
+
+    uint32_t getFileCount() const { return fileCount_; }
 
     std::string version;
 
@@ -162,6 +164,8 @@ public:
 
     ScnFilePtr getScnFile();
 
+    bool extractTo(const std::string &outPath);
+
 private:
     void serializeObject(void) override;
 };
@@ -175,6 +179,9 @@ public:
     std::vector<std::string> getFilenames() const;
     ScnFilePtr getScnFile(const std::string &filename);
     ScnFilePtr getScnFile(size_t index);
+    CpxIncludedFile getRawFile(const std::string filename);
+
+    uint32_t getFilecount() const { return filecount; }
 
     std::string version;
     std::string name;

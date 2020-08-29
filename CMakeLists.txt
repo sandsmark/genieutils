@@ -236,6 +236,7 @@ set(TEST_SRC
 set(EXTRACT_SRC src/tools/extract/datextract.cpp)
 
 set(DRSTOOL_SRC src/tools/drstool/drstool.cpp)
+set(CPXTOOL_SRC src/tools/cpxtool/cpxtool.cpp)
 
 set(BINCOMP_SRC src/tools/bincompare/bincomp.cpp
                 src/tools/bincompare/main.cpp)
@@ -297,6 +298,10 @@ if (GUTILS_TOOLS)
 
   add_executable(replayparser src/tools/replayparser/main.cpp $<TARGET_OBJECTS:genieutils_common>)
   target_link_libraries(replayparser ${COMMON_LIBRARIES})
+
+  add_executable(cpxtool ${CPXTOOL_SRC})
+  install(TARGETS cpxtool)
+  target_link_libraries(cpxtool genieutils)
 
   add_executable(genie-bindiff ${BINCOMP_SRC})
   install(TARGETS genie-bindiff)
