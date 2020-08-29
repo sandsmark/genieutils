@@ -58,12 +58,11 @@ GenieGame DatFile::game() const
     if (version <= GV_TC) {
         return GenieGame::AgeOfEmpires2;
     }
+    if (version <= GV_LatestDE2) {
+        return GenieGame::AgeOfEmpires2DefinitiveEdition;
+    }
     if (version >= GV_SWGB) {
         return GenieGame::StarWarsGalacticBattlegrounds;
-    }
-
-    if (version >= GV_Cysion && version <= GV_LatestDE2) {
-        return GenieGame::AgeOfEmpires2DefinitiveEdition;
     }
 
     return GenieGame::Unknown;
