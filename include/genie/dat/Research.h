@@ -47,8 +47,7 @@ public:
     /// Holds the number of how much of the required technologies you need.
     int16_t RequiredTechCount = 0;
 
-    /// ID of the civilization that gets this technologie. -1 if unused
-    /// MinGameVersion: aok
+    /// ID of the civilization that gets this technologie. -1 if unused, MinGameVersion: aok
     int16_t Civ = -1;
 
     /// Set to 1 if this tech is enabled in full tech mode or 0 if not.
@@ -81,16 +80,17 @@ public:
 
     /// The first number is 100 000 plus the Language FIle ID for the name/description.
     int32_t LanguageDLLHelp = 107000;
+
     /// The second number is 150 000 plus the Language File ID for TheSecondName.
-    int32_t LanguageDLLTechTree = 150000;
+    int32_t LanguageDoLLTechTree = 150000;
+
     /// The third number has been -1 in every technology so far.
     int32_t HotKey = -1;
 
     /// Internal name
     std::string Name = "";
 
-    /// Second internal name
-    /// MinGameVersion: SWGB
+    /// Second internal name, MinGameVersion: SWGB
     std::string Name2 = "";
 
     bool compareTo(const Tech &other) const;
