@@ -35,6 +35,7 @@ double ISerializable::scn_trigger_ver = 0.0;
 
 Logger &ScnFile::log = Logger::getLogger("genie.ScnFile");
 
+static bool s_verbose = false;
 
 //------------------------------------------------------------------------------
 ScnFile::ScnFile() :
@@ -107,6 +108,10 @@ bool ScnFile::verifyVersion()
 //------------------------------------------------------------------------------
 void ScnFile::serializeObject(void)
 {
+    playerData.verbose = s_verbose;
+    ScnPlayerUnits::verbose = s_verbose;
+    ScnPlayerResources::verbose = s_verbose;
+
     serializeVersion();
 
     if (isOperation(OP_READ) && !verifyVersion()) {
@@ -120,13 +125,27 @@ void ScnFile::serializeObject(void)
 
     serialize<uint32_t>(headerLength_); // Used in AoE 1 lobby
 
+    if (s_verbose) std::cout << "Header length: " << headerLength_ << std::endl;
+
     serialize<int32_t>(saveType);
+    if (s_verbose) std::cout << "Save type " << saveType << std::endl;
+
     serialize<uint32_t>(lastSaveTime);
+    if (s_verbose) std::cout << "Last save time " << lastSaveTime << std::endl;
+
     serializeForcedString<uint32_t>(scenarioInstructions);
+    if (s_verbose) std::cout << "Scenario instructions " << scenarioInstructions << std::endl;
+
     serialize<int32_t>(victoryType);
+    if (s_verbose) std::cout << "Victory type " << victoryType << std::endl;
+
     serialize<uint32_t>(enabledPlayerCount);
+    if (s_verbose) std::cout << "Enabled players " << enabledPlayerCount << std::endl;
+
 
     compressor_.beginCompression();
+    if (s_verbose) std::cout << "Started compression" << std::endl;
+
 #if 0
     std::ofstream dump("/tmp/decompressed");
 
@@ -142,10 +161,13 @@ void ScnFile::serializeObject(void)
     // Compressed header:
 
     serialize<uint32_t>(nextUnitID);
+    if (s_verbose) std::cout << "Next unit ID " << nextUnitID << std::endl;
 
     serialize<ScnMainPlayerData>(playerData);
+    if (s_verbose) std::cout << "Read player data " << std::endl;
 
     serialize<ScnMap>(map);
+    if (s_verbose) std::cout << "Read map " << map.width << "x" << map.height << std::endl;
 
     if (scn_ver == "1.20" || scn_ver == "1.21") {
         scn_internal_ver = 1.14f;
@@ -160,11 +182,14 @@ void ScnFile::serializeObject(void)
     } else {
         throw std::runtime_error("Unknown scenario file version " + scn_ver);
     }
+    if (s_verbose) std::cout << "Internal version " << scn_internal_ver << std::endl;
 
     serializeSize<uint32_t>(playerUnitsCount, playerUnits.size());
+    if (s_verbose) std::cout << "Player units count " << playerUnitsCount << std::endl;
 
     if (scn_internal_ver > 1.06f) {
         serialize<ScnPlayerResources, 8>(playerResources);
+        if (s_verbose) std::cout << "Read player resources " << std::endl;
     } else {
         // A lot of data is read here.
     }
@@ -325,6 +350,8 @@ void ScnMainPlayerData::serializePlayerDataVersion(void)
     serialize<float>(playerDataVersion);
     scn_plr_data_ver = playerDataVersion;
 
+    if (s_verbose) std::cout << "Player data version " << playerDataVersion << std::endl;
+
     /*if (isOperation(OP_READ))
     {
     if (fabs(playerDataVersion - 1.18) < 0.01)
@@ -340,6 +367,8 @@ void ScnMainPlayerData::serializePlayerDataVersion(void)
 
 void CpxFile::serializeObject()
 {
+    s_verbose = verbose;
+
     serialize(version, 4);
     serialize(name, 256);
     serializeSize<uint32_t>(filecount, m_files.size());

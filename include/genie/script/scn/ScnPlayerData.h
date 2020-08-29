@@ -251,6 +251,8 @@ public:
     int32_t player1CameraY = 0;
     int32_t aiType = 0;
 
+    bool verbose = false;
+
 private:
     uint32_t separator_ = 0;
     void serializePlayerDataVersion(void);
