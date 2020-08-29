@@ -77,7 +77,7 @@ public:
         /// Trees in aoe and ror are of this type
         AoeTreeType = 90
     };
-    int8_t Type = 10;
+    UnitType Type = EyeCandyType;
 
     int16_t ID = -1;
 
@@ -164,7 +164,7 @@ public:
         MiscBuilding = 60,
         ControlledAnimal = 61,
     };
-    int16_t Class = InvalidClass;
+    UnitClass Class = InvalidClass;
     static const std::string &className(const int16_t classId, const GameVersion gameVersion = GV_TC);
     [[nodiscard]] const std::string &className() const { return className(Class); }
 
@@ -176,14 +176,18 @@ public:
     /// Graphic shown while the units is dying.
     int16_t DyingGraphic = -1;
 
-    /// Graphic to use if undead mode is enabled
+    /// Graphic to use if undead graphic mode is enabled
     int16_t UndeadGraphic = -1;
 
     /// Enables undead state
     /// After 1st dying graphic:
     /// 0   Transform into dead unit
     /// 1   Show undead graphic
-    int8_t UndeadMode = 0;
+    enum UndeadTypes {
+        TransformToDeadUnit = 0,
+        ShowUndeadGraphic = 1
+    };
+    UndeadTypes UndeadMode = TransformToDeadUnit;
 
     /// Unit's hit points
     /// -1 Instantly dying unit
@@ -204,6 +208,8 @@ public:
 
     /// Sound played when the unit is created
     int16_t TrainSound = -1;
+
+    /// Sound played when unit is damaged
     int16_t DamageSound = -1;
 
     uint32_t WwiseTrainSoundID = 0; // TODO doc, new in DE
@@ -251,6 +257,7 @@ public:
     /// Required terrain underneath
     std::pair<int16_t, int16_t> PlacementTerrain = { -1, -1 };
 
+    /// How close it allows other units to be
     XYF ClearanceSize;
 
     /// Restrictions on placement on hills
@@ -260,7 +267,7 @@ public:
         NoHillPlacement = 2, ///< Only flat land; town center, port, trade workshop
         OneElevDiffHillRestriction = 3 ///< All hills, as long as there isn't more than 1 elevation difference
     };
-    int8_t HillMode = 0;
+    HillModes HillMode = AnyHillPlacement;
 
     enum FogVisibilities : int8_t {
         /// Normal units
@@ -278,15 +285,19 @@ public:
         /// Replaced by a "doppelganger" unit when in fog (i. e. a dummy unit that is shown until area is visible again)
         DoppelgangerFogVisibility = 4
     };
-    int8_t FogVisibility = 0;
+    FogVisibilities FogVisibility = InvisibleInFog;
 
     /// ID of terrain restrictions that are imposed on the unit.
     int16_t TerrainRestriction = 0;
 
     /// Controls graphic altitude when teleporting
-    /// 0   Stay on ground
-    /// 1   Graphics appear higher than the shadow
-    int8_t FlyMode = 0;
+    enum TeleportType : int8_t {
+        /// Stay on ground
+        TeleportOnShadow = 0,
+        /// Graphics appear higher than the shadow
+        TeleportAboveShadow = 1
+    };
+    TeleportType FlyMode = TeleportOnShadow;
 
     /// How much resources this unit is able to carry
     int16_t ResourceCapacity = 0;
@@ -297,23 +308,27 @@ public:
     /// Receive blast damage from units that have lower or same blast attack level
     int8_t BlastDefenseLevel = 0;
 
-    /// Mainly used in trigger conditions
-    /// 0   None
-    /// 1   Base
-    /// 2   Building
-    /// 3   Civilian
-    /// 4   Soldier
-    /// 5   Priest/Monk
-    enum CombatLevelType {
+    enum CombatLevelType : int8_t {
+        /// No combat
         NoCombatLevel = 0,
-        BaseCombatLevel = 1,
-        BuildingCombatLevel = 2,
-        CivilianCombatLevel = 3,
-        SoldierCombatLevel = 4,
-        PriestMonkCombatLevel = 4,
-    };
 
-    int8_t CombatLevel = 0;
+        /// Basic unit
+        BaseCombatLevel = 1,
+
+        /// Building
+        BuildingCombatLevel = 2,
+
+        /// Civilian
+        CivilianCombatLevel = 3,
+
+        /// Soldier
+        SoldierCombatLevel = 4,
+
+        /// Priest/monk
+        PriestMonkCombatLevel = 5,
+    };
+    /// Mainly used in trigger conditions
+    CombatLevelType CombatLevel = NoCombatLevel;
 
     enum InteractionModes : int8_t {
         NoInteraction = 0, ///< Can't be interacted with
@@ -366,7 +381,7 @@ public:
         /// Hawks, macaws, and flying dogs have this value.
         MinimapFlying = 10
     };
-    int8_t MinimapMode = 0;
+    MinimapModes MinimapMode = MinimapInvisible;
 
     /// Class and this together selects the buttons to show on the bottom left for this unit
     enum InterfaceKinds : int8_t {
@@ -397,8 +412,9 @@ public:
 
         UnknownInterface = 12
     };
-    int8_t InterfaceKind = 0;
+    InterfaceKinds InterfaceKind = NoInterface;
 
+    /// IDK
     float MultipleAttributeMode = 0;
 
     /// Minimap modes 3 and 4 allow this to work
@@ -429,7 +445,12 @@ public:
     /// 0   None
     /// 1   After death
     /// 2   When dying
-    int8_t CreateDoppelgangerOnDeath = 0;
+    enum DeathDoppelgangerMode {
+        NoDeathDoppelganger = 0,
+        DoppelgangerAfterDeath = 1,
+        DoppelgangerWhenDying = 2,
+    };
+    DeathDoppelgangerMode CreateDoppelgangerOnDeath = NoDeathDoppelganger;
 
     /// Visible resource group
     /// Needs to be gatherable
@@ -495,7 +516,7 @@ public:
         GateObstructionClass = 5, ///< Allows movement through
         CliffObstructionClass = 6 ///< Blocks walling
     };
-    int8_t ObstructionClass = 0;
+    ObstructionClasses ObstructionClass = DefaultObstructionClass;
 
     /// Bitmask defining traits
     enum Traits : uint8_t {
@@ -514,35 +535,50 @@ public:
 
     /// Seems to be used only in SWGB/CC
     int8_t Civilization = 0;
+
+    /// Unused?
     int16_t Nothing = 0;
 
     /// Note: this doe not work with all units
-    /// These are from AGE, openage has a different understanding:
-    ///   0: "NONE",
-    ///   1: "HPBAR_ON_OUTLINE_DARK",  # permanent, editor only
-    ///   2: "HPBAR_ON_OUTLINE_NORMAL",
-    ///   3: "HPBAR_OFF_SELECTION_SHADOW",
-    ///   4: "HPBAR_OFF_OUTLINE_NORMAL",
-    ///   5: "HPBAR_ON_5",
-    ///   6: "HPBAR_OFF_6",
-    ///   7: "HPBAR_OFF_7",
-    ///   8: "HPBAR_ON_8",
-    ///   9: "HPBAR_ON_9",
+    /// These are from AGE, openage has a different understanding.
     enum SelectionEffects : int8_t {
         /// HP Bar on, selection shadow (permanent darker outline in editor only, disappears in game)
+        /// In openage: 0: "NONE",
         ShowHPHideOutline = 0,
 
         /// HP Bar on, normal outline
+        /// In openage it is: "HPBAR_ON_OUTLINE_DARK",  # permanent, editor only
         ShowHPShowOutline = 1,
 
         /// HP Bar off, selection shadow
+        /// In openage:  "HPBAR_ON_OUTLINE_NORMAL",
         HideHPHideOutline = 2,
 
         /// HP Bar off, normal outline
-        HideHPShowOutline = 3
-    };
-    int8_t SelectionEffect = 1;
+        /// In openage: "HPBAR_OFF_SELECTION_SHADOW",
+        HideHPShowOutline = 3,
 
+        /// From openage: "HPBAR_OFF_OUTLINE_NORMAL",
+        HideHPNormalOutline,
+
+        /// From openage
+        HPBarOn5 = 5,
+
+        /// From openage
+        HPBarOff6 = 6,
+
+        /// From openage
+        HPBarOff7 = 7,
+
+        /// From openage
+        HPBarOn8 = 8,
+
+        /// From openage
+        HPBarOn9 = 9,
+    };
+    SelectionEffects SelectionEffect = ShowHPShowOutline;
+
+    /// Color when selecting in the editor
     uint8_t EditorSelectionColour = 52;
 
     /// Selection size according to AGE
@@ -552,20 +588,27 @@ public:
     /// Vertical half tile (elevation height?) distance from the top corner?
     float HPBarHeight = 0.f;
 
+    /// Amount of resources this can store
     typedef Resource<float, int8_t> ResourceStorage;
 
     /// Resources unit contains
     std::array<ResourceStorage, 3> ResourceStorages;
 
-    ///
+    /// List of graphics overlayed when damaged
     std::vector<unit::DamageGraphic> DamageGraphics;
 
     /// Sound that is played when this unit is selected
     int16_t SelectionSound = -1;
+
+    /// Sound played when unit is dying
     int16_t DyingSound = -1;
 
-    uint32_t WwiseSelectionSoundID = 0; // TODO doc, new in DE
-    uint32_t WwiseDyingSoundID = 0; // TODO doc, new in DE
+    /// Sound played when selecting in Definitive Edition (as it uses Wwise for playing sounds)
+    /// Not sure why they didn't just expand the normal ones to 32 bit, but meh
+    uint32_t WwiseSelectionSoundID = 0;
+
+    /// Sound played when dying in Definitive Edition (as it uses Wwise for playing sounds)
+    uint32_t WwiseDyingSoundID = 0;
 
     /// 0   None
     /// 1   Run
@@ -589,24 +632,37 @@ public:
     /// MinGameVersion: SWGB
     int8_t MinTechLevel = -1;
 
+    /// ID of unit this was copied from
     int16_t CopyID = -1;
-    int16_t BaseID = -1; //not in aoe/ror
+
+    /// If this is based on something else (e. g. when upgrading)
+    /// Not in AoE1/RoR
+    int16_t BaseID = -1;
+
+    /// For gathering player analytics, I guess
     int16_t TelemetryID = -1;
 
     //      Type 20+
 
+    /// Movement speed
     float Speed = 0;
 
+    /// Attributes for moving units
     unit::Moving Moving;
 
+    /// Attributes for units that have actions
     unit::Action Action;
 
+    /// Attributes for units that can engage in combat
     unit::Combat Combat;
 
+    /// Attributes for projectile units
     unit::Missile Missile{};
 
+    /// Attributes for units that can be created
     unit::Creatable Creatable;
 
+    /// Attributes for buildings
     unit::Building Building;
 
     bool compareTo(const Unit &other) const;

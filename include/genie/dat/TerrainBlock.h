@@ -41,15 +41,30 @@ private:
     void serializeObject(void) override;
 };
 
+
+/// Most here seems to be unused in AoK at least, so I haven't bothered documenting it.
+///
+/// Size in bytes:
+///  - AoE Trial Beta  36264
+///  - AoE & RoR       36304
+///  - AoK A & B       36340
+///  - AoK             37208
+///  - TC              42208
+///  - SWGB & CC       49640
 class TerrainBlock : public ISerializable
 {
 public:
     void setGameVersion(GameVersion gv) override;
 
+    /// Unused, because the original Genie wrote their entire class structure to disk, including vptrs
     int32_t VirtualFunctionPtr = 0;
+
+    /// Unused, same as above
     int32_t MapPointer = 0;
+
     int32_t MapWidth = 0;
     int32_t MapHeight = 0;
+
     int32_t WorldWidth = 0;
     int32_t WorldHeight = 0;
     int16_t PaddingTS = 0;
@@ -57,7 +72,11 @@ public:
     std::array<TileSize, SharedTerrain::TILE_TYPE_COUNT> TileSizes;
     std::vector<Terrain> Terrains;
 
-    std::vector<int16_t> AoEAlphaUnknown; // These are very similar to borders
+    /// These are very similar to borders
+    /// Only in AoE1 alpha, hardcoded to (16 * 1888) / 2 in genieutils:w
+    std::vector<int16_t> AoEAlphaUnknown;
+
+    /// TerrainBorders seem to be unused (are empty) in GV > AoK Alpha
     std::array<TerrainBorder, 16> TerrainBorders;
 
     int32_t MapRowOffset = 0;

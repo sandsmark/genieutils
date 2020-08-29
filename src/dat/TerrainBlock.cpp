@@ -130,14 +130,6 @@ bool TerrainBlock::compareTo(const TerrainBlock &other) const
     return true;
 }
 
-//------------------------------------------------------------------------------
-/// Size in bytes
-/// AoE Trial Beta  36264
-/// AoE & RoR       36304
-/// AoK A & B       36340
-/// AoK             37208
-/// TC              42208
-/// SWGB & CC       49640
 void TerrainBlock::serializeObject(void)
 {
     GameVersion gv = getGameVersion();
@@ -166,7 +158,6 @@ void TerrainBlock::serializeObject(void)
     }
 
     if (gv < GV_C9 || gv > GV_LatestDE2) {
-        // TerrainBorders seem to be unused (are empty) in GV > AoK Alpha
         serialize<TerrainBorder, 16>(TerrainBorders);
 
         // Probably filled after loading map in game.
