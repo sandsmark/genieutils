@@ -40,6 +40,8 @@ BlendomaticFile::BlendomaticFile() :
 //------------------------------------------------------------------------------
 void BlendomaticFile::serializeObject()
 {
+    // TODO: SWGB stores this in the dat file, so I need to buy SWGB and figure out what overrides what
+
     serializeSize<uint32_t>(modeCount_, modes_.size());
     serialize<uint32_t>(tileCount_);
 
