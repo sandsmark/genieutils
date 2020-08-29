@@ -46,7 +46,7 @@ void ScnPlayerResources::serializeObject(void)
         serialize<float>(popLimit); // game forces range from 25 to 200, defaults to 75
     }
 
-    if (scn_internal_ver > 1.13f) {
+    if (scn_internal_ver > 1.13f && (scn_internal_ver < 1.14f || (scn_internal_ver > 1.14f))) {
         serialize<uint32_t>(playerId);
     }
 }
