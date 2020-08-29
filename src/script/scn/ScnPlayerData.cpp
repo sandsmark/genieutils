@@ -414,7 +414,7 @@ void ScnMorePlayerData::serializeObject(void)
         serialize<int32_t>(unknown2);
     }
 
-    if (scn_internal_ver > 1.13f) {
+    if (scn_internal_ver > 1.13f && (scn_internal_ver < 1.14f || (scn_internal_ver > 1.14f))) {
         serialize<int32_t>(playerID);
     }
 }
