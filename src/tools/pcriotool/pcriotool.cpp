@@ -31,12 +31,9 @@ int main(int argc, char *argv[]) try
         "language_x1_p1.dll"
     };
 
-    int id = 0;
+    int id = -1;
     if (argc > 3) {
         id = std::stoi(argv[3]);
-    } else {
-        std::cerr << "Listing not supported yet, dll's suck" << std::endl;
-        return 1;
     }
 
     for (const std::string &dll : dlls) {
@@ -53,6 +50,12 @@ int main(int argc, char *argv[]) try
                     std::cout << id << '\t' << dll << "\t'" << str << "'" << std::endl;
                 }
                 continue;
+            } else {
+                std::cout << "Listing all " << langfile.allIds().size() << std::endl;
+                for (const uint32_t id : langfile.allIds()) {
+                    const std::string str = langfile.getString(id + 0);
+                    std::cout << id << '\t' << dll << "\t'" << str << "'" << std::endl;
+                }
             }
         } catch (const std::exception &error) {
             std::cerr << error.what() << std::endl;

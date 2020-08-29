@@ -63,6 +63,8 @@ public:
     /// Convert a utf8 string to codepage
     std::string convertTo(const std::string &in, uint32_t codepage);
 
+    const std::vector<uint32_t> &allIds() const { return m_allIds; }
+
 protected:
     void unload() override;
 
@@ -75,6 +77,7 @@ private:
 
     uint32_t defaultCultureId_ = 0;
     uint32_t defaultCodepage_ = 0;
+    std::vector<uint32_t> m_allIds;
 
     static const unsigned int CONV_BUF_SIZE = 100;
     static const char *CONV_DEFAULT_CHARSET;

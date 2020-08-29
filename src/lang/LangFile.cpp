@@ -147,6 +147,13 @@ void LangFile::load(const std::string &filename)
             throw std::iostream::failure("Can't open default converter.");
         }
     }
+
+    uint32_t *ids;
+    size_t numIds = pcr_get_all_string_ids(pfile_, &ids);
+
+    m_allIds.resize(numIds);
+    memcpy(m_allIds.data(), ids, numIds * sizeof(uint32_t));
+    free(ids);
 }
 
 //------------------------------------------------------------------------------
