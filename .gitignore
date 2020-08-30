@@ -12,3 +12,4 @@ build/
 build-*/
 debug/
 release/
+doc/api
