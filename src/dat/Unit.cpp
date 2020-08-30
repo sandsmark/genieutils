@@ -222,13 +222,13 @@ void Unit::serializeObject(void)
 
     //Type 10+
     if (gv < GV_AoEB && isOperation(OP_WRITE)) {
-        Type /= 10;
+        Type = UnitType(Type / 10);
     }
 
     serialize<int8_t>(Type); // 7 = 70 in AoE alphas etc
 
     if (gv < GV_AoEB && isOperation(OP_READ)) {
-        Type *= 10;
+        Type = UnitType(Type * 10);
     }
 
     uint16_t name_len{};
