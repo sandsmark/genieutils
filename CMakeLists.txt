@@ -7,10 +7,10 @@ cmake_minimum_required(VERSION 3.13)
 
 ###### macos is absolute shit ########
 if (APPLE)
-    message(WARNING "\n"
-        "#############################################################################################\n"
-        "   MacOS does not have proper C++ support, so bug reports not accepted, you're on your own\n"
-        "#############################################################################################\n"
+    message(WARNING ""
+        "############################################################################################## "
+        "MacOS does not have proper C++ support, so bug reports not accepted, you're on your own        "
+        "############################################################################################## "
         )
 endif()
 
