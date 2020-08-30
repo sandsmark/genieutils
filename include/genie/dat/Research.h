@@ -82,7 +82,7 @@ public:
     int32_t LanguageDLLHelp = 107000;
 
     /// The second number is 150 000 plus the Language File ID for TheSecondName.
-    int32_t LanguageDoLLTechTree = 150000;
+    int32_t LanguageDLLTechTree = 150000;
 
     /// The third number has been -1 in every technology so far.
     int32_t HotKey = -1;
