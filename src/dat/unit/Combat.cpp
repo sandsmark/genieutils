@@ -50,7 +50,7 @@ bool Combat::compareTo(const Combat &other) const
     COMPARE_MEMBER(ProjectileUnitID);
     COMPARE_MEMBER(BlastAttackLevel);
     COMPARE_MEMBER(BreakOffCombat);
-    COMPARE_MEMBER_VEC(GraphicDisplacement);
+    COMPARE_MEMBER_XYZF(GraphicDisplacement);
     COMPARE_MEMBER_OBJ_VEC(Armours);
     COMPARE_MEMBER_OBJ_VEC(Attacks);
 
@@ -63,8 +63,8 @@ void Combat::serializeObject(void)
 
     if (gv < GV_TC // 11.52
             && (gv > GV_LatestTap || gv < GV_T3)) {
-        uint8_t defarmor_byte = BaseArmor;
-        serialize<uint8_t>(defarmor_byte);
+        int8_t defarmor_byte = BaseArmor;
+        serialize<int8_t>(defarmor_byte);
         BaseArmor = defarmor_byte;
     } else {
         serialize<int16_t>(BaseArmor);
@@ -86,7 +86,9 @@ void Combat::serializeObject(void)
     serialize<int16_t>(AccuracyPercent);
     serialize<int8_t>(BreakOffCombat); // Not used anymore
     serialize<int16_t>(FrameDelay);
-    serialize<float, 3>(GraphicDisplacement);
+    serialize<float>(GraphicDisplacement.x);
+    serialize<float>(GraphicDisplacement.y);
+    serialize<float>(GraphicDisplacement.z);
     serialize<int8_t>(BlastAttackLevel);
     serialize<float>(MinRange);
 
