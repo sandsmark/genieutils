@@ -183,7 +183,7 @@ public:
     /// After 1st dying graphic:
     /// 0   Transform into dead unit
     /// 1   Show undead graphic
-    enum UndeadTypes {
+    enum UndeadTypes : int8_t {
         TransformToDeadUnit = 0,
         ShowUndeadGraphic = 1
     };
@@ -445,7 +445,7 @@ public:
     /// 0   None
     /// 1   After death
     /// 2   When dying
-    enum DeathDoppelgangerMode {
+    enum DeathDoppelgangerMode : int8_t {
         NoDeathDoppelganger = 0,
         DoppelgangerAfterDeath = 1,
         DoppelgangerWhenDying = 2,
