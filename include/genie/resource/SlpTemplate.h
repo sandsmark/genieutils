@@ -182,13 +182,14 @@ public:
         // .empty() is very slow with libstdc++; it compares iterators,
         // .size() just compares memory addresses, so this is faster.
         // And this is a very hot path, so yes it matters
-        if (patterns.size() == 0) { // NOLINT
+        const unsigned patternsCount = patterns.size();
+        if (patternsCount == 0) { // NOLINT
             return icmFile.maps[IcmFile::Neutral];
         }
 
         uint8_t lightmapIndex = m_masks[patterns[0]].pixels[lightIndex] >> 2 & 0x1F;
 
-        for (size_t i = 1; i < patterns.size(); i++) {
+        for (unsigned i = 1; i < patternsCount; i++) {
             const uint8_t pixel = m_masks[patterns[i]].pixels[lightIndex];
 
             if (PatternMask::isIgnore(pixel)) {
@@ -197,11 +198,11 @@ public:
 
             const uint8_t newLightmapIndex = (pixel >> 2) & 0x1F;
 
-            if (PatternMask::isBrighten(pixel)) {
-                lightmapIndex = std::max(newLightmapIndex, lightmapIndex);
-            } else {
-                lightmapIndex = std::min(newLightmapIndex, lightmapIndex);
-            }
+            lightmapIndex = PatternMask::isBrighten(pixel) ?
+                std::max(newLightmapIndex, lightmapIndex)
+                :
+                std::min(newLightmapIndex, lightmapIndex)
+            ;
         }
 
         const size_t icmIndex = lightmapFile.lightmaps[lightmapIndex][lightIndex];
