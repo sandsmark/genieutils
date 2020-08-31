@@ -261,7 +261,10 @@ install (
     FILES_MATCHING PATTERN "*.h*"
     )
 
-install(TARGETS genieutils)
+install(TARGETS genieutils
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    )
 
 target_link_libraries(genieutils
     ${PCRIO_LIBRARIES}
