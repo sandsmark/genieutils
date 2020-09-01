@@ -453,6 +453,32 @@ protected:
         }
     }
 
+    template <typename T,
+              std::enable_if_t<std::is_integral<T>::value, int> = 0
+              >
+    void serialize(bool &data)
+    {
+        assert(operation_ != OP_INVALID);
+
+        switch (getOperation()) {
+        case OP_WRITE:
+            write<T>(T(data));
+            break;
+
+        case OP_READ:
+            data = bool(read<T>());
+            break;
+
+        case OP_CALC_SIZE:
+            size_ += sizeof(T);
+            break;
+
+        case OP_INVALID:
+            assert(operation_ != OP_INVALID);
+            break;
+        }
+    }
+
     template <typename T, typename E,
               std::enable_if_t<std::is_enum<E>::value, int> = 0
               >

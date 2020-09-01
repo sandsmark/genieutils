@@ -103,6 +103,9 @@ private:
     uint32_t m_gameSpeed1;
     uint32_t m_unknownZero1;
     uint32_t m_gameSpeed2;
+    uint16_t m_recOwner;
+    std::array<uint8_t, 29> m_unknown29chars;
+    std::array<uint8_t, 62> m_unknown62chars;
 
     float m_unknownFloat1;
     uint32_t m_unknown2;
@@ -149,6 +152,7 @@ private:
     Compressor m_compressor;
     uint32_t m_headerSize;
     uint32_t m_nextHeader;
+    std::string m_headerVersion;
 };
 
 class MgxFile : public IFile
