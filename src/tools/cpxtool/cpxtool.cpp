@@ -40,6 +40,20 @@ std::string prettyBytes(float size)
     return std::to_string(int(size + 0.5)) + ' ' + suffix;
 }
 
+static void showScnFile(const std::filesystem::path &path, bool verbose)
+{
+    genie::ScnFile scenario;
+    scenario.verbose = verbose;
+    try {
+    scenario.load(path.string());
+    } catch (const std::ios_base::failure& fail) {
+        std::cout << "Fail " << fail.what() << " - " << fail.code().message() << " - " << fail.code().value() << std::endl;
+        return;
+    }
+
+    std::cout << "Version: " << scenario.version << std::endl;
+    std::cout << "file count: " << scenario.getFileCount() << std::endl;
+}
 
 int main(int argc, char *argv[]) try
 {
@@ -75,7 +89,14 @@ int main(int argc, char *argv[]) try
         return 1;
     }
 
-    if (!std::filesystem::exists(cpxFile)) {
+    std::filesystem::path inPath(cpxFile);
+    if (genie::util::toLowercase(inPath.extension()) == ".scn") {
+        showScnFile(inPath, command == "list-verbose");
+        return 0;
+    }
+    std::cout << genie::util::toLowercase(inPath.extension()) << std::endl;
+
+    if (!std::filesystem::exists(inPath)) {
         std::cout << "campaign file " << cpxFile << " does not exist" << std::endl;
         printUsage(argv[0]);
         return 1;
@@ -88,12 +109,13 @@ int main(int argc, char *argv[]) try
 
     genie::CpxFile campaign;
     if (command == "list-verbose") {
+        std::cout << "Verbose listing" << std::endl;
         campaign.verbose = true;
     }
     try {
         campaign.load(cpxFile);
     } catch (const std::exception &e) {
-        std::cerr << "Failed to load DRS: " << e.what() << std::endl;
+        std::cerr << "Failed to load campaign file: " << e.what() << std::endl;
         return 1;
     }
     std::cout << "Name: " << campaign.name << std::endl;
