@@ -140,7 +140,7 @@ void ScnFile::serializeObject(void)
     }
 
     serializeForcedString<uint32_t>(scenarioInstructions);
-    if (s_verbose) std::cout << "Scenario instructions " << scenarioInstructions << std::endl;
+    if (s_verbose) std::cout << "Scenario instructions " << scenarioInstructions.size() << ": " << util::sanitizeAscii(scenarioInstructions) << std::endl;
 
     serialize<int32_t>(victoryType);
     if (s_verbose) std::cout << "Victory type " << victoryType << std::endl;
@@ -209,6 +209,7 @@ void ScnFile::serializeObject(void)
     // You would think this would be the size of the player data, but no
     serialize<uint32_t>(playerCount2_);
     serialize<ScnMorePlayerData, 8>(players);
+    if (s_verbose) std::cout << "All players loaded " << players.size() << std::endl;
 
     if (scn_internal_ver != 1.07f && scn_internal_ver != 1.09f) {
         triggerVersion = scn_trigger_ver;
@@ -384,8 +385,13 @@ void CpxFile::serializeObject()
     s_verbose = verbose;
 
     serialize(version, 4);
+    if (s_verbose) std::cout << "Campaign version: " << version << std::endl;
+
     serialize(name, 256);
+
+    if (s_verbose) std::cout << "Campaign name: " << name << std::endl;
     serializeSize<uint32_t>(filecount, m_files.size());
+    if (s_verbose) std::cout << "Files: " << filecount << std::endl;
     serialize<CpxIncludedFile>(m_files, filecount);
 }
 
@@ -472,7 +478,9 @@ bool CpxIncludedFile::extractTo(const std::string &outPath)
 void CpxIncludedFile::serializeObject()
 {
     serialize<uint32_t>(size);
+    if (s_verbose) std::cout << "File size: " << size << std::endl;
     serialize<uint32_t>(offset);
+    if (s_verbose) std::cout << "File offset: " << offset << std::endl;
     serialize(identifier, 255);
     serialize(filename, 257);
 }

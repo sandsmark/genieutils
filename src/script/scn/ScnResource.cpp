@@ -129,7 +129,7 @@ void ScnUnit::serializeObject(void)
 //    }
 
     serialize<uint8_t>(state);
-    if (s_verbose) std::cout << "state " << state << std::endl;
+    if (s_verbose) std::cout << "state " << int(state) << std::endl;
     serialize<float>(rotation);
     if (s_verbose) std::cout << "rotation " << rotation << std::endl;
 

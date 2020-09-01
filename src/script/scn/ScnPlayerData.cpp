@@ -82,7 +82,7 @@ void ScnMainPlayerData::serializeObject(void)
     }
 
     serializeSizedString<uint16_t>(instructions, false);
-    if (s_verbose) std::cout << "Instructions " << instructions << std::endl;
+    if (s_verbose) std::cout << "Player instructions: " << instructions << std::endl;
 
     if (scn_plr_data_ver > 1.1f) {
         serializeSizedString<uint16_t>(hints, false);
@@ -97,13 +97,19 @@ void ScnMainPlayerData::serializeObject(void)
 
     if (scn_plr_data_ver < 1.03f) {
         serializeSizedString<uint16_t>(oldFilename1, false);
+        if (s_verbose) std::cout << "Old filename 1: " << oldFilename1 << std::endl;
         serializeSizedString<uint16_t>(oldFilename2, false);
+        if (s_verbose) std::cout << "Old filename 2: " << oldFilename2 << std::endl;
         serializeSizedString<uint16_t>(oldFilename3, false);
+        if (s_verbose) std::cout << "Old filename 3: " << oldFilename3 << std::endl;
     }
 
     serializeSizedString<uint16_t>(pregameCinematicFilename, false);
+    if (s_verbose) std::cout << "Pregame cinematic " << pregameCinematicFilename << std::endl;
     serializeSizedString<uint16_t>(victoryCinematicFilename, false);
+    if (s_verbose) std::cout << "Victory cinematic " << victoryCinematicFilename << std::endl;
     serializeSizedString<uint16_t>(lossCinematicFilename, false);
+    if (s_verbose) std::cout << "Loss cinematic " << lossCinematicFilename << std::endl;
 
     if (scn_plr_data_ver > 1.08f) {
         serializeSizedString<uint16_t>(backgroundFilename, false);
@@ -115,10 +121,13 @@ void ScnMainPlayerData::serializeObject(void)
     }
 
     serializeSizedStrings<uint16_t, 16>(aiNames, false);
+    if (s_verbose) std::cout << "Loaded ai names " << aiNames[0] << " [...] " << aiNames[15] << std::endl;
     serializeSizedStrings<uint16_t, 16>(cityNames, false);
+    if (s_verbose) std::cout << "Loaded city names " << cityNames[0] << " [...] " << cityNames[15] << std::endl;
 
     if (scn_plr_data_ver > 1.07f) {
         serializeSizedStrings<uint16_t, 16>(personalityNames, false);
+        if (s_verbose) std::cout << "Loaded personality names " << personalityNames[0] << " [...] " << personalityNames[15] << std::endl;
     }
 
     serialize<AiFile, 16>(aiFiles);
@@ -137,7 +146,7 @@ void ScnMainPlayerData::serializeObject(void)
     if (scn_plr_data_ver < 1.14f) {
         for (std::string &playerName : playerNames) {
             serialize(playerName, 256);
-            if (s_verbose) std::cout << "Player name old " << playerName << std::endl;
+            if (s_verbose) std::cout << "Player name old '" << util::sanitizeAscii(playerName) << "'" << std::endl;
         }
 
         serialize<CombinedResources, 16>(resourcesPlusPlayerInfo);
@@ -158,10 +167,20 @@ void ScnMainPlayerData::serializeObject(void)
         serialize<uint32_t>(separator_);
     }
 
-    serialize<uint32_t>(alliedVictory, scn_plr_data_ver < 1.02f ? 16 * 16 : 16);
+    if (scn_plr_data_ver < 1.02f) {
+        serialize<uint32_t>(alliedVictory, 16 * 16);
+    } else {
+        serialize<uint32_t>(alliedVictory, 16);
+        if (s_verbose) {
+            for (const auto s : alliedVictory) {
+                std::cout << "Allied victory: " << s << std::endl;
+            }
+        }
+    }
 
     if (scn_plr_data_ver > 1.22f) {
         serialize<uint32_t>(unused1);
+        if (s_verbose) std::cout << "Unused 1 " << unused1 << std::endl;
     }
 
     if (scn_plr_data_ver > 1.03f) {
@@ -169,16 +188,20 @@ void ScnMainPlayerData::serializeObject(void)
     }
 
     if (scn_plr_data_ver > 1.04f) {
-        serialize<uint32_t>(unused1);
+        serialize<uint32_t>(unused2);
+        if (s_verbose) std::cout << "Unused 2 " << unused2 << std::endl;
     }
 
     if (scn_plr_data_ver > 1.11f) {
-        serialize<uint32_t>(unused2);
+        serialize<uint32_t>(unused3);
+        if (s_verbose) std::cout << "Unused 3 " << unused3 << std::endl;
         serialize<uint32_t>(allTechs);
+        if (s_verbose) std::cout << "All techs " << allTechs << std::endl;
     }
 
     if (scn_plr_data_ver > 1.05f) {
         serialize<int32_t, 16>(startingAge);
+        if (s_verbose) std::cout << "Starting age " << startingAge[0] << " [...] " << startingAge[15] << std::endl;
     }
 
     if (scn_plr_data_ver > 1.01f) {
@@ -242,10 +265,14 @@ void CombinedResources::serializeObject(void)
 void Timeline::serializeObject(void)
 {
     serializeSize<uint16_t>(entryCount, events.size());
+    if (s_verbose) std::cout << "Timeline events: " << entryCount << std::endl;
     serialize<uint16_t>(availableId);
+    if (s_verbose) std::cout << "Available ID: " << availableId << std::endl;
     serialize<float>(time);
+    if (s_verbose) std::cout << "Time: " << time << std::endl;
 
     serialize(events, entryCount);
+    if (s_verbose) std::cout << "Timeline events: " << events.size() << std::endl;
 }
 
 void TimelineEvent::serializeObject(void)
@@ -284,10 +311,14 @@ void TimelineEvent::serializeObject(void)
 void ScnMainPlayerData::serializeBitmap(void)
 {
     serialize<uint32_t>(bitmapIncluded);
+    if (s_verbose) std::cout << "Bitmap included? " << bitmapIncluded << std::endl;
 
     serialize<uint32_t>(bitmapWidth);
+    if (s_verbose) std::cout << "Bitmap width " << bitmapWidth << std::endl;
     serialize<uint32_t>(bitmapHeigth);
+    if (s_verbose) std::cout << "Bitmap height " << bitmapHeigth << std::endl;
     serialize<int16_t>(hasBitmap);
+    if (s_verbose) std::cout << "Has bitmap " << hasBitmap << std::endl;
 
     if (bitmapIncluded == 0) {
         return;
@@ -315,10 +346,13 @@ void ScnMainPlayerData::serializeBitmap(void)
 void AiFile::serializeObject(void)
 {
     serializeSize<uint32_t>(aiFilenameSize, aiFilename, true);
+    if (s_verbose) std::cout << "AI Filename size " << aiFilenameSize << std::endl;
     serializeSize<uint32_t>(cityFileSize, cityFilename, true);
+    if (s_verbose) std::cout << "city Filename " << cityFileSize << std::endl;
 
     if (scn_plr_data_ver > 1.07f) {
         serializeSize<uint32_t>(perFileSize, perFilename, true);
+        if (s_verbose) std::cout << "per file size " << perFileSize << std::endl;
     }
 
     // crap in exe, says these are >= 1.15
@@ -377,6 +411,7 @@ void ScnDisables::serializeObject(void)
 {
     if (scn_plr_data_ver > 1.17f) {
         serialize<uint32_t, 16>(numDisabledTechs);
+        if (s_verbose) std::cout << "Disabled tech counts " << numDisabledTechs[0] << " [...] " << numDisabledTechs[15] << std::endl;
     }
 
     if (scn_plr_data_ver < 1.04f) {
@@ -420,18 +455,26 @@ void ScnMorePlayerData::serializeObject(void)
 
     if (s_verbose) std::cout << "player name " << util::sanitizeAscii(playerName) << std::endl;
     serialize<float>(initCameraX);
+    if (s_verbose) std::cout << "init camera X " << initCameraX << std::endl;
     serialize<float>(initCameraY);
+    if (s_verbose) std::cout << "init camera Y " << initCameraY << std::endl;
     serialize<int16_t>(initCameraX2);
+    if (s_verbose) std::cout << "init camera X2 " << initCameraX2 << std::endl;
     serialize<int16_t>(initCameraY2);
+    if (s_verbose) std::cout << "init camera Y2 " << initCameraY2 << std::endl;
     serialize<uint8_t>(alliedVictory);
+    if (s_verbose) std::cout << "allied victory " << alliedVictory << std::endl;
     serializeSize<uint16_t>(playerCount_, diplomacy1.size());
+    if (s_verbose) std::cout << "diplomacy player count " << playerCount_ << std::endl;
     if (playerCount_ > 100) {
         throw std::runtime_error("Too many players, corrupt file? " + std::to_string(playerCount_));
     }
     serialize<uint8_t>(diplomacy1, playerCount_);
+    if (s_verbose) std::cout << "diplomacy 1 " << int(diplomacy1[0]) << " [...] " << int(diplomacy1[playerCount_ - 1]) << std::endl;
 
     if (scn_internal_ver >= 1.08f) {
         serialize<uint32_t>(diplomacy2, playerCount_);
+        if (s_verbose) std::cout << "diplomacy 2 " << diplomacy2[0] << std::endl;
     }
 
     if (scn_internal_ver != 1.07f && scn_internal_ver != 1.09f) {
