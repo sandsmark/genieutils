@@ -138,6 +138,9 @@ void ScnMainPlayerData::serializeObject(void)
 
     if (scn_plr_data_ver > 1.01f) {
         serialize<uint32_t>(separator_);
+        if (separator_ != expectedSeparator) {
+            throw std::runtime_error("Invalid separator before player resources " + std::to_string(separator_));
+        }
         if (s_verbose) std::cout << "Separator " << separator_ << std::endl;
     }
 
@@ -158,6 +161,9 @@ void ScnMainPlayerData::serializeObject(void)
 
     if (scn_plr_data_ver > 1.01f) {
         serialize<uint32_t>(separator_);
+        if (separator_ != expectedSeparator) {
+            throw std::runtime_error("Invalid separator before victory conditions " + std::to_string(separator_));
+        }
     }
 
     serialize<ISerializable>(victoryConditions);
@@ -165,6 +171,10 @@ void ScnMainPlayerData::serializeObject(void)
 
     if (scn_plr_data_ver > 1.01f) {
         serialize<uint32_t>(separator_);
+
+        if (separator_ != expectedSeparator) {
+            throw std::runtime_error("Invalid separator before allied victories " + std::to_string(separator_));
+        }
     }
 
     if (scn_plr_data_ver < 1.02f) {
@@ -184,7 +194,7 @@ void ScnMainPlayerData::serializeObject(void)
     }
 
     if (scn_plr_data_ver > 1.03f) {
-        serialize<ISerializable>(disables);
+        serialize<ScnDisables>(disables);
     }
 
     if (scn_plr_data_ver > 1.04f) {
@@ -206,6 +216,10 @@ void ScnMainPlayerData::serializeObject(void)
 
     if (scn_plr_data_ver > 1.01f) {
         serialize<uint32_t>(separator_);
+
+        if (separator_ != expectedSeparator) {
+            throw std::runtime_error("Invalid separator before camera " + std::to_string(separator_));
+        }
     }
 
     if (scn_plr_data_ver > 1.18f) {

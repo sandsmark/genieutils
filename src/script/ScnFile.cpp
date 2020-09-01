@@ -328,6 +328,18 @@ void ScnFile::serializeVersion(void)
 
     version = scn_ver;
     serialize(version, 4);
+    if (s_verbose) std::cout << "Version: " << version << std::endl;
+
+    if (version[0] != '1' || version[1] != '.') {
+        std::cerr << "Invalid version " << version << std::endl;
+        throw std::runtime_error("Invalid campaign file version " + version);
+    }
+
+    if (version[2] < '0' || version[2] > '9' || version[3] < '0' || version[3] > '9') {
+        std::cerr << "Invalid version " << version << std::endl;
+        throw std::runtime_error("Invalid campaign file version " + version);
+    }
+
     scn_ver = version;
 }
 
@@ -482,7 +494,17 @@ void CpxIncludedFile::serializeObject()
     serialize<uint32_t>(offset);
     if (s_verbose) std::cout << "File offset: " << offset << std::endl;
     serialize(identifier, 255);
+    if (s_verbose) std::cout << "File identifier: " << util::sanitizeAscii(identifier) << std::endl;
+    if (!util::isAscii(identifier)) {
+        std::cerr << "Invalid identifier" << std::endl;
+        throw std::runtime_error("Invalid file identifier '" + util::sanitizeAscii(identifier) + "'");
+    }
     serialize(filename, 257);
+    if (s_verbose) std::cout << "File name: " << util::sanitizeAscii(filename) << std::endl;
+    if (!util::isAscii(filename)) {
+        std::cerr << "Invalid filename" << std::endl;
+        throw std::runtime_error("Invalid file name '" + util::sanitizeAscii(filename) + "'");
+    }
 }
 
 BlnFile::BlnFile() :
