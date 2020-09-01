@@ -22,6 +22,7 @@
 #include "genie/script/ScnFile.h"
 
 #include "genie/util/Logger.h"
+#include "genie/util/Utility.h"
 
 #include <math.h>
 #include <sstream>
@@ -108,6 +109,8 @@ bool ScnFile::verifyVersion()
 //------------------------------------------------------------------------------
 void ScnFile::serializeObject(void)
 {
+    s_verbose = verbose;
+
     playerData.verbose = s_verbose;
     ScnPlayerUnits::verbose = s_verbose;
     ScnPlayerResources::verbose = s_verbose;
@@ -130,8 +133,11 @@ void ScnFile::serializeObject(void)
     serialize<int32_t>(saveType);
     if (s_verbose) std::cout << "Save type " << saveType << std::endl;
 
-    serialize<uint32_t>(lastSaveTime);
-    if (s_verbose) std::cout << "Last save time " << lastSaveTime << std::endl;
+    // post aoe1 beta/alpha
+    if (version[2] >= '1') {
+        serialize<uint32_t>(lastSaveTime);
+        if (s_verbose) std::cout << "Last save time " << lastSaveTime << std::endl;
+    }
 
     serializeForcedString<uint32_t>(scenarioInstructions);
     if (s_verbose) std::cout << "Scenario instructions " << scenarioInstructions << std::endl;
@@ -179,6 +185,10 @@ void ScnFile::serializeObject(void)
         scn_internal_ver = 1.12f;
     } else if (scn_ver == "1.22") {
         scn_internal_ver = 1.15f;
+    } else if (scn_ver == "1.07") {
+        scn_internal_ver = 1.07f;
+    } else if (scn_ver == "1.09") {
+        scn_internal_ver = 1.09f;
     } else {
         throw std::runtime_error("Unknown scenario file version " + scn_ver);
     }
@@ -200,19 +210,23 @@ void ScnFile::serializeObject(void)
     serialize<uint32_t>(playerCount2_);
     serialize<ScnMorePlayerData, 8>(players);
 
-    triggerVersion = scn_trigger_ver;
-    serialize<double>(triggerVersion);
-    scn_trigger_ver = triggerVersion;
+    if (scn_internal_ver != 1.07f && scn_internal_ver != 1.09f) {
+        triggerVersion = scn_trigger_ver;
+        serialize<double>(triggerVersion);
+        if (s_verbose) std::cout << "Trigger version " << triggerVersion << std::endl;
+        scn_trigger_ver = triggerVersion;
 
-    if (scn_trigger_ver > 1.4f) {
-        serialize<int8_t>(objectivesStartingState);
-    }
+        if (scn_trigger_ver > 1.4f) {
+            serialize<int8_t>(objectivesStartingState);
+        }
 
-    serializeSize<uint32_t>(numTriggers_, triggers.size());
-    serialize<Trigger>(triggers, numTriggers_);
+        serializeSize<uint32_t>(numTriggers_, triggers.size());
+        if (s_verbose) std::cout << "num triggers " << numTriggers_ << std::endl;
+        serialize<Trigger>(triggers, numTriggers_);
 
-    if (scn_trigger_ver > 1.3f) {
-        serialize<int32_t>(triggerDisplayOrder, numTriggers_);
+        if (scn_trigger_ver > 1.3f) {
+            serialize<int32_t>(triggerDisplayOrder, numTriggers_);
+        }
     }
 
     if (scn_ver == "1.22" || scn_ver == "1.21" || scn_ver == "1.20" || scn_ver == "1.19" || scn_ver == "1.18") {
@@ -426,6 +440,7 @@ CpxIncludedFile CpxFile::getRawFile(const std::string filename)
 ScnFilePtr CpxIncludedFile::getScnFile()
 {
     ScnFilePtr ret = std::make_shared<ScnFile>();
+    ret->verbose = s_verbose;
     ret->setInitialReadPosition(offset);
     ret->readObject(*getIStream());
     return ret;
@@ -434,6 +449,7 @@ ScnFilePtr CpxIncludedFile::getScnFile()
 bool CpxIncludedFile::extractTo(const std::string &outPath)
 {
     ScnFilePtr ret = std::make_shared<ScnFile>();
+    ret->verbose = s_verbose;
     ret->setInitialReadPosition(offset);
     std::string content;
     content.resize(size);

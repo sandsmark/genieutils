@@ -21,6 +21,7 @@
 
 #include "genie/script/scn/ScnPlayerData.h"
 #include "genie/script/ScnFile.h"
+#include "genie/util/Utility.h"
 
 #include <string>
 
@@ -64,7 +65,7 @@ void ScnMainPlayerData::serializeObject(void)
         if (s_verbose) std::cout << "Conquest victory " << conquestVictory << std::endl;
     }
 
-    serialize<ISerializable>(timeline);
+    serialize<Timeline>(timeline);
     serializeSizedString<uint16_t>(originalFileName, false);
     if (s_verbose) std::cout << "Original filename " << originalFileName << std::endl;
 
@@ -109,7 +110,7 @@ void ScnMainPlayerData::serializeObject(void)
         if (s_verbose) std::cout << "Background filename " << backgroundFilename << std::endl;
     }
 
-    if (scn_plr_data_ver > 1.0f) {
+    if (scn_plr_data_ver > 1.07f) {
         serializeBitmap();
     }
 
@@ -122,7 +123,7 @@ void ScnMainPlayerData::serializeObject(void)
 
     serialize<AiFile, 16>(aiFiles);
 
-    if (scn_plr_data_ver > 1.1f) {
+    if (scn_plr_data_ver > 1.1f && scn_plr_data_ver != 1.14f) {
         serialize<uint8_t, 16>(aiTypes);
     }
 
@@ -378,7 +379,22 @@ void ScnDisables::serializeObject(void)
         serialize<uint32_t, 16>(numDisabledTechs);
     }
 
-    serialize<uint32_t, 16>(disabledTechs, scn_plr_data_ver < 1.04f ? 20 : scn_plr_data_ver < 1.3f ? 30 : 60);
+    if (scn_plr_data_ver < 1.04f) {
+        serialize<uint32_t, 16>(disabledTechs, 20);
+        if (s_verbose) std::cout << "20 disabled tech " << disabledTechs[0][0] << " [...] " << disabledTechs[15][19] << std::endl;
+    } else if (scn_plr_data_ver <= 1.14f) {
+        // TODO: the total amount read here seems correct, but there's some
+        // wrong offset here (they seemed to be grouped in groups of 5?)
+        // So 20 * uint8_t for something, and then 1260 * uint8_t for something else, idk
+        serialize<uint32_t, 16>(disabledTechs, 20);
+        if (s_verbose) std::cout << "20 disabled tech " << disabledTechs[0][0] << " [...] " << disabledTechs[15][19] << std::endl;
+    } else if (scn_plr_data_ver < 1.3f) {
+        serialize<uint32_t, 16>(disabledTechs, 30);
+        if (s_verbose) std::cout << "30 disabled tech " << disabledTechs[0][0] << " [...] " << disabledTechs[15][29] << std::endl;
+    } else {
+        serialize<uint32_t, 16>(disabledTechs, 60);
+        if (s_verbose) std::cout << "Disabled tech " << disabledTechs[0][0] << " [...] " << disabledTechs[15][59] << std::endl;
+    }
 
     if (scn_plr_data_ver > 1.17f) {
         serialize<uint32_t, 16>(numDisabledUnits);
@@ -390,7 +406,19 @@ void ScnDisables::serializeObject(void)
 
 void ScnMorePlayerData::serializeObject(void)
 {
-    serializeForcedString<uint16_t>(playerName);
+    serialize<uint16_t>(playerNameLength);
+    if (scn_internal_ver == 1.07f) {
+        if (s_verbose) std::cout << "player name length " << playerNameLength << std::endl;
+        if (playerNameLength > 9) {
+            serialize<uint8_t>(unknownAoEAlpha, playerNameLength - 9);
+            if (s_verbose) std::cout << "unknown player name prefix " << unknownAoEAlpha.size() << std::endl;
+        }
+        serialize(playerName, 9);
+    } else {
+        serialize(playerName, playerNameLength);
+    }
+
+    if (s_verbose) std::cout << "player name " << util::sanitizeAscii(playerName) << std::endl;
     serialize<float>(initCameraX);
     serialize<float>(initCameraY);
     serialize<int16_t>(initCameraX2);
@@ -402,14 +430,17 @@ void ScnMorePlayerData::serializeObject(void)
     }
     serialize<uint8_t>(diplomacy1, playerCount_);
 
-    if (scn_internal_ver >= 1.08) {
+    if (scn_internal_ver >= 1.08f) {
         serialize<uint32_t>(diplomacy2, playerCount_);
     }
 
-    serialize<uint32_t>(playerColor);
+    if (scn_internal_ver != 1.07f && scn_internal_ver != 1.09f) {
+        serialize<uint32_t>(playerColor);
+        if (s_verbose) std::cout << "player color " << playerColor << std::endl;
+    }
 
     // victory condition version
-    if (scn_internal_ver >= 1.09) {
+    if (scn_internal_ver >= 1.09f) {
         serialize<float>(victoryConditionVersion);
         if (victoryConditionVersion <= 0) {
             throw std::runtime_error("victory conditions version invalid: " + std::to_string(victoryConditionsCount));
@@ -432,7 +463,7 @@ void ScnMorePlayerData::serializeObject(void)
     }
     serialize<ScnPlayerVictoryCondition>(victoryConditions, victoryConditionsCount);
 
-    if (victoryConditionVersion < 1.0) {
+    if (victoryConditionVersion < 1.0f) {
         totalVictoryPoints = 0;
     } else {
         serialize<uint32_t>(pointConditionsCount);

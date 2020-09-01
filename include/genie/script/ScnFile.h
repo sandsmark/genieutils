@@ -133,6 +133,8 @@ public:
     std::array<uint32_t, 99> perError;
     std::vector<ScnPersonalityScript> includedFiles;
 
+    bool verbose = false;
+
 private:
     static Logger &log;
     bool verifyVersion();

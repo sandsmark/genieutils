@@ -133,25 +133,27 @@ void ScnUnit::serializeObject(void)
     serialize<float>(rotation);
     if (s_verbose) std::cout << "rotation " << rotation << std::endl;
 
-    if (scn_ver != "1.14") {
+    if (scn_ver != "1.14" && scn_ver != "1.07" && scn_ver != "1.09") {
         serialize<uint16_t>(initAnimationFrame);
         if (s_verbose) std::cout << "init anim frame " << initAnimationFrame << std::endl;
     }
 
-    serialize<int32_t>(garrisonedInID);
-    if (s_verbose) std::cout << "garrisoned in id " << garrisonedInID << std::endl;
-
-    if (!garrisonedInID && (
-                scn_ver == "1.13" ||
-                scn_ver == "1.14" ||
-                scn_ver == "1.15" ||
-                scn_ver == "1.16" ||
-                scn_ver == "1.17" ||
-                scn_ver == "1.18" ||
-                scn_ver == "1.19" ||
-                scn_ver == "1.20")) {
-        garrisonedInID = -1;
+    if (scn_ver != "1.07" && scn_ver != "1.09") {
+        serialize<int32_t>(garrisonedInID);
         if (s_verbose) std::cout << "garrisoned in id " << garrisonedInID << std::endl;
+
+        if (!garrisonedInID && (
+                    scn_ver == "1.13" ||
+                    scn_ver == "1.14" ||
+                    scn_ver == "1.15" ||
+                    scn_ver == "1.16" ||
+                    scn_ver == "1.17" ||
+                    scn_ver == "1.18" ||
+                    scn_ver == "1.19" ||
+                    scn_ver == "1.20")) {
+            garrisonedInID = -1;
+            if (s_verbose) std::cout << "garrisoned in id " << garrisonedInID << std::endl;
+        }
     }
 }
 } // namespace genie

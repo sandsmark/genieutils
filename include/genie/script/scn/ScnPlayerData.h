@@ -235,6 +235,8 @@ public:
     std::array<uint32_t, 16> numDisabledBuildings;
     std::array<std::vector<uint32_t>, 16> disabledBuildings;
 
+    std::array<std::vector<uint16_t>, 16> unknownAoEAlpha;
+
 private:
     void serializeObject(void) override;
 };
@@ -370,6 +372,7 @@ public:
 
     uint32_t unused1 = 0;
     uint32_t unused2 = 0;
+    uint32_t unused3 = 0;
 
     /// IDK
     uint32_t allTechs = 0;
@@ -389,7 +392,8 @@ public:
     bool verbose = false;
 
 private:
-    uint32_t separator_ = 0;
+    constexpr static uint32_t expectedSeparator = 0xffffff9d;
+    uint32_t separator_ = expectedSeparator;
     void serializePlayerDataVersion(void);
     void serializeObject(void) override;
     void serializeBitmap(void);
@@ -517,6 +521,7 @@ private:
 class ScnMorePlayerData : public ISerializable
 {
 public:
+    uint16_t playerNameLength = 0;
     /// Name of a player
     std::string playerName;
 
@@ -558,6 +563,9 @@ public:
 
     int32_t unknown1 = 0;
     int32_t unknown2 = 0;
+
+    /// Seems to be random memory content, but it's prefixed the player names sometimes
+    std::vector<uint8_t> unknownAoEAlpha;
 
     /// Number of "victory points" (see the victory conditions"
     uint32_t totalVictoryPoints = 0;
