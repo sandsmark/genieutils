@@ -118,6 +118,29 @@ inline std::vector<std::string> stringSplit(const std::string &string, const cha
     return ret;
 }
 
+inline bool isAscii(const std::string &str)
+{
+    for (const char c : str) {
+        if ((c < ' ' || c > '~') && c != '\n') {
+            return false;
+        }
+    }
+    return true;
+}
+inline std::string sanitizeAscii(const std::string &str)
+{
+    std::string ret;
+    ret.reserve(str.size());
+    for (const char c : str) {
+        if (c < ' ' || c > '~') {
+            ret.push_back('_');
+        } else {
+            ret.push_back(c);
+        }
+    }
+    return ret;
+}
+
 // Probably not the most efficient
 #ifndef _MSC_VER
 std::string resolvePathCaseInsensitive(const std::string &inputPath, const std::string &basePath = "/");
