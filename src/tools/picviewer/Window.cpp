@@ -108,7 +108,6 @@ bool Window::load(QString path)
         qDebug() << "trying to find in DRS";
 
         bool ok;
-        id = path.toInt(&ok);
         if (!ok) {
             QMessageBox::warning(this, "Invalid ID", "Can't pass numerical ID and not specify DRS file");
             return false;
