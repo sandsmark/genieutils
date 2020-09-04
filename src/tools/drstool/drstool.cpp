@@ -99,6 +99,7 @@ int main(int argc, char *argv[]) try
             {"empires2.dat",       genie::GV_AoK }, // age of kings
             {"empires_x1.dat",     genie::GV_RoR },
             {"Empires.dat",        genie::GV_AoE },
+            {"GENIE.DAT",          genie::GV_SWGB },
         });
         for (const std::pair<std::string, genie::GameVersion> &datfile : datFilenames) {
             std::string potential = dataPath + datfile.first;
@@ -127,6 +128,7 @@ int main(int argc, char *argv[]) try
 
 
     genie::DrsFile drs;
+    drs.setGameVersion(gameVersion);
     try {
         drs.load(drsFile);
     } catch (const std::exception &e) {
