@@ -65,7 +65,15 @@ public:
     void unload() override;
 
     void setBlendMode(uint32_t number, const BlendMode &mode);
-    const BlendMode &getBlendMode(uint32_t id = 0);
+    inline const BlendMode &getBlendMode(uint32_t id = 0)
+    {
+        if (id >= modes_.size()) {
+            log.error("Invalid blendomatic id %, max is %", id, modes_.size());
+            return BlendMode::null;
+        }
+
+        return modes_[id];
+    }
 
 private:
     static Logger &log;

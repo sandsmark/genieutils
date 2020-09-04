@@ -86,13 +86,4 @@ void BlendomaticFile::setBlendMode(uint32_t number, const BlendMode &mode)
     modes_[number] = mode;
 }
 
-const BlendMode &BlendomaticFile::getBlendMode(uint32_t id)
-{
-    if (id > modes_.size()) {
-        log.error("Invalid blendomatic id %", id);
-        return BlendMode::null;
-    }
-
-    return modes_[id];
-}
 } // namespace genie
