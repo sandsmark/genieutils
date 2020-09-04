@@ -74,6 +74,7 @@ public:
 
         return modes_[id];
     }
+    uint32_t overrideModeCount = 0;
 
 private:
     static Logger &log;

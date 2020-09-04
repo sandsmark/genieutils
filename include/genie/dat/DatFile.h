@@ -133,7 +133,7 @@ public:
     //SWGB Unknowns:
     int32_t SUnknown2 = 0;
     int32_t SUnknown3 = 0;
-    int32_t swgbBlendModes = 0;
+    int32_t swgbBlendModes = -1;
     int32_t swgbMaxBlendmodes = 0;
 
     int8_t SUnknown7 = 0;

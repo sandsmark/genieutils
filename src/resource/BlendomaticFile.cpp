@@ -45,6 +45,12 @@ void BlendomaticFile::serializeObject()
     serializeSize<uint32_t>(modeCount_, modes_.size());
     serialize<uint32_t>(tileCount_);
 
+    if (isOperation(OP_READ)) {
+        if (overrideModeCount > 0) {
+            modeCount_ = overrideModeCount;
+        }
+    }
+
     modes_.resize(modeCount_);
 
     for (uint32_t i = 0; i < modeCount_; i++) {
