@@ -107,7 +107,7 @@ std::string genie::util::resolvePathCaseInsensitive(const std::string &inputPath
     }
 
     if (correct.empty()) {
-        std::cerr << "Failed to resolve " << basePath << " " << inputPath << std::endl;
+        std::cerr << "Failed to resolve " << inputPath << " in folder " << basePath << std::endl;
         return {};
     }
 
