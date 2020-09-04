@@ -77,11 +77,13 @@ public:
         /// Trees in aoe and ror are of this type
         AoeTreeType = 90
     };
+    /// Unit category (I should rename this)
     UnitType Type = EyeCandyType;
 
+    /// Unique ID for this unit
     int16_t ID = -1;
 
-    /// ID of the name string stored in the language.dll file
+    /// \brief ID of the name string stored in the language.dll file
     /// Usual Unit File Pattern for The Conquerors
     /// Name: 5000-5999
     /// Creation: Name +1000
@@ -91,10 +93,9 @@ public:
     /// Tech tree: Name +9000
     int32_t LanguageDLLName = 5000;
 
-    /// ID of the name string stored in the language.dll file
+    /// ID of the name string stored in the language.dll file, for the training/creating button
     int32_t LanguageDLLCreation = 6000;
 
-    /// Class that gives certain properties
     enum UnitClass : int16_t {
         InvalidClass = -1,
 
@@ -139,36 +140,60 @@ public:
         Doppelganger = 37,
         Bird = 38,
 
-        // AoE2
+        /// AoE2
         Gate = 39,
+        /// AoE2
         SalvagePile = 40,
+        /// AoE2
         ResourcePile = 41,
+        /// AoE2
         Relic = 42,
+        /// AoE2
         MonkWithRelic = 43,
+        /// AoE2
         HandCannoneer = 44,
+        /// AoE2
         TwoHandedSwordsman = 45,
+        /// AoE2
         Pikeman = 46,
+        /// AoE2
         Scout = 47,
+        /// AoE2
         OreMine = 48,
+        /// AoE2
         Farm = 49,
+        /// AoE2
         Spearman = 50,
+        /// AoE2
         PackedUnit = 51,
+        /// AoE2
         Tower = 52,
+        /// AoE2
         BoardingBoat = 53,
+        /// AoE2
         UnpackedSiegeUnit = 54,
+        /// AoE2
         Ballista = 55,
+        /// AoE2
         Raider = 56,
+        /// AoE2
         CavalryRaider = 57,
+        /// AoE2
         Livestock = 58,
+        /// AoE2
         King = 59,
+        /// AoE2
         MiscBuilding = 60,
+        /// AoE2
         ControlledAnimal = 61,
     };
+    /// Class that gives certain properties
     UnitClass Class = InvalidClass;
+
     static const std::string &className(const int16_t classId, const GameVersion gameVersion = GV_TC);
     [[nodiscard]] const std::string &className() const { return className(Class); }
 
-    /// Default standing graphic
+    /// \brief Default standing graphic
     /// Half of units in group use 1st,
     /// the rest use 2nd
     std::pair<int16_t, int16_t> StandingGraphic = { -1, -1 };
@@ -180,27 +205,27 @@ public:
     int16_t UndeadGraphic = -1;
 
     /// Enables undead state
-    /// After 1st dying graphic:
-    /// 0   Transform into dead unit
-    /// 1   Show undead graphic
     enum UndeadTypes : int8_t {
+        /// 0: Transform into dead unit
         TransformToDeadUnit = 0,
+        /// 1: Show undead graphic
         ShowUndeadGraphic = 1
     };
+    /// What happens after showing the first dying sprite animation
     UndeadTypes UndeadMode = TransformToDeadUnit;
 
-    /// Unit's hit points
+    /// \brief Unit's hit points
     /// -1 Instantly dying unit
     int16_t HitPoints = 1;
 
-    /// Default line of sight measured in tiles
+    /// \brief Default line of sight measured in tiles
     /// Maximum (effective) value is 20
     float LineOfSight = 2;
 
     /// Maximum number of units that can be garrisonned at the same time.
     int8_t GarrisonCapacity = 0;
 
-    /// Collision detection area taken by the unit.
+    /// \brief Collision detection area taken by the unit.
     /// No other unit can move into this area except flying units.
     /// Setting "can be built on" to 1 and height to 0 causes
     /// farms to be walkable in AoE/RoR.
@@ -212,19 +237,22 @@ public:
     /// Sound played when unit is damaged
     int16_t DamageSound = -1;
 
-    uint32_t WwiseTrainSoundID = 0; // TODO doc, new in DE
-    uint32_t WwiseDamageSoundID = 0; // TODO doc, new in DE
+    /// Training sound used in DE
+    uint32_t WwiseTrainSoundID = 0;
+    /// Damage sound used in DE
+    uint32_t WwiseDamageSoundID = 0;
 
     /// ID of the unit to change to when this one dies.
     int16_t DeadUnitID = -1;
 
     int16_t BloodUnitID = -1;
 
-    /// Units with low sort numbers are drawn last
+    /// \brief Units with low sort numbers are drawn last
     /// 0   Can be placed on top of other units in scenario editor
     /// 5   Cannot be placed on top of other units in scenario editor
     int8_t SortNumber = 0;
 
+    /// \brief Defines how graphics are affected by elevation.
     /// 0   Default
     /// 1   Graphic stays at highest elevation until destination is reached
     /// 2+ Graphic is not affected by elevation
@@ -239,18 +267,20 @@ public:
     /// TODO Unknown
     int16_t OldPortraitPict = -1; // Always -1
 
+    /// \brief Whether the unit is available by default
     /// 0   Requires a technology to be available
     /// 1   Available without a technology
     int8_t Enabled = 1;
 
-    /// Not scanned but set to 0
+    /// \brief Not read but set runtime.
+    /// Not read but set to 0
     /// Can change during gameplay
     /// Mostly for different game modes and disables defined in scenarios
     /// 0   Default
     /// 1   Prevents enabling/disabling with a tech
     int8_t Disabled = 0;
 
-    /// Required terrain on some side
+    /// \brief Required terrain on some side
     /// E. g. water for docks
     std::pair<int16_t, int16_t> PlacementSideTerrain = { -1, -1 };
 
@@ -260,13 +290,13 @@ public:
     /// How close it allows other units to be
     XYF ClearanceSize;
 
-    /// Restrictions on placement on hills
     enum HillModes : int8_t {
         AnyHillPlacement = 0, ///< Gates, farms, walls, towers
         NoHillCornerPlacement = 1, ///< Can't be placed on hill corners
         NoHillPlacement = 2, ///< Only flat land; town center, port, trade workshop
         OneElevDiffHillRestriction = 3 ///< All hills, as long as there isn't more than 1 elevation difference
     };
+    /// Restrictions on placement on hills
     HillModes HillMode = AnyHillPlacement;
 
     enum FogVisibilities : int8_t {
@@ -285,18 +315,19 @@ public:
         /// Replaced by a "doppelganger" unit when in fog (i. e. a dummy unit that is shown until area is visible again)
         DoppelgangerFogVisibility = 4
     };
+    /// Controls the visibility of the unit when covered by the fog of war
     FogVisibilities FogVisibility = InvisibleInFog;
 
     /// ID of terrain restrictions that are imposed on the unit.
     int16_t TerrainRestriction = 0;
 
-    /// Controls graphic altitude when teleporting
     enum TeleportType : int8_t {
         /// Stay on ground
         TeleportOnShadow = 0,
         /// Graphics appear higher than the shadow
         TeleportAboveShadow = 1
     };
+    /// Controls graphic altitude when teleporting
     TeleportType FlyMode = TeleportOnShadow;
 
     /// How much resources this unit is able to carry
@@ -337,9 +368,9 @@ public:
         BuildingInteraction = 3, ///< Can be selected and attack, can't move
         UnitInteraction = 4 ///< Can be selected, attack and move
     };
+    /// Defines the interaction level
     int8_t InteractionMode = 0;
 
-    /// \brief Defines if and how a unit is shown on the minimap.
     /// Following values are known to work
     enum MinimapModes : int8_t {
         /// does not place a dot on the mini-map.
@@ -381,9 +412,10 @@ public:
         /// Hawks, macaws, and flying dogs have this value.
         MinimapFlying = 10
     };
+    /// Defines if and how a unit is shown on the minimap.
     MinimapModes MinimapMode = MinimapInvisible;
 
-    /// Class and this together selects the buttons to show on the bottom left for this unit
+    /// See InterfaceKind
     enum InterfaceKinds : int8_t {
         /// None
         NoInterface = 0,
@@ -412,6 +444,7 @@ public:
 
         UnknownInterface = 12
     };
+    /// Class and this together selects the buttons to show on the bottom left for this unit
     InterfaceKinds InterfaceKind = NoInterface;
 
     /// IDK
@@ -420,10 +453,11 @@ public:
     /// Minimap modes 3 and 4 allow this to work
     uint8_t MinimapColor = 0;
 
+    /// \brief This is the help text, stored in the language DLL
     /// 100000 + Language File Name
-    /// This is the help text, stored in the language DLL
     int32_t LanguageDLLHelp = 105000;
 
+    /// \brief Hotkey description ID for the language DLL
     /// 150000 + Language File Name
     /// This seems to be used only in AoE (not RoR)
     /// This language line has other purposes in SWGB and CC
@@ -432,28 +466,27 @@ public:
     /// 10000 + Language File Creation (usually)
     int32_t HotKey = 16000;
 
-    /// Unselectable
+    /// \brief Unselectable
     /// Not scanned but set to 1 for class 11
     /// Can change during gameplay
     int8_t Recyclable = 0;
 
-    /// Track as Resource
+    /// \brief Track as Resource.
     /// Allows automatic gathering and handles fog visibility
     int8_t CanBeGathered = 0;
 
     /// Create doppelganger on death.
-    /// 0   None
-    /// 1   After death
-    /// 2   When dying
     enum DeathDoppelgangerMode : int8_t {
+        /// 0: None
         NoDeathDoppelganger = 0,
+        /// 1: After death
         DoppelgangerAfterDeath = 1,
+        /// 2: When dying
         DoppelgangerWhenDying = 2,
     };
+    /// When to create a doppelganger unit when the unit dies
     DeathDoppelgangerMode CreateDoppelgangerOnDeath = NoDeathDoppelganger;
 
-    /// Visible resource group
-    /// Needs to be gatherable
     enum ResourceGatherGroups : int8_t {
         ResourceTree = 0,
         ResourceBerry = 1,
@@ -461,19 +494,20 @@ public:
         ResourceStoneOre = 3,
         ResourceGold = 4
     };
+    /// Visible resource group. Needs to be gatherable for this to have an effect.
     int8_t ResourceGatherGroup = 0;
 
-    /// Combinable bit field
-    /// 0 No outline/occlusion
-    /// 1 Outline shown (bit 0)
-    /// 2 Occludes others (bit 1)
-    /// 4 Outline shown while constructing (bit 2)
     enum OcclusionTypes {
+        /// 0 No outline/occlusion
         NoOcclusion = 0,
+        /// 1 Outline shown (bit 0)
         ShowOutline = 1 << 0,
+        /// 2 Occludes others (bit 1)
         OccludeOthers = 1 << 1,
+        /// 4 Outline shown while constructing (bit 2)
         OcclusionWhileConstructing = 1 << 1
     };
+    /// Combinable bit field controlling occlusion
     uint8_t OcclusionMode = 0;
 
     /// values for ObstructionType
@@ -504,6 +538,7 @@ public:
         /// Solid square outline, has collision box
         MountainObstruction = 10
     };
+    /// Defines passability, outline and collision box (and probably more)
     int8_t ObstructionType = 0;
 
     /// 0 default, 1+ above
@@ -516,6 +551,7 @@ public:
         GateObstructionClass = 5, ///< Allows movement through
         CliffObstructionClass = 6 ///< Blocks walling
     };
+    /// General obstruction category
     ObstructionClasses ObstructionClass = DefaultObstructionClass;
 
     /// Bitmask defining traits
@@ -531,6 +567,7 @@ public:
         SelfShieldingTrait = 0x40,
         InvisibleTrait = 0x80
     };
+    /// Special traits
     uint8_t Trait = 0;
 
     /// Seems to be used only in SWGB/CC
@@ -576,6 +613,7 @@ public:
         /// From openage
         HPBarOn9 = 9,
     };
+    /// Controls HP bar and outline
     SelectionEffects SelectionEffect = ShowHPShowOutline;
 
     /// Color when selecting in the editor
@@ -584,7 +622,7 @@ public:
     /// Selection size according to AGE
     XYF OutlineSize;
 
-    /// Determines HP bar location
+    /// \brief Determines HP bar location
     /// Vertical half tile (elevation height?) distance from the top corner?
     float HPBarHeight = 0.f;
 
@@ -603,13 +641,14 @@ public:
     /// Sound played when unit is dying
     int16_t DyingSound = -1;
 
-    /// Sound played when selecting in Definitive Edition (as it uses Wwise for playing sounds)
+    /// \brief Sound played when selecting in Definitive Edition (as it uses Wwise for playing sounds)
     /// Not sure why they didn't just expand the normal ones to 32 bit, but meh
     uint32_t WwiseSelectionSoundID = 0;
 
     /// Sound played when dying in Definitive Edition (as it uses Wwise for playing sounds)
     uint32_t WwiseDyingSoundID = 0;
 
+    /// \brief Old hardcoded reaction when attacked
     /// 0   None
     /// 1   Run
     /// 2   Run work
@@ -619,11 +658,12 @@ public:
     /// 6   Fight run work
     int8_t OldAttackReaction = 0;
 
-    /// Some alpha feature that let units change terrain under them.
-    /// Specifically from passable to impassable.
+    /// Some alpha feature that let units change terrain under them from passable to impassable.
     int8_t ConvertTerrain = 0;
 
+    /// Internal unit name
     std::string Name = "";
+    /// Internal unit name in SWGB and later
     std::string Name2 = "";
 
     /// MinGameVersion: SWGB
@@ -635,8 +675,7 @@ public:
     /// ID of unit this was copied from
     int16_t CopyID = -1;
 
-    /// If this is based on something else (e. g. when upgrading)
-    /// Not in AoE1/RoR
+    /// If this is based on something else (e. g. when upgrading). Not in AoE1/RoR
     int16_t BaseID = -1;
 
     /// For gathering player analytics, I guess
