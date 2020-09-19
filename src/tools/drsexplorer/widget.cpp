@@ -28,7 +28,12 @@ Widget::~Widget()
 
 bool Widget::loadPalette(const int palette, const QString &drs)
 {
-    m_interfaceFile.setGameVersion(genie::GV_TC);
+    if (swgbMode) {
+        m_interfaceFile.setGameVersion(genie::GV_SWGB);
+    } else {
+        m_interfaceFile.setGameVersion(genie::GV_TC);
+    }
+
     m_interfaceFile.load(drs.toStdString());
     std::vector<genie::Color> colors = m_interfaceFile.getPalFile(palette).getColors();
     for (unsigned i=0; i<colors.size(); i++) {
@@ -40,7 +45,11 @@ bool Widget::loadPalette(const int palette, const QString &drs)
 
 bool Widget::loadDrs(const QString &path)
 {
-    m_drsFile.setGameVersion(genie::GV_TC);
+    if (swgbMode) {
+        m_drsFile.setGameVersion(genie::GV_SWGB);
+    } else {
+        m_drsFile.setGameVersion(genie::GV_TC);
+    }
     m_drsFile.load(path.toStdString());
     loadSlps(&m_drsFile);
 

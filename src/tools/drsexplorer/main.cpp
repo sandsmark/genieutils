@@ -24,6 +24,7 @@ int main(int argc, char *argv[])
     parser.addHelpOption();
     parser.addOption(paletteOption);
     parser.addOption(palDrs);
+    parser.addOption({"swgb", "Star Wars: Galactic Battlegrounds mode"});
     parser.addPositionalArgument("drsfile", QCoreApplication::translate("file", "DRS file to open"));
     parser.process(a);
 
@@ -56,6 +57,7 @@ int main(int argc, char *argv[])
     }
 
     Widget w;
+    w.swgbMode = parser.isSet("swgb");
     if (!w.loadPalette(palette, palDrsPath)) {
         qWarning() << "Failed to load palette";
         parser.showHelp(1); // automatically exits

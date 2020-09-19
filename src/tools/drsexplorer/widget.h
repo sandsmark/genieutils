@@ -16,6 +16,8 @@ public:
     Widget(QWidget *parent = 0);
     ~Widget();
 
+    bool swgbMode = false;
+
     bool loadPalette(const int palette, const QString &drs);
     bool loadDrs(const QString &path);
 
