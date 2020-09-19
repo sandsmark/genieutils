@@ -34,13 +34,13 @@ int main(int argc, char *argv[])
     }
 
 
-    const QString drsPath = files.first();
+    const QString drsPath = QString::fromStdString(genie::util::resolvePathCaseInsensitive(files.first().toStdString()));
     if (drsPath.isEmpty() || !QFileInfo::exists(drsPath)) {
         qWarning() << "DRS path does not exist:" << drsPath;
         parser.showHelp(1); // automatically exits
     }
 
-    QString palDrsPath = parser.value(palDrs);
+    QString palDrsPath = QString::fromStdString(genie::util::resolvePathCaseInsensitive(parser.value(palDrs).toStdString()));
     if (palDrsPath.isEmpty()) {
         palDrsPath = QFileInfo(drsPath).dir().absoluteFilePath("interfac.drs");
     }
