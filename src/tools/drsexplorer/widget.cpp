@@ -63,12 +63,22 @@ QPixmap Widget::getPixmap(genie::SlpFramePtr frame)
     image.setColorTable(m_colorTable);
 
     if (image.width() < 128) {
-        return QPixmap::fromImage(image.scaledToWidth(128));
+        image = image.scaledToWidth(128);
     } else if (image.height() < 128) {
-        return QPixmap::fromImage(image.scaledToHeight(128));
-    } else {
-        return QPixmap::fromImage(image);
+        image = image.scaledToHeight(128);
     }
+    image = image.convertToFormat(QImage::Format_ARGB32_Premultiplied);
+
+    QPainter p(&image);
+    QFont font;
+    font.setPointSize(20);
+    font.setBold(true);
+    p.setFont(font);
+    p.setPen(Qt::white);
+    p.drawText(image.rect(), QString::number(frame->getWidth()) + "x" + QString::number(frame->getHeight()));
+    p.end();
+
+    return QPixmap::fromImage(image);
 }
 
 void Widget::loadSlps(genie::DrsFile *drsFile)
@@ -131,6 +141,12 @@ void Widget::loadSlps(const QFileInfoList &files)
             genie::SlpFramePtr frame = slpFile.getFrame(i);
             QImage image(frame->img_data.pixel_indexes.data(), frame->getWidth(), frame->getHeight(), frame->getWidth(), QImage::Format_Indexed8);
             image.setColorTable(colorTable);
+            image = image.convertToFormat(QImage::Format_ARGB32_Premultiplied);
+
+            QPainter p(&image);
+            p.drawText(0, 0, "Size:" + QString::number(frame->getWidth()) + "x" + QString::number(frame->getHeight()));
+            p.fillRect(0, 0, 20, 20, Qt::red);
+            p.end();
 
             QListWidgetItem *item = new QListWidgetItem;
             item->setText(fi.baseName());
