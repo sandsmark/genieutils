@@ -96,19 +96,24 @@ std::streampos ISerializable::tellg(void) const
 std::string ISerializable::readString(size_t len)
 {
     if (len > 0 && !istr_->eof()) {
-        char *buf = nullptr;
-        serialize<char>(&buf, len);
+        std::string buf(len, '\0');
 
-        size_t tmp_len = ISerializable::strnlen(buf, len);
-
-        if (tmp_len < len) {
-            len = tmp_len;
+        istr_->read(buf.data(), len);
+        if (istr_->bad()) {
+            throw std::ios_base::failure("Failed to read string");
         }
 
-        std::string ret(buf, len);
-        delete[] buf;
+        if (istr_->eof()) {
+            throw std::ios_base::failure("Short read of string");
+        }
 
-        return ret;
+        size_t tmp_len = ISerializable::strnlen(buf.data(), len);
+
+        if (tmp_len < len) {
+            buf.resize(tmp_len);
+        }
+
+        return buf;
     }
 
     return "";
