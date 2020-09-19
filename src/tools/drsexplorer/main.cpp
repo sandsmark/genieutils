@@ -1,4 +1,6 @@
 #include "widget.h"
+#include <genie/util/Utility.h>
+#include <genie/util/Logger.h>
 #include <QApplication>
 #include <QFileInfo>
 #include <QDir>
@@ -7,6 +9,7 @@
 
 int main(int argc, char *argv[])
 {
+    genie::Logger::setLogLevel(genie::Logger::L_DEBUG);
     QApplication a(argc, argv);
     a.setApplicationName("drsexplorer");
     a.setOrganizationName("genieutils");
