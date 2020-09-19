@@ -233,9 +233,9 @@ bool Window::loadSlp(const QString &path)
         slp = m_drsFile->getSlpFile(id);
         if (!slp) {
             std::cout << "Valid SLP IDs:" << std::endl;
-            for (const int id : m_drsFile->slpFileIds()) {
-                std::cout << " " << id << std::endl;
-            }
+            //for (const int id : m_drsFile->slpFileIds()) {
+            //    std::cout << " " << id << std::endl;
+            //}
             QMessageBox::warning(this, "Failed to load SLP", "SLP file " + QString::number(id) + " could not be loaded");
             return false;
         }
