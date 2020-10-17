@@ -5,8 +5,8 @@ on: [push]
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
-  CC: gcc-9
-  CXX: g++-9
+    #CC: gcc-9
+    #CXX: g++-9
 
 jobs:
   build:
@@ -14,7 +14,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macOS-latest]
+        os: [macOS-latest, windows-latest]
 
     steps:
     - uses: actions/checkout@v1
