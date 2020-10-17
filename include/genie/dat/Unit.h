@@ -303,7 +303,7 @@ public:
         /// Normal units
         InvisibleInFog = 0,
 
-        /// Buildings
+        /// Gatherables and relics, it seems
         VisibleInFog = 1,
 
         /// Visible in fog if alive
@@ -447,7 +447,7 @@ public:
     /// Class and this together selects the buttons to show on the bottom left for this unit
     InterfaceKinds InterfaceKind = NoInterface;
 
-    /// IDK
+    /// 1 on more or less living things, obsolete
     float MultipleAttributeMode = 0;
 
     /// Minimap modes 3 and 4 allow this to work

@@ -123,7 +123,7 @@ public:
         Patrol = 19,
         DisplayInstructions = 20,
         ClearInstructions = 21,
-        FreezeUnit = 22,
+        SetUnitStance = 22,
         UseAdvancedButtons = 23,
         DamageObject = 24,
         PlaceFoundation = 25,
@@ -175,7 +175,9 @@ public:
     MapPoint areaTo = { -1, -1 }; //upper-right corner
     int32_t objectGroup = -1;
     int32_t objectType = -1; //Civilian, Military, Building, Other
-    int32_t instructionPanel = -1;
+
+    /// Stance, instruction panel, or control group
+    int32_t boundedValue = -1;
     std::string message = ""; //Instructions/Chat
     std::string soundFile = "";
     std::vector<int32_t> selectedUnits;

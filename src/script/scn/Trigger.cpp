@@ -88,7 +88,7 @@ void TriggerEffect::serializeObject(void)
     if (scn_trigger_ver > 1.0f) {
         if (isOperation(OP_WRITE)) { // Automatic compression.
             usedVariables = 23;
-            int32_t *browser = &instructionPanel;
+            int32_t *browser = &boundedValue;
 
             while (usedVariables > 0) {
                 if (*browser != -1) {
