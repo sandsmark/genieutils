@@ -18,8 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_TECHAGEEFFECT_H
-#define GENIE_TECHAGEEFFECT_H
+#pragma once
 #include "genie/file/ISerializable.h"
 
 namespace genie {
@@ -200,4 +199,3 @@ private:
 };
 } // namespace genie
 
-#endif // GENIE_TECHAGEEFFECT_H

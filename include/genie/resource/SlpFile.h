@@ -17,8 +17,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_SLPFILE_H
-#define GENIE_SLPFILE_H
+#pragma once
 
 #include <istream>
 #include <vector>
@@ -119,4 +118,3 @@ private:
 typedef std::shared_ptr<SlpFile> SlpFilePtr;
 } // namespace genie
 
-#endif // GENIE_SLPFILE_H

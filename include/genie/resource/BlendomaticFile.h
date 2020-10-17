@@ -17,8 +17,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_BLENDOMATICFILE_H
-#define GENIE_BLENDOMATICFILE_H
+#pragma once
 
 #include <istream>
 #include <vector>
@@ -94,4 +93,3 @@ private:
 typedef std::shared_ptr<BlendomaticFile> BlendomaticFilePtr;
 } // namespace genie
 
-#endif // GENIE_BLENDOMATICFILE_H

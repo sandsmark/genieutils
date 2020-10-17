@@ -21,8 +21,7 @@
  *  TODO: Config file for logger (loglevel, log method)
  */
 
-#ifndef GENIE_LOGGER_H
-#define GENIE_LOGGER_H
+#pragma once
 
 #include <string>
 #include <iostream>
@@ -190,4 +189,3 @@ private:
 };
 } // namespace genie
 
-#endif // GENIE_LOGGER_H

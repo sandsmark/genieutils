@@ -18,8 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_UNITLINE_H
-#define GENIE_UNITLINE_H
+#pragma once
 #include "genie/file/ISerializable.h"
 
 #include <vector>
@@ -43,4 +42,3 @@ private:
 };
 } // namespace genie
 
-#endif // GENIE_UNITLINE_H

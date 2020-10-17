@@ -17,8 +17,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_DRSFILE_H
-#define GENIE_DRSFILE_H
+#pragma once
 
 #include <vector>
 #include <list>
@@ -113,4 +112,3 @@ private:
 };
 } // namespace genie
 
-#endif // GENIE_DRSFILE_H

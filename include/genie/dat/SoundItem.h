@@ -18,8 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_SOUNDITEM_H
-#define GENIE_SOUNDITEM_H
+#pragma once
 #include "genie/file/ISerializable.h"
 
 namespace genie {
@@ -54,4 +53,3 @@ private:
 };
 } // namespace genie
 
-#endif // GENIE_SOUNDITEM_H

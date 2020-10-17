@@ -18,8 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_RESOURCEUSAGE_H
-#define GENIE_RESOURCEUSAGE_H
+#pragma once
 #include "genie/file/ISerializable.h"
 
 #include "ResourceType.h"
@@ -74,4 +73,3 @@ private:
 };
 } // namespace genie
 
-#endif // GENIE_RESOURCEUSAGE_H

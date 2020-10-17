@@ -18,8 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_TECHAGE_H
-#define GENIE_TECHAGE_H
+#pragma once
 #include "genie/file/ISerializable.h"
 #include "TechageEffect.h"
 
@@ -45,4 +44,3 @@ private:
 };
 } // namespace genie
 
-#endif // GENIE_TECHAGE_H

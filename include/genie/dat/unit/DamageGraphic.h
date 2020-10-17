@@ -18,8 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_DAMAGEGRAPHIC_H
-#define GENIE_DAMAGEGRAPHIC_H
+#pragma once
 #include "genie/file/ISerializable.h"
 
 namespace genie {
@@ -57,4 +56,3 @@ private:
 } // namespace unit
 } // namespace genie
 
-#endif // GENIE_UNITDAMAGEGRAPHIC_H

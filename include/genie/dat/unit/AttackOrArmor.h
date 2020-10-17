@@ -18,8 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_ATTACKORARMOR_H
-#define GENIE_ATTACKORARMOR_H
+#pragma once
 #include "genie/file/ISerializable.h"
 
 namespace genie {
@@ -75,4 +74,3 @@ static_assert(sizeof(AttackOrArmor) == 4);
 } // namespace unit
 } // namespace genie
 
-#endif // GENIE_UNITATTACKORARMOR_H

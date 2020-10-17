@@ -18,8 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_UNITCOMMAND_H
-#define GENIE_UNITCOMMAND_H
+#pragma once
 #include "genie/file/ISerializable.h"
 
 #include "ActionType.h"
@@ -155,4 +154,3 @@ private:
 };
 } // namespace genie
 
-#endif // GENIE_UNITCOMMAND_H

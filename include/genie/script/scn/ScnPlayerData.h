@@ -19,8 +19,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_SCN_PLAYER_DATA_H
-#define GENIE_SCN_PLAYER_DATA_H
+#pragma once
 
 #include "genie/file/ISerializable.h"
 #include "ScnResource.h"
@@ -578,4 +577,3 @@ private:
 };
 } // namespace genie
 
-#endif // GENIE_SCN_PLAYER_DATA_H

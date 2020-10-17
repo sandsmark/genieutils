@@ -18,8 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_CABFILE_H
-#define GENIE_CABFILE_H
+#pragma once
 
 #include <string>
 #include <iostream>
@@ -101,4 +100,3 @@ private:
 };
 } // namespace genie
 
-#endif // GENIE_CABFILE_H

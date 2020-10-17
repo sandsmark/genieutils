@@ -17,8 +17,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_PALFILE_H
-#define GENIE_PALFILE_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -125,4 +124,3 @@ private:
 
 } // namespace genie
 
-#endif // GENIE_PALFILE_H

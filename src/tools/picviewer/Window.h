@@ -1,5 +1,4 @@
-#ifndef WINDOW_H
-#define WINDOW_H
+#pragma once
 
 #include <genie/resource/DrsFile.h>
 #include <genie/resource/PalFile.h>
@@ -58,4 +57,3 @@ private:
     int m_clickedColor = 0;
     genie::SlpFramePtr m_frame;
 };
-#endif // WINDOW_H

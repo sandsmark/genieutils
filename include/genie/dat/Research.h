@@ -18,8 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_RESEARCH_H
-#define GENIE_RESEARCH_H
+#pragma once
 #include "genie/file/ISerializable.h"
 #include "ResourceUsage.h"
 
@@ -102,4 +101,3 @@ private:
 };
 } // namespace genie
 
-#endif // GENIE_RESEARCH_H

@@ -18,8 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_UNITHEADER_H
-#define GENIE_UNITHEADER_H
+#pragma once
 #include "genie/file/ISerializable.h"
 #include "UnitCommand.h"
 
@@ -40,4 +39,3 @@ private:
 };
 } // namespace genie
 
-#endif // GENIE_UNITHEADER_H

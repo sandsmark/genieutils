@@ -18,8 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_SOUND_H
-#define GENIE_SOUND_H
+#pragma once
 #include "genie/file/ISerializable.h"
 
 #include <vector>
@@ -55,4 +54,3 @@ private:
 };
 } // namespace genie
 
-#endif // GENIE_SOUND_H

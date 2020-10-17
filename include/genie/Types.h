@@ -18,8 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_TYPES_H
-#define GENIE_TYPES_H
+#pragma once
 
 namespace genie {
 
@@ -69,4 +68,3 @@ struct XYF {
 };
 } // namespace genie
 
-#endif //GENIE_TYPES_H

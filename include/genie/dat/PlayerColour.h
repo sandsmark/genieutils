@@ -18,8 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_PLAYERCOLOUR_H
-#define GENIE_PLAYERCOLOUR_H
+#pragma once
 #include "genie/file/ISerializable.h"
 
 namespace genie {
@@ -60,4 +59,3 @@ private:
 };
 } // namespace genie
 
-#endif // GENIE_PLAYERCOLOUR_H

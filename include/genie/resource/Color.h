@@ -16,8 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_COLOR_H
-#define GENIE_COLOR_H
+#pragma once
 
 #include <stdint.h>
 
@@ -52,4 +51,3 @@ public:
 };
 } // namespace genie
 
-#endif // GENIE_COLOR_H

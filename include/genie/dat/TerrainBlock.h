@@ -17,8 +17,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_TERRAINBLOCK_H
-#define GENIE_TERRAINBLOCK_H
+#pragma once
 #include "genie/file/ISerializable.h"
 #include "genie/dat/TerrainCommon.h"
 #include "genie/dat/Terrain.h"
@@ -122,4 +121,3 @@ private:
 };
 } // namespace genie
 
-#endif // GENIE_DATFILE_H

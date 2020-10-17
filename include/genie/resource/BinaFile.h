@@ -16,8 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_BINAFILE_H
-#define GENIE_BINAFILE_H
+#pragma once
 
 #include "genie/file/ISerializable.h"
 #include "PalFile.h"
@@ -59,4 +58,3 @@ private:
 typedef std::shared_ptr<BinaFile> BinaFilePtr;
 } // namespace genie
 
-#endif // GENIE_BINAFILE_H

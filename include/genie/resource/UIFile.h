@@ -16,8 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_UIFILE_H
-#define GENIE_UIFILE_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -97,4 +96,3 @@ private:
 typedef std::shared_ptr<UIFile> UIFilePtr;
 } // namespace genie
 
-#endif // GENIE_UIFILE_H

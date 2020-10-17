@@ -18,8 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_ISERIALIZABLE_H
-#define GENIE_ISERIALIZABLE_H
+#pragma once
 
 #include "genie/Types.h"
 
@@ -918,4 +917,3 @@ void arraycpy(T **dest, const T *src, size_t size)
 }*/
 } // namespace genie
 
-#endif // GENIE_ISERIALIZABLE_H

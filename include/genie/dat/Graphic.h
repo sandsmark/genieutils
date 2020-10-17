@@ -18,8 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_GRAPHIC_H
-#define GENIE_GRAPHIC_H
+#pragma once
 #include "genie/file/ISerializable.h"
 #include "GraphicDelta.h"
 #include "GraphicAttackSound.h"
@@ -141,4 +140,3 @@ private:
 };
 } // namespace genie
 
-#endif // GENIE_GRAPHIC_H

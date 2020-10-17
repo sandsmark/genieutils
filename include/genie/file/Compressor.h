@@ -17,8 +17,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_COMPRESSOR_H
-#define GENIE_COMPRESSOR_H
+#pragma once
 
 #include <iostream>
 #include <memory>
@@ -81,4 +80,3 @@ private:
 };
 } // namespace genie
 
-#endif // GENIE_COMPRESSOR_H

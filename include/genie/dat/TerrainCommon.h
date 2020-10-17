@@ -17,8 +17,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_TERRAINCOMMON_H
-#define GENIE_TERRAINCOMMON_H
+#pragma once
 #include "genie/file/ISerializable.h"
 
 namespace genie {
@@ -100,4 +99,3 @@ public:
 };
 } // namespace genie
 
-#endif // GENIE_TERRAINCOMMON_H

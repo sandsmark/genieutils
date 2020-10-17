@@ -18,8 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_TERRAINRESTRICTION_H
-#define GENIE_TERRAINRESTRICTION_H
+#pragma once
 #include <vector>
 #include "genie/file/ISerializable.h"
 #include "TerrainPassGraphic.h"
@@ -57,4 +56,3 @@ private:
     void serializeObject(void) override;
 };
 } // namespace genie
-#endif // GENIE_TERRAINRESTRICTION_H

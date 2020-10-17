@@ -1,5 +1,4 @@
-#ifndef WIDGET_H
-#define WIDGET_H
+#pragma once
 
 #include <QListWidget>
 
@@ -36,4 +35,3 @@ private:
     QVector<QRgb> m_colorTable;
 };
 
-#endif // WIDGET_H

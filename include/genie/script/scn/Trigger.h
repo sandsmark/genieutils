@@ -18,8 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_SCN_TRIGGER_H
-#define GENIE_SCN_TRIGGER_H
+#pragma once
 
 #include "genie/file/ISerializable.h"
 
@@ -209,4 +208,3 @@ private:
 };
 } // namespace genie
 
-#endif // GENIE_SCN_TRIGGER_H

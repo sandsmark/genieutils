@@ -18,8 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GENIE_DATFILE_H
-#define GENIE_DATFILE_H
+#pragma once
 
 #include <string>
 #include <iostream>
@@ -167,4 +166,3 @@ private:
 
 } // namespace genie
 
-#endif // GENIE_DATFILE_H
