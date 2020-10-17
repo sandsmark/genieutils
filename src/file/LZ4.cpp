@@ -191,10 +191,12 @@ void LZ4::compress(FILE* g_in, FILE* g_out, const int max_chain)
         fwrite(&comp_len, 1, sizeof(comp_len), g_out);
         fwrite(&g_buf[LZ4_BLOCK_SIZE], 1, comp_len, g_out);
 
+#ifndef __APPLE__
 #ifdef _MSC_VER
         fprintf(stderr, "%lld -> %lld\r", _ftelli64(g_in), _ftelli64(g_out));
 #else
         fprintf(stderr, "%ld -> %ld\r", _ftelli64(g_in), _ftelli64(g_out));
+#endif
 #endif
     }
 }
@@ -404,10 +406,12 @@ void LZ4::compress_optimal(FILE* g_in, FILE* g_out)
         fwrite(&comp_len, 1, sizeof(comp_len), g_out);
         fwrite(&g_buf[LZ4_BLOCK_SIZE], 1, comp_len, g_out);
 
+#ifndef __APPLE__
 #ifdef _MSC_VER
         fprintf(stderr, "%lld -> %lld\r", _ftelli64(g_in), _ftelli64(g_out));
 #else
         fprintf(stderr, "%ld -> %ld\r", _ftelli64(g_in), _ftelli64(g_out));
+#endif
 #endif
     }
 }
