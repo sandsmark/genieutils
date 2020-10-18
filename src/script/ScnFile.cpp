@@ -148,6 +148,18 @@ void ScnFile::serializeObject(void)
     serialize<uint32_t>(enabledPlayerCount);
     if (s_verbose) std::cout << "Enabled players " << enabledPlayerCount << std::endl;
 
+    if (saveType == AoE2Scenario) {
+        serialize<uint32_t>(aoe2ScenUnknown);
+        if (s_verbose) std::cout << "AoE2 Scenario unknown: " << aoe2ScenUnknown << std::endl;
+        serialize<uint32_t>(usesExpansions);
+        if (s_verbose) std::cout << "AoE2 Scenario uses expansions: " << usesExpansions << std::endl;
+        if (usesExpansions) {
+            serializeSize<uint32_t>(expansionsCount, expansions.size());
+            if (s_verbose) std::cout << "AoE2 Scenario expansions: " << expansionsCount << std::endl;
+            serialize<uint32_t>(expansions, expansionsCount);
+        }
+    }
+
 
     compressor_.beginCompression();
     if (s_verbose) std::cout << "Started compression" << std::endl;

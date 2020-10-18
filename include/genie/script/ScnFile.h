@@ -97,7 +97,12 @@ public:
 
     // Uncompressed Header:
 
-    int32_t saveType = 0;
+    enum SaveType : int32_t {
+        Scenario = 2, // SCN, SCX, SC1, SCX2
+        AoE2Scenario = 3, // African Kingdoms
+    };
+
+    int32_t saveType = Scenario;
 
     /// Timestamp of last save
     uint32_t lastSaveTime = 0;
@@ -107,6 +112,21 @@ public:
     int32_t victoryType = 0;
 
     uint32_t enabledPlayerCount = 0;
+
+    /// African Kingdoms apparently
+    enum class ExpansionDataset { // stolen from aokts
+        AOK_xUnk0 = 0,
+        AOC_xUnk1 = 1,
+        Unk_xAOK  = 2,
+        Unk_xAOC  = 3,
+        Unk_xAOF  = 4,
+        Unk_xAOAK = 5
+    };
+
+    uint32_t aoe2ScenUnknown = 0;
+    uint32_t usesExpansions = 0;
+    uint32_t expansionsCount = 0;
+    std::vector<uint32_t> expansions;
 
     // Compressed header:
 
