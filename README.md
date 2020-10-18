@@ -1,7 +1,8 @@
 # genieutils #
 
-Genieutils consists of a library to work with certain data and resource/asset
-files of genie engine games.
+Genieutils is a library to work with data and asset files of Genie engine games
+(everything from AoE1 Alpha versions, via SWGB:CC to the Definitive
+Editions).
 
 Notice that this library is in developement, that means the API will change.
 Please also backup your files before editing to avoid file corruption
