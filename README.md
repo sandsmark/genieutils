@@ -14,10 +14,24 @@ because a lot of stuff doesn't like github forks, it is now a separate repo.
 ## Features ###
 
  *   reading/writing of empires\*.dat and genie\*.dat files
- *   reading (and some writing) of drs, slp, blendomatic, and pal files
- *   reading of scn, scx, cpx, bln files
+ *   reading/writing of drs, slp, smp, smx, blendomatic, and pal files
+ *   reading/writing of scn, scx, cpx, bln, sin, wav files
  *   reading/writing of language\*.dll files
 
+Also includes several extra tools.
+
+### Command line tools ###
+
+ * `cpxtool`: command line tool to work with campaign and scenario files (view details and extract).
+ * `genie-datextract`: convert .dat files between game versions, or just extract to raw.
+ * `drstool`: list and/or extract contents from .drs files (graphics, sound, etc.)
+ * `pcriotool`: list or show a single string from the language DLLs.
+ * `genie-bindiff`: very simple binary differ (mostly for debugging, better to use dhex if you need something serious).
+
+### Graphical tools (requires Qt) ###
+
+ * `picviewer`: display SLP/SMP/SMX files.
+ * `drsexplorer`: browse and show SLP/SMP/SMX graphics in a DRS archive.
 
 ## Dependencies ##
 
