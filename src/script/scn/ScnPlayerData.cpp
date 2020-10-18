@@ -540,7 +540,7 @@ void ScnMorePlayerData::serializeObject(void)
 //        printf("unknown 2: %d\n", unknown2);
     }
 
-    if (scn_internal_ver > 1.13f && (scn_internal_ver < 1.14f || (scn_internal_ver > 1.14f))) {
+    if (scn_internal_ver > 1.13f && (scn_internal_ver < 1.14f || (scn_internal_ver > 1.15f))) {
         serialize<int32_t>(playerID);
         if (s_verbose) std::cout << "Player ID " << playerID << std::endl;
     }

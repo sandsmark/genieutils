@@ -175,8 +175,14 @@ void ScnFile::serializeObject(void)
     serialize<ScnMap>(map);
     if (s_verbose) std::cout << "Read map " << map.width << "x" << map.height << std::endl;
 
-    if (scn_ver == "1.20" || scn_ver == "1.21") {
+    if (scn_ver == "1.20") {
         scn_internal_ver = 1.14f;
+    } else if (scn_ver == "1.21") {
+        if (assumeSwgb) {
+            scn_internal_ver = 1.15f; // SWGB reuses the same version numbers, but is incompatible, so we have this hack
+        } else {
+            scn_internal_ver = 1.14f;
+        }
     } else if (scn_ver == "1.17" || scn_ver == "1.18") {
         scn_internal_ver = 1.13f;
     } else if(scn_ver == "1.19") {
@@ -184,7 +190,7 @@ void ScnFile::serializeObject(void)
     } else if (scn_ver == "1.14" || scn_ver == "1.15" || scn_ver == "1.16") {
         scn_internal_ver = 1.12f;
     } else if (scn_ver == "1.22") {
-        scn_internal_ver = 1.15f;
+        scn_internal_ver = 1.16f;
     } else if (scn_ver == "1.07") {
         scn_internal_ver = 1.07f;
     } else if (scn_ver == "1.09") {
@@ -405,6 +411,15 @@ void CpxFile::serializeObject()
     serializeSize<uint32_t>(filecount, m_files.size());
     if (s_verbose) std::cout << "Files: " << filecount << std::endl;
     serialize<CpxIncludedFile>(m_files, filecount);
+
+    // Only differentiator I've found for SWGB vs. normal campaign files
+    if (isOperation(OP_READ)) {
+        for (CpxIncludedFile &file : m_files) {
+            if (util::stringStartsWith(util::toLowercase(file.filename), util::toLowercase(name))) {
+                file.probablySwgb = true;
+            }
+        }
+    }
 }
 
 std::vector<std::string> CpxFile::getFilenames() const
@@ -458,6 +473,7 @@ CpxIncludedFile CpxFile::getRawFile(const std::string filename)
 ScnFilePtr CpxIncludedFile::getScnFile()
 {
     ScnFilePtr ret = std::make_shared<ScnFile>();
+    ret->assumeSwgb = probablySwgb;
     ret->verbose = s_verbose;
     ret->setInitialReadPosition(offset);
     ret->readObject(*getIStream());

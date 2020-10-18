@@ -49,7 +49,7 @@ void ScnPlayerResources::serializeObject(void)
         if (s_verbose) std::cout << " - ore " << ore << std::endl;
 
         // this seems wrong, 1.3 is way too high, is always true?
-        if (scn_internal_ver < 1.3f) {
+        if (scn_internal_ver < 1.15f) {
             serialize<float>(goods);
             if (s_verbose) std::cout << " - goods " << goods << std::endl;
         }
@@ -60,7 +60,7 @@ void ScnPlayerResources::serializeObject(void)
         if (s_verbose) std::cout << " - poplimit " << popLimit << std::endl;
     }
 
-    if (scn_internal_ver > 1.13f && (scn_internal_ver < 1.14f || (scn_internal_ver > 1.14f))) {
+    if (scn_internal_ver > 1.13f && (scn_internal_ver < 1.14f || (scn_internal_ver > 1.15f))) {
         serialize<uint32_t>(playerId);
         if (s_verbose) std::cout << " - player id " << playerId << std::endl;
     }
@@ -70,7 +70,7 @@ void ScnPlayerUnits::serializeObject(void)
 {
     serializeSize<uint32_t>(unitCount_, units.size());
     if (s_verbose) std::cout << " - unit count " << unitCount_ << std::endl;
-    if (unitCount_ > 10000) {
+    if (unitCount_ > 20000) {
         throw std::runtime_error("too many units in campaign file (" + std::to_string(unitCount_) + "), corrupt or unsupported file");
     }
     serialize(units, unitCount_);

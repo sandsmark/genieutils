@@ -170,7 +170,7 @@ int main(int argc, char *argv[]) try
     if ((command == "list" || command == "list-verbose") && argc == 4) {
         genie::ScnFilePtr scenario = campaign.getScnFile(toExtract);
         if (!scenario) {
-            std::cerr << "Failed to open" << toExtract;
+            std::cerr << "Failed to open" << toExtract << std::endl;
             return 1;
         }
         for (const genie::ScnPersonalityScript &script : scenario->includedFiles)  {

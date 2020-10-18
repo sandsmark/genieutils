@@ -133,6 +133,7 @@ public:
     std::vector<ScnPersonalityScript> includedFiles;
 
     bool verbose = false;
+    bool assumeSwgb = false;
 
 private:
     static Logger &log;
@@ -159,8 +160,10 @@ class CpxIncludedFile : public ISerializable
 public:
     std::string identifier;
     std::string filename;
-    uint32_t size;
-    uint32_t offset;
+    uint32_t size = 0;
+    uint32_t offset = 0;
+
+    bool probablySwgb = false;
 
     ScnFilePtr getScnFile();
 
