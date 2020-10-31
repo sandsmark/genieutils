@@ -93,6 +93,7 @@ void ScnMainPlayerData::serializeObject(void)
 
     if (scn_plr_data_ver > 1.21f) {
         serializeSizedString<uint16_t>(scouts, false);
+        if (s_verbose) std::cout << "Scouts: " << scouts << std::endl;
     }
 
     if (scn_plr_data_ver < 1.03f) {
@@ -121,7 +122,7 @@ void ScnMainPlayerData::serializeObject(void)
     }
 
     serializeSizedStrings<uint16_t, 16>(aiNames, false);
-    if (s_verbose) std::cout << "Loaded ai names " << aiNames[0] << " [...] " << aiNames[15] << std::endl;
+    if (s_verbose) std::cout << "Loaded ai names " << util::sanitizeAscii(aiNames[0]) << " [...] " << util::sanitizeAscii(aiNames[15]) << std::endl;
     serializeSizedStrings<uint16_t, 16>(cityNames, false);
     if (s_verbose) std::cout << "Loaded city names " << cityNames[0] << " [...] " << cityNames[15] << std::endl;
 
@@ -225,6 +226,7 @@ void ScnMainPlayerData::serializeObject(void)
     if (scn_plr_data_ver > 1.18f) {
         serialize<int32_t>(player1CameraX);
         serialize<int32_t>(player1CameraY);
+        if (s_verbose) std::cout << "Player 1 camera x, y " << player1CameraX << "," << player1CameraY << std::endl;
     }
 
     if (scn_plr_data_ver > 1.2f) {
@@ -326,7 +328,6 @@ void ScnMainPlayerData::serializeBitmap(void)
 {
     serialize<uint32_t>(bitmapIncluded);
     if (s_verbose) std::cout << "Bitmap included? " << bitmapIncluded << std::endl;
-
     serialize<uint32_t>(bitmapWidth);
     if (s_verbose) std::cout << "Bitmap width " << bitmapWidth << std::endl;
     serialize<uint32_t>(bitmapHeigth);
@@ -365,16 +366,19 @@ void AiFile::serializeObject(void)
     if (s_verbose) std::cout << "city Filename " << cityFileSize << std::endl;
 
     if (scn_plr_data_ver > 1.07f) {
-        serializeSize<uint32_t>(perFileSize, perFilename, true);
-        if (s_verbose) std::cout << "per file size " << perFileSize << std::endl;
+        serializeSize<uint32_t>(perFileSize, perFile, true);
+        if (s_verbose) std::cout << "Personality file file size " << perFileSize << std::endl;
     }
 
     // crap in exe, says these are >= 1.15
     serialize(aiFilename, aiFilenameSize);
+    if (s_verbose) std::cout << "AI filename: " << util::sanitizeAscii(aiFilename) << std::endl;
     serialize(cityFilename, cityFileSize);
+    if (s_verbose) std::cout << "City filename: " << util::sanitizeAscii(cityFilename) << std::endl;
 
     if (scn_plr_data_ver > 1.07f) {
-        serialize(perFilename, perFileSize);
+        serialize(perFile, perFileSize);
+        if (s_verbose) std::cout << "Personality file size: " << perFileSize << std::endl;
     }
 }
 
@@ -510,10 +514,10 @@ void ScnMorePlayerData::serializeObject(void)
 
     // I think this is some victory condition stuff
     serializeSize<uint32_t>(victoryConditionsCount, victoryConditions.size());
-//    printf("conditions count: %d\n", victoryConditionsCount);
+    if (s_verbose) printf("Victory conditions count: %u\n", victoryConditionsCount);
 
     serialize<uint8_t>(victory);
-//    printf("victory: %d\n", victory);
+    if (s_verbose) printf("Victory: %d\n", victory);
 
     if (victoryConditionsCount > 100) {
         throw std::runtime_error("Invalid amount of victory conditions " + std::to_string(victoryConditionsCount));
@@ -524,9 +528,9 @@ void ScnMorePlayerData::serializeObject(void)
         totalVictoryPoints = 0;
     } else {
         serialize<uint32_t>(pointConditionsCount);
+        if (s_verbose) printf("victory points count: %u\n", pointConditionsCount);
         serialize<uint32_t>(totalVictoryPoints);
-//        printf("total victory points: %u\n", totalVictoryPoints);
-//        printf("victory points count: %u\n", victoryPointsCount);
+        if (s_verbose) printf("total victory points: %u\n", totalVictoryPoints);
     }
 
     // Might have fucked up the size above
@@ -556,10 +560,6 @@ void ScnPlayerVictoryCondition::serializeObject()
     serialize<int32_t>(targetPlayer);
 //    printf("target player: %d\n", targetPlayer);
 
-//    serialize<uint32_t>(x0);
-//    serialize<uint32_t>(y0);
-//    serialize<uint32_t>(x1);
-//    serialize<uint32_t>(y1);
     serialize<float>(x0);
     serialize<float>(y0);
     serialize<float>(x1);

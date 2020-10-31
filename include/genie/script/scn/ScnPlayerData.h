@@ -163,7 +163,7 @@ public:
     std::string cityFilename;
 
     /// Personality filename
-    std::string perFilename;
+    std::string perFile;
 
 private:
     void serializeObject(void) override;

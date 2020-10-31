@@ -204,6 +204,7 @@ int main(int argc, char *argv[]) try
         std::cout << "Done" << std::endl;
         return 0;
     }
+    std::cerr << "Nothing to do" << std::endl;
 
 
     return 0;

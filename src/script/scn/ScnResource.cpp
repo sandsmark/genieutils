@@ -29,6 +29,7 @@ namespace genie {
 bool ScnPlayerResources::verbose;
 bool ScnPlayerUnits::verbose;
 static bool s_verbose;
+static bool s_veryVerbose;
 
 void ScnPlayerResources::serializeObject(void)
 {
@@ -90,15 +91,15 @@ void ScnUnit::serializeObject(void)
     }
 
     serialize<float>(positionX);
-    if (s_verbose) std::cout << "positionX " << positionX << std::endl;
+    if (s_veryVerbose) std::cout << "positionX " << positionX << std::endl;
     serialize<float>(positionY);
-    if (s_verbose) std::cout << "positionY " << positionY << std::endl;
+    if (s_veryVerbose) std::cout << "positionY " << positionY << std::endl;
     serialize<float>(positionZ);
-    if (s_verbose) std::cout << "positionZ " << positionZ << std::endl;
+    if (s_veryVerbose) std::cout << "positionZ " << positionZ << std::endl;
     serialize<uint32_t>(spawnID);
-    if (s_verbose) std::cout << "spawnID " << spawnID << std::endl;
+    if (s_veryVerbose) std::cout << "spawnID " << spawnID << std::endl;
     serialize<uint16_t>(objectID);
-    if (s_verbose) std::cout << "objectID " << objectID << std::endl;
+    if (s_veryVerbose) std::cout << "objectID " << objectID << std::endl;
 
     if (isOperation(OP_READ)) {
         if (objectID == 59 // forage bush
@@ -129,18 +130,18 @@ void ScnUnit::serializeObject(void)
 //    }
 
     serialize<uint8_t>(state);
-    if (s_verbose) std::cout << "state " << int(state) << std::endl;
+    if (s_veryVerbose) std::cout << "state " << int(state) << std::endl;
     serialize<float>(rotation);
-    if (s_verbose) std::cout << "rotation " << rotation << std::endl;
+    if (s_veryVerbose) std::cout << "rotation " << rotation << std::endl;
 
     if (scn_ver != "1.14" && scn_ver != "1.07" && scn_ver != "1.09") {
         serialize<uint16_t>(initAnimationFrame);
-        if (s_verbose) std::cout << "init anim frame " << initAnimationFrame << std::endl;
+        if (s_veryVerbose) std::cout << "init anim frame " << initAnimationFrame << std::endl;
     }
 
     if (scn_ver != "1.07" && scn_ver != "1.09") {
         serialize<int32_t>(garrisonedInID);
-        if (s_verbose) std::cout << "garrisoned in id " << garrisonedInID << std::endl;
+        if (s_veryVerbose) std::cout << "garrisoned in id " << garrisonedInID << std::endl;
 
         if (!garrisonedInID && (
                     scn_ver == "1.13" ||
@@ -152,7 +153,7 @@ void ScnUnit::serializeObject(void)
                     scn_ver == "1.19" ||
                     scn_ver == "1.20")) {
             garrisonedInID = -1;
-            if (s_verbose) std::cout << "garrisoned in id " << garrisonedInID << std::endl;
+            if (s_veryVerbose) std::cout << "garrisoned in id " << garrisonedInID << std::endl;
         }
     }
 }
