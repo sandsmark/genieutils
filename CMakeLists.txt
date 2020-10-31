@@ -234,6 +234,7 @@ set(EXTRACT_SRC src/tools/extract/datextract.cpp)
 set(DRSTOOL_SRC src/tools/drstool/drstool.cpp)
 set(CPXTOOL_SRC src/tools/cpxtool/cpxtool.cpp)
 set(PCRIOTOOL_SRC src/tools/pcriotool/pcriotool.cpp)
+set(VOOBLYDECODER_SRC src/tools/vooblydecoder/main.cpp)
 
 set(BINCOMP_SRC src/tools/bincompare/bincomp.cpp
                 src/tools/bincompare/main.cpp)
@@ -305,6 +306,9 @@ if (GUTILS_TOOLS)
 
   add_executable(genie-bindiff ${BINCOMP_SRC})
   install(TARGETS genie-bindiff)
+
+  add_executable(genie-vooblydecoder ${VOOBLYDECODER_SRC})
+  install(TARGETS genie-vooblydecoder)
 endif (GUTILS_TOOLS)
 
 #------------------------------------------------------------------------------#
