@@ -131,9 +131,12 @@ inline std::string sanitizeAscii(const std::string &str)
 {
     std::string ret;
     ret.reserve(str.size());
+    static char const hexCharacters[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
     for (const char c : str) {
         if (c < ' ' || c > '~') {
-            ret.push_back('_');
+            ret.push_back('\\');
+            ret.push_back(hexCharacters[(c & 0xf0) >> 4]);
+            ret.push_back(hexCharacters[c & 0x0f]);
         } else {
             ret.push_back(c);
         }

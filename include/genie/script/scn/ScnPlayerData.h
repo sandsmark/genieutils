@@ -316,7 +316,34 @@ public:
     /// Background graphics
     std::string backgroundFilename;
 
-    // Bitmap
+    // BITMAPINFOHEADER, it seems like
+    struct BitmapHeader {
+        enum Compression : uint32_t {
+            Uncompressed = 0,
+            RLE_8bpp = 1,
+            RLE_4bpp = 2,
+            // and more
+        };
+
+        uint32_t headerSize;
+        uint32_t width;
+        uint32_t height;
+        uint16_t colorPlanes;
+        uint16_t bitsPerPixel;
+        uint32_t compression;
+        uint32_t rawSize;
+
+        int32_t horizontalResolution; // pixels per meter
+        int32_t verticalResolution; // pixels per meter
+        uint32_t paletteSize;
+        uint32_t importantColorCount;
+    } bmpHeader{};
+    struct BitmapColor {
+        uint8_t r, g, b;
+        uint8_t padding;
+    };
+    std::vector<BitmapColor> bitmapPalette;
+    std::vector<char> bitmapData;
 
     /// Boolean
     uint32_t bitmapIncluded = 0;
@@ -329,12 +356,6 @@ public:
 
     /// -1 if there's a bitmap, 1 otherwise
     int16_t hasBitmap = 1;
-
-    /// Size of embedded bitmap file
-    uint16_t bitmapByteSize = 0;
-
-    /// Standard BMP header
-    char *bmpHeader = nullptr;
 
     /// BMP data
     char *bitmap = nullptr;

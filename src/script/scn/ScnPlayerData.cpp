@@ -34,7 +34,6 @@ static bool s_verbose = false;
 ScnMainPlayerData::~ScnMainPlayerData()
 {
     delete []bitmap;
-    delete bmpHeader;
 }
 
 void ScnMainPlayerData::serializeObject(void)
@@ -339,23 +338,37 @@ void ScnMainPlayerData::serializeBitmap(void)
         return;
     }
 
-    serialize<char>(&bmpHeader, 0x28);
+    serialize<BitmapHeader>(bmpHeader);
 
-    if (isOperation(OP_READ)) {
-        bitmapByteSize = *reinterpret_cast<uint32_t *>(bmpHeader + 20);
-
-        bitmap = new char[bitmapByteSize];
-
-        for (unsigned int i = 0; i < 0x28; ++i) {
-            bitmap[i] = bmpHeader[i];
-        }
-
-        char *bitmapStart = (bitmap + 0x28);
-
-        serialize<char>(&bitmapStart, bitmapByteSize - 0x28);
-    } else if (isOperation(OP_WRITE)) {
-        serialize<char>(&bitmap, bitmapByteSize);
+    if (bmpHeader.headerSize != sizeof(BitmapHeader)) {
+        throw std::runtime_error("Invalid bmp header size " + std::to_string(bmpHeader.headerSize));
     }
+    if (bmpHeader.compression != BitmapHeader::Uncompressed) {
+        throw std::runtime_error("Unsupported compression " + std::to_string(bmpHeader.compression));
+    }
+    if (bmpHeader.colorPlanes != 1) {
+        throw std::runtime_error("Unsupported number of color planes (must be 1): " + std::to_string(bmpHeader.colorPlanes));
+    }
+    if (bmpHeader.rawSize != bitmapWidth * bitmapHeigth) {
+        throw std::runtime_error("Unsupported bitmap format, byte count " + std::to_string(bmpHeader.rawSize) + ", width x height: " + std::to_string(bitmapWidth) + "x" + std::to_string(bitmapHeigth));
+    }
+    if (bmpHeader.width != bitmapWidth || bmpHeader.height != bitmapHeigth) {
+        throw std::runtime_error("Invalid bitmap size, BMP header " + std::to_string(bmpHeader.width) + " x" + std::to_string(bmpHeader.height) + " vs " + std::to_string(bitmapWidth) + "x" + std::to_string(bitmapHeigth));
+    }
+    if (bmpHeader.rawSize < sizeof(BitmapHeader)) {
+        throw std::runtime_error("Invalid bmp size, less than header " + std::to_string(bmpHeader.rawSize));
+    }
+    if (bmpHeader.paletteSize != std::pow(2, bmpHeader.bitsPerPixel)) {
+        throw std::runtime_error("Invalid BMP palette size: " + std::to_string(bmpHeader.paletteSize) + " for " + std::to_string(bmpHeader.bitsPerPixel) + " bits per pixel");
+    }
+
+    if (s_verbose) {
+        std::cout << "palette size: " << bmpHeader.paletteSize << std::endl;
+        std::cout << "raw bitmap size: " << bmpHeader.rawSize << std::endl;
+    }
+
+    serialize<BitmapColor>(bitmapPalette, bmpHeader.paletteSize);
+    serialize<char>(bitmapData, bmpHeader.rawSize);
 }
 
 void AiFile::serializeObject(void)
