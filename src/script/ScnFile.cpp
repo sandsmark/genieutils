@@ -412,6 +412,8 @@ void ScnMainPlayerData::serializePlayerDataVersion(void)
 
 void CpxFile::serializeObject()
 {
+    //TODO: support DE1/DE2: https://github.com/withmorten/rge_campaign/commit/e3ab7f1bea375343fdcf9bcfce3c502d82f21005
+
     s_verbose = verbose;
 
     serialize(version, 4);
