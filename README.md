@@ -19,6 +19,11 @@ because a lot of stuff doesn't like github forks, it is now a separate repo.
  *   reading/writing of scn, scx, cpx, bln, sin, wav files
  *   reading/writing of language\*.dll files
 
+For a lot of stuff it is also possible to convert between different versions of
+the formats. The only version conversion that has a tool (i. e. you don't need
+to write code) is the .dat files, though. For e. g. graphics you will have to
+hook together the SLP and ICM classes yourself with a couple of lines of C++.
+
 Also includes several extra tools.
 
 ### Command line tools ###
@@ -71,3 +76,42 @@ Optionally, enable link-time optimization:
 cmake .. -DCMAKE_BUILD_TYPE=Release -DENABLE_IPO=YES
 cmake --build .
 ```
+
+## TODO ##
+
+File formats used in Genie that are not supported (yet):
+
+ - MP3 files, used for in-game music.
+    - I recommend using something like [miniaudio's implementation](https://github.com/mackron/miniaudio/blob/master/extras/dr_mp3.h)
+      if you need it, it's used in freeaoe and works fine with the genie games' music.
+ - MIDI files, also used for in-game music.
+    - https://github.com/schellingb/TinySoundFont is a good alternative if you need it.
+    - [This sound font](https://github.com/sandsmark/freeaoe/tree/martin/midi/data/general808)
+      should cover everything, but doesn't have the best quality.
+ - AVI videos, used for intro videos etc.
+    - All the games (pre-DE at least) seem to use plain avi files with indeo41,
+      with the same bit depth etc. and the scummvm implementation should work.
+      So it's just a matter of porting it over.
+    - According to Folkert van Verseveld (the author of the
+      [aoe](https://github.com/FolkertVanVerseveld/aoe) project, ffmpeg's
+      indeo41 implementation introduces jitter, so just using that is probably out of the window.
+    - Started on in the martin/video branch in freeaoe, I'll probably throw it
+      in genieutils when it gets finished and I manage to implement write
+      support (don't like read-only stuff in genieutils).
+ - AI scripts.
+    - There is a fairly complete bison/flex based parser (as well as the script
+      to generate the source files) here:
+      https://github.com/sandsmark/freeaoe/tree/master/src/ai
+ - PNG Files, used by HD and later for e. g. terrains.
+    - Bring your own, everything ships with PNG support these days.
+ - RMS (random map) files.
+
+In progress (i. e. started on importing code from elsewhere and got bored):
+ - DDS files, used by DE games for e. g. terrain textures, started in the `martin/dds` branch.
+ - wwise wav files, used by the DE games, started in the martin/wwise branch.
+ - Recorded games, started in the martin/mgx branch.
+ - LZ4, which the DE games have started using, lives in src/file/LZ4.cpp but not used.
+ - CAB support, to be able to e. g. load the data directly from the installer
+   for the trial versions without manual unpacking. Lives in
+   src/file/CabFile.cpp, but got bored of fixing LZX support.
+
