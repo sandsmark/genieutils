@@ -98,6 +98,7 @@ std::string DatFile::versionName(const GameVersion version)
         case genie::GV_AoKB: return "Age of Empires 2: Age of Kings Beta";
         case genie::GV_AoK: return "Age of Empires 2: Age of Kings";
         case genie::GV_TC: return "Age of Empires 2: The Conquerors";
+        case genie::GV_UP15: return "Age of Empires 2: The Conquerors with User Patch 1.5";
         case genie::GV_Cysion: return "Age of Empires 2: Cysion";
         case genie::GV_C2: return "Age of Empires 2: Definitive Edition";
         case genie::GV_C3: return "Age of Empires 2: Definitive Edition C3";
