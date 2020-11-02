@@ -49,7 +49,7 @@ constexpr inline Color hsvToColor(int hue, int saturation, int value)
         case 3:
             return Color(chroma, secondary, value);
         case 5:
-            return Color(value, chroma, secondary); break;
+            return Color(value, chroma, secondary);
         default:
             break;
         }

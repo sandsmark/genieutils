@@ -245,7 +245,7 @@ int main(int argc, char *argv[]) try
         }
 
         std::ifstream source(drsFile, std::ios_base::binary | std::ios_base::in);
-        if (!source.is_open()) {
+        if (!source.good()) {
             std::cerr << "Failed to open " << drsFile << " for reading" << std::endl;
             return 1;
         }
@@ -257,7 +257,7 @@ int main(int argc, char *argv[]) try
         }
 
         std::ofstream target(outFilename, std::ios_base::binary | std::ios_base::out);
-        if (!target.is_open()) {
+        if (!target.good()) {
             std::cerr << "Failed to open " << outFilename << " for writing" << std::endl;
             return 1;
         }
