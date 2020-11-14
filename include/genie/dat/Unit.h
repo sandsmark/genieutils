@@ -133,7 +133,7 @@ public:
         Flag = 30,
         DeepSeaFish = 31,
         GoldMine = 32,
-        ShoreFish = 34,
+        ShoreFish = 33,
         Cliff = 34,
         Petard = 35,
         CavalryArcher = 36,
