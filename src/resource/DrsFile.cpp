@@ -256,6 +256,11 @@ std::shared_ptr<uint8_t[]> DrsFile::getWavPtr(uint32_t id)
 
         uint8_t *data = ptr.get();
         read(&data, size);
+        WavFile::WavHeader *header = reinterpret_cast<WavFile::WavHeader*>(data);
+        if (size < header->Subchunk2Size) {
+            log.warn("Invalid filesize %, expected more than %", size, header->Subchunk2Size);
+            return nullptr;
+        }
         return ptr;
     } else {
         log.warn("No sound file with id [%u] found!", id);
