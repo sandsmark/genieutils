@@ -98,6 +98,12 @@ inline std::string cleanPath(const std::string &input)
         if (input[i-1] == '/' && input[i] == '/') {
             continue;
         }
+
+#if defined(WIN32) || defined(__WIN32) || defined(__WIN32__)
+        if (input[i-1] == '\\' && input[i] == '\\') {
+            continue;
+        }
+#endif
         ret.push_back(input[i]);
     }
 
