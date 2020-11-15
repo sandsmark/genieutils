@@ -91,7 +91,7 @@ std::string genie::util::resolvePathCaseInsensitive(const std::string &inputPath
     }
 
     if (std::filesystem::exists(basePath + '/' + inputPath)) {
-        return basePath + '/' + inputPath;
+        return std::filesystem::canonical(std::filesystem::path(basePath + '/' + inputPath)).string();
     }
 
     const std::vector<std::string> pathParts = util::stringSplit(inputPath, '/');
@@ -116,10 +116,10 @@ std::string genie::util::resolvePathCaseInsensitive(const std::string &inputPath
         for (size_t i=1; i<pathParts.size(); i++) {
             newInput += "/" + pathParts[i];
         }
-        return resolvePathCaseInsensitive(newInput, basePath + '/' + correct);
+        return std::filesystem::canonical(std::filesystem::path(resolvePathCaseInsensitive(newInput, basePath + '/' + correct))).string();
     }
 
-    return basePath + '/' + correct;
+    return std::filesystem::canonical(basePath + '/' + correct).string();
 }
 
 std::string util::executableDirectory()
