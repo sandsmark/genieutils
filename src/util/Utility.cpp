@@ -84,6 +84,26 @@ std::string util::executablePath()
     return path;
 }
 
+// Don't try to replace this with std::filesystem::canonical-blah
+// std::filesystem is from boost and therefore is a shit show and doesn't do what you expect.
+inline std::string cleanPath(const std::string &input)
+{
+    if (input.empty()) {
+        return input;
+    }
+
+    std::string ret;
+    ret.push_back(input[0]);
+    for (size_t i=1; i<input.size(); i++) {
+        if (input[i-1] == '/' && input[i] == '/') {
+            continue;
+        }
+        ret.push_back(input[i]);
+    }
+
+    return ret;
+}
+
 std::string genie::util::resolvePathCaseInsensitive(const std::string &inputPath, const std::string &basePath)
 {
     if (!std::filesystem::exists(basePath)) {
@@ -91,7 +111,7 @@ std::string genie::util::resolvePathCaseInsensitive(const std::string &inputPath
     }
 
     if (std::filesystem::exists(basePath + '/' + inputPath)) {
-        return std::filesystem::path(basePath + '/' + inputPath).lexically_normal().string();
+        return cleanPath(basePath + '/' + inputPath);
     }
 
     const std::vector<std::string> pathParts = util::stringSplit(inputPath, '/');
@@ -116,10 +136,10 @@ std::string genie::util::resolvePathCaseInsensitive(const std::string &inputPath
         for (size_t i=1; i<pathParts.size(); i++) {
             newInput += "/" + pathParts[i];
         }
-        return std::filesystem::path(resolvePathCaseInsensitive(newInput, basePath + '/' + correct)).lexically_normal().string();
+        return cleanPath(resolvePathCaseInsensitive(newInput, basePath + '/' + correct));
     }
 
-    return std::filesystem::path(basePath + '/' + correct).lexically_normal().string();
+    return cleanPath(basePath + '/' + correct);
 }
 
 std::string util::executableDirectory()
