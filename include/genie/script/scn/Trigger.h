@@ -43,7 +43,7 @@ public:
         DestroyObject, // 6
         CaptureObject, // 7
         AccumulateAttribute, // 8
-        ResearchTehcnology, // 9
+        ResearchTechnology, // 9
         Timer, // 10
         ObjectSelected, // 11
         AISignal, // 12
