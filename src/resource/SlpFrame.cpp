@@ -636,7 +636,7 @@ void SlpFrame::readPixelsToImage(uint32_t row, uint32_t &col,
 {
     uint32_t to_pos = col + count;
 
-    // optimizzzze
+    // optimizzzze, if there's no player colors
     if (!player_col) {
         getIStream()->read((char *)&img_data.pixel_indexes.data()[row * width_ + col], count);
         memset(&img_data.alpha_channel[row * width_ + col], 255, count);
@@ -654,9 +654,7 @@ void SlpFrame::readPixelsToImage(uint32_t row, uint32_t &col,
         img_data.pixel_indexes[row * width_ + col] = color_index;
         img_data.alpha_channel[row * width_ + col] = 255;
 
-        if (player_col) {
-            img_data.player_color_mask.push_back({ col, row, color_index });
-        }
+        img_data.player_color_mask.push_back({ col, row, color_index });
 
         ++col;
     }

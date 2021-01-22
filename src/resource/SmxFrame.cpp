@@ -108,9 +108,7 @@ void SmxFrame::readNormalLayer()
     std::vector<uint8_t> pixelData;
     serialize<uint8_t>(pixelData, m_normalHeader.pixelDataSize);
 
-    const std::vector<SmpPixel> pixelsVector = (m_frameHeader.frameType & FrameHeader::HasDamageModifier) ?
-                decode8To5(std::move(pixelData)) :
-                decode4Plus1(std::move(pixelData));
+    const std::vector<SmpPixel> pixelsVector = decode(std::move(pixelData));
 
     if (m_normalHeader.width >= 46340) {
         throw std::out_of_range("Width (" + std::to_string(m_normalHeader.width) + ") out of range");
@@ -195,7 +193,16 @@ void SmxFrame::readOutlineLayer()
     serialize<uint8_t>(commands, m_outlineHeader.commandsSize);
 }
 
-std::vector<SmpPixel> SmxFrame::decode4Plus1(const std::vector<uint8_t> &data)
+std::vector<SmpPixel> SmxFrame::decode(std::vector<uint8_t> data)
+{
+    if (m_frameHeader.frameType & FrameHeader::HasDamageModifier) {
+        return decode8To5(std::move(data));
+    } else {
+        return  decode4Plus1(std::move(data));
+    }
+}
+
+std::vector<SmpPixel> SmxFrame::decode4Plus1(std::vector<uint8_t> data)
 {
     std::vector<SmpPixel> pixelsVector(data.size() / 1.25);
     SmpPixel *pixels = pixelsVector.data();
@@ -235,7 +242,7 @@ static inline uint16_t rotateRight2(const uint16_t n)
     return (n >> 2) | (n << (16 - 2));
 }
 
-std::vector<SmpPixel> SmxFrame::decode8To5(const std::vector<uint8_t> &data)
+std::vector<SmpPixel> SmxFrame::decode8To5(std::vector<uint8_t> data)
 {
     // used for buildings
 

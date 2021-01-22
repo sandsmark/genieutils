@@ -62,8 +62,9 @@ int main(int argc, char *argv[])
         qWarning() << "Failed to load palette";
         parser.showHelp(1); // automatically exits
     }
+
     if (!w.loadDrs(drsPath)) {
-        qWarning() << "Failed to load palette";
+        qWarning() << "Failed to load DRS";
         parser.showHelp(1); // automatically exits
     }
 

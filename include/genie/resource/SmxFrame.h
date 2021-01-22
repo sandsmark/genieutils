@@ -95,8 +95,9 @@ private:
     void readShadowLayer();
     void readOutlineLayer();
 
-    std::vector<SmpPixel> decode4Plus1(const std::vector<uint8_t> &data);
-    std::vector<SmpPixel> decode8To5(const std::vector<uint8_t> &data);
+    std::vector<SmpPixel> decode4Plus1(std::vector<uint8_t> data);
+    std::vector<SmpPixel> decode8To5(std::vector<uint8_t> data);
+    std::vector<SmpPixel> decode(std::vector<uint8_t> data);
 
     std::vector<SmxPlayerColorXY> m_playerColorPixels;
 
