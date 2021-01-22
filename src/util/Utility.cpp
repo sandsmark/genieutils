@@ -110,8 +110,37 @@ inline std::string cleanPath(const std::string &input)
     return ret;
 }
 
-std::string genie::util::resolvePathCaseInsensitive(const std::string &inputPath, const std::string &basePath)
+#if defined(__linux__)
+#include <wordexp.h>
+
+// Resolves ~ etc.
+static std::string resolvePath(const char *path)
 {
+    if (!path) {
+        return {};
+    }
+
+    wordexp_t expanded;
+    wordexp(path, &expanded, 0);
+    std::string resolved(expanded.we_wordv[0]);
+    wordfree(&expanded);
+
+    return resolved;
+}
+#endif
+
+std::string genie::util::resolvePathCaseInsensitive(std::string inputPath, const std::string &basePath)
+{
+#if defined(__linux__)
+    if (inputPath.find("~") != std::string::npos) {
+        puts("resolving wordexp");
+        inputPath = resolvePath(inputPath.c_str());
+    }
+#endif
+    if (inputPath.find("..") != std::string::npos) {
+        inputPath = std::filesystem::absolute(std::filesystem::path(inputPath)).string();
+    }
+
     if (!std::filesystem::exists(basePath)) {
         return {};
     }
