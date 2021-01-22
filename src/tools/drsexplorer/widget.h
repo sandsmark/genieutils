@@ -24,10 +24,11 @@ private slots:
     void onItemActivated(const QListWidgetItem *item);
 
 private:
-    QPixmap getPixmap(genie::SlpFramePtr frame);
+    QPixmap getPixmap(genie::SlpFramePtr frame, const QVector<QRgb> &colorTable);
 
     void loadSlps(genie::DrsFile *file);
     void loadSlps(const QFileInfoList &files);
+    void loadSlp(const genie::SlpFilePtr &slpFile, const QVector<QRgb> &colorTable, const QString &baseName);
 
     genie::DrsFile m_interfaceFile;
     genie::DrsFile m_drsFile;

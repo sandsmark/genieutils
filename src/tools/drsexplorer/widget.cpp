@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QLabel>
 #include <QScrollBar>
+#include <genie/util/Utility.h>
 
 #define PREVIEW_SIZE 300
 
@@ -45,18 +46,25 @@ bool Widget::loadPalette(const int palette, const QString &drs)
 
 bool Widget::loadDrs(const QString &path)
 {
-    if (swgbMode) {
-        m_drsFile.setGameVersion(genie::GV_SWGB);
+    QFileInfo fi(path);
+    if (fi.isDir()) {
+        loadSlps(QDir(path).entryInfoList(QDir::Files));
+    } else if (fi.suffix().toLower() == "drs") {
+        if (swgbMode) {
+            m_drsFile.setGameVersion(genie::GV_SWGB);
+        } else {
+            m_drsFile.setGameVersion(genie::GV_TC);
+        }
+        m_drsFile.load(path.toStdString());
+        loadSlps(&m_drsFile);
     } else {
-        m_drsFile.setGameVersion(genie::GV_TC);
+        loadSlps({fi});
     }
-    m_drsFile.load(path.toStdString());
-    loadSlps(&m_drsFile);
 
     return true;
 }
 
-QPixmap Widget::getPixmap(genie::SlpFramePtr frame)
+QPixmap Widget::getPixmap(genie::SlpFramePtr frame, const QVector<QRgb> &colorTable)
 {
     QImage image(frame->img_data.pixel_indexes.data(), frame->getWidth(), frame->getHeight(), frame->getWidth(), QImage::Format_Indexed8);
     if (image.isNull()) {
@@ -69,7 +77,7 @@ QPixmap Widget::getPixmap(genie::SlpFramePtr frame)
         return invalidPixmap;
     }
 
-    image.setColorTable(m_colorTable);
+    image.setColorTable(colorTable);
 
     if (image.width() < 128) {
         image = image.scaledToWidth(128);
@@ -110,7 +118,7 @@ void Widget::loadSlps(genie::DrsFile *drsFile)
             QListWidgetItem *item = new QListWidgetItem;
             item->setText(QString::number(id) + " " + QString::number(frameNum));
 
-            QPixmap pixmap = getPixmap(frame);
+            QPixmap pixmap = getPixmap(frame, m_colorTable);
             if (pixmap.width() > PREVIEW_SIZE) {
                 pixmap = pixmap.scaledToWidth(PREVIEW_SIZE);
             }
@@ -127,44 +135,40 @@ void Widget::loadSlps(genie::DrsFile *drsFile)
 void Widget::loadSlps(const QFileInfoList &files)
 {
     for (const QFileInfo &fi : files) {
+        if (fi.suffix().toLower() != "slp") {
+            continue;
+        }
+        genie::SlpFilePtr slpFile = std::make_shared<genie::SlpFile>(fi.size());
+        slpFile->load(fi.absoluteFilePath().toStdString());
+
         const QString folder = fi.absolutePath() + "/";
-        QString palFile = fi.absoluteFilePath();
-        QString slpName;
-        if (fi.suffix() == "PAL") {
-            slpName = folder + fi.baseName() + ".SLP";
+        const QString baseName = fi.baseName();
+        std::string palFilename = genie::util::resolvePathCaseInsensitive(folder.toStdString() + "/" + baseName.toStdString() + ".pal");
+        if (!palFilename.empty()) {
+            genie::PalFile palette;
+            palette.load(palFilename);
+
+            QVector<QRgb> colorTable;
+            for (unsigned i=0; i<palette.getColors().size(); i++) {
+                colorTable.append(qRgb(palette.getColors()[i].r, palette.getColors()[i].g, palette.getColors()[i].b));
+            }
+
+            loadSlp(slpFile, colorTable, fi.baseName());
         } else {
-            slpName = folder + fi.baseName() + ".slp";
-        }
-//        qDebug() << palFile << slpName;
-        genie::PalFile palette;
-        palette.load(palFile.toStdString());
+            loadSlp(slpFile, m_colorTable, fi.baseName());
 
-        QVector<QRgb> colorTable;
-        for (unsigned i=0; i<palette.getColors().size(); i++) {
-            colorTable.append(qRgb(palette.getColors()[i].r, palette.getColors()[i].g, palette.getColors()[i].b));
-        }
-
-        genie::SlpFile slpFile(fi.size());
-        slpFile.load(slpName.toStdString());
-        for (uint32_t i=0; i<slpFile.getFrameCount(); i++) {
-            genie::SlpFramePtr frame = slpFile.getFrame(i);
-            QImage image(frame->img_data.pixel_indexes.data(), frame->getWidth(), frame->getHeight(), frame->getWidth(), QImage::Format_Indexed8);
-            image.setColorTable(colorTable);
-            image = image.convertToFormat(QImage::Format_ARGB32_Premultiplied);
-
-            QPainter p(&image);
-            p.drawText(0, 0, "Size:" + QString::number(frame->getWidth()) + "x" + QString::number(frame->getHeight()));
-            p.fillRect(0, 0, 20, 20, Qt::red);
-            p.end();
-
-            QListWidgetItem *item = new QListWidgetItem;
-            item->setText(fi.baseName());
-            //item->setText(QString::number(id) + " " + QString::number(0));
-            item->setIcon(QPixmap::fromImage(image));
-            addItem(item);
         }
     }
+}
 
+void Widget::loadSlp(const genie::SlpFilePtr &slpFile, const QVector<QRgb> &colorTable, const QString &baseName)
+{
+    for (uint32_t frameNum=0; frameNum<slpFile->getFrameCount(); frameNum++) {
+        QListWidgetItem *item = new QListWidgetItem;
+        item->setText(baseName + " " + QString::number(frameNum));
+        item->setIcon(getPixmap(slpFile->getFrame(frameNum), colorTable));
+        addItem(item);
+    }
 }
 
 void Widget::onItemActivated(const QListWidgetItem *item)
@@ -186,7 +190,7 @@ void Widget::onItemActivated(const QListWidgetItem *item)
 
     QLabel *preview = new QLabel;
     preview->setWindowFlag(Qt::Dialog);
-    preview->setPixmap(getPixmap(frame));
+    preview->setPixmap(getPixmap(frame, m_colorTable));
     preview->setAttribute(Qt::WA_DeleteOnClose);
     preview->show();
 }
