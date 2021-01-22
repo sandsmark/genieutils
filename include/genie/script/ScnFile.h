@@ -149,7 +149,7 @@ public:
 
     uint32_t includeFiles = 0;
     uint32_t perErrorIncluded = 0;
-    std::array<uint32_t, 99> perError;
+    std::array<uint32_t, 99> perError{};
     std::vector<ScnPersonalityScript> includedFiles;
 
     bool verbose = false;
