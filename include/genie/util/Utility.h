@@ -145,11 +145,7 @@ inline std::string sanitizeAscii(const std::string &str)
 }
 
 // Probably not the most efficient
-#ifndef _MSC_VER
-std::string resolvePathCaseInsensitive(std::string inputPath, const std::string &basePath = "/");
-#else
 std::string resolvePathCaseInsensitive(const std::string &inputPath, const std::string &basePath = "");
-#endif
 
 std::string executablePath();
 std::string executableDirectory();
