@@ -473,7 +473,7 @@ ScnFilePtr CpxFile::getScnFile(size_t index)
     return m_files[index].getScnFile();
 }
 
-CpxIncludedFile CpxFile::getRawFile(const std::string filename)
+CpxIncludedFile CpxFile::getRawFile(const std::string &filename)
 {
     for (CpxIncludedFile &f : m_files) {
         if (f.filename == filename) {

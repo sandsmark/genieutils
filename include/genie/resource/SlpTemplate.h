@@ -53,7 +53,7 @@ public:
     }
 
 private:
-    void serializeObject() noexcept override;
+    void serializeObject() override;
 
     bool m_loaded = true;
 };
@@ -107,7 +107,7 @@ public:
     }
 
 private:
-    void serializeObject() noexcept override;
+    void serializeObject()  override;
 
     bool m_loaded = true;
 };
@@ -283,7 +283,7 @@ public:
     }
 
 private:
-    void serializeObject() noexcept override;
+    void serializeObject()  override;
     bool m_loaded = false;
 };
 
@@ -351,7 +351,7 @@ private:
     //----------------------------------------------------------------------------
     /// Loads the file and its frames.
     //
-    void loadFile() noexcept;
+    void loadFile();
     void saveFile() noexcept;
 
 };

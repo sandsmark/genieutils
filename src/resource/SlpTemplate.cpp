@@ -45,7 +45,7 @@ void SlpTemplateFile::serializeObject()
 }
 
 //------------------------------------------------------------------------------
-void SlpTemplateFile::loadFile() noexcept
+void SlpTemplateFile::loadFile()
 {
     for (SlpTemplate &slpTemplate : templates) {
         uint32_t stemplSize{};
@@ -116,7 +116,7 @@ bool SlpTemplateFile::isLoaded() const noexcept
 
 
 
-void FiltermapFile::serializeObject() noexcept
+void FiltermapFile::serializeObject()
 {
     for (int i = 0; i < SlopeCount; i++) {
         uint32_t dataSize = 0;
@@ -174,7 +174,7 @@ void PatternMasksFile::serializeObject()
     }
 }
 
-void IcmFile::serializeObject() noexcept
+void IcmFile::serializeObject()
 {
     while (!getIStream()->eof()) {
         InverseColorMap map;
@@ -187,7 +187,7 @@ void IcmFile::serializeObject() noexcept
     }
 }
 
-void LightmapFile::serializeObject() noexcept
+void LightmapFile::serializeObject()
 {
     getIStream()->read((char *)&lightmaps, 18 * 4096);
 

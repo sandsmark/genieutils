@@ -133,7 +133,7 @@ public:
     /// aokts description: "Next unit ID to place" ??
     uint32_t nextUnitID = 0;
 
-    ScnMainPlayerData playerData;
+    ScnMainPlayerData playerData{};
 
     ScnMap map;
 
@@ -203,7 +203,7 @@ public:
     std::vector<std::string> getFilenames() const;
     ScnFilePtr getScnFile(const std::string &filename);
     ScnFilePtr getScnFile(size_t index);
-    CpxIncludedFile getRawFile(const std::string filename);
+    CpxIncludedFile getRawFile(const std::string &filename);
 
     uint32_t getFilecount() const { return filecount; }
 

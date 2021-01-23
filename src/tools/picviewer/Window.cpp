@@ -76,7 +76,7 @@ bool Window::load(QString path)
     bool isSmx = false, isSmp = false;
 
     bool isNumber = false;
-    int id = path.toInt(&isNumber);
+    path.toInt(&isNumber);
 
     if (!isNumber) {
         if (!QFile::exists(path)) {
@@ -106,12 +106,6 @@ bool Window::load(QString path)
     // assume name in drs
     if (isNumber) {
         qDebug() << "trying to find in DRS";
-
-        bool ok;
-        if (!ok) {
-            QMessageBox::warning(this, "Invalid ID", "Can't pass numerical ID and not specify DRS file");
-            return false;
-        }
     }
 
     if (!m_drsFile && !QFile::exists(path)) {

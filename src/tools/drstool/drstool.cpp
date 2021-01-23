@@ -200,7 +200,7 @@ int main(int argc, char *argv[]) try
                 return 1;
             }
             const std::string toExtractNoExt = std::filesystem::path(toExtract).stem();
-            for (const std::pair<uint32_t, std::string> p : dat.resourceFilenames()) {
+            for (const std::pair<const uint32_t, std::string> &p : dat.resourceFilenames()) {
                 if (p.second == toExtract || p.second == toExtractNoExt) {
                     id = p.first;
                     break;
