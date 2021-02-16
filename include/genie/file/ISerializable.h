@@ -2,7 +2,7 @@
     genieutils - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2013 - 2017  Mikko "Tapsa" P
+    Copyright (C) 2013 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -160,9 +160,9 @@ protected:
     /// @param op operation to check
     inline bool isOperation(Operation op) const
     {
-        assert(operation_ != OP_INVALID);
+        assert(operation_ != Operation::OP_INVALID);
 
-        if (operation_ == OP_READ) {
+        if (operation_ == Operation::OP_READ) {
             if (istr_->eof()) {
                 throw std::ios_base::failure("Premature end of input");
             }
@@ -170,7 +170,7 @@ protected:
             if (!istr_->good()) {
                 throw std::ios_base::failure("Invalid input stream");
             }
-        } else if (operation_ == OP_WRITE && !ostr_->good()) {
+        } else if (operation_ == Operation::OP_WRITE && !ostr_->good()) {
             if (!ostr_->good()) {
                 throw std::runtime_error("Invalid output stream");
             }
@@ -381,11 +381,11 @@ protected:
     template <typename T>
     void serializeForcedString(std::string &str)
     {
-        assert(operation_ != OP_INVALID);
+        assert(operation_ != Operation::OP_INVALID);
 
         T size{};
 
-        if (isOperation(OP_WRITE)) {
+        if (isOperation(Operation::OP_WRITE)) {
             size = str.size() + 1;
         }
 
@@ -397,7 +397,7 @@ protected:
     template <typename T, size_t N>
     void serializeSizedStrings(std::array<std::string, N> &vec, bool cString = true)
     {
-        assert(operation_ != OP_INVALID);
+        assert(operation_ != Operation::OP_INVALID);
 
         for (size_t i = 0; i < N; ++i) {
             serializeSizedString<T>(vec[i], cString);
@@ -409,9 +409,9 @@ protected:
     void serializeSizedStrings(std::vector<std::string> &vec, size_t size,
                                bool cString = true)
     {
-        assert(operation_ != OP_INVALID);
+        assert(operation_ != Operation::OP_INVALID);
 
-        if (isOperation(OP_READ)) {
+        if (isOperation(Operation::OP_READ)) {
             vec.resize(size);
         }
 
@@ -431,23 +431,23 @@ protected:
               >
     void serialize(T &data)
     {
-        assert(operation_ != OP_INVALID);
+        assert(operation_ != Operation::OP_INVALID);
 
         switch (getOperation()) {
-        case OP_WRITE:
+        case Operation::OP_WRITE:
             write<T>(data);
             break;
 
-        case OP_READ:
+        case Operation::OP_READ:
             data = read<T>();
             break;
 
-        case OP_CALC_SIZE:
+        case Operation::OP_CALC_SIZE:
             size_ += sizeof(T);
             break;
 
-        case OP_INVALID:
-            assert(operation_ != OP_INVALID);
+        case Operation::OP_INVALID:
+            assert(operation_ != Operation::OP_INVALID);
             break;
         }
     }
@@ -457,24 +457,24 @@ protected:
               >
     void serialize(E &data)
     {
-        assert(operation_ != OP_INVALID);
+        assert(operation_ != Operation::OP_INVALID);
         static_assert(sizeof(T) == sizeof(E));
 
         switch (getOperation()) {
-        case OP_WRITE:
+        case Operation::OP_WRITE:
             write<T>(T(data));
             break;
 
-        case OP_READ:
+        case Operation::OP_READ:
             data = E(read<T>());
             break;
 
-        case OP_CALC_SIZE:
+        case Operation::OP_CALC_SIZE:
             size_ += sizeof(E);
             break;
 
-        case OP_INVALID:
-            assert(operation_ != OP_INVALID);
+        case Operation::OP_INVALID:
+            assert(operation_ != Operation::OP_INVALID);
             break;
         }
     }
@@ -483,11 +483,11 @@ protected:
     template <typename T>
     void serialize(ISerializable &data)
     {
-        assert(operation_ != OP_INVALID);
+        assert(operation_ != Operation::OP_INVALID);
 
         data.serializeSubObject(this);
 
-        if (isOperation(OP_CALC_SIZE)) {
+        if (isOperation(Operation::OP_CALC_SIZE)) {
             size_ += data.objectSize();
         }
     }
@@ -498,20 +498,20 @@ protected:
     {
 
         switch (getOperation()) {
-        case OP_WRITE:
+        case Operation::OP_WRITE:
             write<T>(data, len);
             break;
 
-        case OP_READ:
+        case Operation::OP_READ:
             read<T>(data, len);
             break;
 
-        case OP_CALC_SIZE:
+        case Operation::OP_CALC_SIZE:
             size_ += sizeof(T) * len;
             break;
 
-        case OP_INVALID:
-            assert(operation_ != OP_INVALID);
+        case Operation::OP_INVALID:
+            assert(operation_ != Operation::OP_INVALID);
             break;
         }
     }
@@ -519,24 +519,24 @@ protected:
     /// Spezialization of std::strings.
     void serialize(std::string &str, size_t len)
     {
-        assert(operation_ != OP_INVALID);
+        assert(operation_ != Operation::OP_INVALID);
 
         if (len > 0) {
             switch (getOperation()) {
-            case OP_WRITE:
+            case Operation::OP_WRITE:
                 writeString(str, len);
                 break;
 
-            case OP_READ:
+            case Operation::OP_READ:
                 str = readString(len);
                 break;
 
-            case OP_CALC_SIZE:
+            case Operation::OP_CALC_SIZE:
                 size_ += sizeof(char) * len;
                 break;
 
-            case OP_INVALID:
-                assert(operation_ != OP_INVALID);
+            case Operation::OP_INVALID:
+                assert(operation_ != Operation::OP_INVALID);
                 break;
             }
         }
@@ -551,7 +551,7 @@ protected:
     void serialize(std::array<T, N> &vec)
     {
         switch (getOperation()) {
-        case OP_WRITE:
+        case Operation::OP_WRITE:
             if (!ostr_->good()) {
                 throw std::runtime_error("Invalid output stream");
             }
@@ -560,7 +560,7 @@ protected:
 
             break;
 
-        case OP_READ:
+        case Operation::OP_READ:
             if (istr_->eof()) {
                 throw std::ios_base::failure("Premature end of input");
             }
@@ -573,12 +573,12 @@ protected:
 
             break;
 
-        case OP_CALC_SIZE:
+        case Operation::OP_CALC_SIZE:
             size_ += vec.size() * sizeof(T);
             break;
 
-        case OP_INVALID:
-            assert(operation_ != OP_INVALID);
+        case Operation::OP_INVALID:
+            assert(operation_ != Operation::OP_INVALID);
             break;
         }
     }
@@ -590,12 +590,12 @@ protected:
               >
     void serialize(std::array<T, N> &vec)
     {
-        assert(operation_ != OP_INVALID);
+        assert(operation_ != Operation::OP_INVALID);
 
         for (T &item : vec) {
             item.serializeSubObject(this);
 
-            if (isOperation(OP_CALC_SIZE)) {
+            if (isOperation(Operation::OP_CALC_SIZE)) {
                 size_ += item.objectSize();
             }
         }
@@ -628,7 +628,7 @@ protected:
     void serialize(std::vector<T> &vec, size_t size)
     {
         switch (getOperation()) {
-        case OP_WRITE:
+        case Operation::OP_WRITE:
             if (vec.size() != size) {
                 std::cerr << "Warning!: vector size differs len!" << vec.size() << " " << size << std::endl;
             }
@@ -640,7 +640,7 @@ protected:
             ostr_->write(reinterpret_cast<const char *const>(vec.data()), sizeof(T) * std::min(size, vec.size()));
             break;
 
-        case OP_READ:
+        case Operation::OP_READ:
             if (istr_->eof()) {
                 throw std::ios_base::failure("Premature end of input");
             }
@@ -654,12 +654,12 @@ protected:
 
             break;
 
-        case OP_CALC_SIZE:
+        case Operation::OP_CALC_SIZE:
             size_ += size * sizeof(T);
             break;
 
-        case OP_INVALID:
-            assert(operation_ != OP_INVALID);
+        case Operation::OP_INVALID:
+            assert(operation_ != Operation::OP_INVALID);
             break;
         }
     }
@@ -669,7 +669,7 @@ protected:
     void serialize(std::vector<std::vector<T>> &vec, size_t size, size_t size2)
     {
         switch (getOperation()) {
-        case OP_WRITE:
+        case Operation::OP_WRITE:
             if (vec.size() != size) {
                 std::cerr << "Warning!: vector size differs len!" << vec.size() << " " << size << std::endl;
             }
@@ -682,7 +682,7 @@ protected:
 
             break;
 
-        case OP_READ:
+        case Operation::OP_READ:
             vec.resize(size);
 
             for (size_t i = 0; i < size; ++i) {
@@ -695,12 +695,12 @@ protected:
 
             break;
 
-        case OP_CALC_SIZE:
+        case Operation::OP_CALC_SIZE:
             size_ += size * size2 * sizeof(T);
             break;
 
-        case OP_INVALID:
-            assert(operation_ != OP_INVALID);
+        case Operation::OP_INVALID:
+            assert(operation_ != Operation::OP_INVALID);
             break;
         }
     }
@@ -711,10 +711,10 @@ protected:
               >
     void serialize(std::vector<T> &vec, size_t size)
     {
-        assert(operation_ != OP_INVALID);
-        if (isOperation(OP_READ)) {
+        assert(operation_ != Operation::OP_INVALID);
+        if (isOperation(Operation::OP_READ)) {
             vec.resize(size);
-        } else if (isOperation(OP_WRITE)) {
+        } else if (isOperation(Operation::OP_WRITE)) {
             assert(vec.size() == size);
 
             if (vec.size() != size) {
@@ -726,7 +726,7 @@ protected:
         for (T &item : vec) {
             item.serializeSubObject(this);
 
-            if (isOperation(OP_CALC_SIZE)) {
+            if (isOperation(Operation::OP_CALC_SIZE)) {
                 size_ += item.objectSize();
             }
         }
@@ -738,9 +738,9 @@ protected:
               >
     void serialize(std::vector<std::shared_ptr<T>> &vec, size_t size)
     {
-        assert(operation_ != OP_INVALID);
+        assert(operation_ != Operation::OP_INVALID);
 
-        if (isOperation(OP_WRITE) || isOperation(OP_CALC_SIZE)) {
+        if (isOperation(Operation::OP_WRITE) || isOperation(Operation::OP_CALC_SIZE)) {
             assert(vec.size() == size);
 
             if (vec.size() != size) {
@@ -756,7 +756,7 @@ protected:
 
                 (*it)->serializeSubObject(this);
 
-                if (isOperation(OP_CALC_SIZE)) {
+                if (isOperation(Operation::OP_CALC_SIZE)) {
                     size_ += (*it)->objectSize();
                 }
             }
@@ -785,9 +785,9 @@ protected:
     template <typename T>
     void serializeSize(T &data, size_t size)
     {
-        assert(operation_ != OP_INVALID);
+        assert(operation_ != Operation::OP_INVALID);
 
-        if (isOperation(OP_WRITE)) {
+        if (isOperation(Operation::OP_WRITE)) {
             data = size;
         }
 
@@ -802,10 +802,10 @@ protected:
     template <typename T>
     void serializeSize(T &data, const std::string &str, bool cString = true)
     {
-        assert(operation_ != OP_INVALID);
+        assert(operation_ != Operation::OP_INVALID);
 
         // calculate new size
-        if (isOperation(OP_WRITE)) {
+        if (isOperation(Operation::OP_WRITE)) {
             size_t size = str.size();
 
             if (cString && size != 0) {
@@ -827,8 +827,8 @@ protected:
     void serializeSubWithPointers(std::vector<T> &vec, size_t size,
                                   std::vector<int32_t> &pointers)
     {
-        assert(operation_ != OP_INVALID);
-        if (isOperation(OP_READ)) {
+        assert(operation_ != Operation::OP_INVALID);
+        if (isOperation(Operation::OP_READ)) {
             vec.resize(size);
         }
         for (size_t i = 0; i < size; ++i) {
@@ -838,7 +838,7 @@ protected:
 
             vec[i].serializeSubObject(this);
 
-            if (isOperation(OP_CALC_SIZE)) {
+            if (isOperation(Operation::OP_CALC_SIZE)) {
                 size_ += vec[i].objectSize();
             }
         }
@@ -851,10 +851,10 @@ protected:
     template <typename T>
     void serializePair(std::pair<T, T> &p, bool only_first = false)
     {
-        assert(operation_ != OP_INVALID);
+        assert(operation_ != Operation::OP_INVALID);
 
         switch (getOperation()) {
-        case OP_WRITE:
+        case Operation::OP_WRITE:
             write<T>(p.first);
 
             if (!only_first) {
@@ -863,7 +863,7 @@ protected:
 
             break;
 
-        case OP_READ:
+        case Operation::OP_READ:
             p.first = read<T>();
 
             if (!only_first) {
@@ -872,7 +872,7 @@ protected:
 
             break;
 
-        case OP_CALC_SIZE:
+        case Operation::OP_CALC_SIZE:
             size_ += sizeof(T);
 
             if (!only_first) {
@@ -881,8 +881,8 @@ protected:
 
             break;
 
-        case OP_INVALID:
-            assert(operation_ != OP_INVALID);
+        case Operation::OP_INVALID:
+            assert(operation_ != Operation::OP_INVALID);
             break;
         }
     }
@@ -893,9 +893,9 @@ private:
 
     std::streampos init_read_pos_ = 0;
 
-    Operation operation_ = OP_INVALID;
+    Operation operation_ = Operation::OP_INVALID;
 
-    GameVersion gameVersion_ = GV_None;
+    GameVersion gameVersion_ = GameVersion::GV_None;
 
     size_t size_ = 0;
 };
