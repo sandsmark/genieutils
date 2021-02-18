@@ -344,7 +344,7 @@ std::string LangFile::convert(iconv_t cd, const std::string &input)
 
     std::string decodedStr;
 
-    strncpy(inbuf, input.c_str(), inleft);
+    input.copy(inbuf, inleft);
 
     while (cd != (iconv_t) -1 && inleft > 0 && iconv_value == 0) {
         iconv_value = iconv(cd, &inptr, &inleft, &outptr, &outleft);

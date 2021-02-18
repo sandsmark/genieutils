@@ -124,9 +124,9 @@ void ISerializable::writeString(const std::string &str, size_t len)
 {
     char *buf = new char[len];
 
-    strncpy(buf, str.c_str(), len);
+    str.copy(buf, len);
 
-    for (unsigned int i = str.size(); i < len; i++) {
+    for (size_t i = str.size(); i < len; i++) {
         buf[i] = 0; // fill up with 0
     }
 
