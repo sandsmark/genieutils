@@ -47,9 +47,9 @@ ScnFile::ScnFile() :
 
 void ScnFile::extractRaw(std::istream &ifs, std::ostream &ofs)
 {
-    char version[4];
-    ifs.read(version, 4);
-    ofs.write(version, 4);
+    char readVersion[4];
+    ifs.read(readVersion, 4);
+    ofs.write(readVersion, 4);
 
     uint32_t headerLen;
 

@@ -2,7 +2,7 @@
     genieutils - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2015 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2015 - 2021  Mikko "Tapsa" P
     Copyright (C) 2015  JustTesting1234
 
     This program is free software: you can redistribute it and/or modify
@@ -252,7 +252,7 @@ public:
     std::array<std::string, 16> playerNames;
 
     /// I think this is to look up in the language*.dll
-    std::array<uint32_t, 16> playerNamesStringTable;
+    std::array<int32_t, 16> playerNamesStringTable;
 
     /// If the player can win by conquest
     uint8_t conquestVictory = 0;
@@ -263,22 +263,22 @@ public:
     std::string originalFileName = "";
 
     /// GV >= AoK
-    uint32_t instructionsStringTable = -1;
+    int32_t instructionsStringTable = -1;
 
     /// GV >= AoK
-    uint32_t hintsStringTable = -1;
+    int32_t hintsStringTable = -1;
 
     /// GV >= AoK
-    uint32_t victoryStringTable = -1;
+    int32_t victoryStringTable = -1;
 
     /// GV >= AoK
-    uint32_t lossStringTable = -1;
+    int32_t lossStringTable = -1;
 
     /// GV >= AoK
-    uint32_t historyStringTable = -1;
+    int32_t historyStringTable = -1;
 
     /// GV >= TC
-    uint32_t scoutsStringTable = -1;
+    int32_t scoutsStringTable = -1;
 
     // Messages
 

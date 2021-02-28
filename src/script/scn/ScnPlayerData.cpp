@@ -2,7 +2,7 @@
     genieutils - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2015 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2015 - 2021  Mikko "Tapsa" P
     Copyright (C) 2015  JustTesting1234
 
     This program is free software: you can redistribute it and/or modify
@@ -50,7 +50,7 @@ void ScnMainPlayerData::serializeObject()
         }
 
         if (scn_plr_data_ver > 1.15f) {
-            serialize<uint32_t, 16>(playerNamesStringTable);
+            serialize<int32_t, 16>(playerNamesStringTable);
 
             if (s_verbose) std::cout << "Read name string table" << std::endl;
         }
@@ -69,15 +69,15 @@ void ScnMainPlayerData::serializeObject()
     if (s_verbose) std::cout << "Original filename " << originalFileName << std::endl;
 
     if (scn_plr_data_ver > 1.15f) {
-        serialize<uint32_t>(instructionsStringTable);
-        serialize<uint32_t>(hintsStringTable);
-        serialize<uint32_t>(victoryStringTable);
-        serialize<uint32_t>(lossStringTable);
-        serialize<uint32_t>(historyStringTable);
+        serialize<int32_t>(instructionsStringTable);
+        serialize<int32_t>(hintsStringTable);
+        serialize<int32_t>(victoryStringTable);
+        serialize<int32_t>(lossStringTable);
+        serialize<int32_t>(historyStringTable);
     }
 
     if (scn_plr_data_ver > 1.21f) {
-        serialize<uint32_t>(scoutsStringTable);
+        serialize<int32_t>(scoutsStringTable);
     }
 
     serializeSizedString<uint16_t>(instructions, false);
