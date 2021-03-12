@@ -1,7 +1,7 @@
 /*
     genie/dat - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2014 - 2019  Mikko "Tapsa" P
+    Copyright (C) 2014 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -158,7 +158,9 @@ void TerrainBlock::serializeObject()
     }
 
     if (gv < GV_C9 || gv > GV_LatestDE2) {
-        serialize<TerrainBorder, 16>(TerrainBorders);
+        if (gv != GV_CCV && gv != GV_TCV) {
+            serialize<TerrainBorder, 16>(TerrainBorders);
+        }
 
         // Probably filled after loading map in game.
         serialize<int32_t>(MapRowOffset);
