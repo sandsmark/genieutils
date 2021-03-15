@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -58,10 +58,15 @@ public:
     size_t getNameSize() override;
 
     /// Priority for blending over neighbouring tiles, not in AoE/RoR.
-    int32_t BlendPriority = 0;
-
+      union {
+       int32_t BlendPriority = 0;
+       int16_t BlendPriorityS16;
+    };
     /// The combination of this + the terrain to blend with defines which type of blending, not in aoe/ror.
-    int32_t BlendType = 0;
+    union {
+       int32_t BlendType = 0;
+       int16_t BlendTypeS16;
+    };
 
     std::string OverlayMaskName = ""; // TODO doc, new in DE
 

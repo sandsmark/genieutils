@@ -91,10 +91,16 @@ public:
     /// Help: Name +100000, in file Name +21000
     /// Hotkey Text: Name +150000, in file Name +10000
     /// Tech tree: Name +9000
-    int32_t LanguageDLLName = 5000;
+    union {
+        int32_t LanguageDLLName = 5000;
+        uint16_t LanguageDLLNameU16;
+    };
 
     /// ID of the name string stored in the language.dll file, for the training/creating button
-    int32_t LanguageDLLCreation = 6000;
+    union {
+        int32_t LanguageDLLCreation = 6000;
+        uint16_t LanguageDLLCreationU16;
+    };
 
     enum UnitClass : int16_t {
         InvalidClass = -1,

@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -26,8 +26,14 @@ namespace genie {
 class PlayerColour : public ISerializable
 {
 public:
-    int32_t ID = -1;
-    int32_t PaletteBase = 0;
+    union {
+        int32_t ID = -1;
+        int16_t IdS16;
+    };
+    union {
+        int32_t PaletteBase = 0;
+        uint8_t PaletteBaseU8;
+    };
 
     // AoE 2 variables
 

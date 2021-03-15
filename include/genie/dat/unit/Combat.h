@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2020  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -36,7 +36,10 @@ public:
     /** Can be negative only in The Conquerors and later games.
       * int8_t for AoE1, including definitive edition, int16_t otherwise
       */
-    int16_t BaseArmor = 1000;
+    union {
+        int16_t BaseArmor = 1000;
+        uint8_t BaseArmorU8;
+    };
 
     /// List of attack types with their damage
     std::vector<unit::AttackOrArmor> Attacks;

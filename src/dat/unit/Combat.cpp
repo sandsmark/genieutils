@@ -62,9 +62,8 @@ void Combat::serializeObject()
 
     if (gv < GV_TC // 11.52
             && (gv > GV_LatestTap || gv < GV_T3)) {
-        int8_t defarmor_byte = BaseArmor;
-        serialize<int8_t>(defarmor_byte);
-        BaseArmor = uint8_t(defarmor_byte);
+        serialize<uint8_t>(BaseArmorU8);
+        BaseArmor = BaseArmorU8;
     } else {
         serialize<int16_t>(BaseArmor);
     }
