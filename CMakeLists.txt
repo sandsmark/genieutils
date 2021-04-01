@@ -137,7 +137,7 @@ set(FILE_SRC
     src/file/Compressor.cpp
     src/file/CabFile.cpp
     src/file/LZ4.cpp
-    #    src/file/lzx.c
+    src/file/LZX.c
 )
 
 
@@ -235,6 +235,7 @@ set(DRSTOOL_SRC src/tools/drstool/drstool.cpp)
 set(CPXTOOL_SRC src/tools/cpxtool/cpxtool.cpp)
 set(PCRIOTOOL_SRC src/tools/pcriotool/pcriotool.cpp)
 set(VOOBLYDECODER_SRC src/tools/vooblydecoder/main.cpp)
+set(CABTOOL_SRC src/tools/cabtool/cabtool.cpp)
 
 set(BINCOMP_SRC src/tools/bincompare/bincomp.cpp
                 src/tools/bincompare/main.cpp)
@@ -301,14 +302,17 @@ if (GUTILS_TOOLS)
   target_link_libraries(cpxtool genieutils)
 
   add_executable(pcriotool ${PCRIOTOOL_SRC})
-  install(TARGETS pcriotool)
   target_link_libraries(pcriotool genieutils)
+  install(TARGETS pcriotool)
 
   add_executable(genie-bindiff ${BINCOMP_SRC})
   install(TARGETS genie-bindiff)
 
   add_executable(genie-vooblydecoder ${VOOBLYDECODER_SRC})
   install(TARGETS genie-vooblydecoder)
+
+  add_executable(cabtool ${CABTOOL_SRC})
+  target_link_libraries(cabtool genieutils)
 endif (GUTILS_TOOLS)
 
 #------------------------------------------------------------------------------#

@@ -519,6 +519,7 @@ protected:
     /// Spezialization of std::strings.
     void serialize(std::string &str, size_t len)
     {
+        assert(false);
         assert(operation_ != OP_INVALID);
 
         if (len > 0) {

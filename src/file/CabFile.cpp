@@ -19,7 +19,7 @@
 
 #include "genie/file/CabFile.h"
 
-//#include "lzx.h"
+#include "LZX.h"
 
 #include <fstream>
 #include <vector>
@@ -59,6 +59,7 @@ void CabFile::readFile(std::string filename)
         return;
     }
 
+    std::cout << "\nreading " << filename << std::endl;
     const File &file = m_files[filename];
 
     if (file.folder > m_folders.size()) {
@@ -95,21 +96,24 @@ void CabFile::readFile(std::string filename)
 
     std::istream *istr = getIStream();
 
-    //const int windowSize = (folder.compression >> 8) & 0x1f;
+    const int windowSize = (folder.compression >> 8) & 0x1f;
+    std::cout << "window size: " << windowSize << std::endl;
 
     for (size_t i = 0; i < m_folders[file.folder].blocks.size(); i++) {
         const Block &block = folder.blocks[i];
 
         if (fileEnd < block.uncompressedOffset) {
+            std::cout << "SKipping block before " << i << std::endl;
             continue;
         }
 
         if (file.offsetInFolder > block.uncompressedOffset + block.uncompressedSize) {
+//            std::cout << "SKipping block after " << i << std::endl;
             continue;
         }
 
 //        std::streampos blockpos = getInitialReadPosition() + std::streampos(folder.dataOffset);
-        std::streampos blockpos = block.streamOffset;
+        std::streampos blockpos = block.streamOffset + m_cabOffset;
         std::cout << "reading block at " << std::hex << blockpos << std::dec << std::endl;
         istr->seekg(blockpos);
 
@@ -119,23 +123,41 @@ void CabFile::readFile(std::string filename)
         std::vector<uint8_t> uncompressedBuffer;
         uncompressedBuffer.resize(block.uncompressedSize);
 
-        std::cout << "compressed size " << block.compressedSize << " uncompressed " << block.uncompressedSize << std::endl;
-        std::cout << "compressed size " << compressedBuffer.size() << " uncompressed " << uncompressedBuffer.size() << std::endl;
+        if (verbose_) {
+            std::cout << "compressed size " << block.compressedSize << " uncompressed " << block.uncompressedSize << std::endl;
+            std::cout << "compressed size " << compressedBuffer.size() << " uncompressed " << uncompressedBuffer.size() << std::endl;
+        }
 
-        throw std::runtime_error("Not implemented");
-        //LZXStatePtr decompressor(LZXinit(windowSize), ::LZXteardown);
-        //int ret = LZXdecompress(decompressor.get(),
-        //                        compressedBuffer.data(), uncompressedBuffer.data(),
-        //                        int(compressedBuffer.size()), int(uncompressedBuffer.size())
-        //                       );
+//        throw std::runtime_error("LZX Not implemented");
+        LZXStatePtr decompressor(LZXinit(windowSize), ::LZXteardown);
+        int ret = LZXdecompress(decompressor.get(),
+                                compressedBuffer.data(), uncompressedBuffer.data(),
+                                int(compressedBuffer.size()), int(uncompressedBuffer.size())
+                               );
 
-        //if (ret != DECR_OK) {
-        //    std::cout << "Failed to decode block " << ret << std::endl;
-        //    return;
-        //}
+        if (ret != DECR_OK) {
+            std::cout << "Failed to decode block " << ret << std::endl;
+            return;
+        }
 
 //        std::cout << uncompressedBuffer << std::endl;
     }
+}
+
+std::vector<std::string> CabFile::filenames() const
+{
+    std::vector<std::string> ret;
+    for (const std::pair<const std::string, File> &file : m_files) {
+        std::string fixed = file.first;
+        for (size_t i = 0; i<fixed.size(); i++) {
+            if (fixed[i] == '\\') {
+                fixed[i] = '/';
+            }
+        }
+        ret.push_back(fixed);
+    }
+    std::sort(ret.begin(), ret.end());
+    return ret;
 }
 
 bool CabFile::seekToHeader()
@@ -163,11 +185,14 @@ bool CabFile::seekToHeader()
                 std::cout << "Found header at " << std::hex << position << std::dec << std::endl;
             }
 
+            m_cabOffset = position;
             istr->seekg(position);
 
             return true;
         }
 
+        // TODO: optimize by reading in blocks, and comparing each byte in the block to see if it
+        // contains parts of the header, and re-seek appropriately to see if we can find the whole header
         position += std::streampos(1);
         istr->seekg(position);
     }
@@ -190,8 +215,7 @@ void CabFile::serializeObject(void)
 
     std::istream *istr = getIStream();
 
-    std::streampos startPos = istr->tellg();
-    istr->seekg(startPos + std::streampos(8));
+    istr->seekg(m_cabOffset + std::streampos(8));
 
     const uint64_t byteCount = read<uint64_t>();
 
@@ -281,7 +305,7 @@ void CabFile::serializeObject(void)
         file.size = read<uint32_t>();
 
         if (verbose_) {
-            std::cout << "file size: " << file.size << std::endl;
+            std::cout << "\n--- \nfile size: " << file.size << std::endl;
         }
 
         file.offsetInFolder = read<uint32_t>();
@@ -299,13 +323,13 @@ void CabFile::serializeObject(void)
         file.date = read<uint16_t>();
 
         if (verbose_) {
-            std::cout << "date: " << std::hex << file.date << std::dec << std::endl;
+            std::cout << "date: " << file.getDay() << "." << file.getMonth() << "." << file.getYear() << std::endl;
         }
 
         file.time = read<uint16_t>();
 
         if (verbose_) {
-            std::cout << "time: " << std::hex << file.time << std::dec << std::endl;
+            std::cout << "time: " << file.getHour() << ":" << file.getMinute() << ":" << file.getSecond() << std::endl;
         }
 
         file.attributes = read<uint16_t>();

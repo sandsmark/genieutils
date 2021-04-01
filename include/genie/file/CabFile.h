@@ -47,6 +47,26 @@ public:
         uint16_t time;
         uint16_t attributes;
         std::string filename;
+
+        inline int getHour() const {
+            return time >> 11;
+        }
+        inline int getMinute() const {
+            return (time >> 5) & 0x3F;
+        }
+        inline int getSecond() const {
+            return (time & 0x1F) * 2;
+        }
+
+        inline int getDay() const {
+            return date & 0x1F;
+        }
+        inline int getMonth() const {
+            return (date >> 5) & 0xF;
+        }
+        inline int getYear() const {
+            return (date >> 9) + 1980;
+        }
     };
 
     struct Block {
@@ -83,6 +103,8 @@ public:
 
     void readFile(std::string filename);
 
+    std::vector<std::string> filenames() const;
+
 private:
     bool seekToHeader();
     // if true print debug messages
@@ -97,6 +119,7 @@ private:
 
     std::vector<Folder> m_folders;
     std::unordered_map<std::string, File> m_files;
+    std::streampos m_cabOffset = 0;
 };
 } // namespace genie
 
