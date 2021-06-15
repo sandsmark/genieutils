@@ -228,6 +228,14 @@ int readWriteDiff(genie::GameVersion gv)
     std::cout << "Saving " << (filepath + ".raw_genie") << std::endl;
     file.saveRaw(filepath + ".raw_genie");
 
+    // The original dat files have some random uninitialized garbage in them
+    // (three bytes in the Graphics::FileName string after the terminating
+    // null, mostly 78 01 df, but also things like f8 04 df),
+    // so just skip byte-for-byte diffing.
+    if (gv == genie::GV_SWGB || gv == genie::GV_CC) {
+        return 0;
+    }
+
     return binaryCompare((filepath + ".raw_orig").c_str(),
                          (filepath + ".raw_genie").c_str());
 }
