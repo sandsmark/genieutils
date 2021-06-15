@@ -30,6 +30,8 @@ namespace unit {
 class Action : public ISerializable
 {
 public:
+    Action();
+
     void setGameVersion(GameVersion gv) override;
 
     /// Unit task ID executed when idle.

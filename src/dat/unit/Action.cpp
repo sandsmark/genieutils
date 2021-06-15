@@ -26,8 +26,16 @@ namespace genie {
 
 namespace unit {
 //------------------------------------------------------------------------------
+Action::Action() : DropSites(2, -1)
+{
+}
+
 void Action::setGameVersion(GameVersion gv)
 {
+    if (gv == getGameVersion()) {
+        return;
+    }
+
     ISerializable::setGameVersion(gv);
 
     DropSites.resize(getDropSiteCount(), -1);
