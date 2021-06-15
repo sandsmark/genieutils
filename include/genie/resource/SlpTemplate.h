@@ -205,7 +205,7 @@ public:
             ;
         }
 
-        const size_t icmIndex = lightmapFile.lightmaps[lightmapIndex][lightIndex];
+        const uint8_t icmIndex = lightmapFile.lightmaps[lightmapIndex][lightIndex];
 
         if (icmIndex >= icmFile.maps.size()) {
             return icmFile.maps[IcmFile::Neutral];
