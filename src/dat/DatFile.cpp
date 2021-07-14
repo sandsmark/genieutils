@@ -31,8 +31,6 @@
 namespace genie {
 
 float ISerializable::dat_internal_ver = 0.f;
-GameVersion GV_LatestTap = GV_T8;
-GameVersion GV_LatestDE2 = GV_C16;
 
 //------------------------------------------------------------------------------
 DatFile::DatFile() :
@@ -117,6 +115,7 @@ std::string DatFile::versionName(const GameVersion version)
         case genie::GV_C14: return "Age of Empires 3: Definitive Edition C14";
         case genie::GV_C15: return "Age of Empires 3: Definitive Edition C15";
         case genie::GV_C16: return "Age of Empires 3: Definitive Edition C16";
+        case genie::GV_C17: return "Age of Empires 3: Definitive Edition C17";
         case genie::GV_SWGB: return "Star Wars: Galactic Battlegrounds";
         case genie::GV_CC: return "Star Wars: Galactic Battlegrounds: Clone Campaigns";
         case genie::GV_CCV: return "Star Wars: Galactic Battlegrounds: Clone Campaigns, terrain patch";
@@ -153,6 +152,8 @@ GameVersion DatFile::gameVersionFromString(const std::string &name)
             return GV_C15;
         case 3:
             return GV_C16;
+        case 4:
+            return GV_C17;
         default:
             break;
         }
@@ -425,6 +426,9 @@ void DatFile::serializeObject()
 
     GameVersion gv = getGameVersion();
     if (gv == GV_None) {
+        if (!m_rawMode) {
+            compressor_.endCompression();
+        }
         throw std::runtime_error("No game version defined!");
     }
 

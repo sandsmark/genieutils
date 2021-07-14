@@ -32,7 +32,7 @@ enum GameVersion {
     GV_AoE, /// 7.2
     GV_RoR, /// 7.24
     GV_Tapsa, /// I think maybe AoE1 Definitive Edition? Based on commit messages from Tapsa
-    GV_T2, GV_T3, GV_T4, GV_T5, GV_T6, GV_T7, GV_T8, /// From Tapsa testing, I think
+    GV_T2, GV_T3, GV_T4, GV_T5, GV_T6, GV_T7, GV_T8, // 10.1 - 10.8
     GV_AoKE3, /// 9.36
     GV_AoKA, /// 10.19
     GV_AoKB, /// 11.05
@@ -40,8 +40,11 @@ enum GameVersion {
     GV_TC, // 11.76
     GV_TCV, // Terrain patch
     GV_UP15, // 11.76 with UserPatch 1.5
-    GV_Cysion, GV_C2, GV_C3, GV_C4, GV_CK, GV_C5, GV_C6, GV_C7, GV_C8, GV_C9, GV_C10, GV_C11, GV_C12, GV_C13, GV_C14, GV_C15, GV_C16,
-    // 12.0 - 12.74
+    GV_Cysion, // 12.0
+    GV_C2, GV_C3, GV_C4, GV_CK, GV_C5, GV_C6, GV_C7, GV_C8, GV_C9, GV_C10, GV_C11, GV_C12, GV_C13, GV_C14, // 12.52 - 12.94
+    GV_C15, // 13.11
+    GV_C16, // 20.01
+    GV_C17, // 20.14
     GV_SWGB, /// 1.0
     GV_CC, // 1.1
     GV_CCV // Terrain patch
@@ -56,7 +59,8 @@ enum class GenieGame {
     AgeOfEmpires2DefinitiveEdition
 };
 
-extern GameVersion GV_LatestTap, GV_LatestDE2;
+const GameVersion GV_LatestTap = GV_T8;
+const GameVersion GV_LatestDE2 = GV_C17;
 
 struct XYZF {
     float x = 0.f, y = 0.f, z = 0.f;
