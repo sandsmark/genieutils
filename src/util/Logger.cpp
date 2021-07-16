@@ -21,6 +21,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <unordered_map>
 
 namespace genie {
 
@@ -38,7 +39,9 @@ Logger &Logger::getRootLogger()
 //------------------------------------------------------------------------------
 Logger &Logger::getLogger(const std::string &name)
 {
-    return getRootLogger();
+    static std::unordered_map<std::string, Logger> loggers;
+    loggers[name].name_ = name;
+    return loggers[name];
 }
 
 //------------------------------------------------------------------------------
@@ -84,7 +87,23 @@ std::ostream *Logger::getGlobalOutputStream()
 
 void Logger::log(LogLevel loglevel, const std::string &format)
 {
-    *global_out_ << getLogLevelName(loglevel) << ": " << format << std::endl;
+    switch(loglevel) {
+    case L_INFO:
+    case L_DEBUG:
+        *global_out_ << "\033[02;32m";
+        break;
+    case L_WARNING:
+        *global_out_ <<  "\033[01;33m";
+        break;
+    case L_ERROR:
+    case L_FATAL:
+        *global_out_ <<  "\033[01;31m";
+        break;
+    case L_OFF:
+    default:
+        break;
+    }
+    *global_out_ << getLogLevelName(loglevel) << ": " << format << "\033[0m" << std::endl;
 }
 
 //------------------------------------------------------------------------------

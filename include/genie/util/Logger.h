@@ -174,14 +174,31 @@ protected:
         if (loglevel < Logger::LOG_LEVEL) {
             return;
         }
+        switch(loglevel) {
+            case L_INFO:
+            case L_DEBUG:
+                *global_out_ << "\033[02;32m";
+                break;
+            case L_WARNING:
+                *global_out_ <<  "\033[01;33m";
+                break;
+            case L_ERROR:
+            case L_FATAL:
+                *global_out_ <<  "\033[01;31m";
+                break;
+            case L_OFF:
+            default:
+                break;
+        }
 
-        *global_out_ << getLogLevelName(loglevel) << ": ";
+        *global_out_ << getLogLevelName(loglevel) << " " << name_ << "\033[0m: ";
         printLog(format, arguments...);
     }
 
     std::string getLogLevelName(LogLevel loglevel);
 
 private:
+    std::string name_;
     static std::ostream *global_out_;
 
 private:
