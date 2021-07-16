@@ -39,7 +39,7 @@ SlpFilePtr DrsFile::getSlpFile(uint32_t id)
 
     if (slpIterator != slp_map_.end()) {
 #ifndef NDEBUG
-        log.debug("Loading SLP file [%u]", id);
+        log.debug("Loading SLP file [%]", id);
 #endif
         slpIterator->second->readObject(*getIStream());
         return slpIterator->second;
@@ -48,7 +48,7 @@ SlpFilePtr DrsFile::getSlpFile(uint32_t id)
 
         if (binIterator != bina_map_.end()) {
 #ifndef NDEBUG
-            log.debug("Loading SLP file [%u] from bina", id);
+            log.debug("Loading SLP file [%] from bina", id);
 #endif
             SlpFilePtr slp(new SlpFile(binIterator->second->size()));
 
@@ -58,7 +58,7 @@ SlpFilePtr DrsFile::getSlpFile(uint32_t id)
 
             return slp;
         } else {
-            log.debug("No slp file with id [%u] found!", id);
+            log.debug("No slp file with id [%] found!", id);
             return SlpFilePtr();
         }
     }
@@ -76,7 +76,7 @@ const PalFile &DrsFile::getPalFile(uint32_t id)
     std::unordered_map<uint32_t, BinaFilePtr>::iterator b = bina_map_.find(id);
 
     if (b == bina_map_.end()) {
-        log.debug("No bina file with id [%u] found!", id);
+        log.debug("No bina file with id [%] found!", id);
         return PalFile::null;
     }
 
@@ -91,7 +91,7 @@ UIFilePtr DrsFile::getUIFile(uint32_t id)
     if (i != bina_map_.end()) {
         return i->second->readUIFile(getIStream());
     } else {
-        log.debug("No bina file with id [%u] found!", id);
+        log.debug("No bina file with id [%] found!", id);
         return UIFilePtr();
     }
 }
@@ -136,7 +136,7 @@ BmpFilePtr DrsFile::getBmpFile(uint32_t id)
     if (i != bina_map_.end()) {
         return i->second->readBmpFile(getIStream());
     } else {
-        log.debug("No bina file with id [%u] found!", id);
+        log.debug("No bina file with id [%] found!", id);
         return BmpFilePtr();
     }
 }
@@ -148,7 +148,7 @@ std::string DrsFile::getScriptFile(uint32_t id)
     if (i != bina_map_.end()) {
         return i->second->readScriptFile(getIStream());
     } else {
-        log.debug("No bina file with id [%u] found!", id);
+        log.debug("No bina file with id [%] found!", id);
         return std::string();
     }
 }
@@ -160,7 +160,7 @@ ScnFilePtr DrsFile::getScnFile(uint32_t id)
     if (i != bina_map_.end()) {
         return i->second->readScnFile(getIStream());
     } else {
-        log.debug("No bina file with id [%u] found!", id);
+        log.debug("No bina file with id [%] found!", id);
         return ScnFilePtr();
     }
 }
@@ -173,7 +173,7 @@ WavFilePtr DrsFile::getWavFile(uint32_t id)
         i->second->readObject(*getIStream());
         return i->second;
     } else {
-        log.debug("No wav file with id [%u] found!", id);
+        log.debug("No wav file with id [%] found!", id);
         return {};
     }
 
@@ -248,7 +248,7 @@ std::shared_ptr<uint8_t[]> DrsFile::getWavPtr(uint32_t id)
         }
 
 #ifndef NDEBUG
-        log.debug("WAV [%u], type [%X], size [%u]", id, type, size);
+        log.debug("WAV [%], type [%], size [%]", id, type, size);
 #endif
         getIStream()->seekg(std::streampos(i->second));
 
@@ -263,7 +263,7 @@ std::shared_ptr<uint8_t[]> DrsFile::getWavPtr(uint32_t id)
         }
         return ptr;
     } else {
-        log.warn("No sound file with id [%u] found!", id);
+        log.warn("No sound file with id [%] found!", id);
         return nullptr;
     }
 }
@@ -316,9 +316,9 @@ void DrsFile::loadHeader()
         string version = readString(4);
         string filetype = readString(12);
 
-        log.debug("copyright: %s", copyright);
-        log.debug("version: %s", version);
-        log.debug("filetype: %s", filetype);
+        log.debug("copyright: %", copyright);
+        log.debug("version: %", version);
+        log.debug("filetype: %", filetype);
 
         num_of_tables_ = read<uint32_t>();
         header_offset_ = read<uint32_t>();
@@ -367,7 +367,7 @@ void DrsFile::loadHeader()
                 } else {
                     std::cerr << "unknown header " << std::hex << table_types_[i] << std::dec << std::endl;
                     return;
-//                    log.error("unknown file header: %s", table_types_[i]);
+//                    log.error("unknown file header: %", table_types_[i]);
                 }
             }
         }

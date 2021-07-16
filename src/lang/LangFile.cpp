@@ -130,12 +130,12 @@ void LangFile::load(const std::string &filename)
         defaultCodepage_ = lang->codepage;
     }
 
-    log.info("Culture Id: %d, Codepage: %d.", defaultCultureId_, defaultCodepage_);
+    log.info("Culture Id: %, Codepage: %.", defaultCultureId_, defaultCodepage_);
 
     if (defaultCodepage_ > 0) {
         cName << "WINDOWS-" << defaultCodepage_;
 
-        log.info("Loading \"%s\" charset converter description.", cName.str().c_str());
+        log.info("Loading \"%\" charset converter description.", cName.str().c_str());
 
         toDefaultCharsetCd_ = iconv_open(systemDefaultCharset_.c_str(), cName.str().c_str());
         fromDefaultCharsetCd_ = iconv_open(cName.str().c_str(), systemDefaultCharset_.c_str());
@@ -183,13 +183,13 @@ std::string LangFile::getString(unsigned int id)
     int strBufSize = pcr_get_strlenL(pfile_, id, defaultCultureId_) + 1;
 
     if (strBufSize <= 1) {
-        log.debug("%s: String [%d] not found!", getFileName(), id);
+        log.debug("%: String [%] not found!", getFileName(), id);
         return std::string("");
     }
 
     strBuf = new char[strBufSize];
 
-    log.info("%s: getString(%d);", getFileName(), id);
+    log.info("%: getString(%);", getFileName(), id);
 
     int flag = pcr_get_stringL(pfile_, id, defaultCultureId_, strBuf, strBufSize);
 
@@ -200,14 +200,14 @@ std::string LangFile::getString(unsigned int id)
     if (flag) {
         codepage = pcr_get_codepageL(pfile_, id, defaultCultureId_);
 
-        log.info("Codepage differs, loading converter for cp [%d]", codepage);
+        log.info("Codepage differs, loading converter for cp [%]", codepage);
     } else {
         codepage = defaultCodepage_;
     }
 
     decodedStr = convertFrom(encodedStr, codepage);
 
-    log.info("| Result: \"%s\"", decodedStr.c_str());
+    log.info("| Result: \"%\"", decodedStr.c_str());
 
     delete[] strBuf;
 
@@ -368,7 +368,7 @@ std::string LangFile::convert(iconv_t cd, const std::string &input)
                     error += "EINVAL";
                 }
 
-                log.error("%s", error.c_str());
+                log.error("%", error.c_str());
 
                 throw error;
             }
