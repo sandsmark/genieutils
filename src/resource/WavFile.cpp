@@ -5,7 +5,7 @@
 #include <limits>
 
 namespace genie {
-Logger &WavFile::log = Logger::getLogger("freeaoe.DrsFile");
+Logger &WavFile::log = Logger::getLogger("genie.DrsFile");
 
 WavFile::WavFile()
 {

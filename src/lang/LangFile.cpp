@@ -32,7 +32,7 @@ namespace genie {
 
 const char *LangFile::CONV_DEFAULT_CHARSET = "UTF-8";
 
-Logger &LangFile::log = Logger::getLogger("freeaoe.LangFile");
+Logger &LangFile::log = Logger::getLogger("genie.LangFile");
 
 //------------------------------------------------------------------------------
 PcrioError::PcrioError(int error, const std::string &filename) :

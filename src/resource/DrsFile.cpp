@@ -30,7 +30,7 @@ namespace genie {
 
 using std::string;
 
-Logger &DrsFile::log = Logger::getLogger("freeaoe.DrsFile");
+Logger &DrsFile::log = Logger::getLogger("genie.DrsFile");
 
 //------------------------------------------------------------------------------
 SlpFilePtr DrsFile::getSlpFile(uint32_t id)
