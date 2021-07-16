@@ -17,6 +17,7 @@
 */
 
 #include "genie/util/Utility.h"
+#include "genie/util/Logger.h"
 
 #include <errno.h>
 #include <stdlib.h>
@@ -33,7 +34,9 @@ extern "C" {
 }
 #endif
 
+
 namespace genie {
+static Logger log = Logger::getLogger("genie.Utility");
 
 #if defined(WIN32) || defined(__WIN32) || defined(__WIN32__)
 static std::string wintendoExePath()
@@ -46,7 +49,7 @@ static std::string wintendoExePath()
 
         // Windows APIs are a special kind of retarded, 0 means it failed
         if (ret == 0) {
-            std::cerr << "Failed to query wintendo exe path" << std::endl;
+            log.error("Failed to query wintendo exe path");
             return {};
         }
     } while(ret >= pathBuf.size());
@@ -58,7 +61,7 @@ static std::string procExePath()
 {
     const std::string path = "/proc/" + std::to_string(getpid()) + "/exe";
     if (!std::filesystem::is_symlink(path)) {
-        std::cerr << path << " is not a valid symlink" << std::endl;
+        log.error("% is not a valid symlink", path);
         return {};
     }
 
@@ -77,7 +80,7 @@ std::string util::executablePath()
     path = procExePath();
 #endif
     if (path.empty()) {
-        std::cerr << "Failed to resolve executable path" << std::endl;
+        log.error("Failed to resolve executable path");
         path = std::filesystem::current_path().string();
     }
 
@@ -162,7 +165,7 @@ std::string genie::util::resolvePathCaseInsensitive(std::string inputPath, const
     }
 
     if (correct.empty()) {
-        std::cerr << "Failed to resolve " << inputPath << " in folder " << basePath << std::endl;
+        log.debug("Failed to resolve % in folder %", inputPath, basePath);
         return {};
     }
 
