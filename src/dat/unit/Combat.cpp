@@ -22,9 +22,7 @@
 
 #include "../TestHelpers.h"
 
-namespace genie {
-
-namespace unit {
+namespace genie::unit {
 //------------------------------------------------------------------------------
 void Combat::setGameVersion(GameVersion gv)
 {
@@ -105,5 +103,4 @@ void Combat::serializeObject()
         serialize<float>(DisplayedReloadTime);
     }
 }
-} // namespace unit
 } // namespace genie
