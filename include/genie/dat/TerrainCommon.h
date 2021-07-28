@@ -33,7 +33,7 @@ public:
     bool compareTo(const FrameData &other) const;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 
 class SharedTerrain : public ISerializable
@@ -47,7 +47,7 @@ public:
 
     int8_t Random = 0;
 
-    virtual size_t getNameSize(void) = 0;
+    virtual size_t getNameSize() = 0;
 
     /// Internal long name
     std::string Name = "";

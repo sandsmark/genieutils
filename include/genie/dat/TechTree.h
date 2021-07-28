@@ -49,7 +49,7 @@ public:
     bool compareTo(const TechTree &other) const;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 
 namespace techtree {
@@ -86,7 +86,7 @@ public:
     bool compareTo(const Common &other) const;
 
 private:
-    void serializeObject(void) override // 84 bytes, 164 in SWGB
+    void serializeObject() override // 84 bytes, 164 in SWGB
     {
         serialize<int32_t>(SlotsUsed);
         serialize<int32_t>(UnitResearch, getSlots());
@@ -120,7 +120,7 @@ public:
     bool compareTo(const TechTreeAge &other) const;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 
 class BuildingConnection : public ISerializable
@@ -171,7 +171,7 @@ public:
     bool compareTo(const BuildingConnection &other) const;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 
 class UnitConnection : public ISerializable
@@ -201,7 +201,7 @@ public:
     bool compareTo(const UnitConnection &other) const;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 
 class ResearchConnection : public ISerializable
@@ -228,7 +228,7 @@ public:
     bool compareTo(const ResearchConnection &other) const;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 } // namespace genie
 

@@ -36,7 +36,7 @@ public:
     uint8_t unused = 0;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 
 /// Naming it ScnMap because it may be used elsewhere
@@ -52,7 +52,7 @@ public:
     std::vector<MapTile> tiles;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 } // namespace genie
 

@@ -48,7 +48,7 @@ public:
     int32_t garrisonedInID = 0;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 
 class ScnPlayerResources : public ISerializable
@@ -66,7 +66,7 @@ public:
     static bool verbose;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 
 class ScnPlayerUnits : public ISerializable
@@ -77,7 +77,7 @@ public:
     static bool verbose;
 private:
     uint32_t unitCount_;
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 } // namespace genie
 

@@ -38,7 +38,7 @@ public:
     bool compareTo(const UnitLine &other) const;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 } // namespace genie
 

@@ -43,10 +43,10 @@ public:
     Compressor(ISerializable *obj);
 
     //----------------------------------------------------------------------------
-    void beginCompression(void);
+    void beginCompression();
 
     //----------------------------------------------------------------------------
-    void endCompression(void);
+    void endCompression();
 
     //----------------------------------------------------------------------------
     static void decompress(std::istream &source, std::ostream &sink);
@@ -65,18 +65,18 @@ private:
     //----------------------------------------------------------------------------
     /// Decompresses istream and sets uncompressedIstream_.
     //
-    void startDecompression(void);
+    void startDecompression();
 
     //----------------------------------------------------------------------------
     /// Closes decompressed stream.
     //
-    void stopDecompression(void);
+    void stopDecompression();
 
     //----------------------------------------------------------------------------
-    void startCompression(void);
+    void startCompression();
 
     //----------------------------------------------------------------------------
-    void stopCompression(void);
+    void stopCompression();
 };
 } // namespace genie
 

@@ -72,7 +72,7 @@ public:
     std::string content;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 
 //------------------------------------------------------------------------------
@@ -89,7 +89,7 @@ public:
     //
     void extractRaw(std::istream &ifs, std::ostream &ofs);
 
-    static uint32_t getSeparator(void);
+    static uint32_t getSeparator();
 
     uint32_t getFileCount() const { return fileCount_; }
 
@@ -167,9 +167,9 @@ private:
 
     Compressor compressor_;
 
-    void serializeObject(void) override;
+    void serializeObject() override;
 
-    void serializeVersion(void);
+    void serializeVersion();
 };
 
 typedef std::shared_ptr<ScnFile> ScnFilePtr;
@@ -190,7 +190,7 @@ public:
     bool extractTo(const std::string &outPath);
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 
 
@@ -198,7 +198,7 @@ private:
 class CpxFile : public IFile
 {
 public:
-    void serializeObject(void) override;
+    void serializeObject() override;
 
     std::vector<std::string> getFilenames() const;
     ScnFilePtr getScnFile(const std::string &filename);

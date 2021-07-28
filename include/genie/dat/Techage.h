@@ -30,7 +30,7 @@ class Effect : public ISerializable
 public:
     void setGameVersion(GameVersion gv) override;
 
-    static unsigned short getNameSize(void);
+    static unsigned short getNameSize();
 
     /// Internal name, changing doesn't affect anything.
     std::string Name = "";
@@ -40,7 +40,7 @@ public:
     bool compareTo(const Effect &other) const;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 } // namespace genie
 

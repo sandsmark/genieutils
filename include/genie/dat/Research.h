@@ -97,7 +97,7 @@ public:
   int8_t Repeatable = false;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 } // namespace genie
 

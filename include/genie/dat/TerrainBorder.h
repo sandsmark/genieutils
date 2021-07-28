@@ -47,7 +47,7 @@ public:
     bool compareTo(const TerrainBorder &other) const;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 } // namespace genie
 

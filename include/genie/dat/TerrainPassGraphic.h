@@ -34,7 +34,7 @@ public:
     bool compareTo(const TerrainPassGraphic &other) const;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 } // namespace genie
 

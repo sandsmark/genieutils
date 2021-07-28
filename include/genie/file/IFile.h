@@ -53,7 +53,7 @@ public:
     ///
     /// @return fileName.
     //
-    const char *getFileName(void) const;
+    const char *getFileName() const;
 
     //----------------------------------------------------------------------------
     /// Loads the object from file. Can only be called if fileName is already set.

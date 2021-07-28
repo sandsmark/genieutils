@@ -707,6 +707,6 @@ public:
     bool compareTo(const Unit &other) const;
 
 protected:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 } // namespace genie

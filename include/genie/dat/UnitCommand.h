@@ -150,7 +150,7 @@ public:
     bool compareTo(const Task &other) const;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 } // namespace genie
 

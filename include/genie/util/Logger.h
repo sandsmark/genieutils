@@ -50,7 +50,7 @@ public:
     ///
     /// @return root logger
     //
-    static Logger &getRootLogger(void);
+    static Logger &getRootLogger();
 
     //----------------------------------------------------------------------------
     /// Returns specific logger that prints additionally its name before log info
@@ -69,7 +69,7 @@ public:
     //
     static void setLogLevel(LogLevel loglevel);
 
-    static std::ostream *getGlobalOutputStream(void);
+    static std::ostream *getGlobalOutputStream();
     static void setGlobalOutputStream(std::ostream &ostream);
 
     //----------------------------------------------------------------------------
