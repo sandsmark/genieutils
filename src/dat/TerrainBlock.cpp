@@ -202,7 +202,7 @@ void TerrainBlock::serializeObject()
         serialize<int8_t>(AnyFrameChange);
     } else {
         // Padding fix
-        int32_t any = AnyFrameChange;
+        int32_t any = uint8_t(AnyFrameChange);
         serialize<int32_t>(any);
         AnyFrameChange = any;
 

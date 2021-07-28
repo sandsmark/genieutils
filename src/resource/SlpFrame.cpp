@@ -728,7 +728,7 @@ void SlpFrame::setPixelsToShadow(const uint32_t row, uint32_t &col, const uint32
     uint32_t to_pos = col + count;
 
     while (col < to_pos) {
-        img_data.shadow_mask.push_back({ col, row });
+        img_data.shadow_mask.emplace_back( col, row );
         ++col;
     }
 }
@@ -739,7 +739,7 @@ void SlpFrame::setPixelsToShield(const uint32_t row, uint32_t &col, const uint32
     uint32_t to_pos = col + count;
 
     while (col < to_pos) {
-        img_data.shield_mask.push_back({ col, row });
+        img_data.shield_mask.emplace_back( col, row );
         ++col;
     }
 }
@@ -750,7 +750,7 @@ void SlpFrame::setPixelsToPcOutline(const uint32_t row, uint32_t &col, const uin
     uint32_t to_pos = col + count;
 
     while (col < to_pos) {
-        img_data.outline_pc_mask.push_back({ col, row });
+        img_data.outline_pc_mask.emplace_back( col, row );
         ++col;
     }
 }
