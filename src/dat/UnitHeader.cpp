@@ -41,7 +41,7 @@ bool UnitHeader::compareTo(const UnitHeader &other) const
 }
 
 //------------------------------------------------------------------------------
-void UnitHeader::serializeObject(void)
+void UnitHeader::serializeObject()
 {
     serialize<int8_t>(Exists);
 

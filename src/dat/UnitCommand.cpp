@@ -125,7 +125,7 @@ bool Task::compareTo(const Task &other) const
 }
 
 //------------------------------------------------------------------------------
-void Task::serializeObject(void)
+void Task::serializeObject()
 {
     GameVersion gv = getGameVersion();
 

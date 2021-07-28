@@ -26,7 +26,7 @@
 
 namespace genie {
 
-void ScnMap::serializeObject(void)
+void ScnMap::serializeObject()
 {
     serialize<uint32_t>(width);
     serialize<uint32_t>(height);
@@ -41,7 +41,7 @@ void ScnMap::serializeObject(void)
     serialize(tiles, size_t(width) * size_t(height));
 }
 
-void MapTile::serializeObject(void)
+void MapTile::serializeObject()
 {
     serialize<uint8_t>(terrainID);
     serialize<uint8_t>(elevation);

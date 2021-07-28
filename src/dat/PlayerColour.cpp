@@ -44,7 +44,7 @@ bool PlayerColour::compareTo(const PlayerColour &other) const
     return true;
 }
 
-void PlayerColour::serializeObject(void)
+void PlayerColour::serializeObject()
 {
     if (getGameVersion() < GV_AoKE3) {
         serialize(Name, NAME_SIZE);

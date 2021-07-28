@@ -57,7 +57,7 @@ bool Building::compareTo(const Building &other) const
     return true;
 }
 
-void Building::serializeObject(void)
+void Building::serializeObject()
 {
     GameVersion gv = getGameVersion();
 

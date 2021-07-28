@@ -46,7 +46,7 @@ bool Moving::compareTo(const Moving &other) const
     return true;
 }
 
-void Moving::serializeObject(void)
+void Moving::serializeObject()
 {
     GameVersion gv = getGameVersion();
 

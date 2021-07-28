@@ -29,7 +29,7 @@ Logger::LogLevel Logger::LOG_LEVEL = L_OFF;
 std::ostream *Logger::global_out_ = &std::cout;
 
 //------------------------------------------------------------------------------
-Logger &Logger::getRootLogger(void)
+Logger &Logger::getRootLogger()
 {
     static Logger l;
     return l;
@@ -77,7 +77,7 @@ void Logger::fatal(const std::string &msg)
     log(L_FATAL, msg);
 }
 
-std::ostream *Logger::getGlobalOutputStream(void)
+std::ostream *Logger::getGlobalOutputStream()
 {
     return global_out_;
 }

@@ -44,7 +44,7 @@ void ISerializable::writeObject(std::ostream &ostr)
 }
 
 //------------------------------------------------------------------------------
-size_t ISerializable::objectSize(void)
+size_t ISerializable::objectSize()
 {
     size_ = 0;
 
@@ -83,7 +83,7 @@ size_t ISerializable::strnlen(const char *str, size_t maxLen)
 }
 
 //------------------------------------------------------------------------------
-std::streampos ISerializable::tellg(void) const
+std::streampos ISerializable::tellg() const
 {
     if (isOperation(OP_READ)) {
         return istr_->tellg();

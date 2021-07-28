@@ -49,7 +49,7 @@ public:
     bool compareTo(const MapElevation &other) const;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 
 class MapUnit : public ISerializable
@@ -99,7 +99,7 @@ public:
     bool compareTo(const MapUnit &other) const;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 
 class MapTerrain : public ISerializable
@@ -117,7 +117,7 @@ public:
     bool compareTo(const MapTerrain &other) const;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 
 class MapLand : public ISerializable
@@ -144,7 +144,7 @@ public:
     bool compareTo(const MapLand &other) const;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 
 class MapInfo : public ISerializable
@@ -193,7 +193,7 @@ public:
 private:
     bool io_all_ = false;
 
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 
 class RandomMaps : public ISerializable
@@ -212,7 +212,7 @@ public:
 private:
     std::vector<std::array<int32_t, 852>> OldMaps;
 
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 } // namespace genie
 

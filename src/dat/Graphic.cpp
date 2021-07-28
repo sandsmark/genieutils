@@ -88,7 +88,7 @@ bool Graphic::compareTo(const Graphic &other) const
     return true;
 }
 
-void Graphic::serializeObject(void)
+void Graphic::serializeObject()
 {
     GameVersion gv = getGameVersion();
 

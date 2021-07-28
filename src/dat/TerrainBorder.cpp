@@ -46,7 +46,7 @@ bool TerrainBorder::compareTo(const TerrainBorder &other) const
 }
 
 //------------------------------------------------------------------------------
-void TerrainBorder::serializeObject(void)
+void TerrainBorder::serializeObject()
 {
     GameVersion gv = getGameVersion();
 

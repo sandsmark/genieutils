@@ -24,7 +24,7 @@
 
 namespace genie {
 
-void Trigger::serializeObject(void)
+void Trigger::serializeObject()
 {
     serialize<int32_t>(startingState);
     serialize<int8_t>(looping);
@@ -53,7 +53,7 @@ void Trigger::serializeObject(void)
     }
 }
 
-void TriggerCondition::serializeObject(void)
+void TriggerCondition::serializeObject()
 {
     serialize<int32_t>(type);
 
@@ -81,7 +81,7 @@ void TriggerCondition::serializeObject(void)
     serialize<int32_t>(&start, usedVariables);
 }
 
-void TriggerEffect::serializeObject(void)
+void TriggerEffect::serializeObject()
 {
     serialize<int32_t>(type);
 

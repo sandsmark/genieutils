@@ -31,7 +31,7 @@ bool ScnPlayerUnits::verbose;
 static bool s_verbose;
 static bool s_veryVerbose;
 
-void ScnPlayerResources::serializeObject(void)
+void ScnPlayerResources::serializeObject()
 {
     s_verbose = verbose;
 
@@ -67,7 +67,7 @@ void ScnPlayerResources::serializeObject(void)
     }
 }
 
-void ScnPlayerUnits::serializeObject(void)
+void ScnPlayerUnits::serializeObject()
 {
     serializeSize<uint32_t>(unitCount_, units.size());
     if (s_verbose) std::cout << " - unit count " << unitCount_ << std::endl;
@@ -77,7 +77,7 @@ void ScnPlayerUnits::serializeObject(void)
     serialize(units, unitCount_);
 }
 
-void ScnUnit::serializeObject(void)
+void ScnUnit::serializeObject()
 {
     // The resource units need some displacement to get to the right position
     if (isOperation(OP_WRITE)) {

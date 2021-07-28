@@ -57,7 +57,7 @@ bool TerrainRestriction::compareTo(const TerrainRestriction &other) const
 }
 
 //------------------------------------------------------------------------------
-void TerrainRestriction::serializeObject(void)
+void TerrainRestriction::serializeObject()
 {
     serialize<float>(PassableBuildableDmgMultiplier, terrain_count_);
 

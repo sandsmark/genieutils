@@ -57,7 +57,7 @@ bool TechTree::compareTo(const TechTree &other) const
 }
 
 //------------------------------------------------------------------------------
-void TechTree::serializeObject(void)
+void TechTree::serializeObject()
 {
     uint8_t age_count = 0;
     uint8_t building_count = 0;
@@ -124,7 +124,7 @@ bool TechTreeAge::compareTo(const TechTreeAge &other) const
 }
 
 //------------------------------------------------------------------------------
-void TechTreeAge::serializeObject(void)
+void TechTreeAge::serializeObject()
 {
     serialize<int32_t>(ID);
     serialize<int8_t>(Status);
@@ -194,7 +194,7 @@ bool BuildingConnection::compareTo(const BuildingConnection &other) const
 }
 
 //------------------------------------------------------------------------------
-void BuildingConnection::serializeObject(void)
+void BuildingConnection::serializeObject()
 {
     serialize<int32_t>(ID);
     serialize<int8_t>(Status);
@@ -255,7 +255,7 @@ bool UnitConnection::compareTo(const UnitConnection &other) const
 }
 
 //------------------------------------------------------------------------------
-void UnitConnection::serializeObject(void)
+void UnitConnection::serializeObject()
 {
     serialize<int32_t>(ID);
     serialize<int8_t>(Status);
@@ -306,7 +306,7 @@ bool ResearchConnection::compareTo(const ResearchConnection &other) const
 }
 
 //------------------------------------------------------------------------------
-void ResearchConnection::serializeObject(void)
+void ResearchConnection::serializeObject()
 {
     serialize<int32_t>(ID);
     serialize<int8_t>(Status);

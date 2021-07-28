@@ -32,7 +32,7 @@ Compressor::Compressor(ISerializable *obj) :
 }
 
 //------------------------------------------------------------------------------
-void Compressor::beginCompression(void)
+void Compressor::beginCompression()
 {
     switch (obj_->getOperation()) {
     case ISerializable::OP_READ:
@@ -57,7 +57,7 @@ void Compressor::beginCompression(void)
 }
 
 //------------------------------------------------------------------------------
-void Compressor::endCompression(void)
+void Compressor::endCompression()
 {
     switch (obj_->getOperation()) {
     case ISerializable::OP_READ:
@@ -101,7 +101,7 @@ void Compressor::decompress(std::istream &source, std::ostream &sink)
 }
 
 //------------------------------------------------------------------------------
-void Compressor::startDecompression(void)
+void Compressor::startDecompression()
 {
     try {
         // Important thing here is window_bits = 15
@@ -115,7 +115,7 @@ void Compressor::startDecompression(void)
 }
 
 //------------------------------------------------------------------------------
-void Compressor::stopDecompression(void)
+void Compressor::stopDecompression()
 {
     obj_->setIStream(*istream_);
     istream_ = 0;
@@ -124,7 +124,7 @@ void Compressor::stopDecompression(void)
 }
 
 //------------------------------------------------------------------------------
-void Compressor::startCompression(void)
+void Compressor::startCompression()
 {
     try {
         // Important thing here is window_bits = 15
@@ -138,7 +138,7 @@ void Compressor::startCompression(void)
 }
 
 //------------------------------------------------------------------------------
-void Compressor::stopCompression(void)
+void Compressor::stopCompression()
 {
     ostream_ = nullptr;
     bufferedStream_.reset();

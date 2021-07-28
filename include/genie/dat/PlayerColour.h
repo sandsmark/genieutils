@@ -55,7 +55,7 @@ public:
     bool compareTo(const PlayerColour &other) const;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 } // namespace genie
 

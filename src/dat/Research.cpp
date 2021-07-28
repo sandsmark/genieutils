@@ -71,7 +71,7 @@ bool Tech::compareTo(const Tech &other) const
 }
 
 //------------------------------------------------------------------------------
-void Tech::serializeObject(void)
+void Tech::serializeObject()
 {
     GameVersion gv = getGameVersion();
 

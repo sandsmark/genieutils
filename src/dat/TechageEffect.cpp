@@ -36,7 +36,7 @@ bool EffectCommand::compareTo(const EffectCommand &other) const
     return true;
 }
 
-void EffectCommand::serializeObject(void)
+void EffectCommand::serializeObject()
 {
     serialize<int8_t>(Type);
     serialize<int16_t>(TargetUnit);

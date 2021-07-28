@@ -32,7 +32,7 @@ void Effect::setGameVersion(GameVersion gv)
     updateGameVersion(EffectCommands);
 }
 
-unsigned short Effect::getNameSize(void)
+unsigned short Effect::getNameSize()
 {
     return 31;
 }
@@ -46,7 +46,7 @@ bool Effect::compareTo(const Effect &other) const
 }
 
 //------------------------------------------------------------------------------
-void Effect::serializeObject(void)
+void Effect::serializeObject()
 {
     GameVersion gv = getGameVersion();
 

@@ -36,7 +36,7 @@ ScnMainPlayerData::~ScnMainPlayerData()
     delete []bitmap;
 }
 
-void ScnMainPlayerData::serializeObject(void)
+void ScnMainPlayerData::serializeObject()
 {
     s_verbose = verbose;
 
@@ -237,7 +237,7 @@ void ScnMainPlayerData::serializeObject(void)
     }
 }
 
-void CombinedResources::serializeObject(void)
+void CombinedResources::serializeObject()
 {
     if (playerInfo || scn_plr_data_ver < 1.14f) {
         serialize<uint32_t>(enabled);
@@ -277,7 +277,7 @@ void CombinedResources::serializeObject(void)
     }
 }
 
-void Timeline::serializeObject(void)
+void Timeline::serializeObject()
 {
     serializeSize<uint16_t>(entryCount, events.size());
     if (s_verbose) std::cout << "Timeline events: " << entryCount << std::endl;
@@ -290,7 +290,7 @@ void Timeline::serializeObject(void)
     if (s_verbose) std::cout << "Timeline events: " << events.size() << std::endl;
 }
 
-void TimelineEvent::serializeObject(void)
+void TimelineEvent::serializeObject()
 {
     serialize<float>(timestamp);
     serialize<uint8_t>(command);
@@ -323,7 +323,7 @@ void TimelineEvent::serializeObject(void)
     ReadData((HANDLE)_hScenFile, &v15, 2u);*/                // int16
 }
 
-void ScnMainPlayerData::serializeBitmap(void)
+void ScnMainPlayerData::serializeBitmap()
 {
     serialize<uint32_t>(bitmapIncluded);
     if (s_verbose) std::cout << "Bitmap included? " << bitmapIncluded << std::endl;
@@ -371,7 +371,7 @@ void ScnMainPlayerData::serializeBitmap(void)
     serialize<char>(bitmapData, bmpHeader.rawSize);
 }
 
-void AiFile::serializeObject(void)
+void AiFile::serializeObject()
 {
     serializeSize<uint32_t>(aiFilenameSize, aiFilename, true);
     if (s_verbose) std::cout << "AI Filename size " << aiFilenameSize << std::endl;
@@ -395,7 +395,7 @@ void AiFile::serializeObject(void)
     }
 }
 
-void ScnVictory::serializeObject(void)
+void ScnVictory::serializeObject()
 {
     {
         serialize<uint32_t>(conquestRequired);
@@ -414,7 +414,7 @@ void ScnVictory::serializeObject(void)
     }
 }
 
-void ScnDiplomacy::serializeObject(void)
+void ScnDiplomacy::serializeObject()
 {
     serialize<uint32_t, 16, 16>(stances); // Diplomacy (16*16*4)
     serialize<uint32_t, 16, 180>(individualVictory); // Individual Victory (12*60)
@@ -438,7 +438,7 @@ void ScnDiplomacy::serializeObject(void)
     */
 }
 
-void ScnDisables::serializeObject(void)
+void ScnDisables::serializeObject()
 {
     if (scn_plr_data_ver > 1.17f) {
         serialize<uint32_t, 16>(numDisabledTechs);
@@ -470,7 +470,7 @@ void ScnDisables::serializeObject(void)
     }
 }
 
-void ScnMorePlayerData::serializeObject(void)
+void ScnMorePlayerData::serializeObject()
 {
     serialize<uint16_t>(playerNameLength);
     if (scn_internal_ver == 1.07f) {

@@ -66,7 +66,7 @@ void ScnFile::extractRaw(std::istream &ifs, std::ostream &ofs)
 }
 
 //------------------------------------------------------------------------------
-uint32_t ScnFile::getSeparator(void)
+uint32_t ScnFile::getSeparator()
 {
     return 0xFFFFFF9D;
 }
@@ -107,7 +107,7 @@ bool ScnFile::verifyVersion()
 }
 
 //------------------------------------------------------------------------------
-void ScnFile::serializeObject(void)
+void ScnFile::serializeObject()
 {
     s_verbose = verbose;
 
@@ -265,14 +265,14 @@ void ScnFile::serializeObject(void)
     compressor_.endCompression();
 }
 
-void ScnPersonalityScript::serializeObject(void)
+void ScnPersonalityScript::serializeObject()
 {
     serializeSizedString<uint32_t>(filename, false);
     serializeSizedString<uint32_t>(content, false);
 }
 
 //------------------------------------------------------------------------------
-void ScnFile::serializeVersion(void)
+void ScnFile::serializeVersion()
 {
     /* Internal versions
     1.01 - 1.00
@@ -362,7 +362,7 @@ void ScnFile::serializeVersion(void)
 }
 
 //------------------------------------------------------------------------------
-void ScnMainPlayerData::serializePlayerDataVersion(void)
+void ScnMainPlayerData::serializePlayerDataVersion()
 {
     /*if (isOperation(OP_WRITE))
     {

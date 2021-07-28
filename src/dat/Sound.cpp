@@ -43,7 +43,7 @@ bool Sound::compareTo(const Sound &other) const
     return true;
 }
 
-void Sound::serializeObject(void)
+void Sound::serializeObject()
 {
     GameVersion gv = getGameVersion();
     serialize<int16_t>(ID);

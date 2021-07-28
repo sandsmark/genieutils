@@ -36,7 +36,7 @@ bool DamageGraphic::compareTo(const DamageGraphic &other) const
     return true;
 }
 
-void DamageGraphic::serializeObject(void)
+void DamageGraphic::serializeObject()
 {
     serialize<int16_t>(GraphicID);
     serialize<int8_t>(DamagePercent);

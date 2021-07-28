@@ -31,7 +31,7 @@ void Civ::setGameVersion(GameVersion gv)
     updateGameVersion(Units);
 }
 
-unsigned short Civ::getNameSize(void)
+unsigned short Civ::getNameSize()
 {
     return 20;
 }
@@ -52,7 +52,7 @@ bool Civ::compareTo(const Civ &other) const
     return true;
 }
 
-void Civ::serializeObject(void)
+void Civ::serializeObject()
 {
     GameVersion gv = getGameVersion();
 
