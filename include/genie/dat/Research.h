@@ -32,7 +32,7 @@ public:
     void setGameVersion(GameVersion gv) override;
 
     /// Size of RequiredTechs vector (4 in aoe/ror and 6 in games >= aok)
-    unsigned short getRequiredTechsSize(void);
+    unsigned short getRequiredTechsSize();
 
     /// IDs of researches that are required for this tech to appear.
     /// The size of the array is 4 in aoe/ror and 6 at games >= aok

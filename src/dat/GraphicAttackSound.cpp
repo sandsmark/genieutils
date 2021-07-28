@@ -41,7 +41,7 @@ bool GraphicAngleSound::compareTo(const GraphicAngleSound &other) const
     return true;
 }
 
-void GraphicAngleSound::serializeObject(void)
+void GraphicAngleSound::serializeObject()
 {
     GameVersion gv = getGameVersion();
 

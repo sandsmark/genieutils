@@ -37,7 +37,7 @@ bool GraphicDelta::compareTo(const GraphicDelta &other) const
     return true;
 }
 
-void GraphicDelta::serializeObject(void)
+void GraphicDelta::serializeObject()
 {
     serialize<int16_t>(GraphicID);
     serialize<int16_t>(Padding1);

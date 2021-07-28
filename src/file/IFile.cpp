@@ -43,7 +43,7 @@ void IFile::setFileName(const std::string &fileName)
 }
 
 //------------------------------------------------------------------------------
-const char *IFile::getFileName(void) const
+const char *IFile::getFileName() const
 {
     return fileName_.c_str();
 }

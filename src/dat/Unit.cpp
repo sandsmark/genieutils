@@ -216,7 +216,7 @@ bool Unit::compareTo(const Unit &other) const
 }
 
 //------------------------------------------------------------------------------
-void Unit::serializeObject(void)
+void Unit::serializeObject()
 {
     GameVersion gv = getGameVersion();
 

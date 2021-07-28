@@ -45,7 +45,7 @@ bool SoundItem::compareTo(const SoundItem &other) const
     return true;
 }
 
-void SoundItem::serializeObject(void)
+void SoundItem::serializeObject()
 {
     GameVersion gv = getGameVersion();
 

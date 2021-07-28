@@ -111,7 +111,7 @@ bool Terrain::compareTo(const Terrain &other) const
 }
 
 //------------------------------------------------------------------------------
-void Terrain::serializeObject(void)
+void Terrain::serializeObject()
 {
     GameVersion gv = getGameVersion();
 

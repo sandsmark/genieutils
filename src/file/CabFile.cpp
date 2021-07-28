@@ -176,7 +176,7 @@ bool CabFile::seekToHeader()
 }
 
 //------------------------------------------------------------------------------
-void CabFile::serializeObject(void)
+void CabFile::serializeObject()
 {
     if (getOperation() != OP_READ) {
         std::cerr << "Writing CAB files not implemented yet" << std::endl;

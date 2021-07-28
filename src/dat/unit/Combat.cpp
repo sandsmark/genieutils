@@ -57,7 +57,7 @@ bool Combat::compareTo(const Combat &other) const
     return true;
 }
 
-void Combat::serializeObject(void)
+void Combat::serializeObject()
 {
     GameVersion gv = getGameVersion();
 

@@ -43,7 +43,7 @@ void Action::setGameVersion(GameVersion gv)
     updateGameVersion(TaskList);
 }
 
-unsigned short Action::getDropSiteCount(void)
+unsigned short Action::getDropSiteCount()
 {
     GameVersion gv = getGameVersion();
 
@@ -75,7 +75,7 @@ bool Action::compareTo(const Action &other) const
     return true;
 }
 
-void Action::serializeObject(void)
+void Action::serializeObject()
 {
     GameVersion gv = getGameVersion();
 

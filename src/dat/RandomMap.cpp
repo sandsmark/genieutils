@@ -102,7 +102,7 @@ bool MapInfo::compareTo(const MapInfo &other) const
 }
 
 //------------------------------------------------------------------------------
-void MapInfo::serializeObject(void)
+void MapInfo::serializeObject()
 {
     if (!io_all_) {
         serialize<int32_t>(MapID);
@@ -180,7 +180,7 @@ bool MapLand::compareTo(const MapLand &other) const
 }
 
 //------------------------------------------------------------------------------
-void MapLand::serializeObject(void)
+void MapLand::serializeObject()
 {
     serialize<int32_t>(LandID);
     serialize<int32_t>(Terrain); //int8_t
@@ -218,7 +218,7 @@ bool MapTerrain::compareTo(const MapTerrain &other) const
 }
 
 //------------------------------------------------------------------------------
-void MapTerrain::serializeObject(void)
+void MapTerrain::serializeObject()
 {
     serialize<int32_t>(Proportion);
     serialize<int32_t>(Terrain);
@@ -254,7 +254,7 @@ bool MapUnit::compareTo(const MapUnit &other) const
 }
 
 //------------------------------------------------------------------------------
-void MapUnit::serializeObject(void)
+void MapUnit::serializeObject()
 {
     serialize<int32_t>(Unit);
     serialize<int32_t>(HostTerrain);
@@ -290,7 +290,7 @@ bool MapElevation::compareTo(const MapElevation &other) const
 }
 
 //------------------------------------------------------------------------------
-void MapElevation::serializeObject(void)
+void MapElevation::serializeObject()
 {
     serialize<int32_t>(Proportion);
     serialize<int32_t>(Terrain);

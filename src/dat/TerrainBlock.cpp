@@ -37,7 +37,7 @@ void TerrainBlock::setGameVersion(GameVersion gv)
 }
 
 //------------------------------------------------------------------------------
-unsigned short TerrainBlock::getBytesSize(void)
+unsigned short TerrainBlock::getBytesSize()
 {
     GameVersion gv = getGameVersion();
 
@@ -61,7 +61,7 @@ unsigned short TerrainBlock::getBytesSize(void)
 }
 
 //------------------------------------------------------------------------------
-unsigned short TerrainBlock::getSomethingSize(void)
+unsigned short TerrainBlock::getSomethingSize()
 {
     GameVersion gv = getGameVersion();
 
@@ -130,7 +130,7 @@ bool TerrainBlock::compareTo(const TerrainBlock &other) const
     return true;
 }
 
-void TerrainBlock::serializeObject(void)
+void TerrainBlock::serializeObject()
 {
     GameVersion gv = getGameVersion();
 
@@ -239,7 +239,7 @@ bool TileSize::compareTo(const TileSize &other) const
 }
 
 //------------------------------------------------------------------------------
-void TileSize::serializeObject(void)
+void TileSize::serializeObject()
 {
     serialize<int16_t>(Width);
     serialize<int16_t>(Height);

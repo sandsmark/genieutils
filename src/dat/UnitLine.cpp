@@ -34,7 +34,7 @@ bool UnitLine::compareTo(const UnitLine &other) const
     return true;
 }
 
-void UnitLine::serializeObject(void)
+void UnitLine::serializeObject()
 {
     serialize<int16_t>(ID);
 

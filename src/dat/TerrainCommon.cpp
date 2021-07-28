@@ -33,7 +33,7 @@ bool FrameData::compareTo(const FrameData &other) const
     return true;
 }
 
-void FrameData::serializeObject(void)
+void FrameData::serializeObject()
 {
     serialize<int16_t>(FrameCount);
     serialize<int16_t>(AngleCount);

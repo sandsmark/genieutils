@@ -50,7 +50,7 @@ public:
     bool compareTo(const Sound &other) const;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 } // namespace genie
 

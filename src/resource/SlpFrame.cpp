@@ -38,12 +38,12 @@ void SlpFrame::setSlpFilePos(std::streampos pos)
     slp_file_pos_ = pos;
 }
 
-uint32_t SlpFrame::getWidth(void) const
+uint32_t SlpFrame::getWidth() const
 {
     return width_;
 }
 
-uint32_t SlpFrame::getHeight(void) const
+uint32_t SlpFrame::getHeight() const
 {
     return height_;
 }
@@ -152,22 +152,22 @@ void SlpFrame::enlargeForMerge(const SlpFrame &frame, int32_t &os_x, int32_t &os
     enlarge(width, height, offset_x, offset_y);
 }
 
-uint32_t SlpFrame::getPaletteOffset(void) const
+uint32_t SlpFrame::getPaletteOffset() const
 {
     return palette_offset_;
 }
 
-uint32_t SlpFrame::getProperties(void) const
+uint32_t SlpFrame::getProperties() const
 {
     return properties_;
 }
 
-bool SlpFrame::is32bit(void) const
+bool SlpFrame::is32bit() const
 {
     return (properties_ & 7) == 7;
 }
 
-void SlpFrame::serializeObject(void)
+void SlpFrame::serializeObject()
 {
 }
 
@@ -375,7 +375,7 @@ KEEP_COLOR:
 }
 
 //------------------------------------------------------------------------------
-void SlpFrame::serializeHeader(void)
+void SlpFrame::serializeHeader()
 {
     serialize<uint32_t>(cmd_table_offset_);
     serialize<uint32_t>(outline_table_offset_);
@@ -914,7 +914,7 @@ void SlpFrame::save(std::ostream &ostr)
 }
 
 //------------------------------------------------------------------------------
-SlpFramePtr SlpFrame::mirrorX(void)
+SlpFramePtr SlpFrame::mirrorX()
 {
     SlpFramePtr mirrored(new genie::SlpFrame());
 

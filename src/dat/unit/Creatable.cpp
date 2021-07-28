@@ -60,7 +60,7 @@ bool Creatable::compareTo(const Creatable &other) const
     return true;
 }
 
-void Creatable::serializeObject(void)
+void Creatable::serializeObject()
 {
     GameVersion gv = getGameVersion();
 
