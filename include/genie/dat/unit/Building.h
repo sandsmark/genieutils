@@ -36,7 +36,7 @@ public:
     bool compareTo(const BuildingAnnex &other) const;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 
 class Building : public ISerializable
@@ -132,7 +132,7 @@ public:
     bool compareTo(const Building &other) const;
 
 protected:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 } // namespace unit
 } // namespace genie

@@ -130,7 +130,7 @@ public:
     bool compareTo(const Creatable &other) const;
 
 protected:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 } // namespace unit
 } // namespace genie

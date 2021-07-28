@@ -93,7 +93,7 @@ private:
     CabFile(const CabFile &other);
     CabFile &operator=(const CabFile &other);
 
-    void serializeObject(void) override;
+    void serializeObject() override;
 
     std::vector<Folder> m_folders;
     std::unordered_map<std::string, File> m_files;

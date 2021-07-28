@@ -31,10 +31,10 @@ public:
     void setGameVersion(GameVersion gv) override;
 
     /// Returns the size of Name
-    unsigned short getNameSize(void);
+    unsigned short getNameSize();
 
     /// Returns the size of FileName
-    unsigned short getFilenameSize(void);
+    unsigned short getFilenameSize();
 
     /// These two name strings appear to be equal in all graphics, so the
     /// second one's use is unknown. Like the genie unit's internal name value,

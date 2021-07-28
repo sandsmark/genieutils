@@ -51,7 +51,7 @@ public:
 
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 } // namespace unit
 } // namespace genie

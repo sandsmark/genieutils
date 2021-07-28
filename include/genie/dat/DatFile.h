@@ -159,9 +159,9 @@ private:
     //----------------------------------------------------------------------------
     /// Clears all data.
     //
-    void unload(void) override;
+    void unload() override;
 
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 
 } // namespace genie

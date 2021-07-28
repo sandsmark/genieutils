@@ -37,7 +37,7 @@ public:
     bool compareTo(const TileSize &other) const;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 
 
@@ -109,15 +109,15 @@ public:
     int8_t MapVisibleFlag = 0;
     int8_t FogFlag = 0;
 
-    unsigned short getBytesSize(void);
+    unsigned short getBytesSize();
     std::vector<int8_t> SomeBytes;
-    unsigned short getSomethingSize(void);
+    unsigned short getSomethingSize();
     std::vector<int32_t> SomeInt32;
 
     bool compareTo(const TerrainBlock &other) const;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 } // namespace genie
 

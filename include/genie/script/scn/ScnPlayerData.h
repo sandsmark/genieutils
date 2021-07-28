@@ -66,7 +66,7 @@ public:
     static bool playerInfo;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 
 class TimelineEvent : public ISerializable
@@ -123,7 +123,7 @@ public:
     uint16_t targetPlayerId = 0; // 28
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 
 class Timeline : public ISerializable
@@ -141,7 +141,7 @@ public:
     std::vector<TimelineEvent> events;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 
 class AiFile : public ISerializable
@@ -166,7 +166,7 @@ public:
     std::string perFile;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 
 class ScnVictory : public ISerializable
@@ -211,7 +211,7 @@ public:
     uint32_t timeForTimedGame = 0;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 
 class ScnDiplomacy : public ISerializable
@@ -221,7 +221,7 @@ public:
     std::array<std::array<uint32_t, 180>, 16> individualVictory;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 
 class ScnDisables : public ISerializable
@@ -237,7 +237,7 @@ public:
     std::array<std::vector<uint16_t>, 16> unknownAoEAlpha;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 
 class ScnMainPlayerData : public ISerializable
@@ -414,9 +414,9 @@ public:
 private:
     constexpr static uint32_t expectedSeparator = 0xffffff9d;
     uint32_t separator_ = expectedSeparator;
-    void serializePlayerDataVersion(void);
-    void serializeObject(void) override;
-    void serializeBitmap(void);
+    void serializePlayerDataVersion();
+    void serializeObject() override;
+    void serializeBitmap();
 };
 
 /// Defines a condition necessary for winning
@@ -535,7 +535,7 @@ public:
     uint8_t state = 0;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 
 class ScnMorePlayerData : public ISerializable
@@ -594,7 +594,7 @@ private:
     uint16_t playerCount_;
     uint32_t victoryConditionsCount;
     uint32_t pointConditionsCount;
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 } // namespace genie
 

@@ -98,7 +98,7 @@ public:
     /// Loads header data. The headers of frames are stored after the header of
     /// the slp file.
     //
-    void serializeHeader(void);
+    void serializeHeader();
     void setLoadParams(std::istream &istr);
     void setSaveParams(std::ostream &ostr, uint32_t &slp_offset_);
 
@@ -112,12 +112,12 @@ public:
     //----------------------------------------------------------------------------
     /// Get images width.
     //
-    uint32_t getWidth(void) const;
+    uint32_t getWidth() const;
 
     //----------------------------------------------------------------------------
     /// Get images height.
     //
-    uint32_t getHeight(void) const;
+    uint32_t getHeight() const;
 
     void setSize(const size_t width, const size_t height);
     void enlarge(const size_t width, const size_t height, const int32_t offset_x, const int32_t offset_y);
@@ -128,9 +128,9 @@ public:
     // 0x10 = tree SLPs 147 and 152 in RoR have two shadows, mask and black pixels. Has pure black shadow? No
     // 0x18 = use default palette, 0x08 uses outline? No
     // 0x78 = has embedded palette at palette offset: 4 bytes tell RGB count, then 3 bytes per each RGB
-    uint32_t getProperties(void) const;
-    uint32_t getPaletteOffset(void) const;
-    bool is32bit(void) const;
+    uint32_t getProperties() const;
+    uint32_t getPaletteOffset() const;
+    bool is32bit() const;
 
     //----------------------------------------------------------------------------
     /// Returns the outline created by loading the frame.
@@ -163,7 +163,7 @@ public:
     //
     SlpFrameData img_data;
 
-    std::shared_ptr<SlpFrame> mirrorX(void);
+    std::shared_ptr<SlpFrame> mirrorX();
 
     void readImage();
 
@@ -193,7 +193,7 @@ private:
 
     std::vector<std::vector<uint8_t>> commands_; // Don't you dare use std::list here!
 
-    void serializeObject(void) override;
+    void serializeObject() override;
 
     //----------------------------------------------------------------------------
     /// Reads pixel indexes from file and sets the pixels according to the

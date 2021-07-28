@@ -64,7 +64,7 @@ public:
     }
 
 private:
-    void serializeObject(void) override
+    void serializeObject() override
     {
         serialize<int16_t>(Type);
         serialize<A>(Amount);

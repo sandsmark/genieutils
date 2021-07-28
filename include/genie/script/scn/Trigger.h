@@ -93,7 +93,7 @@ public:
     int32_t aiSignal = -1;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 
 class TriggerEffect : public ISerializable
@@ -182,7 +182,7 @@ public:
     std::vector<int32_t> selectedUnits;
 
 private:
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 
 class Trigger : public ISerializable
@@ -204,7 +204,7 @@ public:
 private:
     int32_t numEffects_;
     int32_t numConditions_;
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 } // namespace genie
 

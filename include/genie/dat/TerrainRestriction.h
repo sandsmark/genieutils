@@ -53,6 +53,6 @@ public:
 private:
     static unsigned short terrain_count_;
 
-    void serializeObject(void) override;
+    void serializeObject() override;
 };
 } // namespace genie
