@@ -22,9 +22,7 @@
 
 #include "../TestHelpers.h"
 
-namespace genie {
-
-namespace unit {
+namespace genie::unit {
 
 bool DamageGraphic::compareTo(const DamageGraphic &other) const
 {
@@ -43,5 +41,4 @@ void DamageGraphic::serializeObject()
     serialize<int8_t>(OldApplyMode); // This isn't even actual variable
     serialize<int8_t>(ApplyMode);
 }
-} // namespace unit
 } // namespace genie

@@ -22,9 +22,7 @@
 
 #include "../TestHelpers.h"
 
-namespace genie {
-
-namespace unit {
+namespace genie::unit {
 
 Creatable::Creatable()
     //Type50(),
@@ -99,5 +97,4 @@ void Creatable::serializeObject()
         serialize<int16_t>(DisplayedPierceArmour);
     }
 }
-} // namespace unit
 } // namespace genie

@@ -22,9 +22,7 @@
 
 #include "../TestHelpers.h"
 
-namespace genie {
-
-namespace unit {
+namespace genie::unit {
 bool Building::compareTo(const Building &other) const
 {
     COMPARE_MEMBER(GarrisonHealRate);
@@ -133,5 +131,4 @@ void BuildingAnnex::serializeObject()
     serializePair<float>(Misplacement);
 }
 
-} // namespace unit
 } // namespace genie

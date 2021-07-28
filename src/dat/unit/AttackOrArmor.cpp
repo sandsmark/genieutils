@@ -22,9 +22,7 @@
 
 #include "../TestHelpers.h"
 
-namespace genie {
-
-namespace unit {
+namespace genie::unit {
 
 bool AttackOrArmor::compareTo(const AttackOrArmor &other) const
 {
@@ -34,5 +32,4 @@ bool AttackOrArmor::compareTo(const AttackOrArmor &other) const
     return true;
 }
 
-} // namespace unit
 } // namespace genie
