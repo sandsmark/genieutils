@@ -118,7 +118,7 @@ void Compressor::startDecompression()
 void Compressor::stopDecompression()
 {
     obj_->setIStream(*istream_);
-    istream_ = 0;
+    istream_ = nullptr;
 
     uncompressedIstream_.reset();
 }

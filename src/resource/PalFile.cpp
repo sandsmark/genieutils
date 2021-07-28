@@ -297,7 +297,7 @@ void PalFile::serializeObject()
                 *istr >> a;
             }
 
-            colors_.push_back(Color(r, g, b, a));
+            colors_.emplace_back(r, g, b, a);
         }
     } else {
         std::ostream *ostr = getOStream();

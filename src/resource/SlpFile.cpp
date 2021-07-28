@@ -66,7 +66,7 @@ void SlpFile::loadFile()
 
     // Load frame headers
     for (uint32_t i = 0; i < num_frames_; ++i) {
-        frames_[i] = SlpFramePtr(new SlpFrame());
+        frames_[i] = std::make_shared<SlpFrame>();
         frames_[i]->setSlpFilePos(std::streampos(0));
         frames_[i]->setLoadParams(*getIStream());
         frames_[i]->serializeHeader();
