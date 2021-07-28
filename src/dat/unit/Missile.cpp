@@ -22,9 +22,7 @@
 
 #include "../TestHelpers.h"
 
-namespace genie {
-
-namespace unit {
+namespace genie::unit {
 
 bool Missile::compareTo(const Missile &other) const
 {
@@ -38,5 +36,4 @@ bool Missile::compareTo(const Missile &other) const
     return true;
 }
 
-} // namespace unit
 } // namespace genie

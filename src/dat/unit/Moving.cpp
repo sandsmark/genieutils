@@ -22,9 +22,7 @@
 
 #include "../TestHelpers.h"
 
-namespace genie {
-
-namespace unit {
+namespace genie::unit {
 
 bool Moving::compareTo(const Moving &other) const
 {
@@ -71,5 +69,4 @@ void Moving::serializeObject()
         serialize<float>(MinCollisionSizeMultiplier);
     }
 }
-} // namespace unit
 } // namespace genie

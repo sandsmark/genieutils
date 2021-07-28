@@ -22,9 +22,7 @@
 
 #include "../TestHelpers.h"
 
-namespace genie {
-
-namespace unit {
+namespace genie::unit {
 //------------------------------------------------------------------------------
 void Action::setGameVersion(GameVersion gv)
 {
@@ -96,5 +94,4 @@ void Action::serializeObject()
         serialize(TaskList, task_count);
     }
 }
-} // namespace unit
 } // namespace genie
