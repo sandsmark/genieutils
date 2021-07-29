@@ -280,7 +280,7 @@ struct mz_internal_state;
 /* Compression/decompression stream struct. */
 typedef struct mz_stream_s
 {
-    const unsigned char *next_in; /* pointer to next byte to read */
+    unsigned char *next_in; /* pointer to next byte to read */
     unsigned int avail_in;        /* number of bytes available at next_in */
     mz_ulong total_in;            /* total number of bytes consumed so far */
 
