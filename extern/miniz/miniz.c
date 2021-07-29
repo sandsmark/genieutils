@@ -314,7 +314,7 @@ mz_ulong mz_deflateBound(mz_streamp pStream, mz_ulong source_len)
     return MZ_MAX(128 + (source_len * 110) / 100, 128 + source_len + ((source_len / (31 * 1024)) + 1) * 5);
 }
 
-int mz_compress2(unsigned char *pDest, mz_ulong *pDest_len, const unsigned char *pSource, mz_ulong source_len, int level)
+int mz_compress2(unsigned char *pDest, mz_ulong *pDest_len, unsigned char *pSource, mz_ulong source_len, int level)
 {
     int status;
     mz_stream stream;
@@ -344,7 +344,7 @@ int mz_compress2(unsigned char *pDest, mz_ulong *pDest_len, const unsigned char 
     return mz_deflateEnd(&stream);
 }
 
-int mz_compress(unsigned char *pDest, mz_ulong *pDest_len, const unsigned char *pSource, mz_ulong source_len)
+int mz_compress(unsigned char *pDest, mz_ulong *pDest_len, unsigned char *pSource, mz_ulong source_len)
 {
     return mz_compress2(pDest, pDest_len, pSource, source_len, MZ_DEFAULT_COMPRESSION);
 }
@@ -553,7 +553,7 @@ int mz_inflateEnd(mz_streamp pStream)
     }
     return MZ_OK;
 }
-int mz_uncompress2(unsigned char *pDest, mz_ulong *pDest_len, const unsigned char *pSource, mz_ulong *pSource_len)
+int mz_uncompress2(unsigned char *pDest, mz_ulong *pDest_len, unsigned char *pSource, mz_ulong *pSource_len)
 {
     mz_stream stream;
     int status;
@@ -584,7 +584,7 @@ int mz_uncompress2(unsigned char *pDest, mz_ulong *pDest_len, const unsigned cha
     return mz_inflateEnd(&stream);
 }
 
-int mz_uncompress(unsigned char *pDest, mz_ulong *pDest_len, const unsigned char *pSource, mz_ulong source_len)
+int mz_uncompress(unsigned char *pDest, mz_ulong *pDest_len, unsigned char *pSource, mz_ulong source_len)
 {
     return mz_uncompress2(pDest, pDest_len, pSource, &source_len);
 }
