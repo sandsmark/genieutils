@@ -207,6 +207,7 @@ set(RESOURCE_SRC
     src/resource/SmpFile.cpp
     src/resource/SmxFile.cpp
     src/resource/SmxFrame.cpp
+    src/resource/AviFile.cpp
     )
 
 set(SCRIPT_SRC
@@ -238,6 +239,8 @@ set(VOOBLYDECODER_SRC src/tools/vooblydecoder/main.cpp)
 
 set(BINCOMP_SRC src/tools/bincompare/bincomp.cpp
                 src/tools/bincompare/main.cpp)
+
+set(VIDTOOL_SRC src/tools/vidtool/main.cpp)
 
 #------------------------------------------------------------------------------#
 # Executeable:
@@ -309,6 +312,10 @@ if (GUTILS_TOOLS)
 
   add_executable(genie-vooblydecoder ${VOOBLYDECODER_SRC})
   install(TARGETS genie-vooblydecoder)
+
+  add_executable(vidtool ${VIDTOOL_SRC})
+  install(TARGETS vidtool)
+  target_link_libraries(vidtool genieutils)
 endif (GUTILS_TOOLS)
 
 #------------------------------------------------------------------------------#
