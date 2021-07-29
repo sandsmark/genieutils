@@ -237,7 +237,7 @@ int readWriteDiff(genie::GameVersion gv)
     }
 
     return binaryCompare((filepath + ".raw_orig").c_str(),
-                         (filepath + ".raw_genie").c_str());
+            (filepath + ".raw_genie").c_str(), 10);
 }
 
 BOOST_AUTO_TEST_CASE(simple_read_write_test)
