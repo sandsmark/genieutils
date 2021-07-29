@@ -398,11 +398,11 @@ void Unit::serializeObject()
         return;
     }
 
-    if (Type >= FlagType) {
-        serialize<float>(Speed);
-    } else {
+    if (Type < FlagType) {
         return;
     }
+
+    serialize<float>(Speed);
 
     if (Type >= MovingType) {
         serialize<ISerializable>(Moving);
