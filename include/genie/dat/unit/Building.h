@@ -54,7 +54,7 @@ public:
     /// 0   Default
     /// 1   Adjacent buildings can change graphics of this unit
     /// This changes the graphic angle
-    int8_t AdjacentMode = 0;
+    uint8_t AdjacentMode = 0;
 
     /// Effect attribute 17 changes this
     /// 0   Default
@@ -66,7 +66,7 @@ public:
     /// Useful for stack unit placement
     /// 0   Default
     /// 1   Makes the building disappear when built
-    int8_t DisappearsWhenBuilt = 0;
+    uint8_t DisappearsWhenBuilt = 0;
 
     /// These four (4) variables are used when building is created
     /// Second building to be placed directly on top of this building
@@ -85,7 +85,7 @@ public:
     int16_t TechID = -1;
 
     /// Unused in AoC?
-    int8_t CanBurn = 0;
+    uint8_t CanBurn = 0;
 
     static constexpr unsigned short BUILDING_ANNEXES_SIZE = 4;
     std::array<unit::BuildingAnnex, BUILDING_ANNEXES_SIZE> Annexes;
@@ -113,7 +113,7 @@ public:
     /// 2 Cavalry/Mounted
     /// 3 Monk/Jedi
     /// 4 SW: Livestock
-    int8_t GarrisonType = 0;
+    uint8_t GarrisonType = 0;
 
     /// Healing speed factor of units garrisoned in building
     float GarrisonHealRate = 0;
@@ -127,7 +127,7 @@ public:
     /// Related to annexes in any way?
     /// Widespread usage in the AoK alpha 09.07.0222
     static constexpr unsigned short LOOTABLE_RES_COUNT = 6;
-    std::array<int8_t, LOOTABLE_RES_COUNT> LootingTable{};
+    std::array<uint8_t, LOOTABLE_RES_COUNT> LootingTable{};
 
     bool compareTo(const Building &other) const;
 

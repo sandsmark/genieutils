@@ -2,7 +2,7 @@
     genieutils - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2015 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2015 - 2021  Mikko "Tapsa" P
     Copyright (C) 2015  JustTesting1234
 
     This program is free software: you can redistribute it and/or modify
@@ -41,10 +41,10 @@ public:
     float positionY = 0.f;
     float positionZ = 0.f;
     uint32_t spawnID = 0;
-    uint16_t objectID = 0;
+    int16_t objectID = 0;
     uint8_t state = 0;
     float rotation = 0.f;
-    uint16_t initAnimationFrame = 0;
+    int16_t initAnimationFrame = 0;
     int32_t garrisonedInID = 0;
 
 private:

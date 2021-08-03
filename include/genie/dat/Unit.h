@@ -93,13 +93,13 @@ public:
     /// Tech tree: Name +9000
     union {
         int32_t LanguageDLLName = 5000;
-        uint16_t LanguageDLLNameU16;
+        int16_t LanguageDLLNameU16;
     };
 
     /// ID of the name string stored in the language.dll file, for the training/creating button
     union {
         int32_t LanguageDLLCreation = 6000;
-        uint16_t LanguageDLLCreationU16;
+        int16_t LanguageDLLCreationU16;
     };
 
     enum UnitClass : int16_t {
@@ -211,7 +211,7 @@ public:
     int16_t UndeadGraphic = -1;
 
     /// Enables undead state
-    enum UndeadTypes : int8_t {
+    enum UndeadTypes : uint8_t {
         /// 0: Transform into dead unit
         TransformToDeadUnit = 0,
         /// 1: Show undead graphic
@@ -229,7 +229,7 @@ public:
     float LineOfSight = 2;
 
     /// Maximum number of units that can be garrisonned at the same time.
-    int8_t GarrisonCapacity = 0;
+    uint8_t GarrisonCapacity = 0;
 
     /// \brief Collision detection area taken by the unit.
     /// No other unit can move into this area except flying units.
@@ -256,19 +256,19 @@ public:
     /// \brief Units with low sort numbers are drawn last
     /// 0   Can be placed on top of other units in scenario editor
     /// 5   Cannot be placed on top of other units in scenario editor
-    int8_t SortNumber = 0;
+    uint8_t SortNumber = 0;
 
     /// \brief Defines how graphics are affected by elevation.
     /// 0   Default
     /// 1   Graphic stays at highest elevation until destination is reached
     /// 2+ Graphic is not affected by elevation
-    int8_t CanBeBuiltOn = 0;
+    uint8_t CanBeBuiltOn = 0;
 
     /// ID of the icon shown at the bottom when selected or when building
     int16_t IconID = -1;
 
     /// If true, unit can not be placed in the editor
-    int8_t HideInEditor = 0;
+    uint8_t HideInEditor = 0;
 
     /// TODO Unknown
     int16_t OldPortraitPict = -1; // Always -1
@@ -276,7 +276,7 @@ public:
     /// \brief Whether the unit is available by default
     /// 0   Requires a technology to be available
     /// 1   Available without a technology
-    int8_t Enabled = 1;
+    uint8_t Enabled = 1;
 
     /// \brief Not read but set runtime.
     /// Not read but set to 0
@@ -284,7 +284,7 @@ public:
     /// Mostly for different game modes and disables defined in scenarios
     /// 0   Default
     /// 1   Prevents enabling/disabling with a tech
-    int8_t Disabled = 0;
+    uint8_t Disabled = 0;
 
     /// \brief Required terrain on some side
     /// E. g. water for docks
@@ -296,7 +296,7 @@ public:
     /// How close it allows other units to be
     XYF ClearanceSize;
 
-    enum HillModes : int8_t {
+    enum HillModes : uint8_t {
         AnyHillPlacement = 0, ///< Gates, farms, walls, towers
         NoHillCornerPlacement = 1, ///< Can't be placed on hill corners
         NoHillPlacement = 2, ///< Only flat land; town center, port, trade workshop
@@ -305,7 +305,7 @@ public:
     /// Restrictions on placement on hills
     HillModes HillMode = AnyHillPlacement;
 
-    enum FogVisibilities : int8_t {
+    enum FogVisibilities : uint8_t {
         /// Normal units
         InvisibleInFog = 0,
 
@@ -327,7 +327,7 @@ public:
     /// ID of terrain restrictions that are imposed on the unit.
     int16_t TerrainRestriction = 0;
 
-    enum TeleportType : int8_t {
+    enum TeleportType : uint8_t {
         /// Stay on ground
         TeleportOnShadow = 0,
         /// Graphics appear higher than the shadow
@@ -343,9 +343,9 @@ public:
     float ResourceDecay = 0;
 
     /// Receive blast damage from units that have lower or same blast attack level
-    int8_t BlastDefenseLevel = 0;
+    uint8_t BlastDefenseLevel = 0;
 
-    enum CombatLevelType : int8_t {
+    enum CombatLevelType : uint8_t {
         /// No combat
         NoCombatLevel = 0,
 
@@ -367,7 +367,7 @@ public:
     /// Mainly used in trigger conditions
     CombatLevelType CombatLevel = NoCombatLevel;
 
-    enum InteractionModes : int8_t {
+    enum InteractionModes : uint8_t {
         NoInteraction = 0, ///< Can't be interacted with
         ObjectInteraction = 1, ///< Can pick (be targeted?)
         ResourceInteraction = 2, ///< Can be selected, can't attack or move
@@ -375,10 +375,10 @@ public:
         UnitInteraction = 4 ///< Can be selected, attack and move
     };
     /// Defines the interaction level
-    int8_t InteractionMode = 0;
+    uint8_t InteractionMode = 0;
 
     /// Following values are known to work
-    enum MinimapModes : int8_t {
+    enum MinimapModes : uint8_t {
         /// does not place a dot on the mini-map.
         /// Eye candy, resources, fish traps, OUTLWs, and farms have this value
         MinimapInvisible = 0,
@@ -422,7 +422,7 @@ public:
     MinimapModes MinimapMode = MinimapInvisible;
 
     /// See InterfaceKind
-    enum InterfaceKinds : int8_t {
+    enum InterfaceKinds : uint8_t {
         /// None
         NoInterface = 0,
         /// Resource
@@ -475,14 +475,14 @@ public:
     /// \brief Unselectable
     /// Not scanned but set to 1 for class 11
     /// Can change during gameplay
-    int8_t Recyclable = 0;
+    uint8_t Recyclable = 0;
 
     /// \brief Track as Resource.
     /// Allows automatic gathering and handles fog visibility
-    int8_t CanBeGathered = 0;
+    uint8_t CanBeGathered = 0;
 
     /// Create doppelganger on death.
-    enum DeathDoppelgangerMode : int8_t {
+    enum DeathDoppelgangerMode : uint8_t {
         /// 0: None
         NoDeathDoppelganger = 0,
         /// 1: After death
@@ -493,7 +493,7 @@ public:
     /// When to create a doppelganger unit when the unit dies
     DeathDoppelgangerMode CreateDoppelgangerOnDeath = NoDeathDoppelganger;
 
-    enum ResourceGatherGroups : int8_t {
+    enum ResourceGatherGroups : uint8_t {
         ResourceTree = 0,
         ResourceBerry = 1,
         ResourceFish = 2,
@@ -501,7 +501,7 @@ public:
         ResourceGold = 4
     };
     /// Visible resource group. Needs to be gatherable for this to have an effect.
-    int8_t ResourceGatherGroup = 0;
+    uint8_t ResourceGatherGroup = 0;
 
     enum OcclusionTypes {
         /// 0 No outline/occlusion
@@ -517,7 +517,7 @@ public:
     uint8_t OcclusionMode = 0;
 
     /// values for ObstructionType
-    enum ObstructionTypes : int8_t {
+    enum ObstructionTypes : uint8_t {
         /// Farm, gate, dead bodies, town center
         /// Square outline and passable
         PassableObstruction = 0,
@@ -545,10 +545,10 @@ public:
         MountainObstruction = 10
     };
     /// Defines passability, outline and collision box (and probably more)
-    int8_t ObstructionType = 0;
+    uint8_t ObstructionType = 0;
 
     /// 0 default, 1+ above
-    enum ObstructionClasses : int8_t {
+    enum ObstructionClasses : uint8_t {
         DefaultObstructionClass = 0,
         ResourceObstrctionClass = 1,
         UnitObstructionClass = 2,
@@ -577,14 +577,14 @@ public:
     uint8_t Trait = 0;
 
     /// Seems to be used only in SWGB/CC
-    int8_t Civilization = 0;
+    uint8_t Civilization = 0;
 
     /// Unused?
     int16_t Nothing = 0;
 
     /// Note: this doe not work with all units
     /// These are from AGE, openage has a different understanding.
-    enum SelectionEffects : int8_t {
+    enum SelectionEffects : uint8_t {
         /// HP Bar on, selection shadow (permanent darker outline in editor only, disappears in game)
         /// In openage: 0: "NONE",
         ShowHPHideOutline = 0,
@@ -633,7 +633,7 @@ public:
     float HPBarHeight = 0.f;
 
     /// Amount of resources this can store
-    typedef Resource<float, int8_t> ResourceStorage;
+    typedef Resource<float, uint8_t> ResourceStorage;
 
     /// Resources unit contains
     std::array<ResourceStorage, 3> ResourceStorages;
@@ -662,10 +662,10 @@ public:
     /// 4   Fight work
     /// 5   Fight run
     /// 6   Fight run work
-    int8_t OldAttackReaction = 0;
+    uint8_t OldAttackReaction = 0;
 
     /// Some alpha feature that let units change terrain under them from passable to impassable.
-    int8_t ConvertTerrain = 0;
+    uint8_t ConvertTerrain = 0;
 
     /// Internal unit name
     std::string Name = "";
@@ -676,7 +676,7 @@ public:
     int16_t Unitline = -1;
 
     /// MinGameVersion: SWGB
-    int8_t MinTechLevel = -1;
+    uint8_t MinTechLevel = -1;
 
     /// ID of unit this was copied from
     int16_t CopyID = -1;

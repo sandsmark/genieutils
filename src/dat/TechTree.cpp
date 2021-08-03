@@ -47,11 +47,18 @@ unsigned short TechTree::getCount() //GameVersion gv) // used before 10.84 (GV_A
 
 bool TechTree::compareTo(const TechTree &other) const
 {
+<<<<<<< HEAD
     COMPARE_MEMBER(TotalUnitTechGroups);
     COMPARE_MEMBER_OBJ_VEC(TechTreeAges);
     COMPARE_MEMBER_OBJ_VEC(UnitConnections);
     COMPARE_MEMBER_OBJ_VEC(BuildingConnections);
     COMPARE_MEMBER_OBJ_VEC(ResearchConnections);
+=======
+  uint8_t age_count;
+  uint8_t building_count;
+  uint8_t research_count;
+  int16_t unit_count;
+>>>>>>> 65dd660 (More accurate signedness.)
 
     return true;
 }
@@ -64,7 +71,18 @@ void TechTree::serializeObject()
     uint8_t research_count = 0;
     uint16_t unit_count = 0;
 
+<<<<<<< HEAD
     serializeSize<uint8_t>(age_count, TechTreeAges.size());
+=======
+  if (getGameVersion() >= GV_SWGB)
+   serializeSize<int16_t>(unit_count, UnitConnections.size());
+  else
+  {
+    uint8_t tbc = 0;
+    serializeSize<uint8_t>(tbc, UnitConnections.size());
+    unit_count = tbc;
+  }
+>>>>>>> 65dd660 (More accurate signedness.)
 
     serializeSize<uint8_t>(building_count, BuildingConnections.size());
 
@@ -109,6 +127,7 @@ unsigned short TechTreeAge::getZoneCount()
 
 bool TechTreeAge::compareTo(const TechTreeAge &other) const
 {
+<<<<<<< HEAD
     COMPARE_MEMBER(ID);
     COMPARE_MEMBER(LineMode);
     COMPARE_MEMBER(MaxAgeLength);
@@ -121,6 +140,46 @@ bool TechTreeAge::compareTo(const TechTreeAge &other) const
     COMPARE_MEMBER_VEC(GroupLengthPerZone);
 
     return Common.compareTo(other.Common);
+=======
+  serialize<int32_t>(ID);
+  serialize<uint8_t>(Status);
+
+  // All of these need rework. Used + actual? Fix actual!
+  uint8_t count;
+  if (getGameVersion() < GV_AoKB)// < 10.84
+  {
+    serialize<uint8_t>(count);
+    serialize<int32_t>(Buildings, TechTree::getCount());
+
+    serialize<uint8_t>(count);
+    serialize<int32_t>(Units, TechTree::getCount());
+
+    serialize<uint8_t>(count);
+    serialize<int32_t>(Techs, TechTree::getCount());
+  }
+  else
+  {
+    serializeSize<uint8_t>(count, Buildings.size());
+    serialize<int32_t>(Buildings, count);
+
+    serializeSize<uint8_t>(count, Units.size());
+    serialize<int32_t>(Units, count);
+
+    serializeSize<uint8_t>(count, Techs.size());
+    serialize<int32_t>(Techs, count);
+  }
+
+  serialize<ISerializable>(Common);
+
+  // 9.39
+  {
+    serialize<uint8_t>(NumBuildingLevels);
+    serialize<uint8_t>(BuildingsPerZone, getZoneCount());
+    serialize<uint8_t>(GroupLengthPerZone, getZoneCount());
+    serialize<uint8_t>(MaxAgeLength);
+    serialize<int32_t>(LineMode); // 9.51
+  }
+>>>>>>> 65dd660 (More accurate signedness.)
 }
 
 //------------------------------------------------------------------------------
@@ -179,6 +238,7 @@ void BuildingConnection::setGameVersion(GameVersion gv)
 
 bool BuildingConnection::compareTo(const BuildingConnection &other) const
 {
+<<<<<<< HEAD
     COMPARE_MEMBER(EnablingResearch);
     COMPARE_MEMBER(ID);
     COMPARE_MEMBER(LineMode);
@@ -191,6 +251,45 @@ bool BuildingConnection::compareTo(const BuildingConnection &other) const
     COMPARE_MEMBER_VEC(UnitsTechsTotal);
 
     return Common.compareTo(other.Common);
+=======
+  serialize<int32_t>(ID);
+  serialize<uint8_t>(Status);
+
+  uint8_t count;
+  if (getGameVersion() < GV_AoKB)// < 10.84
+  {
+    serialize<uint8_t>(count);
+    serialize<int32_t>(Buildings, TechTree::getCount());
+
+    serialize<uint8_t>(count);
+    serialize<int32_t>(Units, TechTree::getCount());
+
+    serialize<uint8_t>(count);
+    serialize<int32_t>(Techs, TechTree::getCount());
+  }
+  else
+  {
+    serializeSize<uint8_t>(count, Buildings.size());
+    serialize<int32_t>(Buildings, count);
+
+    serializeSize<uint8_t>(count, Units.size());
+    serialize<int32_t>(Units, count);
+
+    serializeSize<uint8_t>(count, Techs.size());
+    serialize<int32_t>(Techs, count);
+  }
+
+  serialize<ISerializable>(Common);
+
+  // 9.39
+  {
+    serialize<uint8_t>(LocationInAge);
+    serialize<uint8_t>(UnitsTechsTotal, AGES);
+    serialize<uint8_t>(UnitsTechsFirst, AGES); // 9.42
+    serialize<int32_t>(LineMode); // 9.51
+    serialize<int32_t>(EnablingResearch); // 9.91
+  }
+>>>>>>> 65dd660 (More accurate signedness.)
 }
 
 //------------------------------------------------------------------------------
@@ -205,8 +304,17 @@ void BuildingConnection::serializeObject()
         serialize<uint8_t>(count);
         serialize<int32_t>(Buildings, TechTree::getCount());
 
+<<<<<<< HEAD
         serialize<uint8_t>(count);
         serialize<int32_t>(Units, TechTree::getCount());
+=======
+//------------------------------------------------------------------------------
+void UnitConnection::serializeObject(void)
+{
+  serialize<int32_t>(ID);
+  serialize<uint8_t>(Status);
+  serialize<int32_t>(UpperBuilding);
+>>>>>>> 65dd660 (More accurate signedness.)
 
         serialize<uint8_t>(count);
         serialize<int32_t>(Techs, TechTree::getCount());
@@ -308,6 +416,7 @@ bool ResearchConnection::compareTo(const ResearchConnection &other) const
 //------------------------------------------------------------------------------
 void ResearchConnection::serializeObject()
 {
+<<<<<<< HEAD
     serialize<int32_t>(ID);
     serialize<int8_t>(Status);
     serialize<int32_t>(UpperBuilding);
@@ -342,6 +451,44 @@ void ResearchConnection::serializeObject()
         serialize<int32_t>(LocationInAge); // 9.46
         serialize<int32_t>(LineMode); // 9.51
     }
+=======
+  serialize<int32_t>(ID);
+  serialize<uint8_t>(Status);
+  serialize<int32_t>(UpperBuilding);
+
+  uint8_t count;
+  if (getGameVersion() < GV_AoKB)// < 10.84
+  {
+    serialize<uint8_t>(count);
+    serialize<int32_t>(Buildings, TechTree::getCount());
+
+    serialize<uint8_t>(count);
+    serialize<int32_t>(Units, TechTree::getCount());
+
+    serialize<uint8_t>(count);
+    serialize<int32_t>(Techs, TechTree::getCount());
+  }
+  else
+  {
+    serializeSize<uint8_t>(count, Buildings.size());
+    serialize<int32_t>(Buildings, count);
+
+    serializeSize<uint8_t>(count, Units.size());
+    serialize<int32_t>(Units, count);
+
+    serializeSize<uint8_t>(count, Techs.size());
+    serialize<int32_t>(Techs, count);
+  }
+
+  serialize<ISerializable>(Common);
+
+  // 9.39
+  {
+    serialize<int32_t>(VerticalLine);
+    serialize<int32_t>(LocationInAge); // 9.46
+    serialize<int32_t>(LineMode); // 9.51
+  }
+>>>>>>> 65dd660 (More accurate signedness.)
 }
 
 bool techtree::Common::compareTo(const techtree::Common &other) const

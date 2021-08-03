@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -34,27 +34,27 @@ public:
     /// 1. Homing?, projectile falls vertically to the bottom of the map
     /// 2. Velocity homing?
     /// 3. Teleporting projectile
-    int8_t ProjectileType;
+    uint8_t ProjectileType;
 
     /// Effect attribute 19 changes this
     /// 0. Shoot where the target is now
     /// 1. Shoot where the target is going to be
-    int8_t SmartMode;
+    uint8_t SmartMode;
 
     /// 0. Continue after hitting an obstacle
     /// 1. Disappear once an obstacle is hit
     /// 2. Hit all. Damages target and resting position?
-    int8_t HitMode;
+    uint8_t HitMode;
 
     /// Affects the graphics so that they pass through the target instead of stopping
     /// 1 allows the projectile to pass through, a value of 0 stops the projectile.
     /// Only affects graphic not pass through damage.
-    int8_t VanishMode;
+    uint8_t VanishMode;
 
     /// 0 Normal
     /// 1 Random (bullets)
     /// 2 Random explosions
-    int8_t AreaEffectSpecials;
+    uint8_t AreaEffectSpecials;
 
     /// Determines the arc a projectile follows.
     /// Enter a non-negative value.

@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2020  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -73,6 +73,7 @@ bool Tech::compareTo(const Tech &other) const
 //------------------------------------------------------------------------------
 void Tech::serializeObject()
 {
+<<<<<<< HEAD
     GameVersion gv = getGameVersion();
 
     serialize<int16_t>(RequiredTechs, getRequiredTechsSize());
@@ -120,6 +121,61 @@ void Tech::serializeObject()
     if (gv >= GV_C15 && gv <= GV_LatestDE2) {
         serialize<int8_t>(Repeatable);
     }
+=======
+  GameVersion gv = getGameVersion();
+
+  serialize<int16_t>(RequiredTechs, getRequiredTechsSize());
+
+  serializeSub<ResearchResourceCost>(ResourceCosts, 3);
+  serialize<int16_t>(RequiredTechCount);
+
+  if (gv >= GV_AoKB)
+  {
+    serialize<int16_t>(Civ);// 10.22
+    serialize<int16_t>(FullTechMode); // 10.77
+  }
+
+  serialize<int16_t>(ResearchLocation);
+  if (gv >= GV_MATT)
+  {
+    serialize<int16_t>(LanguageDLLName);
+    serialize<int16_t>(LanguageDLLDescription);
+  }
+  serialize<int16_t>(ResearchTime);
+  serialize<int16_t>(EffectID);
+  serialize<int16_t>(Type);
+  serialize<int16_t>(IconID);
+  serialize<uint8_t>(ButtonID);
+  if (gv >= GV_AoEB)
+  {
+    serialize<int32_t>(LanguageDLLHelp);
+    serialize<int32_t>(LanguageDLLTechTree);
+    serialize<int32_t>(HotKey);
+  }
+
+  if (gv > GV_LatestTap && gv < GV_C2 || gv < GV_Tapsa || gv > GV_LatestDE2)
+  {
+    int16_t name_len;
+    serializeSize<int16_t>(name_len, Name);
+    serialize(Name, name_len);
+
+    if (gv >= GV_SWGB)
+    {
+      serializeSize<int16_t>(name_len, Name2);
+      serialize(Name2, name_len);
+    }
+  }
+  else
+  {
+    serializeDebugString(Name);
+  }
+
+  if (gv <= GV_LatestDE2 && gv >= GV_C15)
+  {
+    serialize<uint8_t>(Repeatable);
+  }
+}
+>>>>>>> 65dd660 (More accurate signedness.)
 
 }
 } // namespace genie

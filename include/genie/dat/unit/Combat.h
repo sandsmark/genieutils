@@ -76,7 +76,7 @@ public:
     int16_t AccuracyPercent = 0;
 
     /// Used in AoE/RoR for towers.
-    int8_t BreakOffCombat = 0;
+    uint8_t BreakOffCombat = 0;
 
     /// Graphical delay in frames before projectile is shot
     int16_t FrameDelay = 0;
@@ -84,9 +84,9 @@ public:
     /// Projectile spawning offset from the unit (x, y, z)
     XYZF GraphicDisplacement = { 0, 0, 0 };
 
-    enum BlastAttackLevels : int8_t {
+    enum BlastAttackLevels : uint8_t {
         /// Invalid/unset
-        InvalidBlastLevel = -1,
+        InvalidBlastLevel = 255,
 
         /// Damages resources also
         DamageResources = 0,

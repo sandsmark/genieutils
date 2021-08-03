@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -31,12 +31,12 @@ public:
     int16_t GraphicID = -1;
 
     /// Percentage damage this appears at
-    int8_t DamagePercent = 0;
+    uint8_t DamagePercent = 0;
 
-    int8_t OldApplyMode = 0;
+    uint8_t OldApplyMode = 0;
 
 
-    enum GraphicApplyMode {
+    enum GraphicApplyMode : uint8_t {
         OverlayGraphic = 0,
         OverlayRandomly = 1,
         ReplaceGraphic = 2
@@ -45,7 +45,7 @@ public:
     /// 0   Overlay (flames on buildings)
     /// 1   Overlay randomly
     /// 2   Replace graphics (damaged walls)
-    int8_t ApplyMode = 0;
+    uint8_t ApplyMode = 0;
 
     bool compareTo(const DamageGraphic &other) const;
 

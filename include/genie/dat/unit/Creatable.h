@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2020  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -48,12 +48,12 @@ public:
     // Third page same as first (Star Wars)
     // First page in AoE/RoR 1-10
     // Second page in AoE/RoR 11-20
-    int8_t ButtonID = -1;
+    uint8_t ButtonID = -1;
 
     float RearAttackModifier = 0;
     float FlankAttackModifier = 0;
 
-    enum CreatableTypes : int8_t {
+    enum CreatableTypes : uint8_t {
         NonHumanType = 0, // building, animal, ship
         VillagerType = 1, // villager, king
         InfantryType = 2, // soldier, siege, predator, trader
@@ -63,16 +63,16 @@ public:
         MonkType = 6,
         TransportShipType = 21
     };
-    int8_t CreatableType = 0; // obsolete according to AGE, but still set for units
+    uint8_t CreatableType = 0; // obsolete according to AGE, but still set for units
 
-    int8_t HeroMode = 0;
+    uint8_t HeroMode = 0;
     int32_t GarrisonGraphic = -1;
 
     /// Total missiles including both normal and duplicated projectiles
     float TotalProjectiles = 0;
 
     /// Total missiles when garrison capacity is full
-    int8_t MaxTotalProjectiles = 0;
+    uint8_t MaxTotalProjectiles = 0;
 
     /// The area from which projectiles spawn. Size and randomness.
     /// X: Spawning area's width
@@ -121,7 +121,7 @@ public:
     ///     Fry units on ships passing through your sea of fire.
     /// 6   Board
     ///     Attach to another ship, resulting in takeover or sinking.
-    int8_t SpecialAbility = 0;
+    uint8_t SpecialAbility = 0;
     int16_t DisplayedPierceArmour = 0;
 
     int16_t SpawningGraphic = -1;

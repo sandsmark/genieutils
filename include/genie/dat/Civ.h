@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -31,7 +31,7 @@ public:
     void setGameVersion(GameVersion gv) override;
 
     /// Always one
-    int8_t PlayerType = 1;
+    uint8_t PlayerType = 1;
 
     /// Returns size for both names
     static unsigned short getNameSize();
@@ -55,7 +55,7 @@ public:
     /// This is actually an offset used to look up SLPs inside the DRS file
     /// AoE 1: also determines the interface graphics used
     /// Star Wars: also determines unit and tech icons
-    int8_t IconSet = 0;
+    uint8_t IconSet = 0;
 
     /// Unused, in-memory pointers to units
     std::vector<int32_t> UnitPointers;

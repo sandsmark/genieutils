@@ -103,7 +103,7 @@ void Graphic::serializeObject()
             serializeDebugString(ParticleEffectName);
         }
         if (gv >= GV_T3 && gv < GV_C2) {
-            serialize<uint16_t>(FirstFrame);
+            serialize<int16_t>(FirstFrame);
         }
     }
 
@@ -114,12 +114,12 @@ void Graphic::serializeObject()
         serialize<int32_t>(SLP);
     }
 
-    serialize<int8_t>(IsLoaded); // Unused
-    serialize<int8_t>(OldColorFlag); // Unused
-    serialize<int8_t>(Layer);
-    serialize<int8_t>(PlayerColor);
-    serialize<int8_t>(Rainbow); // 2nd half of player color
-    serialize<int8_t>(TransparentSelection);
+    serialize<uint8_t>(IsLoaded); // Unused
+    serialize<uint8_t>(OldColorFlag); // Unused
+    serialize<uint8_t>(Layer);
+    serialize<uint8_t>(PlayerColor);
+    serialize<uint8_t>(Rainbow); // 2nd half of player color
+    serialize<uint8_t>(TransparentSelection);
 
     serialize<int16_t, 4>(Coordinates);
 
@@ -131,9 +131,9 @@ void Graphic::serializeObject()
         serialize<uint32_t>(WwiseSoundID);
     }
 
-    serialize<int8_t>(AngleSoundsUsed);
-    serialize<uint16_t>(FrameCount);
-    serialize<uint16_t>(AngleCount);
+    serialize<uint8_t>(AngleSoundsUsed);
+    serialize<int16_t>(FrameCount);
+    serialize<int16_t>(AngleCount);
     serialize<float>(SpeedMultiplier);
 
     if (isOperation(OP_WRITE)) {
@@ -153,10 +153,10 @@ void Graphic::serializeObject()
     serialize<float>(ReplayDelay);
     serialize<uint8_t>(SequenceType);
     serialize<int16_t>(ID);
-    serialize<int8_t>(MirroringMode);
+    serialize<uint8_t>(MirroringMode);
 
     if (gv >= GV_AoKB) { // 10.72
-        serialize<int8_t>(EditorFlag); // A sprite editor thing
+        serialize<uint8_t>(EditorFlag); // A sprite editor thing
     }
 
     serialize(Deltas, delta_count);

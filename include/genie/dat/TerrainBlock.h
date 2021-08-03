@@ -1,7 +1,7 @@
 /*
     geniedat - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2014 - 2015  Mikko "Tapsa" P
+    Copyright (C) 2014 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -56,10 +56,10 @@ public:
     void setGameVersion(GameVersion gv) override;
 
     /// Unused, because the original Genie wrote their entire class structure to disk, including vptrs
-    int32_t VirtualFunctionPtr = 0;
+    uint32_t VirtualFunctionPtr = 0;
 
     /// Unused, same as above
-    int32_t MapPointer = 0;
+    uint32_t MapPointer = 0;
 
     int32_t MapWidth = 0;
     int32_t MapHeight = 0;
@@ -78,7 +78,7 @@ public:
     /// TerrainBorders seem to be unused (are empty) in GV > AoK Alpha
     std::array<TerrainBorder, 16> TerrainBorders;
 
-    int32_t MapRowOffset = 0;
+    uint32_t MapRowOffset = 0;
     float MapMinX = 0.f;
     float MapMinY = 0.f;
     float MapMaxX = 0.f;
@@ -86,9 +86,9 @@ public:
     float MapMaxXplus1 = 0.f;
     float MapMaxYplus1 = 0.f;
 
-    uint16_t TerrainsUsed2 = 0;
-    uint16_t RemovedBlocksUsed = 0;
-    uint16_t BordersUsed = 0;
+    int16_t TerrainsUsed2 = 0;
+    int16_t RemovedBlocksUsed = 0;
+    int16_t BordersUsed = 0;
     int16_t MaxTerrain = 0;
     int16_t TileWidth = 0;
     int16_t TileHeight = 0;
@@ -106,13 +106,13 @@ public:
     int32_t SearchMapRowsPtr = 0;
     int8_t AnyFrameChange = 0;
 
-    int8_t MapVisibleFlag = 0;
-    int8_t FogFlag = 0;
+    uint8_t MapVisibleFlag = 0;
+    uint8_t FogFlag = 0;
 
     unsigned short getBytesSize();
-    std::vector<int8_t> SomeBytes;
+    std::vector<uint8_t> SomeBytes;
     unsigned short getSomethingSize();
-    std::vector<int32_t> SomeInt32;
+    std::vector<uint32_t> SomeInt32;
 
     bool compareTo(const TerrainBlock &other) const;
 

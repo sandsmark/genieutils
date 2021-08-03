@@ -41,7 +41,7 @@ public:
     float RotationSpeed = 0;
 
     /// Old type of size
-    int8_t OldSizeClass = 0;
+    uint8_t OldSizeClass = 0;
 
     /// Which unit is this tracking (?)
     int16_t TrackingUnit = -1;
@@ -49,13 +49,13 @@ public:
     /// 0. Not used\n
     /// 1. Appears while moving and at the start of the game\n
     /// 2. Appears while moving, based on density\n
-    int8_t TrackingUnitMode = 0;
+    uint8_t TrackingUnitMode = 0;
 
     /// Only with TrackingUnitMode 2
     float TrackingUnitDensity = 0;
 
     /// Old algorithm used to define how the unit moves
-    int8_t OldMoveAlgorithm = 0;
+    uint8_t OldMoveAlgorithm = 0;
 
     /// How far is the unit turned, changed while playing
     float TurnRadius = 0;

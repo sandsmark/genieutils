@@ -2,7 +2,7 @@
     genieutils - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2015  Mikko "Tapsa" P
+    Copyright (C) 2015 - 2021  Mikko "Tapsa" P
     Copyright (C) 2015  JustTesting1234
 
     This program is free software: you can redistribute it and/or modify
@@ -143,7 +143,7 @@ public:
     std::array<ScnMorePlayerData, 8> players;
 
     double triggerVersion = 0.;
-    int8_t objectivesStartingState = 0;
+    uint8_t objectivesStartingState = 0;
     std::vector<Trigger> triggers;
     std::vector<int32_t> triggerDisplayOrder;
 

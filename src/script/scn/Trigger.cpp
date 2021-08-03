@@ -1,7 +1,7 @@
 /*
     genieutils - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2015 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2015 - 2021  Mikko "Tapsa" P
     Copyright (C) 2015  JustTesting1234
 
     This program is free software: you can redistribute it and/or modify
@@ -41,9 +41,32 @@ void Trigger::serializeObject()
     serializeSize<int32_t>(numEffects_, effects.size());
     serialize(effects, numEffects_);
 
+<<<<<<< HEAD
     if (scn_trigger_ver > 1.2f) {
         serialize<int32_t>(effectDisplayOrder, numEffects_);
     }
+=======
+void Trigger::serializeObject(void)
+{
+  serialize<int32_t>(startingState);
+  serialize<uint8_t>(looping);
+  serialize<int32_t>(stringTableID);
+  serialize<uint8_t>(isObjective);
+  serialize<int32_t>(descriptionOrder);
+  if (scn_trigger_ver > 1.5f)
+    serialize<int32_t>(startingTime);
+  serializeForcedString<int32_t>(description);
+  serializeForcedString<int32_t>(name);
+  serializeSize<int32_t>(numEffects_, effects.size());
+  serializeSub<TriggerEffect>(effects, numEffects_);
+  if (scn_trigger_ver > 1.2f)
+    serialize<int32_t>(effectDisplayOrder, numEffects_);
+  serializeSize<int32_t>(numConditions_, conditions.size());
+  serializeSub<TriggerCondition>(conditions, numConditions_);
+  if (scn_trigger_ver > 1.2f)
+    serialize<int32_t>(conditionDisplayOrder, numConditions_);
+}
+>>>>>>> 65dd660 (More accurate signedness.)
 
     serializeSize<int32_t>(numConditions_, conditions.size());
     serialize(conditions, numConditions_);

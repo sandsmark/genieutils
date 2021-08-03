@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2020  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -38,7 +38,7 @@ public:
     /// The size of the array is 4 in aoe/ror and 6 at games >= aok
     std::vector<int16_t> RequiredTechs;
 
-    typedef Resource<int16_t, int8_t> ResearchResourceCost;
+    typedef Resource<int16_t, uint8_t> ResearchResourceCost;
 
     /// Resource cost in a list of max 3
     std::array<ResearchResourceCost, 3> ResourceCosts;
@@ -57,10 +57,10 @@ public:
     int16_t ResearchLocation = -1;
 
     /// Index of the name in language.dll
-    uint16_t LanguageDLLName = 7000;
+    int16_t LanguageDLLName = 7000;
 
     /// Index of the description in language.dll
-    uint16_t LanguageDLLDescription = 8000;
+    int16_t LanguageDLLDescription = 8000;
 
     /// Number of seconds it takes to research
     int16_t ResearchTime = 0;
@@ -75,7 +75,7 @@ public:
     int16_t IconID = -1;
 
     /// ID of the button
-    int8_t ButtonID = 0;
+    uint8_t ButtonID = 0;
 
     /// The first number is 100 000 plus the Language FIle ID for the name/description.
     int32_t LanguageDLLHelp = 107000;
@@ -92,9 +92,9 @@ public:
     /// Second internal name, MinGameVersion: SWGB
     std::string Name2 = "";
 
-    bool compareTo(const Tech &other) const;
+    uint8_t Repeatable = false;
 
-  int8_t Repeatable = false;
+    bool compareTo(const Tech &other) const;
 
 private:
     void serializeObject() override;

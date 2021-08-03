@@ -780,42 +780,58 @@ protected:
         }
     }
 
-    /// Serialize a vector size number. If size differs, the number will be
+    /// Serialize a vector size number with a unsigned value. If size differs, the number will be
     /// updated.
-    template <typename T>
+    template <typename T,
+              std::enable_if_t<std::is_signed<T>::value, int> = 0
+              >
     void serializeSize(T &data, size_t size)
     {
-        assert(operation_ != Operation::OP_INVALID);
+        serializeSizeInternal(data, size);
 
-        if (isOperation(Operation::OP_WRITE)) {
-            data = size;
+        if (data < 0) {
+            throw std::ios_base::failure("Invalid size " + std::to_string(data));
         }
-
-        serialize<T>(data);
     }
 
-    /// Spezialization of @ref serializeSize for strings.
+    /// Serialize a vector size number with a unsigned value. If size differs, the number will be
+    /// updated.
+    template <typename T,
+              std::enable_if_t<std::is_unsigned<T>::value, int> = 0
+              >
+    void serializeSize(T &data, size_t size)
+    {
+        serializeSizeInternal(data, size);
+    }
+
+    /// Spezialization of @ref serializeSize for strings with unsigned value
     ///
     /// @param data size to serialize
     /// @param str string to get size from
     /// @param c_str true if cstring (ending with \0).
-    template <typename T>
+    template <typename T,
+              std::enable_if_t<std::is_unsigned<T>::value, int> = 0
+              >
     void serializeSize(T &data, const std::string &str, bool cString = true)
     {
-        assert(operation_ != Operation::OP_INVALID);
+        serializeStringSizeInternal(data, str, cString);
+    }
 
-        // calculate new size
-        if (isOperation(Operation::OP_WRITE)) {
-            size_t size = str.size();
+    /// Spezialization of @ref serializeSize for strings with signed value.
+    ///
+    /// @param data size to serialize
+    /// @param str string to get size from
+    /// @param c_str true if cstring (ending with \0).
+    template <typename T,
+              std::enable_if_t<std::is_signed<T>::value, int> = 0
+              >
+    void serializeSize(T &data, const std::string &str, bool cString = true)
+    {
+        serializeStringSizeInternal(data, str, cString);
 
-            if (cString && size != 0) {
-                size++;    //counting \0
-            }
-
-            data = size;
+        if (data < 0) {
+            throw std::ios_base::failure("Invalid size " + std::to_string(data));
         }
-
-        serialize<T>(data);
     }
 
     /// Necessary for graphic objects. The pointer array contains entries with
@@ -888,6 +904,36 @@ protected:
     }
 
 private:
+    template <typename T>
+    void serializeSizeInternal(T &data, size_t size)
+    {
+        assert(operation_ != Operation::OP_INVALID);
+
+        if (isOperation(Operation::OP_WRITE)) {
+            data = size;
+        }
+
+        serialize<T>(data);
+    }
+    template <typename T>
+    void serializeStringSizeInternal(T &data, const std::string &str, bool cString)
+    {
+        assert(operation_ != Operation::OP_INVALID);
+
+        // calculate new size
+        if (isOperation(Operation::OP_WRITE)) {
+            size_t size = str.size();
+
+            if (cString && size != 0) {
+                size++;    //counting \0
+            }
+
+            data = size;
+        }
+
+        serialize<T>(data);
+    }
+
     std::istream *istr_ = nullptr;
     std::ostream *ostr_ = nullptr;
 

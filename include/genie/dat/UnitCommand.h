@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2019  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -37,7 +37,7 @@ public:
     /// Basically useless
     /// Used to setup task when discovered,
     /// but you can directly set it in unit data
-    int8_t IsDefault = false;
+    uint8_t IsDefault = false;
 
     /// Type of action
     genie::ActionType ActionType = ActionType::None;
@@ -76,7 +76,7 @@ public:
     float WorkRange = 0;
 
     /// If 1, then auto-search for targets
-    int8_t AutoSearchTargets = 0;
+    uint8_t AutoSearchTargets = 0;
 
     /// Unused
     float SearchWaitTime = 0;
@@ -84,10 +84,10 @@ public:
     /// AoE alphas: Target choosing based on combat level
     /// 0   No targeting
     /// 1   Allows units to select their targets
-    int8_t EnableTargeting = 0;
+    uint8_t EnableTargeting = 0;
 
     /// Unused Flag
-    int8_t CombatLevelFlag = 0;
+    uint8_t CombatLevelFlag = 0;
 
     /// Work Flag 1
     /// AoE 1: Used when farm is dead but still exists
@@ -102,7 +102,7 @@ public:
     /// Owner Type
     /// Determines what you can select as targets
     /// > 7 is same as 0 and 7
-    enum TargetDiplomacies : int8_t {
+    enum TargetDiplomacies : uint8_t {
         TargetAnyDiplo = 0, ///< All objects
         TargetSelf = 1, ///< Your objects only
         TargetNeutralsEnemies = 2, ///< Neutral and enemy objects only
@@ -117,10 +117,10 @@ public:
     /// Holding Attribute
     /// 0   Right-click target is defined by the target diplomacy.
     /// 1   Preceding the above, checks if target has more than 0 resource.
-    int8_t CarryCheck = false;
+    uint8_t CarryCheck = false;
 
     /// 1   Choose this task if targeting a construction
-    int8_t PickForConstruction = false;
+    uint8_t PickForConstruction = false;
 
     /// walking with tool but no resource
     int16_t MovingGraphicID = -1;

@@ -130,10 +130,10 @@ class Timeline : public ISerializable
 {
 public:
     /// Number of events in timeline
-    uint16_t entryCount = 0;
+    int16_t entryCount = 0;
 
     /// Next unused event ID
-    uint16_t availableId = 0;
+    int16_t availableId = 0;
 
     /// Time of last event
     float time = 0.f;
@@ -591,8 +591,8 @@ public:
     uint32_t totalVictoryPoints = 0;
 
 private:
-    uint16_t playerCount_;
-    uint32_t victoryConditionsCount;
+    int16_t playerCount_;
+    int32_t victoryConditionsCount;
     uint32_t pointConditionsCount;
     void serializeObject() override;
 };

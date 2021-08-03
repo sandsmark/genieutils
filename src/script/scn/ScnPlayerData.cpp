@@ -83,12 +83,35 @@ void ScnMainPlayerData::serializeObject()
     serializeSizedString<uint16_t>(instructions, false);
     if (s_verbose) std::cout << "Player instructions: " << instructions << std::endl;
 
+<<<<<<< HEAD
     if (scn_plr_data_ver > 1.1f) {
         serializeSizedString<uint16_t>(hints, false);
         serializeSizedString<uint16_t>(victory, false);
         serializeSizedString<uint16_t>(loss, false);
         serializeSizedString<uint16_t>(history, false);
     }
+=======
+void UnknownData1::serializeObject(void)
+{
+  serialize<int16_t>(unknownCount);
+  serialize<int16_t>(unknown2);
+  serialize<float>(unknown3);
+
+  /*/ 48 bytes? Lots of data if count is over 0
+  ReadData((HANDLE)_hScenFile, hUnknown, 4u);
+  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 4, 1u);
+  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 6, 2u);
+  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 8, 1u);
+  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 12, 4u);
+  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 16, 4u);
+  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 20, 4u);
+  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 24, 2u);
+  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 32, 2u);
+  ReadData((HANDLE)_hScenFile, &hScenFile, 2u);
+  ReadData((HANDLE)_hScenFile, (char *)hUnknown + 40, 2u);
+  ReadData((HANDLE)_hScenFile, &v15, 2u);*/
+}
+>>>>>>> 65dd660 (More accurate signedness.)
 
     if (scn_plr_data_ver > 1.21f) {
         serializeSizedString<uint16_t>(scouts, false);
@@ -565,6 +588,7 @@ void ScnMorePlayerData::serializeObject()
 
 void ScnPlayerVictoryCondition::serializeObject()
 {
+<<<<<<< HEAD
 //    printf("\n---\n");
     serialize<uint8_t>(type);
 //    printf("type: %d\n", type);
@@ -597,6 +621,24 @@ void ScnPlayerVictoryCondition::serializeObject()
     serialize<uint8_t>(state);
 //    printf("state: %d\n", state);
 //    printf("\n---\n");
+=======
+  serializeForcedString<uint16_t>(playerName);
+  serialize<float>(initCameraX);
+  serialize<float>(initCameraY);
+  serialize<int16_t>(initCameraX2);
+  serialize<int16_t>(initCameraY2);
+  serialize<uint8_t>(alliedVictory);
+  serializeSize<int16_t>(playerCount_, diplomacy1.size());
+  serialize<uint8_t>(diplomacy1, playerCount_);
+  serialize<uint32_t>(diplomacy2, playerCount_);
+  serialize<uint32_t>(playerColor);
+  serialize<float>(unknown1);
+  serializeSize<int16_t>(unknownCount_, unknown3.size() / 44);
+  serialize<uint8_t>(unknown2, 8);
+  serialize<uint8_t>(unknown3, unknownCount_ * 44);
+  serialize<uint8_t>(unknown4, 7);
+  serialize<int32_t>(unknown5);
+>>>>>>> 65dd660 (More accurate signedness.)
 }
 
 } // namespace genie

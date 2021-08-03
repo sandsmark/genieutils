@@ -140,6 +140,7 @@ void ScnFile::serializeObject()
     }
 
     serializeForcedString<uint32_t>(scenarioInstructions);
+<<<<<<< HEAD
     if (s_verbose) std::cout << "Scenario instructions " << scenarioInstructions.size() << ": " << util::sanitizeAscii(scenarioInstructions) << std::endl;
 
     serialize<int32_t>(victoryType);
@@ -158,6 +159,61 @@ void ScnFile::serializeObject()
             if (s_verbose) std::cout << "AoE2 Scenario expansions: " << expansionsCount << std::endl;
             serialize<uint32_t>(expansions, expansionsCount);
         }
+=======
+    serialize<uint32_t>(victoryType);
+    serialize<uint32_t>(playerCount);
+  }
+
+  std::cout << "Start compression: " << tellg() << std::endl;
+  compressor_.beginCompression();
+  std::cout << "Start compression: " << tellg() << std::endl;
+
+// Compressed header:
+
+  serialize<uint32_t>(nextUnitID);
+
+  serialize<ISerializable>(playerData);
+
+  serialize<ISerializable>(map);
+
+  if (scn_ver == "1.20" || scn_ver == "1.21") scn_internal_ver = 1.14f;
+  else if (scn_ver == "1.17" || scn_ver == "1.18" || scn_ver == "1.19") scn_internal_ver = 1.13f;
+  else if (scn_ver == "1.14" || scn_ver == "1.15" || scn_ver == "1.16") scn_internal_ver = 1.12f;
+
+  serializeSize<uint32_t>(playerCount1_, playerUnits.size());
+  if (scn_internal_ver > 1.06f)
+    serializeSub<ScnPlayerResources>(playerResources, 8);
+  else
+  {
+    // A lot of data is read here.
+  }
+  serializeSub<ScnPlayerUnits>(playerUnits, playerCount1_);
+
+  serialize<uint32_t>(playerCount2_);
+  serializeSub<ScnMorePlayerData>(players, 8);
+
+  triggerVersion = scn_trigger_ver;
+  serialize<double>(triggerVersion);
+  scn_trigger_ver = triggerVersion;
+
+  if (scn_trigger_ver > 1.4f)
+    serialize<uint8_t>(objectivesStartingState);
+  serializeSize<uint32_t>(numTriggers_, triggers.size());
+  serializeSub<Trigger>(triggers, numTriggers_);
+  if (scn_trigger_ver > 1.3f)
+    serialize<int32_t>(triggerDisplayOrder, numTriggers_);
+
+  if (scn_ver == "1.21" || scn_ver == "1.20" || scn_ver == "1.19" || scn_ver == "1.18")
+  {
+    serialize<uint32_t>(includeFiles);
+    serialize<uint32_t>(perErrorIncluded);
+    if (perErrorIncluded)
+      serialize<uint32_t>(perError, 99);
+    if (includeFiles)
+    {
+      serializeSize<uint32_t>(fileCount_, includedFiles.size());
+      serializeSub<ScnIncludedFile>(includedFiles, fileCount_);
+>>>>>>> 65dd660 (More accurate signedness.)
     }
 
 

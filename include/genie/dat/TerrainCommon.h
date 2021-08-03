@@ -1,7 +1,7 @@
 /*
     geniedat - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2015 - 2017  Mikko "Tapsa" P
+    Copyright (C) 2015 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -43,9 +43,9 @@ public:
     static constexpr unsigned short TILE_TYPE_COUNT = 19;
 
     /// Must be one or the game will crash
-    int8_t Enabled = 0;
+    uint8_t Enabled = 0;
 
-    int8_t Random = 0;
+    uint8_t Random = 0;
 
     virtual size_t getNameSize() = 0;
 
@@ -68,7 +68,7 @@ public:
     std::array<uint8_t, 3> Colors = { 0, 0, 0 };
 
     /// If the terrain has animated graphics
-    int8_t IsAnimated = 0;
+    uint8_t IsAnimated = 0;
 
     /// Number of frames to animate through
     int16_t AnimationFrames = 0;
@@ -92,10 +92,10 @@ public:
     float AnimateLast = 0;
 
     /// Has the DrawFrame changed since terrain was drawn?
-    int8_t FrameChanged = 0;
+    uint8_t FrameChanged = 0;
 
     /// Has the DrawFrame been drawn already?
-    int8_t Drawn = 0;
+    uint8_t Drawn = 0;
 };
 } // namespace genie
 

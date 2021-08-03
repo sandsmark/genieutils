@@ -91,6 +91,7 @@ size_t Terrain::getNameSize()
 
 bool Terrain::compareTo(const Terrain &other) const
 {
+<<<<<<< HEAD
     COMPARE_MEMBER(NumberOfTerrainUnitsUsed);
     COMPARE_MEMBER(Phantom);
     COMPARE_MEMBER(TerrainToDraw);
@@ -114,6 +115,117 @@ bool Terrain::compareTo(const Terrain &other) const
     COMPARE_MEMBER(WwiseSoundStopID);
 
     return true;
+=======
+  GameVersion gv = getGameVersion();
+
+  serialize<uint8_t>(Enabled);
+  serialize<uint8_t>(Random);
+
+  if (gv > GV_LatestTap && gv < GV_C2 || gv < GV_Tapsa || gv > GV_LatestDE2)
+  {
+    serialize(Name, getNameSize());
+    serialize(Name2, getNameSize());
+  }
+  else
+  {
+    if (gv >= GV_T2 && gv < GV_C2 || gv >= GV_C8 && gv <= GV_LatestDE2)
+    {
+      serialize<uint8_t>(IsWater);
+      serialize<uint8_t>(HideInEditor);
+      serialize<int32_t>(StringID);
+    }
+    if (gv >= GV_T2 && gv < GV_C2)
+    {
+      serialize<int16_t>(BlendPriorityS16);
+      serialize<int16_t>(BlendTypeS16);
+
+      BlendPriority = BlendPriorityS16;
+      BlendType = BlendTypeS16;
+    }
+    serializeDebugString(Name);
+    serializeDebugString(Name2);
+  }
+
+  if (gv >= GV_AoEB)
+    serialize<int32_t>(SLP);
+  serialize<int32_t>(ShapePtr);
+  serialize<int32_t>(SoundID);
+  if (gv <= GV_LatestDE2)
+  {
+    if (gv >= GV_C6)
+    {
+      if (gv >= GV_C11)
+      {
+        serialize<uint32_t>(WwiseSoundID);
+      }
+      serialize<uint32_t>(WwiseSoundStopID);
+    }
+  }
+
+  if (gv >= GV_AoKB)
+  {
+    serialize<int32_t>(BlendPriority);
+    serialize<int32_t>(BlendType);
+
+    if (gv >= GV_C3 && gv <= GV_LatestDE2)
+    {
+      serializeDebugString(OverlayMaskName);
+    }
+  }
+
+  serialize<uint8_t>(Colors, 3);
+  serializePair<uint8_t>(CliffColors);
+  serialize<uint8_t>(PassableTerrain);
+  serialize<uint8_t>(ImpassableTerrain);
+
+  serialize<uint8_t>(IsAnimated);
+  serialize<int16_t>(AnimationFrames);
+  serialize<int16_t>(PauseFames);
+  serialize<float>(Interval);
+  serialize<float>(PauseBetweenLoops);
+  serialize<int16_t>(Frame);
+  serialize<int16_t>(DrawFrame);
+  serialize<float>(AnimateLast);
+  serialize<uint8_t>(FrameChanged);
+  serialize<uint8_t>(Drawn);
+
+  serializeSub<FrameData>(ElevationGraphics, TILE_TYPE_COUNT);
+  serialize<int16_t>(TerrainToDraw);
+  serializePair<int16_t>(TerrainDimensions);
+  if (gv >= GV_C8 && gv <= GV_LatestDE2)
+  {
+    serialize<int16_t>(TerrainUnitMaskedDensity, TERRAIN_UNITS_SIZE);
+  }
+  else
+  {
+    if (isOperation(OP_READ))
+    {
+      switch (gv)
+      {
+        case GV_CCV:
+          serialize<int16_t>(Borders, 55);
+          break;
+        case GV_TCV:
+          serialize<int16_t>(Borders, 42);
+          break;
+        default:
+          serialize<int16_t>(Borders, getTerrainCount(gv));
+          break;
+      }
+    }
+    else
+    {
+      serialize<int16_t>(Borders, Borders.size());
+    }
+  }
+  serialize<int16_t>(TerrainUnitID, TERRAIN_UNITS_SIZE);
+  serialize<int16_t>(TerrainUnitDensity, TERRAIN_UNITS_SIZE);
+  serialize<uint8_t>(TerrainUnitCentering, TERRAIN_UNITS_SIZE);
+  serialize<int16_t>(NumberOfTerrainUnitsUsed);
+
+  if (gv < GV_SWGB)
+    serialize<int16_t>(Phantom);
+>>>>>>> 65dd660 (More accurate signedness.)
 }
 
 //------------------------------------------------------------------------------

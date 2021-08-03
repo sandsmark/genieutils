@@ -1,7 +1,7 @@
 /*
     genieutils - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2015 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2015 - 2021  Mikko "Tapsa" P
     Copyright (C) 2015  JustTesting1234
 
     This program is free software: you can redistribute it and/or modify
@@ -189,9 +189,9 @@ class Trigger : public ISerializable
 {
 public:
     int32_t startingState;
-    int8_t looping;
+    uint8_t looping;
     int32_t stringTableID;
-    int8_t isObjective;
+    uint8_t isObjective;
     int32_t descriptionOrder;
     int32_t startingTime;
     std::string description;

@@ -18,49 +18,56 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "genie/dat/UnitHeader.h"
+#include "genie/dat/unit/DeadFish.h"
 
-#include "TestHelpers.h"
-
-namespace genie {
-
-//------------------------------------------------------------------------------
-void UnitHeader::setGameVersion(GameVersion gv)
+namespace genie
 {
-    ISerializable::setGameVersion(gv);
 
-    updateGameVersion(TaskList);
+namespace unit
+{
+
+DeadFish::DeadFish() //: Unit()
+{
 }
 
-bool UnitHeader::compareTo(const UnitHeader &other) const
+DeadFish::~DeadFish()
 {
-    COMPARE_MEMBER(Exists);
-    COMPARE_MEMBER_OBJ_VEC(TaskList);
-
-    return true;
 }
 
 //------------------------------------------------------------------------------
-void UnitHeader::serializeObject()
+void DeadFish::setGameVersion(GameVersion gv)
 {
-<<<<<<< HEAD
-    serialize<int8_t>(Exists);
-=======
-  serialize<uint8_t>(Exists);
+  ISerializable::setGameVersion(gv);
+}
 
-  if (Exists)
+void DeadFish::serializeObject(void)
+{
+  GameVersion gv = getGameVersion();
+
+  serialize<int16_t>(WalkingGraphic);
+  serialize<int16_t>(RunningGraphic);
+  serialize<float>(RotationSpeed);
+  serialize<uint8_t>(OldSizeClass);
+  serialize<int16_t>(TrackingUnit);
+  serialize<uint8_t>(TrackingUnitMode);
+  serialize<float>(TrackingUnitDensity);
+  serialize<uint8_t>(OldMoveAlgorithm);
+
+  if (gv >= GV_AoKB) // 10.28
   {
-    int16_t task_count;
-    serializeSize<int16_t>(task_count, TaskList.size());
-    serializeSub<Task>(TaskList, task_count);
+    serialize<float>(TurnRadius);
+    serialize<float>(TurnRadiusSpeed);
+    serialize<float>(MaxYawPerSecondMoving);
+    serialize<float>(StationaryYawRevolutionTime);
+    serialize<float>(MaxYawPerSecondStationary);
+
+    if (gv <= GV_LatestDE2 && gv >= GV_C14)
+    {
+      serialize<float>(MinCollisionSizeMultiplier);
+    }
   }
 }
->>>>>>> 65dd660 (More accurate signedness.)
 
-    if (Exists) {
-        uint16_t task_count{};
-        serializeSize<uint16_t>(task_count, TaskList.size());
-        serialize(TaskList, task_count);
-    }
 }
-} // namespace genie
+
+}

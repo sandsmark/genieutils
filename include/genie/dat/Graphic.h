@@ -45,7 +45,7 @@ public:
     std::string ParticleEffectName = ""; // TODO: doc, new in DE
 
     /// Number of frames to skip
-    uint16_t FirstFrame = 0;
+    int16_t FirstFrame = 0;
 
     /// SLP resource id
     union {
@@ -55,8 +55,8 @@ public:
     };
 
     //TODO
-    int8_t IsLoaded = 0;
-    int8_t OldColorFlag = 0;
+    uint8_t IsLoaded = 0;
+    uint8_t OldColorFlag = 0;
 
     /// The layer describes order of graphics being rendered.
     /// Possible values: 0 (lowest layer) to 40 (highest layer)
@@ -75,13 +75,13 @@ public:
     /// 21   Blacksmith smoke
     /// 22   Hawk
     /// 30   Projectiles, explosions
-    int8_t Layer = 0;
+    uint8_t Layer = 0;
 
     /// Setting this to 0 forces the player color to be blue.
-    int8_t PlayerColor = -1;
+    uint8_t PlayerColor = -1;
 
     /// Makes the graphic change its player color according to nearby units
-    int8_t Rainbow = -1;
+    uint8_t Rainbow = -1;
 
     /// 0   Not selectable
     /// 1   Select only on pixels
@@ -92,23 +92,23 @@ public:
         SelectInBox = 2
     };
 
-    int8_t TransparentSelection = 0;
+    uint8_t TransparentSelection = 0;
 
     /// Bounding Box Coordinates (X1, Y1, X2, Y2)
     std::array<int16_t, 4> Coordinates = { 0, 0, 0, 0 };
 
     int16_t SoundID = -1;
     uint32_t WwiseSoundID = 0; // TODO doc: new in DE
-    int8_t AngleSoundsUsed = 0;
+    uint8_t AngleSoundsUsed = 0;
 
     /// Number of frames per angle animation
-    uint16_t FrameCount = 0;
+    int16_t FrameCount = 0;
 
     /// Number of angles tored in slp and also the number of extra structures.
     /// If there are more than 1 angle, AngleCount/2 - 1 frames will be
     /// mirrored. That means angles starting from south going clockwise to
     /// north are stored and the others will be mirrored.
-    uint16_t AngleCount = 0;
+    int16_t AngleCount = 0;
 
     /// If this is over 0, the speed of the unit will be replaced with this.
     float SpeedMultiplier = 0;
@@ -131,8 +131,8 @@ public:
     };
     uint8_t SequenceType = 0;
     int16_t ID = -1;
-    int8_t MirroringMode = 0;
-    int8_t EditorFlag = 0;
+    uint8_t MirroringMode = 0;
+    uint8_t EditorFlag = 0;
 
     std::vector<GraphicDelta> Deltas;
     std::vector<GraphicAngleSound> AngleSounds;

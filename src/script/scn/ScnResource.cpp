@@ -2,7 +2,7 @@
     genieutils - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2015 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2015 - 2021  Mikko "Tapsa" P
     Copyright (C) 2015  JustTesting1234
 
     This program is free software: you can redistribute it and/or modify
@@ -157,4 +157,23 @@ void ScnUnit::serializeObject()
         }
     }
 }
+<<<<<<< HEAD
 } // namespace genie
+=======
+
+void ScnUnit::serializeObject(void)
+{
+  serialize<float>(positionX);
+  serialize<float>(positionY);
+  serialize<float>(positionZ);
+  serialize<uint32_t>(spawnID);
+  serialize<int16_t>(objectID); // units with hardcoded behaviour 102, 66, 59, 768, 420, 770, 691
+  serialize<uint8_t>(state);
+  serialize<float>(rotation);
+  if (scn_ver != "1.14")
+    serialize<int16_t>(initAnimationFrame);
+  serialize<uint32_t>(garrisonedInID);
+}
+
+}
+>>>>>>> 65dd660 (More accurate signedness.)

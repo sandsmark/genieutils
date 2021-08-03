@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -29,9 +29,9 @@ namespace genie {
 class EffectCommand : public ISerializable
 {
 public:
-    enum EffectType : int8_t {
+    enum EffectType : uint8_t {
         /// Invalid/unset type
-        InvalidEffectType = -1,
+        InvalidEffectType = 255,
 
         /// Sets a unit attribute
         AbsoluteAttributeModifier = 0,

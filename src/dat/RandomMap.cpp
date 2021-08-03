@@ -1,7 +1,7 @@
 /*
     genie/dat - A library for reading and writing data files of genie
                engine games.
-    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -158,7 +158,32 @@ void MapLand::setGameVersion(GameVersion gv)
     ISerializable::setGameVersion(gv);
 }
 
+<<<<<<< HEAD
 bool MapLand::compareTo(const MapLand &other) const
+=======
+//------------------------------------------------------------------------------
+void MapLand::serializeObject(void)
+{
+  serialize<int32_t>(LandID);
+  serialize<uint32_t>(Terrain);//uint8_t
+  serialize<int32_t>(LandSpacing);
+  serialize<int32_t>(BaseSize);
+  serialize<uint8_t>(Zone);
+  serialize<uint8_t>(PlacementType);
+  serialize<int16_t>(Padding1);
+  serialize<int32_t>(BaseX);
+  serialize<int32_t>(BaseY);
+  serialize<uint8_t>(LandProportion);
+  serialize<uint8_t>(ByPlayerFlag);
+  serialize<int16_t>(Padding2);
+  serialize<int32_t>(StartAreaRadius);
+  serialize<int32_t>(TerrainEdgeFade);
+  serialize<int32_t>(Clumpiness);
+}
+
+//------------------------------------------------------------------------------
+MapTerrain::MapTerrain()
+>>>>>>> 65dd660 (More accurate signedness.)
 {
     COMPARE_MEMBER(Padding1);
     COMPARE_MEMBER(Padding2);
@@ -236,6 +261,7 @@ void MapUnit::setGameVersion(GameVersion gv)
 
 bool MapUnit::compareTo(const MapUnit &other) const
 {
+<<<<<<< HEAD
     COMPARE_MEMBER(Padding1);
     COMPARE_MEMBER(Fluctuation);
     COMPARE_MEMBER(GroupArea);
@@ -251,6 +277,21 @@ bool MapUnit::compareTo(const MapUnit &other) const
     COMPARE_MEMBER(ScaleFlag);
 
     return true;
+=======
+  serialize<int32_t>(Unit);
+  serialize<int32_t>(HostTerrain);
+  serialize<uint8_t>(GroupPlacing);
+  serialize<uint8_t>(ScaleFlag);
+  serialize<int16_t>(Padding1);
+  serialize<int32_t>(ObjectsPerGroup);
+  serialize<int32_t>(Fluctuation);
+  serialize<int32_t>(GroupsPerPlayer);
+  serialize<int32_t>(GroupArea);
+  serialize<int32_t>(PlayerID);
+  serialize<int32_t>(SetPlaceForAllPlayers);
+  serialize<int32_t>(MinDistanceToPlayers);
+  serialize<int32_t>(MaxDistanceToPlayers);
+>>>>>>> 65dd660 (More accurate signedness.)
 }
 
 //------------------------------------------------------------------------------

@@ -2,7 +2,7 @@
     genie/dat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2016  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -26,6 +26,7 @@ namespace genie::unit {
 
 bool Missile::compareTo(const Missile &other) const
 {
+<<<<<<< HEAD:src/dat/unit/Missile.cpp
     COMPARE_MEMBER(ProjectileArc);
     COMPARE_MEMBER(AreaEffectSpecials);
     COMPARE_MEMBER(HitMode);
@@ -34,6 +35,14 @@ bool Missile::compareTo(const Missile &other) const
     COMPARE_MEMBER(VanishMode);
 
     return true;
+=======
+  serialize<uint8_t>(ProjectileType);
+  serialize<uint8_t>(SmartMode);
+  serialize<uint8_t>(HitMode);
+  serialize<uint8_t>(VanishMode);
+  serialize<uint8_t>(AreaEffectSpecials);
+  serialize<float>(ProjectileArc);
+>>>>>>> 65dd660 (More accurate signedness.):src/dat/unit/Projectile.cpp
 }
 
 } // namespace genie

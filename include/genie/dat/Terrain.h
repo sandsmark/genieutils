@@ -41,10 +41,10 @@ public:
     static void setTerrainCount(unsigned short cnt);
 
     /// If this is water.
-    int8_t IsWater = 0;
+    uint8_t IsWater = 0;
 
     /// If this should not be shown in the map editor
-    int8_t HideInEditor = 0;
+    uint8_t HideInEditor = 0;
 
     /// The string to show in the editor
     int32_t StringID = 0;
@@ -73,10 +73,10 @@ public:
     std::pair<uint8_t, uint8_t> CliffColors = { 0, 0 };
 
     /// Is this passable? (I think)
-    int8_t PassableTerrain = -1;
+    uint8_t PassableTerrain = -1;
 
     /// Is this impassable? (I think)
-    int8_t ImpassableTerrain = -1;
+    uint8_t ImpassableTerrain = -1;
 
     /// Tile Graphics: flat, 2 x 8 elevation, 2 x 1:1\n
     ///  Frame Count, Animations, Frame Index
@@ -102,7 +102,7 @@ public:
     /// Centralize\n
     /// 0   Place randomly on the tile\n
     /// 1   Place in middle of the tile\n
-    std::array<int8_t, TERRAIN_UNITS_SIZE> TerrainUnitCentering{};
+    std::array<uint8_t, TERRAIN_UNITS_SIZE> TerrainUnitCentering{};
 
     /// Less than TERRAIN_UNITS_SIZE obviously
     int16_t NumberOfTerrainUnitsUsed = 0;

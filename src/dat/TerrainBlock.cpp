@@ -86,6 +86,7 @@ unsigned short TerrainBlock::getSomethingSize()
 
 bool TerrainBlock::compareTo(const TerrainBlock &other) const
 {
+<<<<<<< HEAD
     COMPARE_MEMBER(MapMaxX);
     COMPARE_MEMBER(MapMaxXplus1);
     COMPARE_MEMBER(MapMaxY);
@@ -128,6 +129,100 @@ bool TerrainBlock::compareTo(const TerrainBlock &other) const
     COMPARE_MEMBER_VEC(SomeBytes);
 
     return true;
+=======
+  GameVersion gv = getGameVersion();
+
+  serialize<uint32_t>(VirtualFunctionPtr);// __vfptr
+  serialize<uint32_t>(MapPointer);
+  serialize<int32_t>(MapWidth);
+  serialize<int32_t>(MapHeight);
+  serialize<int32_t>(WorldWidth);
+  serialize<int32_t>(WorldHeight);
+
+  serializeSub<TileSize>(TileSizes, SharedTerrain::TILE_TYPE_COUNT);
+  if (gv >= GV_AoE)
+    serialize<int16_t>(PaddingTS);// Padding for TileSizes (32-bit aligned)
+
+  if (isOperation(OP_READ))
+    serializeSub<Terrain>(Terrains, Terrain::getTerrainCount(gv));
+  else
+    serializeSub<Terrain>(Terrains, Terrains.size());
+
+  std::cout << "Terrains: " << Terrains.size() << std::endl;
+
+  if (gv < GV_AoEB)
+  {
+    serialize<int16_t>(AoEAlphaUnknown, (16 * 1888) / 2);
+  }
+  if (gv < GV_C9 || gv > GV_LatestDE2)
+  {
+    // TerrainBorders seem to be unused (are empty) in GV > AoK Alpha
+    if (gv != GV_CCV && gv != GV_TCV)
+      serializeSub<TerrainBorder>(TerrainBorders, 16);
+
+    // Probably filled after loading map in game.
+    serialize<uint32_t>(MapRowOffset);
+  }
+
+  if (gv >= GV_AoKA)
+  {
+    serialize<float>(MapMinX);
+    serialize<float>(MapMinY);
+    serialize<float>(MapMaxX);
+    serialize<float>(MapMaxY);
+    if (gv >= GV_AoK)
+    {
+      serialize<float>(MapMaxXplus1);
+      serialize<float>(MapMaxYplus1);
+    }
+  }
+
+  serialize<int16_t>(TerrainsUsed2);
+  if (gv < GV_AoEB)
+    serialize<int16_t>(RemovedBlocksUsed);
+  serialize<int16_t>(BordersUsed);
+  serialize<int16_t>(MaxTerrain);
+  serialize<int16_t>(TileWidth);
+  serialize<int16_t>(TileHeight);
+  serialize<int16_t>(TileHalfHeight);
+  serialize<int16_t>(TileHalfWidth);
+  serialize<int16_t>(ElevHeight);
+  serialize<int16_t>(CurRow);
+  serialize<int16_t>(CurCol);
+  serialize<int16_t>(BlockBegRow);
+  serialize<int16_t>(BlockEndRow);
+  serialize<int16_t>(BlockBegCol);
+  serialize<int16_t>(BlockEndCol);
+
+  if (gv >= GV_AoKE3)
+  {
+    serialize<uint32_t>(SearchMapPtr);
+    serialize<uint32_t>(SearchMapRowsPtr);
+    serialize<uint8_t>(AnyFrameChange);
+  }
+  else
+  {
+    // Padding fix
+    uint32_t any = AnyFrameChange;
+    serialize<uint32_t>(any);
+    AnyFrameChange = any;
+
+    serialize<uint32_t>(SearchMapPtr);
+    serialize<uint32_t>(SearchMapRowsPtr);
+  }
+  serialize<uint8_t>(MapVisibleFlag);
+  serialize<uint8_t>(FogFlag); // Always 1
+
+  //From here on data is filled in game anyway.
+  if (gv < GV_C9 || gv > GV_LatestDE2)
+  {
+    //There are two 32-bit pointers random map and game world, rest should be all 0.
+    serialize<uint8_t>(SomeBytes, getBytesSize());
+
+    // Few pointers and small numbers.
+    serialize<uint32_t>(SomeInt32, getSomethingSize());
+  }
+>>>>>>> 65dd660 (More accurate signedness.)
 }
 
 void TerrainBlock::serializeObject()

@@ -2,7 +2,7 @@
     geniedat - A library for reading and writing data files of genie
                engine games.
     Copyright (C) 2011 - 2013  Armin Preiml
-    Copyright (C) 2011 - 2017  Mikko "Tapsa" P
+    Copyright (C) 2011 - 2021  Mikko "Tapsa" P
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -102,17 +102,17 @@ public:
     void setGameVersion(GameVersion gv) override;
 
     int32_t ID = -1; //Age ID
-    int8_t Status = 2; //Always 2
+    uint8_t Status = 2; //Always 2
 
     std::vector<int32_t> Buildings;
     std::vector<int32_t> Units;
     std::vector<int32_t> Techs;
 
     techtree::Common Common;
-    int8_t NumBuildingLevels = 0;
-    std::vector<int8_t> BuildingsPerZone;
-    std::vector<int8_t> GroupLengthPerZone;
-    int8_t MaxAgeLength = 0;
+    uint8_t NumBuildingLevels = 0;
+    std::vector<uint8_t> BuildingsPerZone;
+    std::vector<uint8_t> GroupLengthPerZone;
+    uint8_t MaxAgeLength = 0;
     int32_t LineMode = 0;
 
     unsigned short getZoneCount();
@@ -138,7 +138,7 @@ public:
     /// 4   Researching or constructing or creating
     /// 5   Technology researched or building built
     /// 6   End
-    int8_t Status = 2; //always 2
+    uint8_t Status = 2; //always 2
 
     std::vector<int32_t> Buildings;
     std::vector<int32_t> Units;
@@ -151,10 +151,10 @@ public:
     /// 0   Hidden
     /// 1   First
     /// 2   Second
-    int8_t LocationInAge = 0;
-    std::vector<int8_t> UnitsTechsTotal;
+    uint8_t LocationInAge = 0;
+    std::vector<uint8_t> UnitsTechsTotal;
 
-    std::vector<int8_t> UnitsTechsFirst;
+    std::vector<uint8_t> UnitsTechsFirst;
 
     /// 0   Research: First age
     /// 1   Age
@@ -180,7 +180,7 @@ public:
     void setGameVersion(GameVersion gv) override;
 
     int32_t ID = -1;
-    int8_t Status = 2; //always 2
+    uint8_t Status = 2; //always 2
     int32_t UpperBuilding = -1;
 
     techtree::Common Common;
@@ -210,7 +210,7 @@ public:
     void setGameVersion(GameVersion gv) override;
 
     int32_t ID = -1;
-    int8_t Status = 2; //always 2
+    uint8_t Status = 2; //always 2
     int32_t UpperBuilding = -1;
 
     std::vector<int32_t> Buildings;
