@@ -98,6 +98,7 @@ std::string DatFile::versionName(const GameVersion version)
         case genie::GV_AoKB: return "Age of Empires 2: Age of Kings Beta";
         case genie::GV_AoK: return "Age of Empires 2: Age of Kings";
         case genie::GV_TC: return "Age of Empires 2: The Conquerors";
+        case genie::GV_TCV: return "Age of Empires 2: The Conquerors, terrain patch";
         case genie::GV_UP15: return "Age of Empires 2: The Conquerors with User Patch 1.5";
         case genie::GV_Cysion: return "Age of Empires 2: Cysion";
         case genie::GV_C2: return "Age of Empires 2: Definitive Edition";
@@ -118,6 +119,7 @@ std::string DatFile::versionName(const GameVersion version)
         case genie::GV_C16: return "Age of Empires 3: Definitive Edition C16";
         case genie::GV_SWGB: return "Star Wars: Galactic Battlegrounds";
         case genie::GV_CC: return "Star Wars: Galactic Battlegrounds: Clone Campaigns";
+        case genie::GV_CCV: return "Star Wars: Galactic Battlegrounds: Clone Campaigns, terrain patch";
         // No default, so we get compiler warnings if new are added
     }
     throw std::runtime_error("Unhandled state in DatFile::versionName");
